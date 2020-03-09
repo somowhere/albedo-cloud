@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.albedo.java.common.config.JacksonMapperConfig,\
+  com.albedo.java.modules.sys.component.RemoteServiceComponent

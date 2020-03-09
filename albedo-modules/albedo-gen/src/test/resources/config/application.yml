@@ -1,0 +1,67 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: albedo #根密码
+
+# Spring 相关
+spring:
+  cloud:
+  config:
+    enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 111111
+    url: jdbc:mysql://albedo-mysql:3306/albedo-cloud?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+  redis:
+    password:
+    host: albedo-redis
+security:
+  oauth2:
+    resource:
+      loadBalanced: true
+      token-info-uri: http://albedo-auth:4000/oauth/check_token
+    client:
+      client-id: ENC(WJRDLZlPlWkmLu/d+gkeAw==)
+      client-secret: ENC(gyOtaeY+fxP8/Rkd3PKm8Q==)
+      scope: server
+
+# 直接放行URL
+ignore:
+  urls:
+    - /actuator/**
+    - /user/info/*
+    - /log/**
+
+
+# mybaits-plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: UUID
+      field-strategy: NOT_NULL
+      table-underline: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+
+# ===================================================================
+# Albedo specific properties
+# ===================================================================
+
+application:
+  developMode: true
+  jedisKeyPrefix: albedoBootWebApp
+  logPath: target/logs
+  cors: #By default CORS are not enabled. Uncomment to enable.
+    allowed-origins: "*"
+    allowed-methods: "*"
+    allowed-headers: "*"
+    exposed-headers: "Authorization,Link,X-Total-Count"
+    allow-credentials: true
+    max-age: 1800
+

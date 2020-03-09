@@ -1,0 +1,9 @@
+# 直接放行URL
+ignore:
+  urls:
+    - /v2/**
+    - /actuator/**
+    - /user/info/*
+    - /menu/gen
+    - /dict/all
+    - /log-operate/**

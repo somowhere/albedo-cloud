@@ -1,0 +1,82 @@
+version: '2'
+services:
+  albedo-mysql:
+    build:
+      context: ./
+      dockerfile: ./db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: albedo-mysql
+    image: albedo-mysql
+    ports:
+      - 3306:3306
+
+  albedo-redis:
+    image: redis:5.0
+    ports:
+      - 6379:6379
+    restart: always
+    container_name: albedo-redis
+    hostname: albedo-redis
+
+  albedo-eureka:
+    build:
+      context: ./
+      dockerfile: ./albedo-eureka/Dockerfile
+    restart: always
+    ports:
+      - 8761:8761
+    container_name: albedo-eureka
+    hostname: albedo-eureka
+    image: albedo-eureka
+
+  albedo-gateway:
+    build:
+      context: ./
+      dockerfile: ./albedo-gateway/Dockerfile
+    restart: always
+    ports:
+      - 9999:9999
+    container_name: albedo-gateway
+    hostname: albedo-gateway
+    image: albedo-gateway
+
+  albedo-auth:
+    build:
+      context: ./
+      dockerfile: ./albedo-auth/Dockerfile
+    restart: always
+    container_name: albedo-auth
+    hostname: albedo-auth
+    image: albedo-auth
+
+  albedo-sys:
+    build:
+      context: ./
+      dockerfile: ./albedo-sys/albedo-sys-biz/Dockerfile
+    restart: always
+    container_name: albedo-sys
+    hostname: albedo-sys
+    image: albedo-sys
+
+  albedo-monitor:
+    build:
+      context: ./
+      dockerfile: ./albedo-visual/albedo-monitor/Dockerfile
+    restart: always
+    ports:
+      - 5001:5001
+    container_name: albedo-monitor
+    hostname: albedo-monitor
+    image: albedo-monitor
+
+  albedo-gen:
+    build:
+      context: ./
+      dockerfile: ./albedo-visual/albedo-gen/Dockerfile
+    restart: always
+    container_name: albedo-gen
+    hostname: albedo-gen
+    image: albedo-gen
+

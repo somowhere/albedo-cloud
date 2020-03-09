@@ -1,0 +1,21 @@
+server:
+  port: 9999
+
+logging:
+  level:
+    ROOT: DEBUG
+    com.albedo.java: DEBUG
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS-HOST:albedo-register}:${NACOS-PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        refreshable-dataids: true
+  profiles:
+    active: @spring.profiles.active@

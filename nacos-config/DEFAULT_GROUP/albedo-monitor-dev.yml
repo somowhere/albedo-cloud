@@ -1,0 +1,6 @@
+spring:
+  # 安全配置
+  security:
+    user:
+      name: ENC(ToJTk3p6JF+h0gsHeHVRoQ==)     # albedo
+      password: ENC(sGfB6KY7Zq0BTfwbWYxnWw==) # albedo

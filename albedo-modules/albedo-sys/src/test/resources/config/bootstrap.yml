@@ -1,0 +1,20 @@
+server:
+  port: 40001
+
+spring:
+  application:
+    name: albedo-sys-biz
+  # 配置中心
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    enabled: false

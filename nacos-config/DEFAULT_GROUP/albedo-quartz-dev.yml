@@ -1,0 +1,24 @@
+## spring security 配置
+security:
+  oauth2:
+    client:
+      client-id: ENC(FGKBtFgGcI+XAg5c+7EAJg==)
+      client-secret: ENC(PE5+ODGIk7rfbiaZXHVhow==)
+      scope: server
+
+# 数据源配置
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 111111
+    url: jdbc:mysql://albedo-mysql:3306/albedo-cloud?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+  resources:
+    static-locations: classpath:/static/,classpath:/views/
+
+# 直接放行URL
+ignore:
+  urls:
+    - /v2/**
+    - /actuator/**

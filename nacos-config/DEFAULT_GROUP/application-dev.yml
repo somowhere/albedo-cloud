@@ -1,0 +1,38 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: albedo #根密码
+
+
+dubbo:
+  scan:
+    base-packages: com.albedo.java.*
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+  registry:
+    #   The Spring Cloud Dubbo's registry extension
+    ##  the default value of dubbo-provider-services is "*", that means to subscribe all providers,
+    ##  thus it's optimized if subscriber specifies the required providers.
+    address: spring-cloud://localhost
+  cloud:
+    # The subscribed services in consumer side
+    subscribed-services: albedo-sys,albedo-auth
+    
+# ===================================================================
+# Albedo specific properties
+# ===================================================================
+
+application:
+  developMode: true
+  address-enabled: true
+  logPath: target/logs
+  static-file-directory: D:/albedo-cloud-file
+  cors: #By default CORS are not enabled. Uncomment to enable.
+    allowed-origins: "*"
+    allowed-methods: "*"
+    allowed-headers: "*"
+    exposed-headers: "Authorization,Link,X-Total-Count"
+    allow-credentials: true
+    max-age: 1800

@@ -1,0 +1,70 @@
+spring:
+  cloud:
+    gateway:
+      locator:
+        enabled: true
+      routes:
+        # 认证中心
+        - id: albedo-auth
+          uri: lb://albedo-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            # 验证码处理
+            - ValidateCodeGatewayFilter
+            # 前端密码解密
+            - PasswordDecoderFilter
+        #系统管理 模块
+        - id: albedo-sys
+          uri: lb://albedo-sys
+          predicates:
+            - Path=/sys/**
+          filters:
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+              # 降级配置
+        #            - name: Hystrix
+        #              args:
+        #                name: default
+        #                fallbackUri: 'forward:/fallback'
+        # 代码生成模块
+        - id: albedo-gen
+          uri: lb://albedo-gen
+          predicates:
+            - Path=/gen/**
+        # 任务调度模块
+        - id: albedo-quartz
+          uri: lb://albedo-quartz
+          predicates:
+            - Path=/quartz/**
+
+    sentinel:
+      # datasource.ds2.file:
+      #   file: "classpath: gateway.json"
+      #   ruleType: gw-flow
+      # datasource.ds1.file:
+      #   file: "classpath: api.json"
+      #   ruleType: gw-api-group
+      transport:
+        dashboard: 127.0.0.1:8858
+      filter:
+        enabled: true
+      scg.fallback:
+          mode: response
+          response-status: 444
+          response-body: 1234
+      scg:
+        order: -100
+security:
+  encode:
+    # 前端密码密钥，必须16位
+    key: 'somewhere-albedo'
+
+# 不校验验证码终端
+ignore:
+  clients:
+    - swagger
