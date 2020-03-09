@@ -27,7 +27,6 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-web-servlet</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
@@ -36,12 +35,10 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-parameter-flow-control</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-api-gateway-adapter-common</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -102,6 +99,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
+			<version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- for Apollo rule publisher sample -->
@@ -135,6 +133,12 @@
             <artifactId>system-rules</artifactId>
             <version>1.16.1</version>
             <scope>test</scope>
+			 <exclusions>
+				 <exclusion>
+					 <groupId>junit</groupId>
+					 <artifactId>junit-dep</artifactId>
+				 </exclusion>
+			 </exclusions>
         </dependency>
     </dependencies>
 

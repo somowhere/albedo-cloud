@@ -15,6 +15,7 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller.gateway;
 
+import com.alibaba.csp.sentinel.dashboard.auth.AuthAction;
 import com.alibaba.csp.sentinel.dashboard.auth.AuthService;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
@@ -47,224 +48,213 @@ import static com.alibaba.csp.sentinel.adapter.gateway.common.SentinelGatewayCon
 @RequestMapping(value = "/gateway/api")
 public class GatewayApiController {
 
-	private final Logger logger = LoggerFactory.getLogger(GatewayApiController.class);
+    private final Logger logger = LoggerFactory.getLogger(GatewayApiController.class);
 
-	@Autowired
-	private InMemApiDefinitionStore repository;
+    @Autowired
+    private InMemApiDefinitionStore repository;
 
-	@Autowired
-	private SentinelApiClient sentinelApiClient;
+    @Autowired
+    private SentinelApiClient sentinelApiClient;
 
-	@Autowired
-	private AuthService<HttpServletRequest> authService;
+    @GetMapping("/list.json")
+    @AuthAction(AuthService.PrivilegeType.READ_RULE)
+    public Result<List<ApiDefinitionEntity>> queryApis(String app, String ip, Integer port) {
 
-	@GetMapping("/list.json")
-	public Result<List<ApiDefinitionEntity>> queryApis(HttpServletRequest request, String app, String ip, Integer port) {
-		AuthService.AuthUser authUser = authService.getAuthUser(request);
-		authUser.authTarget(app, AuthService.PrivilegeType.READ_RULE);
+        if (StringUtil.isEmpty(app)) {
+            return Result.ofFail(-1, "app can't be null or empty");
+        }
+        if (StringUtil.isEmpty(ip)) {
+            return Result.ofFail(-1, "ip can't be null or empty");
+        }
+        if (port == null) {
+            return Result.ofFail(-1, "port can't be null");
+        }
 
-		if (StringUtil.isEmpty(app)) {
-			return Result.ofFail(-1, "app can't be null or empty");
-		}
-		if (StringUtil.isEmpty(ip)) {
-			return Result.ofFail(-1, "ip can't be null or empty");
-		}
-		if (port == null) {
-			return Result.ofFail(-1, "port can't be null");
-		}
+        try {
+            List<ApiDefinitionEntity> apis = sentinelApiClient.fetchApis(app, ip, port).get();
+            repository.saveAll(apis);
+            return Result.ofSuccess(apis);
+        } catch (Throwable throwable) {
+            logger.error("queryApis error:", throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
+    }
 
-		try {
-			List<ApiDefinitionEntity> apis = sentinelApiClient.fetchApis(app, ip, port).get();
-			repository.saveAll(apis);
-			return Result.ofSuccess(apis);
-		} catch (Throwable throwable) {
-			logger.error("queryApis error:", throwable);
-			return Result.ofThrowable(-1, throwable);
-		}
-	}
+    @PostMapping("/new.json")
+    @AuthAction(AuthService.PrivilegeType.WRITE_RULE)
+    public Result<ApiDefinitionEntity> addApi(HttpServletRequest request, @RequestBody AddApiReqVo reqVo) {
 
-	@PostMapping("/new.json")
-	public Result<ApiDefinitionEntity> addApi(HttpServletRequest request, @RequestBody AddApiReqVo reqVo) {
-		AuthService.AuthUser authUser = authService.getAuthUser(request);
+        String app = reqVo.getApp();
+        if (StringUtil.isBlank(app)) {
+            return Result.ofFail(-1, "app can't be null or empty");
+        }
 
-		String app = reqVo.getApp();
-		if (StringUtil.isBlank(app)) {
-			return Result.ofFail(-1, "app can't be null or empty");
-		}
+        ApiDefinitionEntity entity = new ApiDefinitionEntity();
+        entity.setApp(app.trim());
 
-		authUser.authTarget(app, AuthService.PrivilegeType.WRITE_RULE);
+        String ip = reqVo.getIp();
+        if (StringUtil.isBlank(ip)) {
+            return Result.ofFail(-1, "ip can't be null or empty");
+        }
+        entity.setIp(ip.trim());
 
-		ApiDefinitionEntity entity = new ApiDefinitionEntity();
-		entity.setApp(app.trim());
+        Integer port = reqVo.getPort();
+        if (port == null) {
+            return Result.ofFail(-1, "port can't be null");
+        }
+        entity.setPort(port);
 
-		String ip = reqVo.getIp();
-		if (StringUtil.isBlank(ip)) {
-			return Result.ofFail(-1, "ip can't be null or empty");
-		}
-		entity.setIp(ip.trim());
+        // API名称
+        String apiName = reqVo.getApiName();
+        if (StringUtil.isBlank(apiName)) {
+            return Result.ofFail(-1, "apiName can't be null or empty");
+        }
+        entity.setApiName(apiName.trim());
 
-		Integer port = reqVo.getPort();
-		if (port == null) {
-			return Result.ofFail(-1, "port can't be null");
-		}
-		entity.setPort(port);
+        // 匹配规则列表
+        List<ApiPredicateItemVo> predicateItems = reqVo.getPredicateItems();
+        if (CollectionUtils.isEmpty(predicateItems)) {
+            return Result.ofFail(-1, "predicateItems can't empty");
+        }
 
-		// API名称
-		String apiName = reqVo.getApiName();
-		if (StringUtil.isBlank(apiName)) {
-			return Result.ofFail(-1, "apiName can't be null or empty");
-		}
-		entity.setApiName(apiName.trim());
+        List<ApiPredicateItemEntity> predicateItemEntities = new ArrayList<>();
+        for (ApiPredicateItemVo predicateItem : predicateItems) {
+            ApiPredicateItemEntity predicateItemEntity = new ApiPredicateItemEntity();
 
-		// 匹配规则列表
-		List<ApiPredicateItemVo> predicateItems = reqVo.getPredicateItems();
-		if (CollectionUtils.isEmpty(predicateItems)) {
-			return Result.ofFail(-1, "predicateItems can't empty");
-		}
+            // 匹配模式
+            Integer matchStrategy = predicateItem.getMatchStrategy();
+            if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
+                return Result.ofFail(-1, "invalid matchStrategy: " + matchStrategy);
+            }
+            predicateItemEntity.setMatchStrategy(matchStrategy);
 
-		List<ApiPredicateItemEntity> predicateItemEntities = new ArrayList<>();
-		for (ApiPredicateItemVo predicateItem : predicateItems) {
-			ApiPredicateItemEntity predicateItemEntity = new ApiPredicateItemEntity();
+            // 匹配串
+            String pattern = predicateItem.getPattern();
+            if (StringUtil.isBlank(pattern)) {
+                return Result.ofFail(-1, "pattern can't be null or empty");
+            }
+            predicateItemEntity.setPattern(pattern);
 
-			// 匹配模式
-			Integer matchStrategy = predicateItem.getMatchStrategy();
-			if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
-				return Result.ofFail(-1, "invalid matchStrategy: " + matchStrategy);
-			}
-			predicateItemEntity.setMatchStrategy(matchStrategy);
+            predicateItemEntities.add(predicateItemEntity);
+        }
+        entity.setPredicateItems(new LinkedHashSet<>(predicateItemEntities));
 
-			// 匹配串
-			String pattern = predicateItem.getPattern();
-			if (StringUtil.isBlank(pattern)) {
-				return Result.ofFail(-1, "pattern can't be null or empty");
-			}
-			predicateItemEntity.setPattern(pattern);
+        // 检查API名称不能重复
+        List<ApiDefinitionEntity> allApis = repository.findAllByMachine(MachineInfo.of(app.trim(), ip.trim(), port));
+        if (allApis.stream().map(o -> o.getApiName()).anyMatch(o -> o.equals(apiName.trim()))) {
+            return Result.ofFail(-1, "apiName exists: " + apiName);
+        }
 
-			predicateItemEntities.add(predicateItemEntity);
-		}
-		entity.setPredicateItems(new LinkedHashSet<>(predicateItemEntities));
+        Date date = new Date();
+        entity.setGmtCreate(date);
+        entity.setGmtModified(date);
 
-		// 检查API名称不能重复
-		List<ApiDefinitionEntity> allApis = repository.findAllByMachine(MachineInfo.of(app.trim(), ip.trim(), port));
-		if (allApis.stream().map(o -> o.getApiName()).anyMatch(o -> o.equals(apiName.trim()))) {
-			return Result.ofFail(-1, "apiName exists: " + apiName);
-		}
+        try {
+            entity = repository.save(entity);
+        } catch (Throwable throwable) {
+            logger.error("add gateway api error:", throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
 
-		Date date = new Date();
-		entity.setGmtCreate(date);
-		entity.setGmtModified(date);
+        if (!publishApis(app, ip, port)) {
+            logger.warn("publish gateway apis fail after add");
+        }
 
-		try {
-			entity = repository.save(entity);
-		} catch (Throwable throwable) {
-			logger.error("add gateway api error:", throwable);
-			return Result.ofThrowable(-1, throwable);
-		}
+        return Result.ofSuccess(entity);
+    }
 
-		if (!publishApis(app, ip, port)) {
-			logger.warn("publish gateway apis fail after add");
-		}
+    @PostMapping("/save.json")
+    @AuthAction(AuthService.PrivilegeType.WRITE_RULE)
+    public Result<ApiDefinitionEntity> updateApi(@RequestBody UpdateApiReqVo reqVo) {
+        String app = reqVo.getApp();
+        if (StringUtil.isBlank(app)) {
+            return Result.ofFail(-1, "app can't be null or empty");
+        }
 
-		return Result.ofSuccess(entity);
-	}
+        Long id = reqVo.getId();
+        if (id == null) {
+            return Result.ofFail(-1, "id can't be null");
+        }
 
-	@PostMapping("/save.json")
-	public Result<ApiDefinitionEntity> updateApi(HttpServletRequest request, @RequestBody UpdateApiReqVo reqVo) {
-		AuthService.AuthUser authUser = authService.getAuthUser(request);
+        ApiDefinitionEntity entity = repository.findById(id);
+        if (entity == null) {
+            return Result.ofFail(-1, "api does not exist, id=" + id);
+        }
 
-		String app = reqVo.getApp();
-		if (StringUtil.isBlank(app)) {
-			return Result.ofFail(-1, "app can't be null or empty");
-		}
+        // 匹配规则列表
+        List<ApiPredicateItemVo> predicateItems = reqVo.getPredicateItems();
+        if (CollectionUtils.isEmpty(predicateItems)) {
+            return Result.ofFail(-1, "predicateItems can't empty");
+        }
 
-		authUser.authTarget(app, AuthService.PrivilegeType.WRITE_RULE);
+        List<ApiPredicateItemEntity> predicateItemEntities = new ArrayList<>();
+        for (ApiPredicateItemVo predicateItem : predicateItems) {
+            ApiPredicateItemEntity predicateItemEntity = new ApiPredicateItemEntity();
 
-		Long id = reqVo.getId();
-		if (id == null) {
-			return Result.ofFail(-1, "id can't be null");
-		}
+            // 匹配模式
+            int matchStrategy = predicateItem.getMatchStrategy();
+            if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
+                return Result.ofFail(-1, "Invalid matchStrategy: " + matchStrategy);
+            }
+            predicateItemEntity.setMatchStrategy(matchStrategy);
 
-		ApiDefinitionEntity entity = repository.findById(id);
-		if (entity == null) {
-			return Result.ofFail(-1, "api does not exist, id=" + id);
-		}
+            // 匹配串
+            String pattern = predicateItem.getPattern();
+            if (StringUtil.isBlank(pattern)) {
+                return Result.ofFail(-1, "pattern can't be null or empty");
+            }
+            predicateItemEntity.setPattern(pattern);
 
-		// 匹配规则列表
-		List<ApiPredicateItemVo> predicateItems = reqVo.getPredicateItems();
-		if (CollectionUtils.isEmpty(predicateItems)) {
-			return Result.ofFail(-1, "predicateItems can't empty");
-		}
+            predicateItemEntities.add(predicateItemEntity);
+        }
+        entity.setPredicateItems(new LinkedHashSet<>(predicateItemEntities));
 
-		List<ApiPredicateItemEntity> predicateItemEntities = new ArrayList<>();
-		for (ApiPredicateItemVo predicateItem : predicateItems) {
-			ApiPredicateItemEntity predicateItemEntity = new ApiPredicateItemEntity();
+        Date date = new Date();
+        entity.setGmtModified(date);
 
-			// 匹配模式
-			int matchStrategy = predicateItem.getMatchStrategy();
-			if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
-				return Result.ofFail(-1, "Invalid matchStrategy: " + matchStrategy);
-			}
-			predicateItemEntity.setMatchStrategy(matchStrategy);
+        try {
+            entity = repository.save(entity);
+        } catch (Throwable throwable) {
+            logger.error("update gateway api error:", throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
 
-			// 匹配串
-			String pattern = predicateItem.getPattern();
-			if (StringUtil.isBlank(pattern)) {
-				return Result.ofFail(-1, "pattern can't be null or empty");
-			}
-			predicateItemEntity.setPattern(pattern);
+        if (!publishApis(app, entity.getIp(), entity.getPort())) {
+            logger.warn("publish gateway apis fail after update");
+        }
 
-			predicateItemEntities.add(predicateItemEntity);
-		}
-		entity.setPredicateItems(new LinkedHashSet<>(predicateItemEntities));
+        return Result.ofSuccess(entity);
+    }
 
-		Date date = new Date();
-		entity.setGmtModified(date);
+    @PostMapping("/delete.json")
+    @AuthAction(AuthService.PrivilegeType.DELETE_RULE)
 
-		try {
-			entity = repository.save(entity);
-		} catch (Throwable throwable) {
-			logger.error("update gateway api error:", throwable);
-			return Result.ofThrowable(-1, throwable);
-		}
+    public Result<Long> deleteApi(Long id) {
+        if (id == null) {
+            return Result.ofFail(-1, "id can't be null");
+        }
 
-		if (!publishApis(app, entity.getIp(), entity.getPort())) {
-			logger.warn("publish gateway apis fail after update");
-		}
+        ApiDefinitionEntity oldEntity = repository.findById(id);
+        if (oldEntity == null) {
+            return Result.ofSuccess(null);
+        }
 
-		return Result.ofSuccess(entity);
-	}
+        try {
+            repository.delete(id);
+        } catch (Throwable throwable) {
+            logger.error("delete gateway api error:", throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
 
-	@PostMapping("/delete.json")
-	public Result<Long> deleteApi(HttpServletRequest request, Long id) {
-		AuthService.AuthUser authUser = authService.getAuthUser(request);
+        if (!publishApis(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort())) {
+            logger.warn("publish gateway apis fail after delete");
+        }
 
-		if (id == null) {
-			return Result.ofFail(-1, "id can't be null");
-		}
+        return Result.ofSuccess(id);
+    }
 
-		ApiDefinitionEntity oldEntity = repository.findById(id);
-		if (oldEntity == null) {
-			return Result.ofSuccess(null);
-		}
-
-		authUser.authTarget(oldEntity.getApp(), AuthService.PrivilegeType.DELETE_RULE);
-
-		try {
-			repository.delete(id);
-		} catch (Throwable throwable) {
-			logger.error("delete gateway api error:", throwable);
-			return Result.ofThrowable(-1, throwable);
-		}
-
-		if (!publishApis(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort())) {
-			logger.warn("publish gateway apis fail after delete");
-		}
-
-		return Result.ofSuccess(id);
-	}
-
-	private boolean publishApis(String app, String ip, Integer port) {
-		List<ApiDefinitionEntity> apis = repository.findAllByMachine(MachineInfo.of(app, ip, port));
-		return sentinelApiClient.modifyApis(app, ip, port, apis);
-	}
+    private boolean publishApis(String app, String ip, Integer port) {
+        List<ApiDefinitionEntity> apis = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        return sentinelApiClient.modifyApis(app, ip, port, apis);
+    }
 }

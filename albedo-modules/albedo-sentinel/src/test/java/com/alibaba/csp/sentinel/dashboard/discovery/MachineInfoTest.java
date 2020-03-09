@@ -15,34 +15,34 @@
  */
 package com.alibaba.csp.sentinel.dashboard.discovery;
 
-import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
 
 /**
  * @author Jason Joo
  */
 public class MachineInfoTest {
 
-	@Test
-	public void testHealthyAndDead() {
-		System.setProperty(DashboardConfig.CONFIG_UNHEALTHY_MACHINE_MILLIS, "60000");
-		System.setProperty(DashboardConfig.CONFIG_AUTO_REMOVE_MACHINE_MILLIS, "600000");
-		DashboardConfig.clearCache();
-		MachineInfo machineInfo = new MachineInfo();
-		machineInfo.setHeartbeatVersion(1);
-		machineInfo.setLastHeartbeat(System.currentTimeMillis() - 10000);
-		assertTrue(machineInfo.isHealthy());
-		assertFalse(machineInfo.isDead());
+    @Test
+    public void testHealthyAndDead() {
+        System.setProperty(DashboardConfig.CONFIG_UNHEALTHY_MACHINE_MILLIS, "60000");
+        System.setProperty(DashboardConfig.CONFIG_AUTO_REMOVE_MACHINE_MILLIS, "600000");
+        DashboardConfig.clearCache();
+        MachineInfo machineInfo = new MachineInfo();
+        machineInfo.setHeartbeatVersion(1);
+        machineInfo.setLastHeartbeat(System.currentTimeMillis() - 10000);
+        assertTrue(machineInfo.isHealthy());
+        assertFalse(machineInfo.isDead());
 
-		machineInfo.setLastHeartbeat(System.currentTimeMillis() - 100000);
-		assertFalse(machineInfo.isHealthy());
-		assertFalse(machineInfo.isDead());
+        machineInfo.setLastHeartbeat(System.currentTimeMillis() - 100000);
+        assertFalse(machineInfo.isHealthy());
+        assertFalse(machineInfo.isDead());
 
-		machineInfo.setLastHeartbeat(System.currentTimeMillis() - 1000000);
-		assertFalse(machineInfo.isHealthy());
-		assertTrue(machineInfo.isDead());
-	}
+        machineInfo.setLastHeartbeat(System.currentTimeMillis() - 1000000);
+        assertFalse(machineInfo.isHealthy());
+        assertTrue(machineInfo.isDead());
+    }
 }

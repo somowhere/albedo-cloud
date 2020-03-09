@@ -28,20 +28,20 @@ import java.util.List;
 @Component("flowRuleZookeeperProvider")
 public class FlowRuleZookeeperProvider implements DynamicRuleProvider<List<FlowRuleEntity>> {
 
-	@Autowired
-	private CuratorFramework zkClient;
-	@Autowired
-	private Converter<String, List<FlowRuleEntity>> converter;
+    @Autowired
+    private CuratorFramework zkClient;
+    @Autowired
+    private Converter<String, List<FlowRuleEntity>> converter;
 
-	@Override
-	public List<FlowRuleEntity> getRules(String appName) throws Exception {
-		String zkPath = ZookeeperConfigUtil.getPath(appName);
-		byte[] bytes = zkClient.getData().forPath(zkPath);
-		if (null == bytes || bytes.length == 0) {
-			return new ArrayList<>();
-		}
-		String s = new String(bytes);
+    @Override
+    public List<FlowRuleEntity> getRules(String appName) throws Exception {
+        String zkPath = ZookeeperConfigUtil.getPath(appName);
+        byte[] bytes = zkClient.getData().forPath(zkPath);
+        if (null == bytes || bytes.length == 0) {
+            return new ArrayList<>();
+        }
+        String s = new String(bytes);
 
-		return converter.convert(s);
-	}
+        return converter.convert(s);
+    }
 }

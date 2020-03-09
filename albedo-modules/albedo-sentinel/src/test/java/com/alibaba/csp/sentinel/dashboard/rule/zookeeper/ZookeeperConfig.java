@@ -29,23 +29,23 @@ import java.util.List;
 @Configuration
 public class ZookeeperConfig {
 
-	@Bean
-	public Converter<List<FlowRuleEntity>, String> flowRuleEntityEncoder() {
-		return JSON::toJSONString;
-	}
+    @Bean
+    public Converter<List<FlowRuleEntity>, String> flowRuleEntityEncoder() {
+        return JSON::toJSONString;
+    }
 
-	@Bean
-	public Converter<String, List<FlowRuleEntity>> flowRuleEntityDecoder() {
-		return s -> JSON.parseArray(s, FlowRuleEntity.class);
-	}
+    @Bean
+    public Converter<String, List<FlowRuleEntity>> flowRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, FlowRuleEntity.class);
+    }
 
-	@Bean
-	public CuratorFramework zkClient() {
-		CuratorFramework zkClient =
-			CuratorFrameworkFactory.newClient("127.0.0.1:2181",
-				new ExponentialBackoffRetry(ZookeeperConfigUtil.SLEEP_TIME, ZookeeperConfigUtil.RETRY_TIMES));
-		zkClient.start();
+    @Bean
+    public CuratorFramework zkClient() {
+        CuratorFramework zkClient =
+                CuratorFrameworkFactory.newClient("127.0.0.1:2181",
+                        new ExponentialBackoffRetry(ZookeeperConfigUtil.SLEEP_TIME, ZookeeperConfigUtil.RETRY_TIMES));
+        zkClient.start();
 
-		return zkClient;
-	}
+        return zkClient;
+    }
 }

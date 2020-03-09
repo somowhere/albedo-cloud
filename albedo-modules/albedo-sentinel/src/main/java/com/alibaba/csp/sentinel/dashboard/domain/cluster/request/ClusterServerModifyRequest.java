@@ -15,10 +15,10 @@
  */
 package com.alibaba.csp.sentinel.dashboard.domain.cluster.request;
 
+import java.util.Set;
+
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerFlowConfig;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportConfig;
-
-import java.util.Set;
 
 /**
  * @author Eric Zhao
@@ -26,94 +26,94 @@ import java.util.Set;
  */
 public class ClusterServerModifyRequest implements ClusterModifyRequest {
 
-	private String app;
-	private String ip;
-	private Integer port;
+    private String app;
+    private String ip;
+    private Integer port;
 
-	private Integer mode;
-	private ServerFlowConfig flowConfig;
-	private ServerTransportConfig transportConfig;
-	private Set<String> namespaceSet;
+    private Integer mode;
+    private ServerFlowConfig flowConfig;
+    private ServerTransportConfig transportConfig;
+    private Set<String> namespaceSet;
 
-	@Override
-	public String getApp() {
-		return app;
-	}
+    @Override
+    public String getApp() {
+        return app;
+    }
 
-	public ClusterServerModifyRequest setApp(String app) {
-		this.app = app;
-		return this;
-	}
+    public ClusterServerModifyRequest setApp(String app) {
+        this.app = app;
+        return this;
+    }
 
-	@Override
-	public String getIp() {
-		return ip;
-	}
+    @Override
+    public String getIp() {
+        return ip;
+    }
 
-	public ClusterServerModifyRequest setIp(String ip) {
-		this.ip = ip;
-		return this;
-	}
+    public ClusterServerModifyRequest setIp(String ip) {
+        this.ip = ip;
+        return this;
+    }
 
-	@Override
-	public Integer getPort() {
-		return port;
-	}
+    @Override
+    public Integer getPort() {
+        return port;
+    }
 
-	public ClusterServerModifyRequest setPort(Integer port) {
-		this.port = port;
-		return this;
-	}
+    public ClusterServerModifyRequest setPort(Integer port) {
+        this.port = port;
+        return this;
+    }
 
-	@Override
-	public Integer getMode() {
-		return mode;
-	}
+    @Override
+    public Integer getMode() {
+        return mode;
+    }
 
-	public ClusterServerModifyRequest setMode(Integer mode) {
-		this.mode = mode;
-		return this;
-	}
+    public ClusterServerModifyRequest setMode(Integer mode) {
+        this.mode = mode;
+        return this;
+    }
 
-	public ServerFlowConfig getFlowConfig() {
-		return flowConfig;
-	}
+    public ServerFlowConfig getFlowConfig() {
+        return flowConfig;
+    }
 
-	public ClusterServerModifyRequest setFlowConfig(
-		ServerFlowConfig flowConfig) {
-		this.flowConfig = flowConfig;
-		return this;
-	}
+    public ClusterServerModifyRequest setFlowConfig(
+        ServerFlowConfig flowConfig) {
+        this.flowConfig = flowConfig;
+        return this;
+    }
 
-	public ServerTransportConfig getTransportConfig() {
-		return transportConfig;
-	}
+    public ServerTransportConfig getTransportConfig() {
+        return transportConfig;
+    }
 
-	public ClusterServerModifyRequest setTransportConfig(
-		ServerTransportConfig transportConfig) {
-		this.transportConfig = transportConfig;
-		return this;
-	}
+    public ClusterServerModifyRequest setTransportConfig(
+        ServerTransportConfig transportConfig) {
+        this.transportConfig = transportConfig;
+        return this;
+    }
 
-	public Set<String> getNamespaceSet() {
-		return namespaceSet;
-	}
+    public Set<String> getNamespaceSet() {
+        return namespaceSet;
+    }
 
-	public ClusterServerModifyRequest setNamespaceSet(Set<String> namespaceSet) {
-		this.namespaceSet = namespaceSet;
-		return this;
-	}
+    public ClusterServerModifyRequest setNamespaceSet(Set<String> namespaceSet) {
+        this.namespaceSet = namespaceSet;
+        return this;
+    }
 
-	@Override
-	public String toString() {
-		return "ClusterServerModifyRequest{" +
-			"app='" + app + '\'' +
-			", ip='" + ip + '\'' +
-			", port=" + port +
-			", mode=" + mode +
-			", flowConfig=" + flowConfig +
-			", transportConfig=" + transportConfig +
-			", namespaceSet=" + namespaceSet +
-			'}';
-	}
+    @Override
+    public String toString() {
+        return "ClusterServerModifyRequest{" +
+            "app='" + app + '\'' +
+            ", ip='" + ip + '\'' +
+            ", port=" + port +
+            ", mode=" + mode +
+            ", flowConfig=" + flowConfig +
+            ", transportConfig=" + transportConfig +
+            ", namespaceSet=" + namespaceSet +
+            '}';
+    }
 }
