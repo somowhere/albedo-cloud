@@ -1,8 +1,8 @@
  <p align="center">
-  <img src="https://img.shields.io/badge/Avue-2.0.6-green.svg" alt="Build Status">
-   <img src="https://img.shields.io/badge/Spring%20Cloud-Greenwich.SR2-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.1.0.RELEASE-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.1.9.RELEASE-blue.svg" alt="Downloads">
+  <img src="https://img.shields.io/badge/Avue-2.3-green.svg" alt="Build Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR2-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.0.RELEASE-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.2.5.RELEASE-blue.svg" alt="Downloads">
  </p>  
  
 **albedo-cloud Microservice Architecture**
@@ -40,20 +40,19 @@
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.1.9.RELEASE  
-Spring Cloud | Greenwich.SR2   
-Spring Cloud Alibaba | 2.1.0.RELEASE
-Spring Security OAuth2 | 2.3.5
-Mybatis Plus | 3.2.0
-hutool | 4.5.18
-Avue | 2.0.6
+Spring Boot |  2.2.5.RELEASE  
+Spring Cloud | Hoxton.SR2 
+Spring Cloud Alibaba | 2.2.0.RELEASE
+Spring Security OAuth2 | 2.3.6.RELEASE
+Mybatis Plus | 3.3.1
+hutool | 5.1.4
+Avue | 2.3
    
 
 
 #### 模块说明
 ```lua
 albedo
-├── albedo-ui -- 前端工程[8080]
 ├── albedo-auth -- 授权服务提供[3000]
 └── albedo-common -- 系统公共模块 
      ├── albedo-common-api --  服务基础api
@@ -62,16 +61,16 @@ albedo
      ├── albedo-common-module -- 模块基础包
      └── albedo-common-security -- 安全工具类
 ├── albedo-gateway -- Spring Cloud Gateway网关[9999]
-└── albedo-module -- 功能模块
+└── albedo-modules -- 功能模块
      ├── albedo-gen -- 图形化代码生成[5003]
      ├── albedo-monitor -- Spring Boot Admin监控 [5001]
      ├── albedo-quartz -- 任务调度 [5004]
      ├── albedo-sentinel -- 流量监控模块 [8858]
-     ├── albedo-sys -- 通用用户权限管理系统业务处理模块[4000]
-     └── albedo-zipkin -- 链路调用监控 [5002]
+     └── albedo-sys -- 通用用户权限管理系统业务处理模块[4000]
 └── albedo-plugin  -- 插件模块 
      ├── albedo-data-mybatis -- mybatis 基础模块
      └── albedo-swagger-api -- swagger api
+└── albedo-register  -- Nacos 注册中心
 	 
 ```
 
