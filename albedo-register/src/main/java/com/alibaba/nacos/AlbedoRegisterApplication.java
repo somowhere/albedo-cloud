@@ -29,12 +29,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @SpringBootApplication
-public class AlbedoNacosApplication {
+public class AlbedoRegisterApplication {
 
 	public static void main(String[] args) {
 		System.setProperty(ConfigConstants.TOMCAT_DIR, "logs");
 		System.setProperty(ConfigConstants.TOMCAT_ACCESS_LOG, "false");
 		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
-		SpringApplication.run(AlbedoNacosApplication.class, args);
+		SpringApplication.run(AlbedoRegisterApplication.class, args);
 	}
 }

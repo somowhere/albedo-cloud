@@ -17,6 +17,7 @@
 package com.albedo.java.modules.sys.service;
 
 import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.common.persistence.service.DataVoService;
 import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.vo.UserDataVo;
@@ -36,10 +37,10 @@ public interface UserService extends DataVoService<UserRepository, User, String,
 	/**
 	 * 查询用户信息
 	 *
-	 * @param user 用户
+	 * @param userVo 用户
 	 * @return userInfo
 	 */
-	UserInfo getUserInfo(User user);
+	UserInfo getUserInfo(UserVo userVo);
 
 	/**
 	 * 查询用户信息
@@ -55,7 +56,7 @@ public interface UserService extends DataVoService<UserRepository, User, String,
 	 * @param pm 分页对象
 	 * @return
 	 */
-	IPage getUserPage(PageModel pm);
+	IPage getUserPage(PageModel pm, DataScope dataScope);
 
 	/**
 	 * 删除用户
@@ -84,4 +85,6 @@ public interface UserService extends DataVoService<UserRepository, User, String,
 	void lockOrUnLock(List<String> idList);
 
 	void save(UserExcelVo userExcelVo);
+
+	UserVo findOneVoByUserName(String username);
 }

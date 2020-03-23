@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package com.albedo.java.modules.sys.repository;
+package com.albedo.java.modules.sys.service.remote.impl;
 
-import com.albedo.java.common.persistence.repository.BaseRepository;
-import com.albedo.java.modules.sys.domain.Role;
+import com.albedo.java.modules.sys.dubbo.RemoteDeptService;
+import com.albedo.java.modules.sys.service.DeptService;
+import lombok.AllArgsConstructor;
+import org.apache.dubbo.config.annotation.Service;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * <p>
- * Mapper 接口
+ * 日志表 服务实现类
  * </p>
  *
  * @author somowhere
  * @since 2019/2/1
  */
-public interface RoleRepository extends BaseRepository<Role> {
-	/**
-	 * 通过用户ID，查询角色信息
-	 *
-	 * @param userId
-	 * @return
-	 */
-	List<Role> findRolesByUserIdList(String userId);
+@Service(protocol = "dubbo")
+@AllArgsConstructor
+public class RemoteDeptServiceImpl implements RemoteDeptService {
+
+	private final DeptService deptService;
+
+	@Override
+	public Collection<? extends String> findDescendantIdList(String deptId) {
+		return deptService.findDescendantIdList(deptId);
+	}
 }

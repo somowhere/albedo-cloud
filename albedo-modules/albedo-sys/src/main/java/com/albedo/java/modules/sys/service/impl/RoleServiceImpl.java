@@ -59,12 +59,16 @@ public class RoleServiceImpl extends
 		oneVo.setMenuIdList(roleMenuService.list(Wrappers
 			.<RoleMenu>query().lambda()
 			.eq(RoleMenu::getRoleId, id)).stream().map(RoleMenu::getMenuId).collect(Collectors.toList()));
-		oneVo.setDeptIdList(roleDeptService.list(Wrappers
-			.<RoleDept>query().lambda()
-			.eq(RoleDept::getRoleId, id)).stream().map(RoleDept::getDeptId).collect(Collectors.toList()));
+		oneVo.setDeptIdList(findRoleDeptIdList(id));
 		return oneVo;
 	}
 
+	@Override
+	public List<String> findRoleDeptIdList(String roleId) {
+		return roleDeptService.list(Wrappers
+			.<RoleDept>query().lambda()
+			.eq(RoleDept::getRoleId, roleId)).stream().map(RoleDept::getDeptId).collect(Collectors.toList());
+	}
 	/**
 	 * 通过用户ID，查询角色信息
 	 *
@@ -73,8 +77,8 @@ public class RoleServiceImpl extends
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public List listRolesByUserId(String userId) {
-		return baseMapper.listRolesByUserId(userId);
+	public List findRolesByUserIdList(String userId) {
+		return baseMapper.findRolesByUserIdList(userId);
 	}
 
 	/**

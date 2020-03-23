@@ -16,7 +16,9 @@
 
 package com.albedo.java.modules.sys.domain.vo;
 
+import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.annotation.DictType;
+import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.vo.DataEntityVo;
@@ -66,7 +68,10 @@ public class UserVo extends DataEntityVo<String> {
 	 * 头像
 	 */
 	private String avatar;
-
+	/**
+	 * 上级部门ID
+	 */
+	private String parentDeptId;
 	/**
 	 * 部门ID
 	 */
@@ -108,6 +113,8 @@ public class UserVo extends DataEntityVo<String> {
 		}
 		return roleNames;
 	}
-
+	public boolean isAvailable() {
+		return StrUtil.equals(available, CommonConstants.STR_YES);
+	}
 
 }

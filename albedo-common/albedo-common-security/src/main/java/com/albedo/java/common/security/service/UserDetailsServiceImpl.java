@@ -20,8 +20,14 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.util.CollUtil;
+import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
+import com.albedo.java.modules.sys.domain.vo.UserVo;
+import com.albedo.java.modules.sys.dubbo.RemoteDeptService;
+import com.albedo.java.modules.sys.dubbo.RemoteRoleService;
 import com.albedo.java.modules.sys.dubbo.RemoteUserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +58,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Reference(check = false)
 	private RemoteUserService remoteUserService;
+	@Reference(check = false)
+	private RemoteRoleService roleService;
+	@Reference(check = false)
+	private RemoteDeptService deptService;
 	@Resource
 	private CacheManager cacheManager;
 
@@ -96,10 +106,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 		Collection<? extends GrantedAuthority> authorities
 			= AuthorityUtils.createAuthorityList(dbAuthsSet.toArray(new String[0]));
-		User user = info.getUser();
-
+		UserVo userVo = info.getUser();
+		DataScope dataScope = new DataScope();
+		dataScope.setUserId(userVo.getId());
+		if(CollUtil.isNotEmpty(userVo.getRoleList())){
+			for(Role role: userVo.getRoleList()){
+				if(SecurityConstants.ROLE_DATA_SCOPE_ALL.equals(role.getDataScope())){
+					dataScope.setAll(true);
+					break;
+				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())){
+					dataScope.getDeptIds().addAll(deptService.findDescendantIdList(userVo.getDeptId()));
+				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())){
+					dataScope.getDeptIds().add(userVo.getDeptId());
+				}else if(SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())){
+					dataScope.setSelf(true);
+				}else if(SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())){
+					dataScope.getDeptIds().addAll(roleService.findRoleDeptIdList(role.getId()));
+				}
+			}
+		}
 		// 构造security用户
-		return new UserDetail(user.getId(), user.getDeptId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(),
-			StrUtil.equals(user.getAvailable(), CommonConstants.STR_YES), true, true, true, authorities);
+		return new UserDetail(userVo.getId(), userVo.getDeptId(), userVo.getParentDeptId(), userVo.getDeptName(), userVo.getUsername(), SecurityConstants.BCRYPT + userVo.getPassword(),
+			userVo.isAvailable(), true, true, true, authorities, dataScope);
 	}
 }

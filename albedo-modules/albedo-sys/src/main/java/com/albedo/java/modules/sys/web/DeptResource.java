@@ -63,8 +63,8 @@ public class DeptResource extends TreeVoResource<DeptService, DeptDataVo> {
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/tree")
-	public R listDeptTrees(TreeQuery treeQuery) {
-		return R.buildOkData(service.listTrees(treeQuery));
+	public R tree(TreeQuery treeQuery) {
+		return R.buildOkData(service.findTreeList(treeQuery));
 	}
 
 	/**
@@ -73,9 +73,10 @@ public class DeptResource extends TreeVoResource<DeptService, DeptDataVo> {
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/user-tree")
-	public R listCurrentUserDeptTrees() {
+	public R findCurrentUserDeptTrees() {
+		String parentDeptId = SecurityUtil.getUser().getParentDeptId();
 		String deptId = SecurityUtil.getUser().getDeptId();
-		return new R<>(service.listCurrentUserDeptTrees(deptId));
+		return new R<>(service.findCurrentUserDeptTrees(parentDeptId, deptId));
 	}
 
 	/**

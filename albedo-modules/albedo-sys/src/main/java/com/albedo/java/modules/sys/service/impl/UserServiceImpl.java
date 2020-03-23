@@ -24,6 +24,7 @@ import com.albedo.java.common.core.util.BeanVoUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.data.util.QueryWrapperUtil;
+import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.common.persistence.service.impl.DataVoServiceImpl;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.modules.sys.domain.*;
@@ -40,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -99,16 +101,16 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 	/**
 	 * 通过查用户的全部信息
 	 *
-	 * @param user 用户
+	 * @param userVo 用户
 	 * @return
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public UserInfo getUserInfo(User user) {
+	public UserInfo getUserInfo(UserVo userVo) {
 		UserInfo userInfo = new UserInfo();
-		userInfo.setUser(user);
+		userInfo.setUser(userVo);
 		//设置角色列表  （ID）
-		List<String> roleIds = roleService.listRolesByUserId(user.getId())
+		List<String> roleIds = roleService.findRolesByUserIdList(userVo.getId())
 			.stream()
 			.map(Role::getId)
 			.collect(Collectors.toList());
@@ -136,10 +138,10 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public IPage getUserPage(PageModel pm) {
+	public IPage getUserPage(PageModel pm, DataScope dataScope) {
 		Wrapper wrapper = QueryWrapperUtil.getWrapperByPage(pm, getPersistentClass());
 		pm.addOrder(OrderItem.desc("a." + User.F_SQL_CREATEDDATE));
-		IPage<List<UserVo>> userVosPage = baseMapper.getUserVoPage(pm, wrapper);
+		IPage<List<UserVo>> userVosPage = baseMapper.getUserVoPage(pm, wrapper, dataScope);
 		return userVosPage;
 	}
 
@@ -149,6 +151,10 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public UserVo findOneVoByUserName(String username) {
+		return repository.getUserVoByUsername(username);
+	}
 	/**
 	 * 通过ID查询用户信息
 	 *
@@ -224,6 +230,7 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 		save(user);
 	}
 
+
 	/**
 	 * 获取当前用户的子部门信息
 	 *
@@ -242,11 +249,8 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 
 	@Override
 	public UserInfo getUserInfo(String username) {
-
-		User user = super.getOne(Wrappers.<User>query()
-			.lambda().eq(User::getUsername, username));
-
-		Assert.isTrue(user != null, String.format("用户信息为空 %s", username));
-		return getUserInfo(user);
+		UserVo userVo = repository.getUserVoByUsername(username);
+		Assert.isTrue(userVo != null, String.format("用户信息为空 %s", username));
+		return getUserInfo(userVo);
 	}
 }

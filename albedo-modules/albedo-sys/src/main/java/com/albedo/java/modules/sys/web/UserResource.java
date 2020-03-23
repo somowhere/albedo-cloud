@@ -79,12 +79,11 @@ public class UserResource extends DataVoResource<UserService, UserDataVo> {
 	@GetMapping(value = {"/info"})
 	public R info() {
 		String username = SecurityUtil.getUser().getUsername();
-		User user = service.getOne(Wrappers.<User>query()
-			.lambda().eq(User::getUsername, username));
-		if (user == null) {
-			return new R<>(Boolean.FALSE, "获取当前用户信息失败");
+		UserVo userVo = service.findOneVoByUserName(username);
+		if (userVo == null) {
+			return R.buildFail("获取当前用户信息失败");
 		}
-		return new R<>(service.getUserInfo(user));
+		return R.buildOkData(service.getUserInfo(userVo));
 	}
 
 	/**
@@ -154,7 +153,7 @@ public class UserResource extends DataVoResource<UserService, UserDataVo> {
 	@GetMapping("/")
 	@PreAuthorize("@pms.hasPermission('sys_user_view')")
 	public R getUserPage(PageModel pm) {
-		return R.buildOkData(service.getUserPage(pm));
+		return R.buildOkData(service.getUserPage(pm, SecurityUtil.getUser().getDataScope()));
 	}
 
 	/**
