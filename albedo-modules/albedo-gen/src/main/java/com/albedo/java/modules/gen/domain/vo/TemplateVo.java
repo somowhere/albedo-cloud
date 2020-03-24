@@ -4,7 +4,6 @@ import com.albedo.java.common.core.util.StringUtil;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.ToString;
-import org.apache.commons.lang.StringUtils;
 
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,7 +49,7 @@ public class TemplateVo {
 		if (categoryList == null) {
 			this.category = "";
 		} else {
-			this.category = StringUtil.SPLIT_DEFAULT + StringUtils.join(categoryList, StringUtil.SPLIT_DEFAULT) + StringUtil.SPLIT_DEFAULT;
+			this.category = StringUtil.SPLIT_DEFAULT + StringUtil.join(categoryList.iterator(), StringUtil.SPLIT_DEFAULT) + StringUtil.SPLIT_DEFAULT;
 		}
 	}
 }

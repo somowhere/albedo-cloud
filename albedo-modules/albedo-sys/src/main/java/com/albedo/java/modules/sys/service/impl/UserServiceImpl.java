@@ -38,7 +38,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -121,7 +120,7 @@ public class UserServiceImpl extends DataVoServiceImpl<UserRepository, User, Str
 		roleIds.forEach(roleId -> {
 			List<String> permissionList = menuService.getMenuByRoleId(roleId)
 				.stream()
-				.filter(menuVo -> StringUtils.isNotEmpty(menuVo.getPermission()))
+				.filter(menuVo -> StringUtil.isNotEmpty(menuVo.getPermission()))
 				.map(MenuVo::getPermission)
 				.collect(Collectors.toList());
 			permissions.addAll(permissionList);

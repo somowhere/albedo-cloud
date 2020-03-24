@@ -1,11 +1,11 @@
 package com.albedo.java.common.core.util;
 
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.UUID;
@@ -16,9 +16,11 @@ import java.util.UUID;
  * @author Lijie
  * @version 2013-06-21
  */
-public class FileUtil extends FileUtils {
+@Slf4j
+public class FileUtil extends cn.hutool.core.io.FileUtil {
 
-	private static Logger log = LoggerFactory.getLogger(FileUtil.class);
+
+	public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
 
 	/**
 	 * 复制单个文件，如果目标文件存在，则不覆盖
@@ -399,7 +401,7 @@ public class FileUtil extends FileUtils {
 		}
 		MessageDigest digest = null;
 		FileInputStream in = null;
-		byte buffer[] = new byte[1024];
+		byte[] buffer = new byte[1024];
 		int len;
 		try {
 			digest = MessageDigest.getInstance("MD5");
@@ -446,34 +448,83 @@ public class FileUtil extends FileUtils {
 		return fileNewName;
 	}
 
+
 	/**
-	 * 写入文件
+	 * 文件名称验证
 	 *
-	 * @param fileName
-	 * @param content
-	 * @param append
+	 * @param filename 文件名称
+	 * @return true 正常 false 非法
 	 */
-	public static void writeToFile(String fileName, String content, boolean append) {
-		FileUtil.writeToFile(fileName, content, "utf-8", append);
-		log.debug("文件 " + fileName + " 写入成功!");
+	public static boolean isValidFilename(String filename) {
+		return filename.matches(FILENAME_PATTERN);
 	}
 
 	/**
-	 * 写入文件
+	 * 下载文件名重新编码
 	 *
-	 * @param fileName
-	 * @param content
-	 * @param encoding
-	 * @param append
+	 * @param request  请求对象
+	 * @param fileName 文件名
+	 * @return 编码后的文件名
 	 */
-	public static void writeToFile(String fileName, String content, String encoding, boolean append) {
+	public static String setFileDownloadHeader(HttpServletRequest request, String fileName)
+		throws UnsupportedEncodingException {
+		final String agent = request.getHeader("USER-AGENT");
+		String filename = fileName;
+		if (agent.contains("MSIE")) {
+			// IE浏览器
+			filename = URLEncoder.encode(filename, "utf-8");
+			filename = filename.replace("+", " ");
+		} else if (agent.contains("Firefox")) {
+			// 火狐浏览器
+			filename = new String(fileName.getBytes(), "ISO8859-1");
+		} else if (agent.contains("Chrome")) {
+			// google浏览器
+			filename = URLEncoder.encode(filename, "utf-8");
+		} else {
+			// 其它浏览器
+			filename = URLEncoder.encode(filename, "utf-8");
+		}
+		return filename;
+	}
+
+	/**
+	 * 输出指定文件的byte数组
+	 *
+	 * @param filePath 文件路径
+	 * @param os       输出流
+	 * @return
+	 */
+	public static void writeBytes(String filePath, OutputStream os) throws IOException {
+		FileInputStream fis = null;
 		try {
-			FileUtils.write(new File(fileName), content, encoding, append);
-			log.debug("文件 " + fileName + " 写入成功!");
+			File file = new File(filePath);
+			if (!file.exists()) {
+				throw new FileNotFoundException(filePath);
+			}
+			fis = new FileInputStream(file);
+			byte[] b = new byte[1024];
+			int length;
+			while ((length = fis.read(b)) > 0) {
+				os.write(b, 0, length);
+			}
 		} catch (IOException e) {
-			log.error("{}", e);
+			throw e;
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
-
 
 }
