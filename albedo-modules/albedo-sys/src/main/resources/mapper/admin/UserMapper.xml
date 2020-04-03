@@ -62,9 +62,9 @@
 		<result column="description" property="description"/>
 		<result column="version" property="version"/>
 		<result column="del_flag" property="delFlag"/>
-		<result column="deptId" property="deptId"/>
-		<result column="parentDeptId" property="parentDeptId"/>
-		<result column="deptName" property="deptName"/>
+		<result column="dept_id" property="deptId"/>
+		<result column="parent_dept_id" property="parentDeptId"/>
+		<result column="dept_name" property="deptName"/>
 		<collection property="roleList" ofType="com.albedo.java.modules.sys.domain.Role">
 			<id column="role_id" property="id"/>
 			<result column="role_name" property="name"/>
@@ -80,38 +80,6 @@
 			<result column="role_del_flag" property="delFlag"/>
 		</collection>
 	</resultMap>
-
-	<sql id="userRoleSql">
-		a.id,
-		a.username,
-		a.`password`,
-		a.salt,
-		a.phone,
-		a.email,
-		a.avatar,
-		a.wx_open_id,
-		a.qq_open_id,
-		a.created_by,
-		a.created_date,
-		a.last_modified_by,
-		a.last_modified_date,
-		a.description,
-		a.version,
-		a.del_flag,
-		a.available AS available,
-		a.dept_id AS deptId,
-		r.id,
-		r.name,
-		r.code,
-		r.remark,
-		r.created_by AS role_created_by,
-		r.created_date AS role_created_date,
-		r.last_modified_by AS role_last_modified_by,
-		r.last_modified_date AS role_last_modified_date,
-		r.description AS role_description,
-		r.version AS role_version,
-		r.del_flag AS role_status
-	</sql>
 
 	<sql id="userRoleDeptSql">
 		a.id,
@@ -143,18 +111,19 @@
 		r.description AS role_description,
 		r.version AS role_version,
 		r.del_flag AS role_del_flag,
-		d.name AS deptName,
-		d.id AS deptId,
-		d.parent_id AS parentDeptId
+		d.name AS dept_name,
+		d.id AS dept_id,
+		d.parent_id AS parent_dept_id
     </sql>
 
 	<select id="getUserVoByUsername" resultMap="userVoResultMap">
 		SELECT
-		<include refid="userRoleSql"/>
+		<include refid="userRoleDeptSql"/>
 		FROM
 		sys_user AS a
 		LEFT JOIN sys_user_role AS ur ON ur.user_id = a.id
 		LEFT JOIN sys_role AS r ON r.id = ur.role_id
+		LEFT JOIN sys_dept AS d ON d.id = a.dept_id
 		WHERE a.username = #{username} and a.del_flag='0'
 	</select>
 

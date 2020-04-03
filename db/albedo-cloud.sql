@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 09/03/2020 21:46:19
+ Date: 03/04/2020 16:55:17
 */
 
 SET NAMES utf8mb4;
@@ -273,7 +273,7 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'DESKTOP-CHC8CQ91583761365556', 1583761577005, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'DESKTOP-CHC8CQ91585900041430', 1585904108704, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -342,9 +342,9 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1583761370000, -1, 5, 'PAUSED', 'CRON', 1583761365000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1583761365000, -1, 5, 'PAUSED', 'CRON', 1583761365000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1583761380000, -1, 5, 'PAUSED', 'CRON', 1583761365000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1585900050000, -1, 5, 'PAUSED', 'CRON', 1585900041000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1585900050000, -1, 5, 'PAUSED', 'CRON', 1585900041000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1585900060000, -1, 5, 'PAUSED', 'CRON', 1585900041000, 0, NULL, 2, '');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -540,7 +540,7 @@ CREATE TABLE `sys_job_log`  (
   `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '异常信息',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1330 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_log_operate
@@ -571,12 +571,7 @@ CREATE TABLE `sys_log_operate`  (
   INDEX `sys_log_create_by`(`created_by`) USING BTREE,
   INDEX `sys_log_request_uri`(`request_uri`) USING BTREE,
   INDEX `sys_log_create_date`(`created_date`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 252 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sys_log_operate
--- ----------------------------
-INSERT INTO `sys_log_operate` VALUES (251, '菜单管理', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', '/menu/e766dac5afed6075ba46d2a6360096d0', 'DELETE', '', '22', 1, 3, NULL, '1', '2020-03-09 21:38:31.584', NULL, '0');
+) ENGINE = InnoDB AUTO_INCREMENT = 258 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -734,7 +729,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', '管理员', 'ROLE_ADMIN', '管理员', '1', '1', '', '2017-10-29 15:45:51.000', '1', '2019-10-23 14:51:52.673', NULL, 61, '0');
-INSERT INTO `sys_role` VALUES ('2', 'ROLE_CQQ', 'ROLE_CQQ', 'ROLE_CQQ', '5', '1', '', '2018-11-11 19:42:26.000', '1', '2019-10-10 10:19:12.665', NULL, 17, '0');
+INSERT INTO `sys_role` VALUES ('2', 'ROLE_CQQ', 'ROLE_CQQ', 'ROLE_CQQ', '2', '1', '', '2018-11-11 19:42:26.000', '90da0206c39867a1b36ac36ced80c1a9', '2020-04-03 16:49:12.114', NULL, 22, '0');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -750,11 +745,11 @@ CREATE TABLE `sys_role_dept`  (
 -- ----------------------------
 -- Records of sys_role_dept
 -- ----------------------------
-INSERT INTO `sys_role_dept` VALUES ('1a3b679b597aede282027cbb6882e912', '2', '3');
-INSERT INTO `sys_role_dept` VALUES ('276263b5979c080bb43e4e64ccc654fc', '2', '4');
-INSERT INTO `sys_role_dept` VALUES ('356d7010d5966a71f563dfeb885cf5aa', '2', '5');
+INSERT INTO `sys_role_dept` VALUES ('1f22837ee7b6f7aacf0563cd5ed1fb8f', '2', '4');
+INSERT INTO `sys_role_dept` VALUES ('60ea8dc84a13664c1b8b26bc7af11158', '2', '1');
 INSERT INTO `sys_role_dept` VALUES ('7addd9aa594621c74007263800ac2b7b', '1', '8');
-INSERT INTO `sys_role_dept` VALUES ('df10620a03410a0eae3bc07c01dc7dc3', '2', '1');
+INSERT INTO `sys_role_dept` VALUES ('a5619c152b46b9d015bea34f7bde52fb', '2', '3');
+INSERT INTO `sys_role_dept` VALUES ('ef156f1e7751861a972c5e5f635901b3', '2', '5');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -830,12 +825,9 @@ INSERT INTO `sys_role_menu` VALUES ('1', 'e5ea38c1f97dee0043e78f3fb27b25d6');
 INSERT INTO `sys_role_menu` VALUES ('1', 'e710a66583fe0e324492462adb16014e');
 INSERT INTO `sys_role_menu` VALUES ('1', 'ec1ff71a4dd5318b6def9b2be47a95e1');
 INSERT INTO `sys_role_menu` VALUES ('1', 'ef2382c0cc2d99ee73444e684237a88a');
-INSERT INTO `sys_role_menu` VALUES ('2', '1000');
-INSERT INTO `sys_role_menu` VALUES ('2', '1100');
 INSERT INTO `sys_role_menu` VALUES ('2', '1101');
 INSERT INTO `sys_role_menu` VALUES ('2', '1102');
 INSERT INTO `sys_role_menu` VALUES ('2', '1103');
-INSERT INTO `sys_role_menu` VALUES ('2', '1200');
 INSERT INTO `sys_role_menu` VALUES ('2', '1201');
 INSERT INTO `sys_role_menu` VALUES ('2', '1202');
 INSERT INTO `sys_role_menu` VALUES ('2', '1203');
@@ -848,7 +840,8 @@ INSERT INTO `sys_role_menu` VALUES ('2', '1400');
 INSERT INTO `sys_role_menu` VALUES ('2', '1401');
 INSERT INTO `sys_role_menu` VALUES ('2', '1402');
 INSERT INTO `sys_role_menu` VALUES ('2', '1403');
-INSERT INTO `sys_role_menu` VALUES ('2', 'e5ea38c1f97dee0043e78f3fb27b25d6');
+INSERT INTO `sys_role_menu` VALUES ('2', '1a900c3f10ef5b0987e0a8ee4445316d');
+INSERT INTO `sys_role_menu` VALUES ('2', 'caaec41413c5713c6f290efe08c11415');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -882,9 +875,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$81JhU58/uM.JmWKiCAcxoOiSS///NT6rXbSRATa.UgGG8stlA1ABy', NULL, '17034642999', NULL, '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 07:15:18.000', '1', '2019-08-11 17:31:05.678', NULL, 9, '0');
-INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$81JhU58/uM.JmWKiCAcxoOiSS///NT6rXbSRATa.UgGG8stlA1ABy', NULL, '12343543432', '837158@qq.com', NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:32:17.000', '1', '2019-07-13 01:38:33.000', NULL, 19, '1');
-INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$NmGuhLe7ODgRC0cwHPa0IuJh94uFYGrAMCyndqMwX07s.CH18RmlS', NULL, NULL, NULL, NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:35:13.000', '1', '2019-10-06 17:03:21.025', NULL, 39, '0');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$81JhU58/uM.JmWKiCAcxoOiSS///NT6rXbSRATa.UgGG8stlA1ABy', NULL, '17034642999', NULL, '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 07:15:18.000', '1', '2020-03-19 15:49:46.160', NULL, 9, '0');
+INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$81JhU58/uM.JmWKiCAcxoOiSS///NT6rXbSRATa.UgGG8stlA1ABy', NULL, '12343543432', '837158@qq.com', NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:32:17.000', '1', '2020-03-19 15:49:47.956', NULL, 19, '0');
+INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$G2sntp9sArZVIxq3VjDkve3GLEfm3fZb9nJf5TwQrtvf09niORfri', NULL, NULL, NULL, NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:35:13.000', '1', '2020-04-03 15:54:40.694', NULL, 40, '0');
 
 -- ----------------------------
 -- Table structure for sys_user_online
@@ -924,7 +917,7 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '1');
-INSERT INTO `sys_user_role` VALUES ('90da0206c39867a1b36ac36ced80c1a9', '1');
+INSERT INTO `sys_user_role` VALUES ('90da0206c39867a1b36ac36ced80c1a9', '2');
 
 -- ----------------------------
 -- Table structure for test_book
@@ -980,76 +973,5 @@ CREATE TABLE `test_tree_book`  (
   `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '  测试树书' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for zipkin_annotations
--- ----------------------------
-DROP TABLE IF EXISTS `zipkin_annotations`;
-CREATE TABLE `zipkin_annotations`  (
-  `trace_id_high` bigint(20) NOT NULL DEFAULT 0 COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
-  `trace_id` bigint(20) NOT NULL COMMENT 'coincides with zipkin_spans.trace_id',
-  `span_id` bigint(20) NOT NULL COMMENT 'coincides with zipkin_spans.id',
-  `a_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'BinaryAnnotation.key or Annotation.value if type == -1',
-  `a_value` blob NULL COMMENT 'BinaryAnnotation.value(), which must be smaller than 64KB',
-  `a_type` int(11) NOT NULL COMMENT 'BinaryAnnotation.type() or -1 if Annotation',
-  `a_timestamp` bigint(20) NULL DEFAULT NULL COMMENT 'Used to implement TTL; Annotation.timestamp or zipkin_spans.timestamp',
-  `endpoint_ipv4` int(11) NULL DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
-  `endpoint_ipv6` binary(16) NULL DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null, or no IPv6 address',
-  `endpoint_port` smallint(6) NULL DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
-  `endpoint_service_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Null when Binary/Annotation.endpoint is null',
-  UNIQUE INDEX `trace_id_high`(`trace_id_high`, `trace_id`, `span_id`, `a_key`, `a_timestamp`) USING BTREE COMMENT 'Ignore insert on duplicate',
-  UNIQUE INDEX `trace_id_high_4`(`trace_id_high`, `trace_id`, `span_id`, `a_key`, `a_timestamp`) USING BTREE COMMENT 'Ignore insert on duplicate',
-  INDEX `trace_id_high_2`(`trace_id_high`, `trace_id`, `span_id`) USING BTREE COMMENT 'for joining with zipkin_spans',
-  INDEX `trace_id_high_3`(`trace_id_high`, `trace_id`) USING BTREE COMMENT 'for getTraces/ByIds',
-  INDEX `endpoint_service_name`(`endpoint_service_name`) USING BTREE COMMENT 'for getTraces and getServiceNames',
-  INDEX `a_type`(`a_type`) USING BTREE COMMENT 'for getTraces and autocomplete values',
-  INDEX `a_key`(`a_key`) USING BTREE COMMENT 'for getTraces and autocomplete values',
-  INDEX `trace_id`(`trace_id`, `span_id`, `a_key`) USING BTREE COMMENT 'for dependencies job',
-  INDEX `trace_id_high_5`(`trace_id_high`, `trace_id`, `span_id`) USING BTREE COMMENT 'for joining with zipkin_spans',
-  INDEX `trace_id_high_6`(`trace_id_high`, `trace_id`) USING BTREE COMMENT 'for getTraces/ByIds',
-  INDEX `endpoint_service_name_2`(`endpoint_service_name`) USING BTREE COMMENT 'for getTraces and getServiceNames',
-  INDEX `a_type_2`(`a_type`) USING BTREE COMMENT 'for getTraces and autocomplete values',
-  INDEX `a_key_2`(`a_key`) USING BTREE COMMENT 'for getTraces and autocomplete values',
-  INDEX `trace_id_2`(`trace_id`, `span_id`, `a_key`) USING BTREE COMMENT 'for dependencies job'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compressed;
-
--- ----------------------------
--- Table structure for zipkin_dependencies
--- ----------------------------
-DROP TABLE IF EXISTS `zipkin_dependencies`;
-CREATE TABLE `zipkin_dependencies`  (
-  `day` date NOT NULL,
-  `parent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `child` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `call_count` bigint(20) NULL DEFAULT NULL,
-  `error_count` bigint(20) NULL DEFAULT NULL,
-  UNIQUE INDEX `day`(`day`, `parent`, `child`) USING BTREE,
-  UNIQUE INDEX `day_2`(`day`, `parent`, `child`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compressed;
-
--- ----------------------------
--- Table structure for zipkin_spans
--- ----------------------------
-DROP TABLE IF EXISTS `zipkin_spans`;
-CREATE TABLE `zipkin_spans`  (
-  `trace_id_high` bigint(20) NOT NULL DEFAULT 0 COMMENT 'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit',
-  `trace_id` bigint(20) NOT NULL,
-  `id` bigint(20) NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `parent_id` bigint(20) NULL DEFAULT NULL,
-  `debug` bit(1) NULL DEFAULT NULL,
-  `start_ts` bigint(20) NULL DEFAULT NULL COMMENT 'Span.timestamp(): epoch micros used for endTs query and to implement TTL',
-  `duration` bigint(20) NULL DEFAULT NULL COMMENT 'Span.duration(): micros used for minDuration and maxDuration query',
-  UNIQUE INDEX `trace_id_high`(`trace_id_high`, `trace_id`, `id`) USING BTREE COMMENT 'ignore insert on duplicate',
-  UNIQUE INDEX `trace_id_high_4`(`trace_id_high`, `trace_id`, `id`) USING BTREE COMMENT 'ignore insert on duplicate',
-  INDEX `trace_id_high_2`(`trace_id_high`, `trace_id`, `id`) USING BTREE COMMENT 'for joining with zipkin_annotations',
-  INDEX `trace_id_high_3`(`trace_id_high`, `trace_id`) USING BTREE COMMENT 'for getTracesByIds',
-  INDEX `name`(`name`) USING BTREE COMMENT 'for getTraces and getSpanNames',
-  INDEX `start_ts`(`start_ts`) USING BTREE COMMENT 'for getTraces ordering and range',
-  INDEX `trace_id_high_5`(`trace_id_high`, `trace_id`, `id`) USING BTREE COMMENT 'for joining with zipkin_annotations',
-  INDEX `trace_id_high_6`(`trace_id_high`, `trace_id`) USING BTREE COMMENT 'for getTracesByIds',
-  INDEX `name_2`(`name`) USING BTREE COMMENT 'for getTraces and getSpanNames',
-  INDEX `start_ts_2`(`start_ts`) USING BTREE COMMENT 'for getTraces ordering and range'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compressed;
 
 SET FOREIGN_KEY_CHECKS = 1;
