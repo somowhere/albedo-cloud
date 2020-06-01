@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
  * <p>
  * Properties are configured in the application.yml file.
  * </p>
+ * @author somewhere
  */
 @Configuration
 @ConfigurationProperties(prefix = "application", ignoreInvalidFields = true)

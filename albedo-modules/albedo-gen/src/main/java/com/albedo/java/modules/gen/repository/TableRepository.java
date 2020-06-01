@@ -2,8 +2,8 @@ package com.albedo.java.modules.gen.repository;
 
 import com.albedo.java.common.persistence.repository.BaseRepository;
 import com.albedo.java.modules.gen.domain.Table;
-import com.albedo.java.modules.gen.domain.vo.TableColumnVo;
-import com.albedo.java.modules.gen.domain.vo.TableDataVo;
+import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
+import com.albedo.java.modules.gen.domain.dto.TableDto;
 import com.albedo.java.modules.gen.domain.vo.TableQuery;
 import org.springframework.data.repository.query.Param;
 
@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Spring Data JPA repository for the Authority domain.
+ *
+ * @author somewhere
  */
 public interface TableRepository extends BaseRepository<Table> {
 	/**
@@ -24,18 +26,17 @@ public interface TableRepository extends BaseRepository<Table> {
 	/**
 	 * 获取数据表字段
 	 *
-	 * @param tableDataVo
+	 * @param tableDto
 	 * @return
 	 */
-	List<TableColumnVo> findTableColumnList(@Param("tableDataVo") TableDataVo tableDataVo);
+	List<TableColumnDto> findTableColumnList(@Param("tableDto") TableDto tableDto);
 
 	/**
 	 * 获取数据表主键
 	 *
-	 * @param tableDataVo
+	 * @param tableDto
 	 * @return
 	 */
-	List<String> findTablePK(@Param("tableDataVo") TableDataVo tableDataVo);
+	List<String> findTablePk(@Param("tableDto") TableDto tableDto);
 
-	List<Table> findAllByParentTable(String id);
 }

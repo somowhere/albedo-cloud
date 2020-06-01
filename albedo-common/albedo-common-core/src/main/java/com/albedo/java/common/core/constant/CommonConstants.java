@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,15 +17,10 @@
 package com.albedo.java.common.core.constant;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2019/2/1
  */
 public interface CommonConstants {
-
-	/**
-	 * 菜单
-	 */
-	String MENU = "0";
 
 	/**
 	 * 编码
@@ -64,11 +59,6 @@ public interface CommonConstants {
 	 * 失败标记
 	 */
 	String STR_FAIL = "0";
-	/**
-	 * 验证码前缀
-	 */
-	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY_";
-
 
 	/**
 	 *
@@ -77,17 +67,17 @@ public interface CommonConstants {
 
 	String SPRING_PROFILE_TEST = "test";
 	String SPRING_PROFILE_DEVELOPMENT = "dev";
-	String SPRING_PROFILE_APP = "prod";
+	String SPRING_PROFILE_APP = "app";
 	String SPRING_PROFILE_PRODUCTION = "prod";
+	String SPRING_PROFILE_JWT = "jwt";
+	String SPRING_PROFILE_SWAGGER = "swagger";
 
+	Integer ZERO = 0;
 
-	// 对/错
 	String SYSTEM_TRUE = "true";
 	String SYSTEM_FALSE = "false";
-	// 是/否
 	Integer YES = 1;
-	Integer NO = 0;
-	// 是/否
+	Integer NO = ZERO;
 	String STR_YES = "1";
 	String STR_NO = "0";
 
@@ -147,4 +137,73 @@ public interface CommonConstants {
 
 	String MYSQL_QUOTE = "`";
 	String ORACLE_QUOTE = "\"";
+
+
+	/**
+	 * 默认生成图形验证码宽度
+	 */
+	String DEFAULT_IMAGE_WIDTH = "100";
+
+	/**
+	 * 默认生成图像验证码高度
+	 */
+	String DEFAULT_IMAGE_HEIGHT = "40";
+
+	/**
+	 * 默认生成图形验证码长度
+	 */
+	String DEFAULT_IMAGE_LENGTH = "4";
+
+	/**
+	 * 默认生成图形验证码过期时间
+	 */
+	int DEFAULT_IMAGE_EXPIRE = 60;
+	/**
+	 * 边框颜色，合法值： r,g,b (and optional alpha) 或者 white,black,blue.
+	 */
+	String DEFAULT_COLOR_FONT = "black";
+
+	/**
+	 * 图片边框
+	 */
+	String DEFAULT_IMAGE_BORDER = "no";
+	/**
+	 * 默认图片间隔
+	 */
+	String DEFAULT_CHAR_SPACE = "5";
+
+	/**
+	 * 默认保存code的前缀
+	 */
+	String DEFAULT_CODE_KEY = "DEFAULT_CODE_KEY_";
+
+	/**
+	 * 通过旧邮箱重置邮箱
+	 */
+	String EMAIL_RESET_EMAIL_CODE = "EMAIL_RESET_EMAIL_CODE_";
+	/**
+	 * 通过邮箱重置密码
+	 */
+	String EMAIL_RESET_PWD_CODE = "EMAIL_RESET_PWD_CODE_";
+
+
+	/**
+	 * 默认保存登录的前缀
+	 */
+	String DEFAULT_LOGIN_KEY = "DEFAULT_LOGIN_KEY";
+	/**
+	 * 默认保存登录的前缀
+	 */
+	String DEFAULT_LOGIN_JWT_KEY = "DEFAULT_LOGIN_JWT_KEY";
+	String DEFAULT_LOGIN_JWT_MAP_KEY = "DEFAULT_LOGIN_JWT_MAP_KEY";
+	/**
+	 * 默认保存24小时后登录的前缀
+	 */
+	String DEFAULT_LOGIN_AFTER_24_KEY = "DEFAULT_LOGIN_AFTER_24_KEY";
+	/**
+	 * 验证码文字大小
+	 */
+	String DEFAULT_IMAGE_FONT_SIZE = "30";
+
+	String ANONYMOUS_USER = "anonymoususer";
 }

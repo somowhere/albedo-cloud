@@ -17,7 +17,7 @@
 package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.log.enums.BusinessType;
@@ -52,8 +52,8 @@ public class OauthClientDetailResource {
 	 */
 	@GetMapping(CommonConstants.URL_ID_REGEX)
 	@PreAuthorize("@pms.hasPermission('sys_client_view')")
-	public R getById(@PathVariable String id) {
-		return new R<>(oauthClientDetailService.getById(id));
+	public Result getById(@PathVariable String id) {
+		return Result.buildOkData(oauthClientDetailService.getById(id));
 	}
 
 
@@ -65,8 +65,8 @@ public class OauthClientDetailResource {
 	 */
 	@GetMapping("/")
 	@PreAuthorize("@pms.hasPermission('sys_client_view')")
-	public R<IPage> getPage(PageModel pm) {
-		return R.buildOkData(oauthClientDetailService.findPage(pm));
+	public Result<IPage> getPage(PageModel pm) {
+		return Result.buildOkData(oauthClientDetailService.findPage(pm));
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class OauthClientDetailResource {
 	@Log(value = "终端管理", businessType = BusinessType.EDIT)
 	@PostMapping("/")
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
-	public R save(@Valid @RequestBody OauthClientDetail oauthClientDetail) {
-		return new R<>(oauthClientDetailService.saveOrUpdate(oauthClientDetail));
+	public Result save(@Valid @RequestBody OauthClientDetail oauthClientDetail) {
+		return Result.buildByFlag(oauthClientDetailService.saveOrUpdate(oauthClientDetail));
 	}
 
 	/**
@@ -91,8 +91,8 @@ public class OauthClientDetailResource {
 	@Log(value = "终端管理", businessType = BusinessType.DELETE)
 	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
 	@PreAuthorize("@pms.hasPermission('sys_client_del')")
-	public R removeById(@PathVariable String id) {
-		return new R<>(oauthClientDetailService.removeClientDetailsById(id));
+	public Result removeById(@PathVariable String id) {
+		return Result.buildByFlag(oauthClientDetailService.removeClientDetailsById(id));
 	}
 
 }

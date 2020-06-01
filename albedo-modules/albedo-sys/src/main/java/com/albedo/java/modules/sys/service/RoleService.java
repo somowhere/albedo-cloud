@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 package com.albedo.java.modules.sys.service;
 
-import com.albedo.java.common.persistence.service.DataVoService;
+import com.albedo.java.common.persistence.service.DataService;
 import com.albedo.java.modules.sys.domain.Role;
-import com.albedo.java.modules.sys.domain.vo.RoleDataVo;
-import com.albedo.java.modules.sys.repository.RoleRepository;
+import com.albedo.java.modules.sys.domain.dto.RoleDto;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
  * 服务类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
-public interface RoleService extends DataVoService<RoleRepository, Role, String, RoleDataVo> {
+public interface RoleService extends DataService<Role, RoleDto, String> {
 
 	/**
 	 * 通过用户ID，查询角色信息
@@ -39,9 +39,17 @@ public interface RoleService extends DataVoService<RoleRepository, Role, String,
 	 * @param userId
 	 * @return
 	 */
-	List<Role> findRolesByUserIdList(String userId);
+	List<Role> findListByUserId(String userId);
 
-	List<String> findRoleDeptIdList(String id);
+	/**
+	 * findDeptIdsByRoleId
+	 *
+	 * @param id
+	 * @return java.util.List<java.lang.String>
+	 * @author somewhere
+	 * @updateTime 2020/5/31 17:34
+	 */
+	List<String> findDeptIdsByRoleId(String id);
 
 	/**
 	 * 通过角色ID，删除角色
@@ -49,7 +57,41 @@ public interface RoleService extends DataVoService<RoleRepository, Role, String,
 	 * @param ids
 	 * @return
 	 */
-	Boolean removeRoleByIds(List<String> ids);
+	Boolean removeRoleByIds(Set<String> ids);
 
-	void lockOrUnLock(List<String> idList);
+	/**
+	 * lockOrUnLock
+	 *
+	 * @param idList
+	 * @author somewhere
+	 * @updateTime 2020/5/31 17:34
+	 */
+	void lockOrUnLock(Set<String> idList);
+
+	/**
+	 * findLevelByUserId
+	 *
+	 * @param userId
+	 * @return java.lang.Integer
+	 * @author somewhere
+	 * @updateTime 2020/5/31 17:34
+	 */
+	Integer findLevelByUserId(String userId);
+
+/**
+ * findListByDeptId
+ * @author somewhere
+ * @param userId
+ * @updateTime 2020/6/1 11:20
+ * @return java.util.List<com.albedo.java.modules.sys.domain.Role>
+ */
+	List<Role> findListByDeptId(String userId);
+	/**
+	 * findListByMenuId
+	 * @author somewhere
+	 * @param userId
+	 * @updateTime 2020/6/1 11:20
+	 * @return java.util.List<com.albedo.java.modules.sys.domain.Role>
+	 */
+	List<Role> findListByMenuId(String userId);
 }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>resource</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/web/${subModuleName}</filePath>
+	<fileName>${ClassName}Resource.java</fileName>
+	<content><![CDATA[
+/**
+ * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
+ */
+package ${packageName}.${moduleName}.web<#if subModuleName != "">.${subModuleName}</#if>;
+
+
+import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.data.util.QueryWrapperUtil;
+import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.enums.BusinessType;
+import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.common.core.util.Result;
+import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dto;
+import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}QueryCriteria;
+import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+
+import javax.validation.Valid;
+import java.util.Set;
+
+/**
+ * ${functionName}Controller ${functionNameSimple}
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@RestController
+@RequestMapping(value = "/${urlPrefix}")
+@AllArgsConstructor
+public class ${ClassName}Resource extends BaseResource {
+
+	private final ${ClassName}Service service;
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(CommonConstants.URL_ID_REGEX)
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_view')")
+	public Result get(@PathVariable String id) {
+		log.debug("REST request to get Entity : {}", id);
+		return  Result.buildOkData(service.getOneDto(id));
+	}
+	/**
+	 * GET / : get all ${className}.
+	 *
+	 * @param pm the pagination information
+	 * @return the Result with status 200 (OK) and with body all ${className}
+	 */
+
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_view')")
+	@GetMapping
+	@Log(value = "${functionName}查看")
+	public Result getPage(PageModel pm, ${ClassName}QueryCriteria ${className}QueryCriteria) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, ${className}QueryCriteria);
+		return Result.buildOkData(service.page(pm, wrapper));
+	}
+
+	/**
+	 * POST / : Save a ${className}Dto.
+	 *
+	 * @param ${className}Dto the HTTP ${className}
+	 */
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_edit')")
+	@Log(value = "${functionName}编辑")
+	@PostMapping
+	public Result save(@Valid @RequestBody ${ClassName}Dto ${className}Dto) {
+		log.debug("REST request to save ${ClassName}Dto : {}", ${className}Dto);
+		service.saveOrUpdate(${className}Dto);
+		return Result.buildOk("保存${functionNameSimple}成功");
+
+	}
+
+	/**
+	 * DELETE //:ids : delete the "ids" ${ClassName}.
+	 *
+	 * @param ids the id of the ${className} to delete
+	 * @return the Result with status 200 (OK)
+	 */
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_del')")
+	@Log(value = "${functionName}删除")
+	@DeleteMapping
+	public Result delete(@RequestBody Set<String> ids) {
+		log.debug("REST request to delete ${ClassName}: {}", ids);
+		service.removeByIds(ids);
+		return Result.buildOk("删除${functionNameSimple}成功");
+	}
+}]]>
+	</content>
+</template>

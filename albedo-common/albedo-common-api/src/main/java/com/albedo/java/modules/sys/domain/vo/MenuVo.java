@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,19 +16,24 @@
 
 package com.albedo.java.modules.sys.domain.vo;
 
-import com.albedo.java.common.core.vo.TreeEntityVo;
+import com.albedo.java.common.core.annotation.DictType;
+import com.albedo.java.common.core.constant.DictNameConstants;
+import com.albedo.java.common.core.vo.TreeVo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 
 /**
  * <p>
  * 菜单权限表
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Data
-public class MenuVo extends TreeEntityVo {
+@EqualsAndHashCode(callSuper = true)
+public class MenuVo extends TreeVo<MenuVo> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,30 +56,17 @@ public class MenuVo extends TreeEntityVo {
 	/**
 	 * 菜单类型 （0菜单 1按钮）
 	 */
+	@DictType(DictNameConstants.SYS_MENU_TYPE)
 	private String type;
 	/**
-	 * 是否缓冲
+	 * 是否隐藏  1是 0否
 	 */
-	private String keepAlive;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer hidden;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer cache;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer iframe;
 
 
-	@Override
-	public int hashCode() {
-		return getId().hashCode();
-	}
-
-	/**
-	 * menuId 相同则相同
-	 *
-	 * @param obj
-	 * @return
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof MenuVo) {
-			String targetMenuId = ((MenuVo) obj).getId();
-			return getId().equals(targetMenuId);
-		}
-		return super.equals(obj);
-	}
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,23 +16,38 @@
 
 package com.albedo.java.common.core.vo;
 
+import com.albedo.java.common.core.util.tree.TreeNodeAware;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2017年11月9日23:33:45
  */
 @Data
-public class TreeNode<T> {
+public class TreeNode<T> implements TreeNodeAware<T>, Serializable {
 	protected String id;
 	protected String parentId;
 	protected List<T> children = new ArrayList<T>();
 	private String label;
 
-	public void add(T node) {
-		children.add(node);
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		return Objects.equals(id, ((TreeNode) o).id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 }

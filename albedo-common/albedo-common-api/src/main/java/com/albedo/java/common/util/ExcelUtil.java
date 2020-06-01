@@ -1,6 +1,9 @@
 package com.albedo.java.common.util;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.net.URLEncoder;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.albedo.java.common.core.annotation.ExcelField;
 import com.albedo.java.common.core.annotation.ExcelField.ColumnType;
 import com.albedo.java.common.core.annotation.ExcelField.Type;
@@ -9,7 +12,6 @@ import com.albedo.java.common.core.config.ApplicationConfig;
 import com.albedo.java.common.core.exception.RuntimeMsgException;
 import com.albedo.java.common.core.util.ClassUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
-import com.albedo.java.common.core.util.R;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.modules.sys.util.DictUtil;
@@ -22,7 +24,11 @@ import org.apache.poi.xssf.usermodel.XSSFDataValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -38,7 +44,7 @@ public class ExcelUtil<T> {
 	/**
 	 * Excel sheet最大行数，默认65536
 	 */
-	public static final int sheetSize = 65536;
+	public static final int SHEET_SIZE = 65536;
 	private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
 	private static Map<String, Object> dataDictMap = Maps.newHashMap();
 	/**
@@ -191,7 +197,7 @@ public class ExcelUtil<T> {
 
 		if (rows > 0) {
 			// 定义一个map用于存放excel列的序号和field.
-			Map<String, Integer> cellMap = new HashMap<String, Integer>();
+			Map<String, Integer> cellMap = new HashMap<>(32);
 			// 获取表头
 			Row heard = sheet.getRow(0);
 			for (int i = 0; i < heard.getPhysicalNumberOfCells(); i++) {
@@ -206,11 +212,12 @@ public class ExcelUtil<T> {
 			// 有数据时才处理 得到类的所有field.
 			Field[] allFields = clazz.getDeclaredFields();
 			// 定义一个map用于存放列的序号和field.
-			Map<Integer, Field> fieldsMap = new HashMap<Integer, Field>();
+			Map<Integer, Field> fieldsMap = new HashMap<Integer, Field>(32);
 			for (int col = 0; col < allFields.length; col++) {
 				Field field = allFields[col];
 				ExcelField attr = field.getAnnotation(ExcelField.class);
-				if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
+				boolean isType = attr != null && (attr.type() == Type.ALL || attr.type() == type);
+				if (isType) {
 					// 设置类的私有字段属性可访问.
 					field.setAccessible(true);
 					Integer column = cellMap.get(attr.title());
@@ -260,7 +267,7 @@ public class ExcelUtil<T> {
 						String readConverterExp = attr.readConverterExp();
 						String dictType = attr.dictType();
 						if (StringUtil.isNotEmpty(attr.targetAttr())) {
-							propertyName = field.getName() + "." + attr.targetAttr();
+							propertyName = field.getName() + StringUtil.DOT + attr.targetAttr();
 						} else if (StringUtil.isNotEmpty(dictType)) {
 
 							val = getDataDictValue(dictType, val);
@@ -284,9 +291,9 @@ public class ExcelUtil<T> {
 	 * @param sheetName 工作表的名称
 	 * @return 结果
 	 */
-	public R exportExcel(List<T> list, String sheetName) {
+	public void exportExcel(List<T> list, String sheetName, HttpServletResponse response) {
 		this.init(list, sheetName, Type.EXPORT);
-		return exportExcel();
+		exportExcel(response);
 	}
 
 	/**
@@ -295,9 +302,9 @@ public class ExcelUtil<T> {
 	 * @param sheetName 工作表的名称
 	 * @return 结果
 	 */
-	public R importTemplateExcel(String sheetName) {
+	public void importTemplateExcel(String sheetName, HttpServletResponse response) {
 		this.init(null, sheetName, Type.IMPORT);
-		return exportExcel();
+		exportExcel(response);
 	}
 
 	/**
@@ -305,11 +312,16 @@ public class ExcelUtil<T> {
 	 *
 	 * @return 结果
 	 */
-	public R exportExcel() {
-		OutputStream out = null;
+	public void exportExcel(HttpServletResponse response) {
+		ServletOutputStream out = null;
+		String filename = encodingFilename(sheetName);
+		response.setCharacterEncoding(CharsetUtil.UTF_8);
+		//response为HttpServletResponse对象
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+		response.setHeader("Content-Disposition", "attachment;filename=" + filename);
 		try {
 			// 取出一共有多少个sheet.
-			double sheetNo = Math.ceil(list.size() / sheetSize);
+			double sheetNo = Math.ceil(list.size() / SHEET_SIZE);
 			for (int index = 0; index <= sheetNo; index++) {
 				createSheet(sheetNo, index);
 
@@ -325,10 +337,8 @@ public class ExcelUtil<T> {
 					fillExcelData(index, row);
 				}
 			}
-			String filename = encodingFilename(sheetName);
-			out = new FileOutputStream(getAbsoluteFile(filename));
+			out = response.getOutputStream();
 			wb.write(out);
-			return R.buildOkData(filename);
 		} catch (Exception e) {
 			log.error("导出Excel异常{}", e.getMessage());
 			throw new RuntimeMsgException("导出Excel失败，请联系网站管理员！");
@@ -357,12 +367,12 @@ public class ExcelUtil<T> {
 	 * @param row   单元格行
 	 */
 	public void fillExcelData(int index, Row row) {
-		int startNo = index * sheetSize;
-		int endNo = Math.min(startNo + sheetSize, list.size());
+		int startNo = index * SHEET_SIZE;
+		int endNo = Math.min(startNo + SHEET_SIZE, list.size());
 		for (int i = startNo; i < endNo; i++) {
 			row = sheet.createRow(i + 1 - startNo);
 			// 得到导出对象.
-			T vo = (T) list.get(i);
+			T vo = list.get(i);
 			int column = 0;
 			for (Object[] os : fields) {
 				Field field = (Field) os[0];
@@ -382,7 +392,7 @@ public class ExcelUtil<T> {
 	 */
 	private Map<String, CellStyle> createStyles(Workbook wb) {
 		// 写入各条记录,每条记录对应excel表中的一行
-		Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+		Map<String, CellStyle> styles = new HashMap<String, CellStyle>(12);
 		CellStyle style = wb.createCellStyle();
 		style.setAlignment(HorizontalAlignment.CENTER);
 		style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -461,12 +471,12 @@ public class ExcelUtil<T> {
 		// 如果设置了提示信息则鼠标放上去提示.
 		if (StringUtil.isNotEmpty(attr.prompt())) {
 			// 这里默认设了2-101列提示.
-			setXSSFPrompt(sheet, "", attr.prompt(), 1, 100, column, column);
+			setXssfPrompt(sheet, "", attr.prompt(), 1, 100, column, column);
 		}
 		// 如果设置了combo属性则本列只能选择不能输入
 		if (attr.combo().length > 0) {
 			// 这里默认设了2-101列只能选择不能输入.
-			setXSSFValidation(sheet, attr.combo(), 1, 100, column, column);
+			setXssfValidation(sheet, attr.combo(), 1, 100, column, column);
 		}
 	}
 
@@ -489,7 +499,8 @@ public class ExcelUtil<T> {
 				String dateFormat = attr.dateFormat();
 				String readConverterExp = attr.readConverterExp();
 				String dictType = attr.dictType();
-				if (StringUtil.isNotEmpty(dateFormat) && ObjectUtil.isNotNull(value)) {
+				boolean isDate = StringUtil.isNotEmpty(dateFormat) && ObjectUtil.isNotNull(value) && (value instanceof Date || value instanceof java.sql.Date);
+				if (isDate) {
 					cell.setCellValue(com.albedo.java.common.core.util.DateUtil.format((Date) value, dateFormat));
 				} else if (StringUtil.isNotEmpty(dictType) && ObjectUtil.isNotNull(value)) {
 					cell.setCellValue(getDataDictValue(dictType, value));
@@ -517,7 +528,7 @@ public class ExcelUtil<T> {
 	 * @param firstCol      开始列
 	 * @param endCol        结束列
 	 */
-	public void setXSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
+	public void setXssfPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
 							  int firstCol, int endCol) {
 		DataValidationHelper helper = sheet.getDataValidationHelper();
 		DataValidationConstraint constraint = helper.createCustomConstraint("DD1");
@@ -539,7 +550,7 @@ public class ExcelUtil<T> {
 	 * @param endCol   结束列
 	 * @return 设置好的sheet.
 	 */
-	public void setXSSFValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol, int endCol) {
+	public void setXssfValidation(Sheet sheet, String[] textlist, int firstRow, int endRow, int firstCol, int endCol) {
 		DataValidationHelper helper = sheet.getDataValidationHelper();
 		// 加载下拉列表内容
 		DataValidationConstraint constraint = helper.createExplicitListConstraint(textlist);
@@ -562,7 +573,7 @@ public class ExcelUtil<T> {
 	 * 编码文件名
 	 */
 	public String encodingFilename(String filename) {
-		filename = UUID.randomUUID().toString() + "_" + filename + ".xlsx";
+		filename = UUID.randomUUID().toString() + "_" + URLEncoder.createDefault().encode(filename, CharsetUtil.CHARSET_UTF_8) + ".xlsx";
 		return filename;
 	}
 
@@ -590,10 +601,13 @@ public class ExcelUtil<T> {
 	 * @throws Exception
 	 */
 	private Object getTargetValue(T vo, Field field, ExcelField excelField) throws Exception {
-		Object o = field.get(vo);
+		Object o = ReflectUtil.getFieldValue(vo, field);
+		if (ObjectUtil.isEmpty(o)) {
+			o = ClassUtil.invokeGetter(vo, field.getName());
+		}
 		if (StringUtil.isNotEmpty(excelField.targetAttr())) {
 			String target = excelField.targetAttr();
-			if (target.indexOf(".") > -1) {
+			if (target.indexOf(StringUtil.DOT) > -1) {
 				String[] targets = target.split("[.]");
 				for (String name : targets) {
 					o = getValue(o, name);
@@ -652,7 +666,8 @@ public class ExcelUtil<T> {
 	 * 放到字段集合中
 	 */
 	private void putToField(Field field, ExcelField attr) {
-		if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
+		boolean isType = attr != null && (attr.type() == Type.ALL || attr.type() == type);
+		if (isType) {
 			this.fields.add(new Object[]{field, attr});
 		}
 	}
@@ -699,7 +714,8 @@ public class ExcelUtil<T> {
 				if (cell.getCellTypeEnum() == CellType.NUMERIC || cell.getCellTypeEnum() == CellType.FORMULA) {
 					val = cell.getNumericCellValue();
 					if (HSSFDateUtil.isCellDateFormatted(cell)) {
-						val = DateUtil.getJavaDate((Double) val); // POI Excel 日期格式转换
+						// POI Excel 日期格式转换
+						val = DateUtil.getJavaDate((Double) val);
 					} else {
 						if ((Double) val % 1 > 0) {
 							val = new DecimalFormat("0.00").format(val);

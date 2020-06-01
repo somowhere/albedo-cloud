@@ -1,46 +1,86 @@
 package com.albedo.java.modules.gen.service;
 
-import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.core.vo.QueryCondition;
-import com.albedo.java.common.persistence.service.DataVoService;
+import com.albedo.java.common.persistence.service.DataService;
 import com.albedo.java.modules.gen.domain.Table;
-import com.albedo.java.modules.gen.domain.vo.TableColumnVo;
-import com.albedo.java.modules.gen.domain.vo.TableDataVo;
-import com.albedo.java.modules.gen.domain.vo.TableFormVo;
-import com.albedo.java.modules.gen.repository.TableRepository;
+import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
+import com.albedo.java.modules.gen.domain.dto.TableDto;
+import com.albedo.java.modules.gen.domain.dto.TableFromDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public interface TableService extends DataVoService<TableRepository, Table, String, TableDataVo> {
-	@Transactional(readOnly = true)
-	PageModel<Table> findPage(PageModel<Table> pm, List<QueryCondition> authQueryConditions);
+/**
+ * @author somewhere
+ */
+public interface TableService extends DataService<Table, TableDto, String> {
 
-	void save(TableDataVo tableDataVo);
 
-	void copyVoToBean(TableDataVo form, Table table);
-
-	void copyBeanToVo(Table table, TableDataVo result);
-
+	/**
+	 * 判断表名是否存在
+	 *
+	 * @param tableName
+	 * @return
+	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	boolean checkTableName(String tableName);
 
-	TableDataVo getTableFormDb(TableDataVo tableDataVo);
+	/**
+	 * 获取物理表信息
+	 *
+	 * @param tableDto
+	 * @return
+	 */
+	TableDto getTableFormDb(TableDto tableDto);
 
+	/**
+	 * 获取主键
+	 *
+	 * @param tableDto
+	 * @return
+	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	List<String> findTablePK(TableDataVo tableDataVo);
+	List<String> findTablePk(TableDto tableDto);
 
+	/**
+	 * 获取表列信息
+	 *
+	 * @param tableDto
+	 * @return
+	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	List<TableColumnVo> findTableColumnList(TableDataVo tableDataVo);
+	List<TableColumnDto> findTableColumnList(TableDto tableDto);
 
+	/**
+	 * 读取数据库表集合信息
+	 *
+	 * @param tableDto
+	 * @return
+	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	List<TableDataVo> findTableListFormDb(TableDataVo tableDataVo);
+	List<TableDto> findTableListFormDb(TableDto tableDto);
 
+	/**
+	 * 获取编辑所需要得表对象信息
+	 *
+	 * @param tableFromDto
+	 * @return
+	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	Map<String, Object> findFormData(TableFormVo tableFormVo);
+	Map<String, Object> findFormData(TableFromDto tableFromDto);
 
-	void delete(List<String> ids, String currentAuditor);
+	/**
+	 * 批量删除
+	 *
+	 * @param ids
+	 */
+	void delete(Set<String> ids);
 
-	List<Table> findAllByParentTable(String id);
+	/**
+	 * 同步对于表在数据库中表列信息
+	 *
+	 * @param id
+	 */
+	void refreshColumn(String id);
 }

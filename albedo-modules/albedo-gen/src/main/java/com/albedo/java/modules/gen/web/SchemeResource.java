@@ -1,107 +1,107 @@
 package com.albedo.java.modules.gen.web;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.CharUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.ResultBuilder;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
-import com.albedo.java.common.log.enums.BusinessType;
 import com.albedo.java.common.security.util.SecurityUtil;
-import com.albedo.java.common.web.resource.DataVoResource;
-import com.albedo.java.modules.gen.domain.vo.GenCodeVo;
-import com.albedo.java.modules.gen.domain.vo.SchemeDataVo;
-import com.albedo.java.modules.gen.domain.vo.SchemeGenDataVo;
+import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.modules.gen.domain.dto.*;
 import com.albedo.java.modules.gen.service.SchemeService;
-import com.google.common.collect.Lists;
-import org.springframework.http.ResponseEntity;
+import com.albedo.java.modules.gen.service.TableService;
+import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
+import com.albedo.java.modules.sys.dubbo.RemoteMenuService;
+import com.mysql.cj.protocol.ResultBuilder;
+import lombok.AllArgsConstructor;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 生成方案Controller
  *
- * @author somowhere
+ * @author somewhere
  */
-@Controller
-@RequestMapping(value = "/scheme")
-public class SchemeResource extends DataVoResource<SchemeService, SchemeDataVo> {
+@RestController
+@RequestMapping("/scheme")
+@AllArgsConstructor
+public class SchemeResource extends BaseResource {
 
-
-	public SchemeResource(SchemeService schemeService) {
-		super(schemeService);
-	}
+	private final SchemeService schemeService;
 
 	/**
 	 * @param pm
 	 * @return
 	 */
-	@GetMapping(value = "/")
+	@GetMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_view')")
-	public ResponseEntity getPage(PageModel pm) {
-		return ResultBuilder.buildOk(service.getSchemeVoPage(pm));
+	@Log(value = "生成方案查看")
+	public Result getPage(PageModel pm, SchemeQueryCriteria schemeQueryCriteria) {
+		return Result.buildOkData(schemeService.getSchemeVoPage(pm, schemeQueryCriteria));
 	}
 
 	@GetMapping(value = "/preview" + CommonConstants.URL_ID_REGEX)
 	@PreAuthorize("@pms.hasPermission('gen_scheme_view')")
-	public ResponseEntity preview(@PathVariable String id) {
+	public Result preview(@PathVariable String id) {
 		String username = SecurityUtil.getUser().getUsername();
-		Map<String, Object> formData = service.previewCode(id, username);
-		return ResultBuilder.buildOkData(formData);
+		Map<String, Object> formData = schemeService.previewCode(id, username);
+		return Result.buildOkData(formData);
 	}
 
 	@GetMapping(value = "/form-data")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_view')")
-	public ResponseEntity formData(SchemeDataVo schemeDataVo) {
+	public Result formData(SchemeDto schemeDto) {
 		String username = SecurityUtil.getUser().getUsername();
-		Map<String, Object> formData = service.findFormData(schemeDataVo, username);
-		return ResultBuilder.buildOk(formData);
+		Map<String, Object> formData = schemeService.findFormData(schemeDto, username);
+		return Result.buildOkData(formData);
 	}
 
-	@Log(value = "生成方案", businessType = BusinessType.GENCODE)
+	@Log(value = "方案生成代码")
 	@PutMapping(value = "/gen-code")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_code')")
-	public ResponseEntity genCode(@Valid @RequestBody GenCodeVo genCodeVo) {
-		SchemeDataVo genSchemeDataVo = service.findOneVo(genCodeVo.getId());
-		Assert.isTrue(genSchemeDataVo != null, "无法获取代码生成方案信息");
-		genSchemeDataVo.setReplaceFile(genCodeVo.getReplaceFile());
-		service.generateCode(genSchemeDataVo);
-		return ResultBuilder.buildOk("生成", genSchemeDataVo.getName(), "代码成功");
+	public Result genCode(@Valid @RequestBody GenCodeDto genCodeDto) {
+		SchemeDto genSchemeDto = schemeService.getOneDto(genCodeDto.getId());
+		Assert.isTrue(genSchemeDto != null, "无法获取代码生成方案信息");
+		genSchemeDto.setReplaceFile(genCodeDto.getReplaceFile());
+		schemeService.generateCode(genSchemeDto);
+		return Result.buildOk("生成", genSchemeDto.getName(), "代码成功");
 	}
 
-	@Log(value = "生成方案", businessType = BusinessType.EDIT)
-	@PostMapping("/")
+	@Log(value = "生成方案编辑")
+	@PostMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_edit')")
-	public ResponseEntity save(@Valid @RequestBody SchemeDataVo schemeDataVo) {
-		service.save(schemeDataVo);
+	public Result save(@Valid @RequestBody SchemeDto schemeDto) {
+		schemeService.saveOrUpdate(schemeDto);
 		// 生成代码
-		if (schemeDataVo.getGenCode()) {
-			service.generateCode(schemeDataVo);
+		if (schemeDto.getGenCode()) {
+			schemeService.generateCode(schemeDto);
 		}
-		return ResultBuilder.buildOk("保存", schemeDataVo.getName(), "成功");
+		return Result.buildOk("保存", schemeDto.getName(), "成功");
 	}
 
-	@Log(value = "生成方案", businessType = BusinessType.EDIT)
+	@Log(value = "生成方案编辑")
 	@PostMapping("/gen-menu")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_menu')")
-	public ResponseEntity genMenu(@Valid @RequestBody SchemeGenDataVo schemeGenDataVo) {
-		SchemeDataVo schemeDataVo = service.genMenu(schemeGenDataVo);
-
-		return ResultBuilder.buildOk("生成", schemeDataVo.getName(), "菜单成功");
+	public Result genMenu(@Valid @RequestBody SchemeGenDto schemeGenDto) {
+		SchemeDto schemeDataVo = schemeService.genMenu(schemeGenDto);
+		return Result.buildOk("生成", schemeDataVo.getName(), "菜单成功");
 	}
 
 
-	@Log(value = "生成方案", businessType = BusinessType.DELETE)
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
+	@Log(value = "生成方案删除")
+	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_del')")
-	public ResponseEntity delete(@PathVariable String ids) {
+	public Result delete(@RequestBody Set<String> ids) {
 		log.debug("REST request to delete User: {}", ids);
-		service.deleteBatchIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return ResultBuilder.buildOk("删除成功");
+		schemeService.removeByIds(ids);
+		return Result.buildOk("删除成功");
 	}
 
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package com.albedo.java.modules.sys.service.impl;
 
 import com.albedo.java.common.core.util.CollUtil;
+import com.albedo.java.common.persistence.service.impl.BaseServiceImpl;
 import com.albedo.java.modules.sys.domain.DeptRelation;
-import com.albedo.java.modules.sys.domain.vo.DeptDataVo;
+import com.albedo.java.modules.sys.domain.dto.DeptDto;
 import com.albedo.java.modules.sys.repository.DeptRelationRepository;
 import com.albedo.java.modules.sys.service.DeptRelationService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,30 +35,30 @@ import java.util.stream.Collectors;
  * 服务实现类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Service
 @AllArgsConstructor
-public class DeptRelationServiceImpl extends ServiceImpl<DeptRelationRepository, DeptRelation> implements DeptRelationService {
+public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationRepository, DeptRelation> implements DeptRelationService {
 	private final DeptRelationRepository deptRelationRepository;
 
 	/**
 	 * 维护部门关系
 	 *
-	 * @param deptDataVo 部门
+	 * @param deptDto 部门
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveDeptRelation(DeptDataVo deptDataVo) {
+	public void saveDeptRelation(DeptDto deptDto) {
 		//增加部门关系表
 		DeptRelation condition = new DeptRelation();
-		condition.setDescendant(deptDataVo.getParentId());
+		condition.setDescendant(deptDto.getParentId());
 		List<DeptRelation> relationList = deptRelationRepository
 			.selectList(Wrappers.<DeptRelation>query().lambda()
-				.eq(DeptRelation::getDescendant, deptDataVo.getParentId()))
+				.eq(DeptRelation::getDescendant, deptDto.getParentId()))
 			.stream().map(relation -> {
-				relation.setDescendant(deptDataVo.getId());
+				relation.setDescendant(deptDto.getId());
 				return relation;
 			}).collect(Collectors.toList());
 		if (CollUtil.isNotEmpty(relationList)) {
@@ -67,8 +67,8 @@ public class DeptRelationServiceImpl extends ServiceImpl<DeptRelationRepository,
 
 		//自己也要维护到关系表中
 		DeptRelation own = new DeptRelation();
-		own.setDescendant(deptDataVo.getId());
-		own.setAncestor(deptDataVo.getId());
+		own.setDescendant(deptDto.getId());
+		own.setAncestor(deptDto.getId());
 		deptRelationRepository.insert(own);
 	}
 
@@ -79,7 +79,7 @@ public class DeptRelationServiceImpl extends ServiceImpl<DeptRelationRepository,
 	 */
 	@Override
 	public void removeDeptRelationById(String id) {
-		baseMapper.deleteDeptRelationsById(id);
+		repository.deleteDeptRelationsById(id);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class DeptRelationServiceImpl extends ServiceImpl<DeptRelationRepository,
 	 */
 	@Override
 	public void updateDeptRelation(DeptRelation relation) {
-		baseMapper.updateDeptRelations(relation);
+		repository.updateDeptRelations(relation);
 	}
 
 }

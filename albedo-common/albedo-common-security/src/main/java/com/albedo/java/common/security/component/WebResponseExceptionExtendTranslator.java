@@ -102,7 +102,7 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 			return new ResponseEntity<>(e, headers,
 				HttpStatus.valueOf(status));
 		}
-		return new ResponseEntity<>(new PigAuth2Exception(e.getMessage(), e.getOAuth2ErrorCode()), headers,
+		return new ResponseEntity<>(new Auth2Exception(e.getMessage(), e.getOAuth2ErrorCode()), headers,
 			HttpStatus.valueOf(status));
 
 	}

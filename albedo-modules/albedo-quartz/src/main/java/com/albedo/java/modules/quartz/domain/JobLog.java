@@ -1,10 +1,10 @@
 /**
- * Copyright &copy; 2018 <a href="https://github.com/somewhereMrli/albedo-boot">albedo-boot</a> All rights reserved.
+ * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
  */
 package com.albedo.java.modules.quartz.domain;
 
 import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.annotation.SearchField;
+import com.albedo.java.common.core.constant.DictNameConstants;
 import com.albedo.java.common.persistence.domain.GeneralEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -89,7 +89,7 @@ public class JobLog extends GeneralEntity<JobLog> {
 	/**
 	 * F_CREATETIME create_time  :  创建时间
 	 */
-	public static final String F_CREATETIME = "createTime";
+	public static final String F_CREATETIME = "createdDate";
 	/**
 	 * F_SQL_CREATETIME create_time  :  创建时间
 	 */
@@ -103,9 +103,8 @@ public class JobLog extends GeneralEntity<JobLog> {
 	 */
 	public static final String F_SQL_EXCEPTIONINFO = "exception_info";
 	private static final long serialVersionUID = 1L;
-	//columns START
+
 	@TableId(value = GeneralEntity.F_SQL_ID, type = IdType.AUTO)
-	@SearchField
 	protected Long id;
 	@TableField(GeneralEntity.F_SQL_DESCRIPTION)
 	protected String description;
@@ -124,6 +123,12 @@ public class JobLog extends GeneralEntity<JobLog> {
 	@TableField(F_SQL_JOBGROUP)
 	private String jobGroup;
 	/**
+	 * cronExpression cron执行表达式
+	 */
+	@Size(max = 255)
+	@TableField("cron_expression")
+	private String cronExpression;
+	/**
 	 * invokeTarget 调用目标字符串
 	 */
 	@NotBlank
@@ -141,7 +146,7 @@ public class JobLog extends GeneralEntity<JobLog> {
 	 */
 	@Size(max = 1)
 	@TableField("status")
-	@DictType("sys_status")
+	@DictType(DictNameConstants.SYS_STATUS)
 	private String status;
 	/**
 	 * startTime 开始时间
@@ -154,17 +159,17 @@ public class JobLog extends GeneralEntity<JobLog> {
 	@TableField("end_time")
 	private Date endTime;
 	/**
-	 * createTime 创建时间
+	 * createdDate 创建时间
 	 */
 	@TableField("create_time")
-	private Date createTime;
+	private Date createdDate;
 	/**
 	 * exceptionInfo 异常信息
 	 */
-	@Size(max = 2000)
+	@Size(max = 3000)
 	@TableField("exception_info")
 	private String exceptionInfo;
-	//columns END
+
 
 	@Override
 	public boolean equals(Object o) {

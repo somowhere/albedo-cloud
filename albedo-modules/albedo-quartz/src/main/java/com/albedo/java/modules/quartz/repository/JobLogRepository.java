@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2018 <a href="https://github.com/somewhereMrli/albedo-boot">albedo-boot</a> All rights reserved.
+ * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
  */
 package com.albedo.java.modules.quartz.repository;
 
@@ -8,6 +8,7 @@ import com.albedo.java.common.persistence.repository.BaseRepository;
 import com.albedo.java.modules.quartz.domain.JobLog;
 import com.albedo.java.modules.quartz.domain.vo.JobLogExcelVo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,7 +21,16 @@ import java.util.List;
  */
 public interface JobLogRepository extends BaseRepository<JobLog> {
 
+	/**
+	 * 清空日志
+	 */
 	void cleanJobLog();
 
-	List<JobLogExcelVo> findExcelVo(@Param("ew") Wrapper wrapper);
+	/**
+	 * 获取导出集合
+	 *
+	 * @param wrapper
+	 * @return
+	 */
+	List<JobLogExcelVo> findExcelVo(@Param(Constants.WRAPPER) Wrapper wrapper);
 }

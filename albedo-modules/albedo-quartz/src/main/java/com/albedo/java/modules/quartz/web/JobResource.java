@@ -1,23 +1,25 @@
 /**
- * Copyright &copy; 2018 <a href="https://github.com/somewhereMrli/albedo-boot">albedo-boot</a> All rights reserved.
+ * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
  */
 package com.albedo.java.modules.quartz.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.R;
-import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.log.annotation.Log;
-import com.albedo.java.common.log.enums.BusinessType;
-import com.albedo.java.common.web.resource.DataVoResource;
-import com.albedo.java.modules.quartz.domain.vo.JobDataVo;
+import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.modules.quartz.domain.dto.JobDto;
+import com.albedo.java.modules.quartz.domain.dto.JobQueryCriteria;
 import com.albedo.java.modules.quartz.service.JobService;
-import com.google.common.collect.Lists;
-import org.springframework.http.MediaType;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 /**
  * 任务调度Controller 任务调度
@@ -27,11 +29,10 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "/job")
-public class JobResource extends DataVoResource<JobService, JobDataVo> {
+@AllArgsConstructor
+public class JobResource extends BaseResource {
 
-	public JobResource(JobService service) {
-		super(service);
-	}
+	private final JobService jobService;
 
 	/**
 	 * @param id
@@ -39,22 +40,24 @@ public class JobResource extends DataVoResource<JobService, JobDataVo> {
 	 */
 	@GetMapping(CommonConstants.URL_ID_REGEX)
 	@PreAuthorize("@pms.hasPermission('quartz_job_view')")
-	public R get(@PathVariable String id) {
+	public Result get(@PathVariable String id) {
 		log.debug("REST request to get Entity : {}", id);
-		return R.buildOkData(service.findOneVo(id));
+		return Result.buildOkData(jobService.getOneDto(id));
 	}
 
 	/**
 	 * GET / : get all job.
 	 *
 	 * @param pm the pagination information
-	 * @return the R with status 200 (OK) and with body all job
+	 * @return the Result with status 200 (OK) and with body all job
 	 */
 
 	@PreAuthorize("@pms.hasPermission('quartz_job_view')")
-	@GetMapping("/")
-	public R getPage(PageModel pm) {
-		return R.buildOkData(service.findPage(pm));
+	@GetMapping
+	@Log(value = "任务调度查看")
+	public Result<IPage> getPage(PageModel pm, JobQueryCriteria jobQueryCriteria) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, jobQueryCriteria);
+		return Result.buildOkData(jobService.page(pm, wrapper));
 	}
 
 	/**
@@ -63,12 +66,12 @@ public class JobResource extends DataVoResource<JobService, JobDataVo> {
 	 * @param jobVo the HTTP job
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_job_edit')")
-	@Log(value = "任务调度", businessType = BusinessType.EDIT)
-	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public R save(@Valid @RequestBody JobDataVo jobVo) {
+	@Log(value = "任务调度编辑")
+	@PostMapping
+	public Result save(@Valid @RequestBody JobDto jobVo) {
 		log.debug("REST request to save JobForm : {}", jobVo);
-		service.save(jobVo);
-		return R.buildOk("保存任务调度成功");
+		jobService.saveOrUpdate(jobVo);
+		return Result.buildOk("保存任务调度成功");
 
 	}
 
@@ -76,68 +79,68 @@ public class JobResource extends DataVoResource<JobService, JobDataVo> {
 	 * DELETE //:ids : delete the "ids" Job.
 	 *
 	 * @param ids the id of the job to delete
-	 * @return the R with status 200 (OK)
+	 * @return the Result with status 200 (OK)
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_job_del')")
-	@Log(value = "任务调度", businessType = BusinessType.DELETE)
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
-	public R delete(@PathVariable String ids) {
+	@Log(value = "任务调度删除")
+	@DeleteMapping
+	public Result delete(@RequestBody Set<String> ids) {
 		log.debug("REST request to delete Job: {}", ids);
-		service.deleteBatchIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("删除任务调度成功");
+		jobService.deleteJobByIds(ids);
+		return Result.buildOk("删除任务调度成功");
 	}
 
 	/**
 	 * available //:ids : available the "ids" Job.
 	 *
 	 * @param ids the id of the job to delete
-	 * @return the R with status 200 (OK)
+	 * @return the Result with status 200 (OK)
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_job_edit')")
-	@Log(value = "任务调度", businessType = BusinessType.EDIT)
-	@PostMapping("/available" + CommonConstants.URL_IDS_REGEX)
-	public R available(@PathVariable String ids) {
+	@Log(value = "任务调度编辑")
+	@PutMapping("/update-status")
+	public Result updateStatus(@RequestBody Set<String> ids) {
 		log.debug("REST request to available Job: {}", ids);
-		service.available(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("操作成功");
+		jobService.updateStatus(ids);
+		return Result.buildOk("操作成功");
 	}
 
 	/**
 	 * concurrent //:ids : concurrent the "ids" Job.
 	 *
 	 * @param ids the id of the job to delete
-	 * @return the R with status 200 (OK)
+	 * @return the Result with status 200 (OK)
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_job_edit')")
-	@Log(value = "任务调度", businessType = BusinessType.EDIT)
-	@PostMapping("/run" + CommonConstants.URL_IDS_REGEX)
-	public R run(@PathVariable String ids) {
+	@Log(value = "任务调度编辑")
+	@PutMapping("/run")
+	public Result run(@RequestBody Set<String> ids) {
 		log.debug("REST request to available Job: {}", ids);
-		service.runByIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("操作成功");
+		jobService.runByIds(ids);
+		return Result.buildOk("操作成功");
 	}
 
 	/**
 	 * concurrent //:ids : concurrent the "ids" Job.
 	 *
 	 * @param ids the id of the job to delete
-	 * @return the R with status 200 (OK)
+	 * @return the Result with status 200 (OK)
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_job_edit')")
-	@Log(value = "任务调度", businessType = BusinessType.EDIT)
-	@PostMapping("/concurrent" + CommonConstants.URL_IDS_REGEX)
-	public R concurrent(@PathVariable String ids) {
+	@Log(value = "任务调度编辑")
+	@PutMapping("/concurrent")
+	public Result concurrent(@RequestBody Set<String> ids) {
 		log.debug("REST request to available Job: {}", ids);
-		service.concurrent(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("操作成功");
+		jobService.concurrent(ids);
+		return Result.buildOk("操作成功");
 	}
 
 	/**
 	 * 校验cron表达式是否有效
 	 */
 	@GetMapping("/check-cron-expression")
-	public boolean checkCronExpressionIsValid(JobDataVo jobDataVo) {
-		return service.checkCronExpressionIsValid(jobDataVo.getCronExpression());
+	public boolean checkCronExpressionIsValid(JobDto jobDto) {
+		return jobService.checkCronExpressionIsValid(jobDto.getCronExpression());
 	}
 
 }

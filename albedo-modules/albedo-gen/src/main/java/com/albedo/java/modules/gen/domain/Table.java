@@ -1,9 +1,7 @@
 package com.albedo.java.modules.gen.domain;
 
-import com.albedo.java.common.core.annotation.SearchField;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.persistence.annotation.ManyToOne;
-import com.albedo.java.common.persistence.domain.IdEntity;
+import com.albedo.java.common.persistence.domain.IdEntityAbstract;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -18,6 +16,7 @@ import java.util.List;
 /**
  * 业务表Entity
  *
+ * @author somewhere
  * @version 2013-10-15
  */
 @TableName("gen_table")
@@ -25,48 +24,46 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-public class Table extends IdEntity<Table> {
+public class Table extends IdEntityAbstract<Table> {
 
 	public static final String F_NAME = "name";
 	public static final String F_NAMESANDTITLE = "nameAndTitle";
 	private static final long serialVersionUID = 1L;
 	@TableField("name")
-	@SearchField
 	@Size(min = 1, max = 200)
-	private String name; // 名称
+	private String name;
 	@TableField("comments")
-	private String comments; // 描述
+	private String comments;
 	@TableField("class_name")
-	private String className; // 实体类名称
+	private String className;
 	@TableField("parent_table")
-	private String parentTable; // 关联父表
+	private String parentTable;
 	@TableField("parent_table_fk")
-	private String parentTableFk; // 关联父表外键
+	private String parentTableFk;
 
 	@TableField(exist = false)
 	@JSONField(serialize = false)
-	private List<TableColumn> columnList; // 表列
+	private List<TableColumn> columnList;
 
 	@JSONField(serialize = false)
-	@ManyToOne(name = "parent_table")
 	@TableField(exist = false)
-	private Table parent; // 父表对象
+	private Table parent;
 
 	@TableField(exist = false)
-	private List<Table> childList; // 子表列表
+	private List<Table> childList;
 
 	@TableField(exist = false)
 	private String nameAndTitle;
 	@TableField(exist = false)
-	private String nameLike; // 按名称模糊查询
+	private String nameLike;
 	@TableField(exist = false)
 	@JSONField(serialize = false)
-	private List<String> pkList; // 当前表主键列表
+	private List<String> pkList;
 	@TableField(exist = false)
 	@JSONField(serialize = false)
-	private List<TableColumn> pkColumnList; // 当前表主键列表
+	private List<TableColumn> pkColumnList;
 	@TableField(exist = false)
-	private String category; // 当前表的生成分类
+	private String category;
 	@TableField(exist = false)
 	@JSONField(serialize = false)
 	private List<TableColumn> columnFormList;

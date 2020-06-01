@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2017/3/2
  */
 @Data

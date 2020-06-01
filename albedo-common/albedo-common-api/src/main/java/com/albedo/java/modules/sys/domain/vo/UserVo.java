@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,24 +16,28 @@
 
 package com.albedo.java.modules.sys.domain.vo;
 
-import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.annotation.DictType;
+import com.albedo.java.common.core.annotation.ExcelField;
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.constant.DictNameConstants;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
-import com.albedo.java.common.core.vo.DataEntityVo;
+import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.vo.DataVo;
 import com.albedo.java.modules.sys.domain.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2019/2/1
  */
 @Data
-public class UserVo extends DataEntityVo<String> {
+@EqualsAndHashCode(callSuper = true)
+public class UserVo extends DataVo<String> {
 
 	public static final String F_USERNAME = "username";
 	public static final String F_EMAIL = "email";
@@ -41,44 +45,44 @@ public class UserVo extends DataEntityVo<String> {
 	/**
 	 * 用户名
 	 */
+	@ExcelField(title = "用户名")
 	private String username;
+	@ExcelField(title = "昵称")
+	private String nickname;
 
-	private String password;
-	/**
-	 * 随机盐
-	 */
 	@JsonIgnore
-	private String salt;
+	private String password;
 
 	/**
-	 * 锁定标记
+	 * 是否启用
 	 */
-	@DictType("sys_flag")
-	private String available;
+	@DictType(DictNameConstants.SYS_FLAG)
+	@ExcelField(title = "是否启用", dictType = DictNameConstants.SYS_FLAG)
+	private Integer available;
 
 	/**
 	 * 邮箱
 	 */
+	@ExcelField(title = "邮箱")
 	private String email;
 	/**
 	 * 电话
 	 */
+	@ExcelField(title = "电话")
 	private String phone;
 	/**
 	 * 头像
 	 */
 	private String avatar;
-	/**
-	 * 上级部门ID
-	 */
-	private String parentDeptId;
+
 	/**
 	 * 部门ID
 	 */
 	private String deptId;
 	/**
-	 * 部门ID
+	 * 部门名称
 	 */
+	@ExcelField(title = "部门名称")
 	private String deptName;
 
 	/**
@@ -91,6 +95,7 @@ public class UserVo extends DataEntityVo<String> {
 	 */
 	private String qqOpenId;
 
+	@ExcelField(title = "角色名称")
 	private String roleNames;
 	/**
 	 * 角色ID
@@ -98,6 +103,7 @@ public class UserVo extends DataEntityVo<String> {
 	@JsonIgnore
 	private List<Role> roleList;
 
+	@JsonIgnore
 	private List<String> roleIdList;
 
 	public List<String> getRoleIdList() {
@@ -109,12 +115,12 @@ public class UserVo extends DataEntityVo<String> {
 
 	public String getRoleNames() {
 		if (ObjectUtil.isEmpty(roleNames) && CollUtil.isNotEmpty(roleList)) {
-			roleNames = CollUtil.convertToString(roleList, Role.F_NAME, Role.F_ID);
+			roleNames = CollUtil.convertToString(roleList, Role.F_NAME, StringUtil.COMMA);
 		}
 		return roleNames;
 	}
-	public boolean isAvailable() {
-		return StrUtil.equals(available, CommonConstants.STR_YES);
-	}
 
+	public boolean isAvailable() {
+		return CommonConstants.YES.equals(available);
+	}
 }

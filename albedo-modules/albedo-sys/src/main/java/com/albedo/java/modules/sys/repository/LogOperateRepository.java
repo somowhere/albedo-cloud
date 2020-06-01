@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import com.albedo.java.modules.sys.domain.LogOperate;
  * 日志表 Mapper 接口
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 public interface LogOperateRepository extends BaseRepository<LogOperate> {

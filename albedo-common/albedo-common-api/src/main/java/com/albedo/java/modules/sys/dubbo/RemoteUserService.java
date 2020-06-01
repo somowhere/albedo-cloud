@@ -16,7 +16,12 @@
 
 package com.albedo.java.modules.sys.dubbo;
 
+import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author somowhere
@@ -31,4 +36,31 @@ public interface RemoteUserService {
 	 */
 	UserInfo getUserInfo(String username);
 
+	/**
+	 * findListByDeptId
+	 * @author somewhere
+	 * @param deptId
+	 * @updateTime 2020/6/1 11:08
+	 * @return java.util.List<com.albedo.java.modules.sys.domain.User>
+	 */
+	List<User> findListByDeptId(String deptId);
+	/**
+	 * findListByRoleId
+	 *
+	 * @param roleId
+	 * @return java.util.List<com.albedo.java.modules.sys.domain.User>
+	 * @author somewhere
+	 * @updateTime 2020/5/31 17:35
+	 */
+	List<User> findListByRoleId(String roleId);
+
+	/**
+	 * findListByMenuId
+	 *
+	 * @param menuId
+	 * @return java.util.List<com.albedo.java.modules.sys.domain.User>
+	 * @author somewhere
+	 * @updateTime 2020/5/31 17:35
+	 */
+	List<User> findListByMenuId(String menuId);
 }

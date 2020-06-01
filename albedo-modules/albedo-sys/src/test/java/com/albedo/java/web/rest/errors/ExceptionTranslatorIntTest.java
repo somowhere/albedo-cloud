@@ -28,11 +28,11 @@
 //@SpringBootTest(classes = AlbedoBootWebApp.class)
 //public class ExceptionTranslatorIntTest {
 //
-//    @Autowired
+//    @Resource
 //    private ExceptionTranslatorTestController web;
-//    @Autowired
+//    @Resource
 //    private ExceptionTranslator exceptionTranslator;
-//    @Autowired
+//    @Resource
 //    private FastJsonHttpMessageConverter fastJsonHttpMessageConverter;
 //
 //    private MockMvc mockMvc;

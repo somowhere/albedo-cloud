@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,25 +16,35 @@
 
 package com.albedo.java.modules.sys.service.impl;
 
+import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.persistence.service.impl.DataVoServiceImpl;
+import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.domain.RoleDept;
 import com.albedo.java.modules.sys.domain.RoleMenu;
-import com.albedo.java.modules.sys.domain.vo.RoleDataVo;
+import com.albedo.java.modules.sys.domain.User;
+import com.albedo.java.modules.sys.domain.dto.RoleDto;
 import com.albedo.java.modules.sys.repository.RoleRepository;
+import com.albedo.java.modules.sys.repository.UserRepository;
 import com.albedo.java.modules.sys.service.RoleDeptService;
 import com.albedo.java.modules.sys.service.RoleMenuService;
 import com.albedo.java.modules.sys.service.RoleService;
+import com.albedo.java.modules.sys.util.SysCacheUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -42,33 +52,36 @@ import java.util.stream.Collectors;
  * 服务实现类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = CacheNameConstants.ROLE_DETAILS)
 public class RoleServiceImpl extends
-	DataVoServiceImpl<RoleRepository, Role, String, RoleDataVo> implements RoleService {
-	private final CacheManager cacheManager;
+        DataServiceImpl<RoleRepository, Role, RoleDto, String> implements RoleService {
+	private UserRepository userRepository;
 	private RoleMenuService roleMenuService;
 	private RoleDeptService roleDeptService;
 
 	@Override
-	public RoleDataVo findOneVo(String id) {
-		RoleDataVo oneVo = super.findOneVo(id);
+	public RoleDto getOneDto(String id) {
+		RoleDto oneVo = super.getOneDto(id);
 		oneVo.setMenuIdList(roleMenuService.list(Wrappers
 			.<RoleMenu>query().lambda()
 			.eq(RoleMenu::getRoleId, id)).stream().map(RoleMenu::getMenuId).collect(Collectors.toList()));
-		oneVo.setDeptIdList(findRoleDeptIdList(id));
+		oneVo.setDeptIdList(findDeptIdsByRoleId(id));
 		return oneVo;
 	}
 
 	@Override
-	public List<String> findRoleDeptIdList(String roleId) {
+	@Cacheable(key = "'findDeptIdsByRoleId:' + #p0")
+	public List<String> findDeptIdsByRoleId(String roleId) {
 		return roleDeptService.list(Wrappers
 			.<RoleDept>query().lambda()
 			.eq(RoleDept::getRoleId, roleId)).stream().map(RoleDept::getDeptId).collect(Collectors.toList());
 	}
+
 	/**
 	 * 通过用户ID，查询角色信息
 	 *
@@ -77,10 +90,19 @@ public class RoleServiceImpl extends
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public List findRolesByUserIdList(String userId) {
-		return baseMapper.findRolesByUserIdList(userId);
+	@Cacheable(key = "'findListByUserId:' + #p0")
+	public List<Role> findListByUserId(String userId) {
+		return repository.findListByUserId(userId);
 	}
 
+	@Override
+	public List<Role> findListByDeptId(String userId) {
+		return repository.findListByDeptId(userId);
+	}
+	@Override
+	public List<Role> findListByMenuId(String userId) {
+		return repository.findListByMenuId(userId);
+	}
 	/**
 	 * 通过角色ID，删除角色,并清空角色菜单缓存
 	 *
@@ -88,10 +110,11 @@ public class RoleServiceImpl extends
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = "menu_details", allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
-	public Boolean removeRoleByIds(List<String> ids) {
+	public Boolean removeRoleByIds(Set<String> ids) {
+		verification(ids);
 		ids.forEach(id -> {
+			SysCacheUtil.delRoleCaches(id);
 			roleMenuService.remove(Wrappers
 				.<RoleMenu>update().lambda()
 				.eq(RoleMenu::getRoleId, id));
@@ -100,46 +123,71 @@ public class RoleServiceImpl extends
 		return Boolean.TRUE;
 	}
 
+	public void verification(Set<String> ids) {
+		List<User> userList = userRepository.findListByRoleIds(ids);
+		if (CollUtil.isNotEmpty(userList)) {
+			throw new BadRequestException("所选角色存在用户关联，请解除关联再试！");
+		}
+	}
+
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@CacheEvict(value = "menu_details", key = "#roleDataVo.id  + '_menu'")
-	public void save(RoleDataVo roleDataVo) {
-		super.save(roleDataVo);
-		roleMenuService.remove(Wrappers.<RoleMenu>query().lambda()
-			.eq(RoleMenu::getRoleId, roleDataVo.getId()));
-		List<RoleMenu> roleMenuList = roleDataVo.getMenuIdList().stream().map(menuId -> {
-			RoleMenu roleMenu = new RoleMenu();
-			roleMenu.setRoleId(roleDataVo.getId());
-			roleMenu.setMenuId(menuId);
-			return roleMenu;
-		}).collect(Collectors.toList());
+	public void saveOrUpdate(RoleDto roleDto) {
+		boolean add = StringUtil.isEmpty(roleDto.getId());
+		super.saveOrUpdate(roleDto);
+		if (CollUtil.isNotEmpty(roleDto.getMenuIdList())) {
+			roleMenuService.remove(Wrappers.<RoleMenu>query().lambda()
+				.eq(RoleMenu::getRoleId, roleDto.getId()));
 
-		roleMenuService.saveBatch(roleMenuList);
-		if (CollUtil.isNotEmpty(roleDataVo.getDeptIdList())) {
+			List<RoleMenu> roleMenuList = roleDto.getMenuIdList().stream().map(menuId -> {
+				RoleMenu roleMenu = new RoleMenu();
+				roleMenu.setRoleId(roleDto.getId());
+				roleMenu.setMenuId(menuId);
+				return roleMenu;
+			}).collect(Collectors.toList());
+
+			roleMenuService.saveBatch(roleMenuList);
+		}
+		if (CollUtil.isNotEmpty(roleDto.getDeptIdList())) {
 			roleDeptService.remove(Wrappers.<RoleDept>query().lambda()
-				.eq(RoleDept::getRoleId, roleDataVo.getId()));
-			List<RoleDept> roleDeptList = roleDataVo.getDeptIdList().stream().map(deptId -> {
+				.eq(RoleDept::getRoleId, roleDto.getId()));
+			List<RoleDept> roleDeptList = roleDto.getDeptIdList().stream().map(deptId -> {
 				RoleDept roleDept = new RoleDept();
-				roleDept.setRoleId(roleDataVo.getId());
+				roleDept.setRoleId(roleDto.getId());
 				roleDept.setDeptId(deptId);
 				return roleDept;
 			}).collect(Collectors.toList());
 			roleDeptService.saveBatch(roleDeptList);
 		}
 		//清空userinfo
-		cacheManager.getCache("user_details").clear();
+		if (!add) {
+			SysCacheUtil.delRoleCaches(roleDto.getId());
+		}
 	}
 
 	@Override
-	public void lockOrUnLock(List<String> idList) {
+	@CacheEvict(allEntries = true)
+	public void lockOrUnLock(Set<String> idList) {
 		idList.forEach(id -> {
-			Role role = baseMapper.selectById(id);
-			role.setAvailable(CommonConstants.STR_YES.equals(role.getAvailable()) ?
-				CommonConstants.STR_NO : CommonConstants.STR_YES);
-			baseMapper.updateById(role);
+			SysCacheUtil.delRoleCaches(id);
+			Role role = repository.selectById(id);
+			role.setAvailable(CommonConstants.YES.equals(role.getAvailable()) ?
+				CommonConstants.NO : CommonConstants.YES);
+			repository.updateById(role);
 		});
-
-		//清空userinfo
-		cacheManager.getCache("user_details").clear();
 	}
+
+	@Override
+	public Integer findLevelByUserId(String userId) {
+		List<Integer> levels = this.findListByUserId(SecurityUtil.getUser().getId()).stream()
+			.map(Role::getLevel).collect(Collectors.toList());
+		if (CollUtil.isEmpty(levels)) {
+			throw new BadRequestException("权限不足，找不到可用的角色信息");
+		}
+		int min = Collections.min(levels);
+		return min;
+	}
+
+
 }

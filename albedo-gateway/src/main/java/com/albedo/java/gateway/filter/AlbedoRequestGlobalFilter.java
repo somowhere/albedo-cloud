@@ -16,8 +16,6 @@
 
 package com.albedo.java.gateway.filter;
 
-import com.albedo.java.common.core.config.ApplicationProperties;
-import com.albedo.java.common.core.config.FilterIgnoreProperties;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.StringUtil;
 import lombok.AllArgsConstructor;

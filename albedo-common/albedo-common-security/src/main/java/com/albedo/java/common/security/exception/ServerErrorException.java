@@ -25,7 +25,7 @@ import org.springframework.http.HttpStatus;
  * @date 2019/2/1
  */
 @JsonSerialize(using = Auth2ExceptionSerializer.class)
-public class ServerErrorException extends PigAuth2Exception {
+public class ServerErrorException extends Auth2Exception {
 
 	public ServerErrorException(String msg, Throwable t) {
 		super(msg);

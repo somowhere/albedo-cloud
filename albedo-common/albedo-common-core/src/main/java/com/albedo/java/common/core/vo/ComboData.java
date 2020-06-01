@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author somewhere
+ * @description
+ * @date 2020/5/31 17:07
+ */
 @Data
 public class ComboData implements Serializable {
 
@@ -11,9 +16,9 @@ public class ComboData implements Serializable {
 	public static final String F_VALUE = "value";
 	public static final String F_PID = "pId";
 	private static final long serialVersionUID = 1L;
-	private String value; // 下拉列表隐藏值
-	private String label; // 下拉列表显示值
-	private String pId; // 树形结构父节点
+	private String value;
+	private String label;
+	private String pId;
 
 	public ComboData() {
 	}

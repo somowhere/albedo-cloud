@@ -17,7 +17,6 @@
 package com.albedo.java.common.persistence.datascope;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
@@ -31,11 +30,10 @@ import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
-import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
-import net.sf.jsqlparser.statement.select.*;
-import net.sf.jsqlparser.util.SelectUtils;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -46,7 +44,6 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -83,7 +80,7 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		//查找参数中包含DataScope类型的参数
 		DataScope dataScope = findDataScopeObject(parameterObject);
 
-		if (dataScope == null || dataScope.isAll()) {
+		if (dataScope == null || dataScope.isAll() || StringUtil.isEmpty(dataScope.getUserId())) {
 			return invocation.proceed();
 		} else {
 			String scopeName = dataScope.getScopeName(),
@@ -97,15 +94,15 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 				Expression expression = null;
 				Alias alias = plainSelect.getFromItem().getAlias();
 				String aliaName = "";
-				if(alias!=null && StringUtil.isNotEmpty(alias.getName())){
-					aliaName = alias.getName()+".";
+				if (alias != null && StringUtil.isNotEmpty(alias.getName())) {
+					aliaName = alias.getName() + StringUtil.DOT;
 				}
 				if (StringUtil.isNotBlank(scopeName) && CollectionUtil.isNotEmpty(deptIds)) {
-					ItemsList itemsList = new ExpressionList(deptIds.stream().map(deptId->new StringValue(deptId)).collect(Collectors.toList()));
-					expression = new InExpression(new Column(aliaName+scopeName), itemsList);
-				}else if(StringUtil.isNotEmpty(creatorName)){
+					ItemsList itemsList = new ExpressionList(deptIds.stream().map(deptId -> new StringValue(deptId)).collect(Collectors.toList()));
+					expression = new InExpression(new Column(aliaName + scopeName), itemsList);
+				} else if (StringUtil.isNotEmpty(creatorName)) {
 					EqualsTo equalsTo = new EqualsTo();
-					equalsTo.setLeftExpression(new Column(aliaName+creatorName));
+					equalsTo.setLeftExpression(new Column(aliaName + creatorName));
 					equalsTo.setRightExpression(new StringValue(userId));
 					expression = equalsTo;
 				}

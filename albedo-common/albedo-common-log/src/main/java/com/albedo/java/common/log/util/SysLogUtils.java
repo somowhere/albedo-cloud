@@ -21,7 +21,7 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.albedo.java.common.core.util.AddressUtil;
+import com.albedo.java.common.core.util.AddressUtils;
 import com.albedo.java.common.core.util.WebUtil;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import lombok.experimental.UtilityClass;
@@ -46,23 +46,17 @@ public class SysLogUtils {
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		LogOperate logOperate = new LogOperate();
-		logOperate.setCreatedBy(Objects.requireNonNull(getUserId()));
+		logOperate.setCreatedBy(getUserId());
 		logOperate.setCreatedDate(LocalDateTime.now());
-		logOperate.setUsername(Objects.requireNonNull(getUsername()));
-		logOperate.setIpAddress(WebUtil.getIP(request));
-		logOperate.setIpLocation(AddressUtil.getRealAddressByIP(logOperate.getIpAddress()));
+		logOperate.setUsername(getUsername());
+		logOperate.setIpAddress(WebUtil.getIp(request));
+		logOperate.setIpLocation(AddressUtils.getRealAddressByIp(logOperate.getIpAddress()));
 		logOperate.setUserAgent(request.getHeader("User-Agent"));
 		UserAgent userAgent = UserAgentUtil.parse(logOperate.getUserAgent());
 		logOperate.setBrowser(userAgent.getBrowser().getName());
 		logOperate.setOs(userAgent.getOs().getName());
 		logOperate.setRequestUri(URLUtil.getPath(request.getRequestURI()));
 		logOperate.setMethod(request.getMethod());
-//		if (request instanceof BodyRequestWrapper) {
-//			String body = ((BodyRequestWrapper) request).getRequestBody();
-//			logOperate.setParams(body);
-//		}else{
-		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
-//		}
 		logOperate.setServiceId(getClientId());
 		return logOperate;
 	}

@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.sys.dubbo;
 
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.Result;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,7 +34,7 @@ public interface RemoteTokenService {
 	 * @param params 分页参数
 	 * @return page
 	 */
-	R getTokenPage(@RequestBody Map<String, Object> params);
+	Result getTokenPage(@RequestBody Map<String, Object> params);
 
 	/**
 	 * 删除token
@@ -42,5 +42,5 @@ public interface RemoteTokenService {
 	 * @param tokens tokens
 	 * @return
 	 */
-	R<Boolean> removeToken(@PathVariable("tokens") String tokens);
+	Result<Boolean> removeToken(@PathVariable("tokens") String tokens);
 }

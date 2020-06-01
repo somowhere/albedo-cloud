@@ -1,23 +1,22 @@
 package com.albedo.java.modules.gen.domain.vo;
 
-import com.albedo.java.common.core.vo.DataEntityVo;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.albedo.java.common.core.vo.DataVo;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 /**
  * 生成方案Entity
  *
+ * @author somewhere
  * @version 2013-10-15
  */
 @Data
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-public class SchemeVo extends DataEntityVo<String> {
+@EqualsAndHashCode(callSuper = true)
+public class SchemeVo extends DataVo<String> {
 
 	private static final long serialVersionUID = 1L;
 	/**

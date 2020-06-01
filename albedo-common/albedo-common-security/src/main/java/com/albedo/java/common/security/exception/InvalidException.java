@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @date 2019/2/1
  */
 @JsonSerialize(using = Auth2ExceptionSerializer.class)
-public class InvalidException extends PigAuth2Exception {
+public class InvalidException extends Auth2Exception {
 
 	public InvalidException(String msg, Throwable t) {
 		super(msg);

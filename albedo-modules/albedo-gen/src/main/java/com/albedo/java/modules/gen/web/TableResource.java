@@ -2,83 +2,96 @@ package com.albedo.java.modules.gen.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.core.util.ResultBuilder;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.log.annotation.Log;
-import com.albedo.java.common.log.enums.BusinessType;
-import com.albedo.java.common.web.resource.DataVoResource;
+import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.gen.domain.Table;
-import com.albedo.java.modules.gen.domain.vo.TableDataVo;
-import com.albedo.java.modules.gen.domain.vo.TableFormVo;
+import com.albedo.java.modules.gen.domain.dto.TableDto;
+import com.albedo.java.modules.gen.domain.dto.TableFromDto;
+import com.albedo.java.modules.gen.domain.dto.TableQueryCriteria;
 import com.albedo.java.modules.gen.service.TableService;
-import com.albedo.java.modules.gen.service.impl.TableServiceImpl;
-import com.google.common.collect.Lists;
-import org.springframework.http.ResponseEntity;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 业务表Controller
  *
- * @author somowhere
+ * @author somewhere
  */
-@Controller
-@RequestMapping(value = "/table")
-public class TableResource extends DataVoResource<TableService, TableDataVo> {
+@RestController
+@RequestMapping("/table")
+@AllArgsConstructor
+public class TableResource extends BaseResource {
 
-	public TableResource(TableServiceImpl service) {
-		super(service);
-	}
+	private final TableService tableService;
+
 
 	@GetMapping(value = "/table-list")
 	@PreAuthorize("@pms.hasPermission('gen_table_view')")
-	public ResponseEntity tableList() {
-		return ResultBuilder.buildOk(CollUtil.convertSelectDataList(service.findTableListFormDb(null), Table.F_NAME, Table.F_NAMESANDTITLE));
+	public Result tableList() {
+		return Result.buildOkData(CollUtil.convertSelectDataList(tableService.findTableListFormDb(null), Table.F_NAME, Table.F_NAMESANDTITLE));
 	}
 
 	@GetMapping(value = "/form-data")
 	@PreAuthorize("@pms.hasPermission('gen_table_view')")
-	public ResponseEntity formData(TableFormVo tableVo) {
-		Map<String, Object> map = service.findFormData(tableVo);
-		return ResultBuilder.buildOk(map);
+	public Result formData(TableFromDto tableVo) {
+		Map<String, Object> map = tableService.findFormData(tableVo);
+		return Result.buildOkData(map);
 	}
-
 
 	/**
 	 * @param pm
 	 * @return
 	 */
-	@GetMapping(value = "/")
+	@GetMapping
 	@PreAuthorize("@pms.hasPermission('gen_table_view')")
-	public ResponseEntity getPage(PageModel pm) {
-		pm = service.findPage(pm);
-		return ResultBuilder.buildOk(pm);
+	@Log(value = "业务表查看")
+	public Result getPage(PageModel pm, TableQueryCriteria tableQueryCriteria) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, tableQueryCriteria);
+		pm = tableService.page(pm, wrapper);
+		return Result.buildOkData(pm);
 	}
 
-	@Log(value = "业务表", businessType = BusinessType.EDIT)
-	@PostMapping("/")
+	@Log(value = "业务表编辑")
+	@PostMapping
 	@PreAuthorize("@pms.hasPermission('gen_table_edit')")
-	public ResponseEntity save(@Valid @RequestBody TableDataVo tableDataVo) {
+	public Result save(@Valid @RequestBody TableDto tableDto) {
 		// 验证表是否已经存在
-		if (StringUtil.isBlank(tableDataVo.getId()) && !service.checkTableName(tableDataVo.getName())) {
-			return ResultBuilder.buildFail("保存失败！" + tableDataVo.getName() + " 表已经存在！");
+		if (StringUtil.isBlank(tableDto.getId()) && !tableService.checkTableName(tableDto.getName())) {
+			return Result.buildFail("保存失败！" + tableDto.getName() + " 表已经存在！");
 		}
-		service.save(tableDataVo);
-		return ResultBuilder.buildOk(StringUtil.toAppendStr("保存", tableDataVo.getName(), "成功"));
+		tableService.saveOrUpdate(tableDto);
+		return Result.buildOk(StringUtil.toAppendStr("保存", tableDto.getName(), "成功"));
 	}
 
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
-	@Log(value = "业务表", businessType = BusinessType.DELETE)
+	/**
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("refresh-column" + CommonConstants.URL_ID_REGEX)
+	@PreAuthorize("@pms.hasPermission('gen_table_edit')")
+	public Result refreshColumn(@PathVariable String id) {
+		log.debug("REST request to refreshColumn Entity : {}", id);
+		tableService.refreshColumn(id);
+		return Result.buildOk("操作成功");
+	}
+
+	@DeleteMapping
+	@Log(value = "业务表删除")
 	@PreAuthorize("@pms.hasPermission('gen_table_del')")
-	public ResponseEntity delete(@PathVariable String ids) {
+	public Result delete(@RequestBody Set<String> ids) {
 		log.debug("REST request to delete table: {}", ids);
-		service.deleteBatchIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return ResultBuilder.buildOk("删除成功");
+		tableService.delete(ids);
+		return Result.buildOk("删除成功");
 	}
 
 

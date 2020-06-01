@@ -17,14 +17,11 @@
 package com.albedo.java.common.persistence.datascope;
 
 import com.albedo.java.common.persistence.domain.BaseEntity;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,9 +30,8 @@ import java.util.Set;
  * 数据权限查询参数
  */
 @Data
-public class DataScope implements Serializable {
-	private static final long serialVersionUID = 1364436099567569792L;
-
+@EqualsAndHashCode(callSuper = true)
+public class DataScope extends HashMap {
 	/**
 	 * 限制范围的字段名称
 	 */
@@ -48,7 +44,7 @@ public class DataScope implements Serializable {
 	/**
 	 * 具体的数据范围
 	 */
-	private Set<String> deptIds= Sets.newLinkedHashSet();
+	private Set<String> deptIds = Sets.newLinkedHashSet();
 	/**
 	 * 全部数据
 	 */

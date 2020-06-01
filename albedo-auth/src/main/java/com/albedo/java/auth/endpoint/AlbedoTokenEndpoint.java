@@ -18,7 +18,7 @@ package com.albedo.java.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.component.RemoteServiceComponent;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -48,15 +48,15 @@ public class AlbedoTokenEndpoint {
 	 * @param authHeader Authorization
 	 */
 	@DeleteMapping("/logout")
-	public R<Boolean> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+	public Result<Boolean> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 		if (StrUtil.isBlank(authHeader)) {
-			return R.buildFailData(Boolean.FALSE, "退出失败，token 为空");
+			return Result.buildFailData(Boolean.FALSE, "退出失败，token 为空");
 		}
 
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			return R.buildFailData(Boolean.FALSE, "退出失败，token 无效");
+			return Result.buildFailData(Boolean.FALSE, "退出失败，token 无效");
 		}
 		tokenStore.removeAccessToken(accessToken);
 
@@ -64,7 +64,7 @@ public class AlbedoTokenEndpoint {
 		tokenStore.removeRefreshToken(refreshToken);
 
 
-		return R.buildOkData(Boolean.TRUE);
+		return Result.buildOkData(Boolean.TRUE);
 	}
 
 }

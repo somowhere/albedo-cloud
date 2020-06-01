@@ -19,7 +19,8 @@ package com.albedo.java.auth.service.remote.impl;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.ObjectUtil;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.modules.sys.dubbo.RemoteTokenService;
@@ -39,7 +40,6 @@ import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,10 +65,11 @@ public class RemoteTokenServiceImpl implements RemoteTokenService {
 	 *
 	 * @param tokens tokens
 	 */
-	public R<Boolean> removeToken(String tokens) {
+	@Override
+	public Result<Boolean> removeToken(String tokens) {
 		Lists.newArrayList(tokens.split(StringUtil.SPLIT_DEFAULT)).forEach(
 			token -> redisTemplate.delete(PROJECT_OAUTH_ACCESS + token));
-		return R.buildOk("操作成功");
+		return Result.buildOk("操作成功");
 	}
 
 
@@ -77,10 +78,11 @@ public class RemoteTokenServiceImpl implements RemoteTokenService {
 	 *
 	 * @param params 分页参数
 	 */
-	public R getTokenPage(Map<String, Object> params) {
+	@Override
+	public Result getTokenPage(Map<String, Object> params) {
 
 		List<Map<String, String>> list = new ArrayList<>();
-		if (StringUtils.isEmpty(MapUtil.getInt(params, CURRENT)) || StringUtils.isEmpty(MapUtil.getInt(params, SIZE))) {
+		if (ObjectUtil.isEmpty(MapUtil.getInt(params, CURRENT)) || ObjectUtil.isEmpty(MapUtil.getInt(params, SIZE))) {
 			params.put(CURRENT, 1);
 			params.put(SIZE, 20);
 		}
@@ -125,7 +127,7 @@ public class RemoteTokenServiceImpl implements RemoteTokenService {
 		Page result = new Page(MapUtil.getInt(params, CURRENT), MapUtil.getInt(params, SIZE));
 		result.setRecords(list);
 		result.setTotal(Long.valueOf(redisTemplate.keys(PROJECT_OAUTH_ACCESS + "*").size()));
-		return new R(result);
+		return Result.buildOkData(result);
 
 	}
 

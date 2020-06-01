@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,15 +18,36 @@ package com.albedo.java.modules.sys.repository;
 
 import com.albedo.java.common.persistence.repository.TreeRepository;
 import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.vo.DictVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
  * 字典表 Mapper 接口
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 public interface DictRepository extends TreeRepository<Dict> {
 
+	/**
+	 * 字典树数据集合
+	 *
+	 * @param wrapper
+	 * @return
+	 */
+	List<DictVo> findDictVoList(@Param(Constants.WRAPPER) QueryWrapper<Dict> wrapper);
+
+	/**
+	 * 批量更新可用状态
+	 *
+	 * @param idList
+	 * @param available
+	 */
+	void updateAvailableByIdList(@Param("idList") List<String> idList, @Param("available") Integer available);
 }

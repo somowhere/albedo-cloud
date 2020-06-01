@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 package com.albedo.java.modules.sys.service;
 
+import com.albedo.java.common.persistence.service.BaseService;
 import com.albedo.java.modules.sys.domain.DeptRelation;
-import com.albedo.java.modules.sys.domain.vo.DeptDataVo;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.albedo.java.modules.sys.domain.dto.DeptDto;
 
 /**
  * <p>
  * 服务类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
-public interface DeptRelationService extends IService<DeptRelation> {
+public interface DeptRelationService extends BaseService<DeptRelation> {
 
 	/**
 	 * 新建部门关系
 	 *
-	 * @param deptDataVo 部门
+	 * @param deptDto 部门
 	 */
-	void saveDeptRelation(DeptDataVo deptDataVo);
+	void saveDeptRelation(DeptDto deptDto);
 
 	/**
 	 * 通过ID删除部门关系

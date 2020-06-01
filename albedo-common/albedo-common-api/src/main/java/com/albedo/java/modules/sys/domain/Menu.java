@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@
 package com.albedo.java.modules.sys.domain;
 
 import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.annotation.SearchField;
-import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.persistence.domain.TreeEntity;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.albedo.java.common.core.constant.DictNameConstants;
+import com.albedo.java.common.persistence.domain.TreeEntityAbstract;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,17 +30,17 @@ import javax.validation.constraints.NotNull;
  * 菜单权限表
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
-public class Menu extends TreeEntity<Menu> {
+public class Menu extends TreeEntityAbstract<Menu> {
 
-	public static final String TYPE_MENU = "0";
-	public static final String TYPE_BUTTON = "1";
-	public static final String TYPE_BUTTON_TAB = "2";
+	public static final String TYPE_CATALOG = "0";
+	public static final String TYPE_MENU = "1";
+	public static final String TYPE_BUTTON = "2";
 	public static final String F_SHOW = "show";
 	public static final String F_SQL_SHOW = "show";
 	private static final long serialVersionUID = 1L;
@@ -50,7 +48,6 @@ public class Menu extends TreeEntity<Menu> {
 	/**
 	 * 菜单权限标识
 	 */
-	@SearchField
 	private String permission;
 	/**
 	 * 图标
@@ -61,23 +58,27 @@ public class Menu extends TreeEntity<Menu> {
 	 */
 	private String component;
 	/**
-	 * 菜单类型 （0菜单 1按钮）
+	 * 菜单类型 （0目录 1菜单 2按钮）
 	 */
 	@NotNull(message = "菜单类型不能为空")
-	@DictType("sys_menu_type")
+	@DictType(DictNameConstants.SYS_MENU_TYPE)
 	private String type;
 	/**
-	 * 路由缓冲
+	 * 是否缓存
 	 */
-	@DictType("sys_flag")
-	private String keepAlive;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer cache = 0;
+	/**
+	 * 是否外链
+	 */
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer iframe;
 	/**
 	 * 是否显示1 是0否
 	 */
 	@NotNull
-	@TableField(CommonConstants.MYSQL_QUOTE + F_SQL_SHOW + CommonConstants.MYSQL_QUOTE)
-	@DictType("sys_flag")
-	private Integer show = 1;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer hidden = 0;
 
 	/**
 	 * 前端URL

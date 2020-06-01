@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,26 +17,54 @@
 package com.albedo.java.modules.sys.service;
 
 import com.albedo.java.common.core.vo.SelectResult;
-import com.albedo.java.common.persistence.service.TreeVoService;
+import com.albedo.java.common.persistence.service.TreeService;
 import com.albedo.java.modules.sys.domain.Dict;
-import com.albedo.java.modules.sys.domain.vo.DictDataVo;
-import com.albedo.java.modules.sys.repository.DictRepository;
+import com.albedo.java.modules.sys.domain.dto.DictDto;
+import com.albedo.java.modules.sys.domain.dto.DictQueryCriteria;
+import com.albedo.java.modules.sys.domain.vo.DictVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
  * 字典表 服务类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
-public interface DictService extends TreeVoService<DictRepository, Dict, DictDataVo> {
-	Map<String, List<SelectResult>> findCodeStr(String codes);
+public interface DictService extends TreeService<Dict, DictDto> {
 
-	Map<String, List<SelectResult>> findCodes(String... codes);
+	/**
+	 * 获取所有可用排序正序字典
+	 *
+	 * @return
+	 */
+	List<Dict> findAllOrderBySort();
 
-	void refresh();
+	/**
+	 * 获取字典数据
+	 *
+	 * @param codes
+	 * @return
+	 */
+	Map<String, List<SelectResult>> findCodes(String codes);
+
+	/**
+	 * 字典树集合
+	 *
+	 * @param dictQueryCriteria
+	 * @return
+	 */
+	IPage<DictVo> findTreeList(DictQueryCriteria dictQueryCriteria);
+
+	/**
+	 * 批量锁定，解锁
+	 *
+	 * @param ids
+	 */
+	void lockOrUnLock(Set<String> ids);
 }

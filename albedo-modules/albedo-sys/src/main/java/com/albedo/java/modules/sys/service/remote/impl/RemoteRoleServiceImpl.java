@@ -18,6 +18,7 @@ package com.albedo.java.modules.sys.service.remote.impl;
 
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.dubbo.RemoteDictService;
 import com.albedo.java.modules.sys.dubbo.RemoteRoleService;
 import com.albedo.java.modules.sys.service.DictService;
@@ -45,7 +46,17 @@ public class RemoteRoleServiceImpl implements RemoteRoleService {
 
 
 	@Override
-	public Collection<? extends String> findRoleDeptIdList(String id) {
-		return roleService.findRoleDeptIdList(id);
+	public Collection<? extends String> findDeptIdsByRoleId(String id) {
+		return roleService.findDeptIdsByRoleId(id);
+	}
+
+	@Override
+	public List<Role> findListByDeptId(String deptId) {
+		return roleService.findListByDeptId(deptId);
+	}
+
+	@Override
+	public List<Role> findListByMenuId(String menuId) {
+		return roleService.findListByMenuId(menuId);
 	}
 }

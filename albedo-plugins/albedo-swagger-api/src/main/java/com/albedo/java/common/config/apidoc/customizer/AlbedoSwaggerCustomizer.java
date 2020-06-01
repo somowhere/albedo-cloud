@@ -13,6 +13,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.nio.ByteBuffer;
 import java.util.*;
 
+/**
+ * @author somewhere
+ * @description
+ * @date 2020/5/31 17:06
+ */
 public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 	public static final int DEFAULT_ORDER = 0;
 	private final ApplicationSwaggerProperties applicationSwaggerProperties;

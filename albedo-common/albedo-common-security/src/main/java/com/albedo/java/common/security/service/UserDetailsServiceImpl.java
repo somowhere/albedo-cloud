@@ -16,6 +16,7 @@
 
 package com.albedo.java.common.security.service;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
@@ -59,9 +60,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Reference(check = false)
 	private RemoteUserService remoteUserService;
 	@Reference(check = false)
-	private RemoteRoleService roleService;
+	private RemoteRoleService remoteRoleService;
 	@Reference(check = false)
-	private RemoteDeptService deptService;
+	private RemoteDeptService remoteDeptService;
 	@Resource
 	private CacheManager cacheManager;
 
@@ -75,13 +76,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-		Cache cache = cacheManager.getCache("user_details");
-		if (cache != null && cache.get(username) != null) {
-			return (UserDetail) cache.get(username).get();
-		}
-
 		UserDetails userDetails = getUserDetails(remoteUserService.getUserInfo(username));
-		cache.put(username, userDetails);
 		return userDetails;
 	}
 
@@ -115,18 +110,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					dataScope.setAll(true);
 					break;
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())){
-					dataScope.getDeptIds().addAll(deptService.findDescendantIdList(userVo.getDeptId()));
+					dataScope.getDeptIds().addAll(remoteDeptService.findDescendantIdList(userVo.getDeptId()));
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())){
 					dataScope.getDeptIds().add(userVo.getDeptId());
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())){
 					dataScope.setSelf(true);
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())){
-					dataScope.getDeptIds().addAll(roleService.findRoleDeptIdList(role.getId()));
+					dataScope.getDeptIds().addAll(remoteRoleService.findDeptIdsByRoleId(role.getId()));
 				}
 			}
 		}
 		// 构造security用户
-		return new UserDetail(userVo.getId(), userVo.getDeptId(), userVo.getParentDeptId(), userVo.getDeptName(), userVo.getUsername(), SecurityConstants.BCRYPT + userVo.getPassword(),
+		return new UserDetail(userVo.getId(), userVo.getDeptId(), userVo.getDeptName(), userVo.getUsername(), SecurityConstants.BCRYPT + userVo.getPassword(),
 			userVo.isAvailable(), true, true, true, authorities, dataScope);
 	}
 }

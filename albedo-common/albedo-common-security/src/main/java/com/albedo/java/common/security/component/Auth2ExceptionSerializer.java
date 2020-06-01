@@ -17,7 +17,8 @@
 package com.albedo.java.common.security.component;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.security.exception.PigAuth2Exception;
+import com.albedo.java.common.core.util.Result;
+import com.albedo.java.common.security.exception.Auth2Exception;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -29,17 +30,17 @@ import lombok.SneakyThrows;
  * <p>
  * OAuth2 异常格式化
  */
-public class Auth2ExceptionSerializer extends StdSerializer<PigAuth2Exception> {
+public class Auth2ExceptionSerializer extends StdSerializer<Auth2Exception> {
 	public Auth2ExceptionSerializer() {
-		super(PigAuth2Exception.class);
+		super(Auth2Exception.class);
 	}
 
 	@Override
 	@SneakyThrows
-	public void serialize(PigAuth2Exception value, JsonGenerator gen, SerializerProvider provider) {
+	public void serialize(Auth2Exception value, JsonGenerator gen, SerializerProvider provider) {
 		gen.writeStartObject();
 		gen.writeObjectField("code", CommonConstants.FAIL);
-		gen.writeStringField("msg", value.getMessage());
+		gen.writeStringField("message", value.getMessage());
 		gen.writeStringField("data", value.getErrorCode());
 		gen.writeEndObject();
 	}

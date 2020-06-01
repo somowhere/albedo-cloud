@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.sys.service.remote.impl;
 
-import com.albedo.java.modules.sys.domain.vo.GenSchemeDataVo;
+import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.dubbo.RemoteMenuService;
 import com.albedo.java.modules.sys.service.MenuService;
 import lombok.AllArgsConstructor;
@@ -37,8 +37,8 @@ public class RemoteMenuServiceImpl implements RemoteMenuService {
 	private final MenuService menuService;
 
 	@Override
-	public boolean saveByGenScheme(GenSchemeDataVo schemeDataVo) {
+	public boolean saveByGenScheme(GenSchemeDto schemeDto) {
 
-		return menuService.saveByGenScheme(schemeDataVo);
+		return menuService.saveByGenScheme(schemeDto);
 	}
 }

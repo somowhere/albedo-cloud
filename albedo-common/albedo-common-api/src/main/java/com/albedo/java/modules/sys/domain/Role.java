@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 package com.albedo.java.modules.sys.domain;
 
 import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.persistence.domain.IdEntity;
+import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.constant.DictNameConstants;
+import com.albedo.java.common.persistence.domain.IdEntityAbstract;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,39 +31,35 @@ import javax.validation.constraints.NotBlank;
  * 角色表
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_role")
-public class Role extends IdEntity<Role> {
+public class Role extends IdEntityAbstract<Role> {
 
 	public static final String F_NAME = "name";
 	private static final long serialVersionUID = 1L;
+	@NotBlank(message = "角色名称 不能为空")
+	private String name;
 	/**
 	 * 锁定标记
 	 */
 	@NotBlank(message = "锁定标记 不能为空")
-	@DictType("sys_flag")
-	private String available;
+	@DictType(DictNameConstants.SYS_FLAG)
+	private Integer available = CommonConstants.YES;
 
 	/**
 	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
 	 */
 	@NotBlank(message = "数据权限 不能为空")
-	@DictType("sys_data_scope")
+	@DictType(DictNameConstants.SYS_DATA_SCOPE)
 	private String dataScope;
-
-
-	@NotBlank(message = "角色名称 不能为空")
-	private String name;
-
-	@NotBlank(message = "角色标识 不能为空")
-	private String code;
-
-	@NotBlank(message = "角色描述 不能为空")
-	private String remark;
+	/**
+	 * 级别，数值越小，级别越大
+	 */
+	private Integer level;
 
 
 }

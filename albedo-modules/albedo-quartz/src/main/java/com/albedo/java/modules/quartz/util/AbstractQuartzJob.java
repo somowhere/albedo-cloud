@@ -1,20 +1,26 @@
 package com.albedo.java.modules.quartz.util;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.extra.template.Template;
+import cn.hutool.extra.template.TemplateConfig;
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.ScheduleConstants;
 import com.albedo.java.common.core.util.SpringContextHolder;
-import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.modules.quartz.domain.Job;
 import com.albedo.java.modules.quartz.domain.JobLog;
 import com.albedo.java.modules.quartz.service.JobLogService;
+import com.albedo.java.modules.quartz.service.JobService;
+import com.albedo.java.modules.tool.domain.vo.EmailVo;
+import com.albedo.java.modules.tool.dubbo.RemoteEmailService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * 抽象quartz调用
@@ -23,6 +29,8 @@ import java.util.Date;
  */
 public abstract class AbstractQuartzJob implements org.quartz.Job {
 	private static final Logger log = LoggerFactory.getLogger(AbstractQuartzJob.class);
+	RemoteEmailService emailService = SpringContextHolder.getBean(RemoteEmailService.class);
+	JobService jobService = SpringContextHolder.getBean(JobService.class);
 
 	/**
 	 * 线程本地变量
@@ -68,6 +76,7 @@ public abstract class AbstractQuartzJob implements org.quartz.Job {
 		final JobLog jobLog = new JobLog();
 		jobLog.setJobName(job.getName());
 		jobLog.setJobGroup(job.getGroup());
+		jobLog.setCronExpression(job.getCronExpression());
 		jobLog.setInvokeTarget(job.getInvokeTarget());
 		jobLog.setStartTime(startTime);
 		jobLog.setEndTime(new Date());
@@ -75,15 +84,40 @@ public abstract class AbstractQuartzJob implements org.quartz.Job {
 		jobLog.setJobMessage(jobLog.getJobName() + " 总共耗时：" + runMs + "毫秒");
 		if (e != null) {
 			jobLog.setStatus(CommonConstants.STR_FAIL);
-			String errorMsg = StringUtil.sub(ExceptionUtil.getMessage(e), 0, 2000);
-			jobLog.setExceptionInfo(errorMsg);
+			jobLog.setExceptionInfo(ExceptionUtil.stacktraceToString(e));
+			// 任务如果失败了则暂停
+			if (ScheduleConstants.MISFIRE_DO_NOTHING.equals(job.getMisfirePolicy())) {
+				//更新状态
+				job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
+				jobService.pauseJob(job);
+			}
+			if (job.getEmail() != null) {
+				// 邮箱报警
+				EmailVo emailVo = taskAlarm(job, jobLog.getExceptionInfo());
+				emailService.send(emailVo);
+			}
 		} else {
 			jobLog.setStatus(CommonConstants.STR_SUCCESS);
 		}
 
-		jobLog.setCreateTime(new Date());
+		jobLog.setCreatedDate(new Date());
 		// 写入数据库当中
-		SpringContextHolder.getBean(JobLogService.class).save(jobLog);
+		SpringContextHolder.getBean(JobLogService.class).saveOrUpdate(jobLog);
+	}
+
+
+	private EmailVo taskAlarm(Job quartzJob, String msg) {
+		EmailVo emailVo = new EmailVo();
+		emailVo.setSubject("定时任务【" + quartzJob.getName() + "】执行失败，请尽快处理！");
+		Map<String, Object> data = new HashMap<>(4);
+		data.put("task", quartzJob);
+		data.put("msg", msg);
+		TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("templates", TemplateConfig.ResourceMode.CLASSPATH));
+		Template template = engine.getTemplate("email/taskAlarm.ftl");
+		emailVo.setContent(template.render(data));
+		List<String> emails = Arrays.asList(quartzJob.getEmail().split("[,，]"));
+		emailVo.setTos(emails);
+		return emailVo;
 	}
 
 	/**

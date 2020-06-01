@@ -6,6 +6,11 @@ import com.alibaba.fastjson.serializer.PropertyPreFilter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author somewhere
+ * @description
+ * @date 2020/5/31 17:07
+ */
 public class ComplexPropertyPreFilter implements PropertyPreFilter {
 	private final Class<?> clazz;
 	private final Set<String> includes = new HashSet<String>();
@@ -37,6 +42,7 @@ public class ComplexPropertyPreFilter implements PropertyPreFilter {
 		return excludes;
 	}
 
+	@Override
 	public boolean apply(JSONSerializer serializer, Object source, String name) {
 		if (source == null) {
 			return true;
@@ -50,11 +56,7 @@ public class ComplexPropertyPreFilter implements PropertyPreFilter {
 			return false;
 		}
 
-		if (includes.size() == 0 || includes.contains(name)) {
-			return true;
-		}
-
-		return false;
+		return includes.size() == 0 || includes.contains(name);
 	}
 
 }

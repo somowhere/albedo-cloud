@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-auth</artifactId>
@@ -43,6 +43,12 @@
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-api</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-log</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 		<!--security-->

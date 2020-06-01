@@ -18,7 +18,7 @@ package com.albedo.java.common.security.component;
 
 import cn.hutool.http.HttpStatus;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -49,7 +49,7 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 						 AuthenticationException authException) {
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(CommonConstants.CONTENT_TYPE);
-		R<String> result = new R<>();
+		Result<String> result = new Result<>();
 		result.setCode(HttpStatus.HTTP_UNAUTHORIZED);
 		if (authException != null) {
 			result.addMessage("error");

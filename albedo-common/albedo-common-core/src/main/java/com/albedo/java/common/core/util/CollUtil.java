@@ -12,6 +12,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author somewhere
+ * @description
+ * @date 2020/5/30 11:24 下午
+ */
 @UtilityClass
 @Slf4j
 public class CollUtil extends cn.hutool.core.collection.CollUtil {
@@ -20,7 +25,7 @@ public class CollUtil extends cn.hutool.core.collection.CollUtil {
 	 * 转换Collection所有元素(通过toString())为String, 中间以 separator分隔。
 	 */
 	public static String convertToString(final Collection collection, final String separator) {
-		return StringUtil.join(collection.iterator(), separator);
+		return cn.hutool.core.collection.CollUtil.join(collection, separator);
 	}
 
 	/**

@@ -1,29 +1,26 @@
-package com.albedo.java.modules.sys.util;
+package com.albedo.java.common.util;
 
+import com.albedo.java.common.core.constant.ScheduleConstants;
+import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Jedis Cache 工具类
  *
+ * @author somewhere
  * @version 2014-6-29
  */
 @Slf4j
 public class RedisUtil {
 
 	public static RedisTemplate redisTemplate = SpringContextHolder.getBean("redisTemplate");
-	public static StringRedisTemplate stringRedisTemplate = SpringContextHolder.getBean("stringRedisTemplate");
-
-
 
 	/**
 	 * 缓存基本的对象，Integer、String、实体类等
@@ -52,9 +49,6 @@ public class RedisUtil {
 		return operation;
 	}
 
-	public static void delete(String key) {
-		redisTemplate.delete(key);
-	}
 
 	/**
 	 * 缓存基本的对象，Integer、String、实体类等
@@ -64,7 +58,7 @@ public class RedisUtil {
 	 * @return 缓存的对象
 	 */
 	public static ValueOperations<String, String> setCacheString(String key, String value) {
-		ValueOperations<String, String> operation = stringRedisTemplate.opsForValue();
+		ValueOperations<String, String> operation = redisTemplate.opsForValue();
 		operation.set(key, value);
 		return operation;
 	}
@@ -77,17 +71,39 @@ public class RedisUtil {
 	 * @return 缓存的对象
 	 */
 	public static ValueOperations<String, String> setCacheString(String key, String value, long time, TimeUnit timeUnit) {
-		ValueOperations<String, String> operation = stringRedisTemplate.opsForValue();
+		ValueOperations<String, String> operation = redisTemplate.opsForValue();
 		operation.set(key, value, time, timeUnit);
 		return operation;
 	}
 
-	public static Long deleteStringLike(String pattern) {
-		Set<String> keys = stringRedisTemplate.keys(pattern);
-		log.info("deleteStringLike keys {}", keys);
-		return stringRedisTemplate.delete(keys);
-
+	public static boolean delete(String key) {
+		boolean flag = redisTemplate.delete(key);
+		log.debug("deleteStringLike key {} flag {}", key, flag);
+		return flag;
 	}
+
+	public static Long deleteLike(String pattern) {
+		Set<String> keys = redisTemplate.keys(pattern);
+		Long count = redisTemplate.delete(keys);
+		log.debug("deleteStringLike keys {} count {}", keys, count);
+		return count;
+	}
+
+	/**
+	 * @param prefix 前缀
+	 * @param keys
+	 */
+	public static Long deleteLike(String prefix, Set<String> keys) {
+		Set<Object> delKeys = new HashSet<>();
+		for (String key : keys) {
+			delKeys.addAll(redisTemplate.keys(new StringBuffer(prefix).append(key).toString()));
+		}
+		long count = redisTemplate.delete(delKeys);
+
+		log.debug("deleteStringLike keys {} count {}", delKeys, count);
+		return count;
+	}
+
 
 	/**
 	 * 获得缓存的基本对象。
@@ -96,7 +112,7 @@ public class RedisUtil {
 	 * @return 缓存键值对应的数据
 	 */
 	public static String getCacheString(String key) {
-		ValueOperations<String, String> operation = stringRedisTemplate.opsForValue();
+		ValueOperations<String, String> operation = redisTemplate.opsForValue();
 		return operation.get(key);
 	}
 
@@ -236,4 +252,15 @@ public class RedisUtil {
 		return map;
 	}
 
+	public static RedisTemplate getRedisTemplate() {
+		return redisTemplate;
+	}
+
+	public static void sendScheduleChannelMessage(Object message) {
+		if (log.isDebugEnabled()) {
+			log.debug("sendScheduleChannelMessage===>" + Json.toJSONString(message));
+		}
+		redisTemplate.convertAndSend(ScheduleConstants.REDIS_SCHEDULE_DEFAULT_CHANNEL,
+			Json.toJSONString(message));
+	}
 }

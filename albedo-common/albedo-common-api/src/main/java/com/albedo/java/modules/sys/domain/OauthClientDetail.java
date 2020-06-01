@@ -16,6 +16,7 @@
 
 package com.albedo.java.modules.sys.domain;
 
+import com.albedo.java.common.persistence.domain.GeneralEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,7 +38,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_oauth_client_detail")
-public class OauthClientDetail extends Model<OauthClientDetail> {
+public class OauthClientDetail extends GeneralEntity<OauthClientDetail> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.util.List;
  * 菜单权限表 Mapper 接口
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 public interface MenuRepository extends TreeRepository<Menu> {
@@ -36,19 +36,17 @@ public interface MenuRepository extends TreeRepository<Menu> {
 	/**
 	 * 通过角色编号查询菜单
 	 *
-	 * @param show 是否显示
 	 * @return
 	 */
-	List<MenuVo> listMenuVos(@Param("show") Integer show);
+	List<MenuVo> findMenuVoAllList();
 
 	/**
 	 * 通过角色编号查询菜单
 	 *
 	 * @param roleId 角色ID
-	 * @param show   是否显示
 	 * @return
 	 */
-	List<MenuVo> listMenuVosByRoleId(@Param("roleId") String roleId, @Param("show") Integer show);
+	List<MenuVo> findMenuVoListByRoleId(@Param("roleId") String roleId);
 
 	/**
 	 * 通过角色ID查询权限
@@ -56,5 +54,7 @@ public interface MenuRepository extends TreeRepository<Menu> {
 	 * @param roleIds Ids
 	 * @return
 	 */
-	List<String> listPermissionsByRoleIds(String roleIds);
+	List<String> findPermissionsByRoleIds(String roleIds);
+
+
 }

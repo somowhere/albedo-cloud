@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 数据Sql安全类
  *
- * @author somowhere version 2014-1-6 上午9:16:30
+ * @author somewhere version 2014-1-6 上午9:16:30
  */
 @UtilityClass
 @Slf4j
@@ -20,9 +20,7 @@ public class SecuritySqlUtil {
 	 */
 	public static boolean checkStrForSqlWhere(String where) {
 		if (where != null) {
-			if (where.contains(" delete ") || where.contains(" select ") || where.contains(" update ") || where.contains(" insert ") || where.contains(";")) {
-				return false;
-			}
+			return !where.contains(" delete ") && !where.contains(" select ") && !where.contains(" update ") && !where.contains(" insert ") && !where.contains(";");
 		}
 		return true;
 	}
@@ -35,9 +33,7 @@ public class SecuritySqlUtil {
 	 */
 	public static boolean checkStrForSqlWhereItem(String where) {
 		if (where != null) {
-			if (where.contains(" ") || checkStrForSqlWhere(where)) {
-				return false;
-			}
+			return !where.contains(" ") && !checkStrForSqlWhere(where);
 		}
 		return true;
 	}
@@ -50,10 +46,8 @@ public class SecuritySqlUtil {
 	 */
 	public static boolean checkStrForSqlOrderBy(String orderBy) {
 		if (orderBy != null) {
-			if (orderBy.contains("order by") || orderBy.contains(" and ") || orderBy.contains(" or ") || orderBy.contains(" delete ") || orderBy.contains(" select ") || orderBy.contains(" update ") || orderBy.contains(" insert ")
-				|| orderBy.contains(";")) {
-				return false;
-			}
+			return !orderBy.contains("order by") && !orderBy.contains(" and ") && !orderBy.contains(" or ") && !orderBy.contains(" delete ") && !orderBy.contains(" select ") && !orderBy.contains(" update ") && !orderBy.contains(" insert ")
+				&& !orderBy.contains(";");
 		}
 		return true;
 	}
@@ -66,7 +60,7 @@ public class SecuritySqlUtil {
 	 */
 	public static String getModuleByClass(Class<?> cls) {
 		String className = cls.getName();
-		return className.substring(className.lastIndexOf(".") + 1);
+		return className.substring(className.lastIndexOf(StringUtil.DOT) + 1);
 	}
 
 }

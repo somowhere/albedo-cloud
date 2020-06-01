@@ -1,8 +1,6 @@
 package com.albedo.java.common.core.util;
 
-import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.albedo.java.common.core.constant.CommonConstants;
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +9,10 @@ import org.springframework.core.io.DefaultResourceLoader;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,43 +25,10 @@ import java.util.regex.Pattern;
 @Slf4j
 public class StringUtil extends StrUtil {
 	public static final String SPLIT_DEFAULT = ",";
-	public static final String SPLIT_FILE_DEFAULT = "|";
+	public static final String BRACKETS_START = "(";
+	public static final String BRACKETS_END = ")";
+	public static final String DOT_JAVA = ".java";
 	private static final char SEPARATOR = '_';
-
-	/**
-	 * 获取一定位数的随机字符串
-	 ***/
-	public static String getRandomString(int size) {
-		char[] c = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'};
-		Random random = new Random();
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < size; ++i)
-			sb.append(c[(Math.abs(random.nextInt()) % c.length)]);
-
-		return sb.toString();
-	}
-
-	public static String[] splitDefault(final String str) {
-		return split(str, SPLIT_DEFAULT);
-	}
-
-	/**
-	 * 转换为字节数组
-	 *
-	 * @param str
-	 * @return
-	 */
-	public static byte[] getBytes(String str) {
-		if (str != null) {
-			try {
-				return str.getBytes(CommonConstants.UTF8);
-			} catch (UnsupportedEncodingException e) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
 
 	/**
 	 * 转换为字节数组
@@ -69,30 +37,9 @@ public class StringUtil extends StrUtil {
 	 * @return
 	 */
 	public static String toString(byte[] bytes) {
-		try {
-			return new String(bytes, CommonConstants.UTF8);
-		} catch (UnsupportedEncodingException e) {
-			return EMPTY;
-		}
+		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * 是否包含字符串
-	 *
-	 * @param str  验证字符串
-	 * @param strs 字符串组
-	 * @return 包含返回true
-	 */
-	public static boolean inString(String str, String... strs) {
-		if (str != null) {
-			for (String s : strs) {
-				if (str.equals(trim(s))) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * 替换掉HTML标签方法
@@ -164,65 +111,6 @@ public class StringUtil extends StrUtil {
 		return "";
 	}
 
-	public static String abbr2(String param, int length) {
-		if (param == null) {
-			return "";
-		}
-		StringBuffer result = new StringBuffer();
-		int n = 0;
-		char temp;
-		boolean isCode = false; // 是不是HTML代码
-		boolean isHTML = false; // 是不是HTML特殊字符,如&nbsp;
-		for (int i = 0; i < param.length(); i++) {
-			temp = param.charAt(i);
-			if (temp == '<') {
-				isCode = true;
-			} else if (temp == '&') {
-				isHTML = true;
-			} else if (temp == '>' && isCode) {
-				n = n - 1;
-				isCode = false;
-			} else if (temp == ';' && isHTML) {
-				isHTML = false;
-			}
-			try {
-				if (!isCode && !isHTML) {
-					n += String.valueOf(temp).getBytes("GBK").length;
-				}
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-
-			if (n <= length - 3) {
-				result.append(temp);
-			} else {
-				result.append("...");
-				break;
-			}
-		}
-		// 取出截取字符串中的HTML标记
-		String temp_result = result.toString().replaceAll("(>)[^<>]*(<?)", "$1$2");
-		// 去掉不需要结素标记的HTML标记
-		temp_result = temp_result.replaceAll(
-			"</?(AREA|BASE|BASEFONT|BODY|BR|COL|COLGROUP|DD|DT|FRAME|HEAD|HR|HTML|IMG|INPUT|ISINDEX|LI|LINK|META|OPTION|P|PARAM|TBODY|TD|TFOOT|TH|THEAD|TR|area|base|basefont|body|br|col|colgroup|dd|dt|frame|head|hr|html|img|input|isindex|li|link|meta|option|p|param|tbody|td|tfoot|th|thead|tr)[^<>]*/?>",
-			"");
-		// 去掉成对的HTML标记
-		temp_result = temp_result.replaceAll("<([a-zA-Z]+)[^<>]*>(.*?)</\\1>", "$2");
-		// 用正则表达式取出标记
-		Pattern p = Pattern.compile("<([a-zA-Z]+)[^<>]*>");
-		Matcher m = p.matcher(temp_result);
-		List<String> endHTML = Lists.newArrayList();
-		while (m.find()) {
-			endHTML.add(m.group(1));
-		}
-		// 补全不成对的HTML标记
-		for (int i = endHTML.size() - 1; i >= 0; i--) {
-			result.append("</");
-			result.append(endHTML.get(i));
-			result.append(">");
-		}
-		return result.toString();
-	}
 
 	/**
 	 * 转换为Double类型
@@ -361,7 +249,7 @@ public class StringUtil extends StrUtil {
 	 *
 	 * @return
 	 */
-	public static String getProjectPath(String fileName, String relativeUIPath) {
+	public static String getProjectPath(String fileName, String relativeUiPath) {
 		String projectPath = "";
 		try {
 			File file = new DefaultResourceLoader().getResource("").getFile();
@@ -377,8 +265,8 @@ public class StringUtil extends StrUtil {
 						break;
 					}
 				}
-				if (!fileName.endsWith(".java") && isNotEmpty(relativeUIPath)) {
-					File fileTemp = new File(file.getPath() + File.separator + relativeUIPath);
+				if (!fileName.endsWith(DOT_JAVA) && isNotEmpty(relativeUiPath)) {
+					File fileTemp = new File(file.getPath() + File.separator + relativeUiPath);
 					if (fileTemp == null || fileTemp.exists()) {
 						file = fileTemp;
 					}
@@ -412,9 +300,9 @@ public class StringUtil extends StrUtil {
 	public static String jsGetVal(String objectString) {
 		StringBuilder result = new StringBuilder();
 		StringBuilder val = new StringBuilder();
-		String[] vals = split(objectString, ".");
+		String[] vals = split(objectString, StringUtil.DOT);
 		for (int i = 0; i < vals.length; i++) {
-			val.append("." + vals[i]);
+			val.append(StringUtil.DOT + vals[i]);
 			result.append("!" + (val.substring(1)) + "?'':");
 		}
 		result.append(val.substring(1));
@@ -499,48 +387,10 @@ public class StringUtil extends StrUtil {
 		return str.toLowerCase();
 	}
 
-	/**
-	 * <p>Joins the elements of the provided <code>Iterator</code> into
-	 * a single String containing the provided elements.</p>
-	 *
-	 * <p>No delimiter is added before or after the list.
-	 * A <code>null</code> separator is the same as an empty String ("").</p>
-	 *
-	 * <p>See the examples here: {@link #join(Object[], String)}. </p>
-	 *
-	 * @param iterator  the <code>Iterator</code> of values to join together, may be null
-	 * @param separator the separator character to use, null treated as ""
-	 * @return the joined String, <code>null</code> if null iterator input
-	 */
-	public static String join(Iterator iterator, String separator) {
-
-		// handle null, zero and one elements before building a buffer
-		if (iterator == null) {
-			return null;
+	public static String getBlock(Object msg) {
+		if (msg == null) {
+			msg = "";
 		}
-		if (!iterator.hasNext()) {
-			return EMPTY;
-		}
-		Object first = iterator.next();
-		if (!iterator.hasNext()) {
-			return toStrString(first);
-		}
-
-		// two or more elements
-		StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
-		if (first != null) {
-			buf.append(first);
-		}
-
-		while (iterator.hasNext()) {
-			if (separator != null) {
-				buf.append(separator);
-			}
-			Object obj = iterator.next();
-			if (obj != null) {
-				buf.append(obj);
-			}
-		}
-		return buf.toString();
+		return "[" + msg.toString() + "]";
 	}
 }

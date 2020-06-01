@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.albedo.java.modules.sys.domain;
 
+import com.albedo.java.common.persistence.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,13 +26,13 @@ import lombok.EqualsAndHashCode;
  * 部门关系表
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_dept_relation")
-public class DeptRelation extends Model<DeptRelation> {
+public class DeptRelation extends BaseEntity<DeptRelation> {
 
 	private static final long serialVersionUID = 1L;
 

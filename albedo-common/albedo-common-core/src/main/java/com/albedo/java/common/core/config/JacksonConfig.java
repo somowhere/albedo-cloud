@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ import java.util.TimeZone;
  * JacksonConfig
  *
  * @author L.cm
- * @author: somewhere
- * @author: lishangbu
- * @date: 2018/10/22
+ * @author somewhere
+ * @author lishangbu
+ * @date 2018/10/22
  */
 @Configuration
 public class JacksonConfig {

@@ -16,11 +16,17 @@
 
 package com.albedo.java.modules.sys.service.remote.impl;
 
+import cn.hutool.core.lang.Assert;
+import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
+import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.albedo.java.modules.sys.dubbo.RemoteUserService;
 import com.albedo.java.modules.sys.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.List;
 
 /**
  * <p>
@@ -38,6 +44,26 @@ public class RemoteUserServiceImpl implements RemoteUserService {
 
 	@Override
 	public UserInfo getUserInfo(String username) {
-		return userService.getUserInfo(username);
+		UserVo userVo = userService.findVoByUsername(username);
+		if (userVo == null) {
+			throw new UsernameNotFoundException("用户不存在");
+		}
+		Assert.isTrue(userVo.isAvailable(), "用户【" + username + "】已被锁定，无法登录");
+		return userService.getInfo(userVo);
+	}
+
+	@Override
+	public List<User> findListByDeptId(String deptId) {
+		return userService.findListByDeptId(deptId);
+	}
+
+	@Override
+	public List<User> findListByRoleId(String roleId) {
+		return userService.findListByRoleId(roleId);
+	}
+
+	@Override
+	public List<User> findListByMenuId(String menuId) {
+		return userService.findListByMenuId(menuId);
 	}
 }

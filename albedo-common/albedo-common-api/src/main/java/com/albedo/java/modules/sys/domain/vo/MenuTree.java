@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,56 +16,45 @@
 
 package com.albedo.java.modules.sys.domain.vo;
 
+import cn.hutool.core.util.StrUtil;
+import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.TreeNode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2017年11月9日23:33:27
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Slf4j
 public class MenuTree extends TreeNode<MenuTree> {
-	private String icon;
 	private String name;
-	private boolean spread = false;
 	private String path;
-	private String component;
-	private String authority;
+	private Boolean hidden;
 	private String redirect;
-	private String keepAlive;
-	private String code;
-	private String type;
-	private Integer sort;
-
-	public MenuTree() {
-	}
-
-	public MenuTree(String id, String name, String parentId) {
-		this.id = id;
-		this.parentId = parentId;
-		this.name = name;
-		setLabel(name);
-	}
-
-	public MenuTree(String id, String name, MenuTree parent) {
-		this.id = id;
-		this.parentId = parent.getId();
-		this.name = name;
-		setLabel(name);
-	}
+	private String component;
+	private Boolean iframe;
+	private Boolean alwaysShow;
+	private MenuMetaVo meta;
 
 	public MenuTree(MenuVo menuVo) {
 		this.id = menuVo.getId();
 		this.parentId = menuVo.getParentId();
-		this.icon = menuVo.getIcon();
 		this.name = menuVo.getName();
 		this.path = menuVo.getPath();
-		this.component = menuVo.getComponent();
-		this.type = menuVo.getType();
+		this.iframe = CommonConstants.YES.equals(menuVo.getIframe());
 		setLabel(menuVo.getName());
-		this.sort = menuVo.getSort();
-		this.keepAlive = menuVo.getKeepAlive();
+		this.meta = new MenuMetaVo(menuVo.getName(), menuVo.getIcon(), CommonConstants.YES.equals(menuVo.getCache()));
+		this.setHidden(CommonConstants.YES.equals(menuVo.getHidden()));
+		// 如果不是外链
+		this.setComponent(!CommonConstants.YES.equals(menuVo.getIframe()) && menuVo.getParentId() == TreeUtil.ROOT
+			&& StrUtil.isEmpty(menuVo.getComponent()) ? "Layout" : menuVo.getComponent());
+		log.info("name {}, component {}", this.getName(), this.getComponent());
 	}
 }

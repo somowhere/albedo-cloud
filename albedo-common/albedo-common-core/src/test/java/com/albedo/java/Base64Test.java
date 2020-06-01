@@ -28,7 +28,7 @@ public class Base64Test {
 	public void decode() throws Exception {
 		String encode = Base64.encode("swagger:swagger");
 		System.out.println(encode);
-		byte[] base64Token = encode.getBytes("UTF-8");
+		byte[] base64Token = encode.getBytes(StandardCharsets.UTF_8);
 		byte[] decoded = Base64.decode(base64Token);
 		String token = new String(decoded, StandardCharsets.UTF_8);
 		System.out.println(token);

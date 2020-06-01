@@ -36,6 +36,8 @@ import static springfox.documentation.builders.PathSelectors.regex;
  * Warning! When having a lot of REST endpoints, Springfox can become a performance issue. In that
  * case, you can use a specific Spring profile for this class, so that only front-end developers
  * have access to the Swagger view.
+ *
+ * @author somewhere
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -88,12 +90,12 @@ public class SwaggerAutoConfiguration {
 	}
 
 	/**
-	 * JHipster Swagger Customizer
+	 * Albedo Swagger Customizer
 	 *
-	 * @return the Swagger Customizer of JHipster
+	 * @return the Swagger Customizer of Albedo
 	 */
 	@Bean
-	public AlbedoSwaggerCustomizer jHipsterSwaggerCustomizer() {
+	public AlbedoSwaggerCustomizer albedoSwaggerCustomizer() {
 		return new AlbedoSwaggerCustomizer(applicationSwaggerProperties);
 	}
 

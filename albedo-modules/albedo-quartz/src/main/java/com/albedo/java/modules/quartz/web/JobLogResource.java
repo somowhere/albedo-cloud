@@ -1,24 +1,24 @@
 /**
- * Copyright &copy; 2018 <a href="https://github.com/somewhereMrli/albedo-boot">albedo-boot</a> All rights reserved.
+ * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
  */
 package com.albedo.java.modules.quartz.web;
 
-import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.R;
-import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.log.annotation.Log;
-import com.albedo.java.common.log.enums.BusinessType;
-import com.albedo.java.common.persistence.DynamicSpecifications;
 import com.albedo.java.common.util.ExcelUtil;
 import com.albedo.java.common.web.resource.BaseResource;
-import com.albedo.java.modules.quartz.domain.JobLog;
+import com.albedo.java.modules.quartz.domain.dto.JobLogQueryCriteria;
 import com.albedo.java.modules.quartz.domain.vo.JobLogExcelVo;
 import com.albedo.java.modules.quartz.service.JobLogService;
-import com.google.common.collect.Lists;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * 任务调度日志Controller 任务调度日志
@@ -37,13 +37,15 @@ public class JobLogResource extends BaseResource {
 	 * GET / : get all jobLog.
 	 *
 	 * @param pm the pagination information
-	 * @return the R with status 200 (OK) and with body all jobLog
+	 * @return the Result with status 200 (OK) and with body all jobLog
 	 */
 
 	@PreAuthorize("@pms.hasPermission('quartz_jobLog_view')")
-	@GetMapping("/")
-	public R getPage(PageModel pm) {
-		return R.buildOkData(jobLogService.findPage(pm));
+	@GetMapping
+	@Log(value = "任务日志查看")
+	public Result getPage(PageModel pm, JobLogQueryCriteria jobLogQueryCriteria) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, jobLogQueryCriteria);
+		return Result.buildOkData(jobLogService.page(pm, wrapper));
 	}
 
 
@@ -51,34 +53,32 @@ public class JobLogResource extends BaseResource {
 	 * DELETE //:ids : delete the "ids" JobLog.
 	 *
 	 * @param ids the id of the jobLog to delete
-	 * @return the R with status 200 (OK)
+	 * @return the Result with status 200 (OK)
 	 */
 	@PreAuthorize("@pms.hasPermission('quartz_jobLog_del')")
-	@Log(value = "任务日志", businessType = BusinessType.DELETE)
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
-	public R delete(@PathVariable String ids) {
+	@Log(value = "任务日志删除")
+	@DeleteMapping
+	public Result delete(@RequestBody Set<String> ids) {
 		log.debug("REST request to delete JobLog: {}", ids);
-		jobLogService.deleteBatchIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("删除任务调度日志成功");
+		jobLogService.removeByIds(ids);
+		return Result.buildOk("删除任务调度日志成功");
 	}
 
-	@Log(value = "任务日志", businessType = BusinessType.CLEAN)
+	@Log(value = "任务日志清空")
 	@PreAuthorize("@pms.hasPermission('quartz_jobLog_clean')")
 	@PostMapping("/clean")
 	@ResponseBody
-	public R clean() {
+	public Result clean() {
 		jobLogService.cleanJobLog();
-		return R.buildOk("清空任务调度日志成功");
+		return Result.buildOk("清空任务调度日志成功");
 	}
 
-	@Log(value = "任务日志", businessType = BusinessType.EXPORT)
-	@GetMapping(value = "/export")
+	@Log(value = "任务日志导出")
+	@GetMapping(value = "/download")
 	@PreAuthorize("@pms.hasPermission('quartz_jobLog_export')")
-	public R export(PageModel pm) {
+	public void download(JobLogQueryCriteria jobLogQueryCriteria, HttpServletResponse response) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(jobLogQueryCriteria);
 		ExcelUtil<JobLogExcelVo> util = new ExcelUtil(JobLogExcelVo.class);
-		return util.exportExcel(jobLogService.findExcelVo(DynamicSpecifications.buildSpecification(
-			JobLog.class,
-			pm.getQueryConditionJson()
-		).toEntityWrapper(JobLog.class)), "任务调度日志");
+		util.exportExcel(jobLogService.findExcelVo(wrapper), "任务调度日志", response);
 	}
 }

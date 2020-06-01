@@ -35,6 +35,8 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.annotation.Resource;
+
 /**
  * @author somowhere
  * @date 2019/2/1
@@ -44,12 +46,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Order(90)
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-	@Autowired
+	@Resource
 	private ObjectMapper objectMapper;
-	@Autowired
+	@Resource
 	private ClientDetailsService clientDetailsService;
 	@Lazy
-	@Autowired
+	@Resource
 	private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
 
 	@Override

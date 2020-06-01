@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,31 +17,40 @@
 package com.albedo.java.modules.sys.service.impl;
 
 import cn.hutool.core.util.CharUtil;
+import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.RuntimeMsgException;
+import com.albedo.java.common.core.exception.BadRequestException;
+import com.albedo.java.common.core.exception.EntityExistException;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.core.vo.TreeQuery;
-import com.albedo.java.common.core.vo.TreeUtil;
-import com.albedo.java.common.persistence.service.impl.TreeVoServiceImpl;
+import com.albedo.java.common.core.util.tree.TreeUtil;
+import com.albedo.java.common.persistence.service.impl.TreeServiceImpl;
 import com.albedo.java.modules.sys.domain.Menu;
 import com.albedo.java.modules.sys.domain.RoleMenu;
-import com.albedo.java.modules.sys.domain.vo.*;
+import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
+import com.albedo.java.modules.sys.domain.dto.MenuDto;
+import com.albedo.java.modules.sys.domain.dto.MenuSortDto;
+import com.albedo.java.modules.sys.domain.vo.MenuTree;
+import com.albedo.java.modules.sys.domain.vo.MenuVo;
 import com.albedo.java.modules.sys.repository.MenuRepository;
 import com.albedo.java.modules.sys.repository.RoleMenuRepository;
+import com.albedo.java.modules.sys.repository.RoleRepository;
 import com.albedo.java.modules.sys.service.MenuService;
+import com.albedo.java.modules.sys.util.SysCacheUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -49,21 +58,76 @@ import java.util.stream.Collectors;
  * 菜单权限表 服务实现类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = CacheNameConstants.MENU_DETAILS)
 public class MenuServiceImpl extends
-	TreeVoServiceImpl<MenuRepository, Menu, MenuDataVo> implements MenuService {
+        TreeServiceImpl<MenuRepository, Menu, MenuDto> implements MenuService {
+	private final RoleRepository roleRepository;
 	private final RoleMenuRepository roleMenuRepository;
 
 	@Override
-	@Cacheable(value = "menu_details", key = "#roleId  + '_menu'")
+	@Cacheable(key = "'findTreeByUserId:' + #p0")
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public List<MenuVo> getMenuByRoleId(String roleId) {
-		List<MenuVo> menuAllList = baseMapper.listMenuVos(CommonConstants.YES);
-		List<MenuVo> menuVoList = baseMapper.listMenuVosByRoleId(roleId, CommonConstants.YES);
+	public List<MenuTree> findTreeByUserId(String userId) {
+		// 获取符合条件的菜单
+		Set<MenuVo> all = new HashSet<>();
+		roleRepository.findListByUserId(userId).forEach(role -> all.addAll(findListByRoleId(role.getId())));
+		List<MenuTree> menuTreeList = all.stream()
+			.filter(menuVo -> !MenuDto.TYPE_BUTTON.equals(menuVo.getType()))
+			.sorted(Comparator.comparingInt(MenuVo::getSort))
+			.map(MenuTree::new)
+			.collect(Collectors.toList());
+		return buildMenus(Lists.newArrayList(TreeUtil.buildByLoopAutoRoot(menuTreeList)));
+	}
+
+	/**
+	 * 两层循环实现建树
+	 *
+	 * @param menuTreeList 传入的树节点列表
+	 * @return
+	 */
+	public List<MenuTree> buildMenus(List<MenuTree> menuTreeList) {
+		menuTreeList.forEach(menu -> {
+				if (menu != null) {
+					List<MenuTree> menuChildList = menu.getChildren();
+					if (CollUtil.isNotEmpty(menuChildList)) {
+						menu.setAlwaysShow(true);
+						menu.setRedirect("noredirect");
+						menu.setChildren(buildMenus(menuChildList));
+						// 处理是一级菜单并且没有子菜单的情况
+					} else if (menu.getParentId() == TreeUtil.ROOT) {
+						MenuTree menuVo = new MenuTree();
+						menuVo.setMeta(menu.getMeta());
+						// 非外链
+						if (!CommonConstants.YES.equals(menu.getIframe())) {
+							menuVo.setPath("index");
+							menuVo.setName(menu.getName());
+							menuVo.setComponent(menu.getComponent());
+						} else {
+							menuVo.setPath(menu.getPath());
+						}
+						menu.setName(null);
+						menu.setMeta(null);
+						menu.setComponent("Layout");
+						menu.setChildren(Lists.newArrayList(menuVo));
+					}
+				}
+			}
+		);
+		return menuTreeList;
+
+	}
+
+	@Override
+	@Cacheable(key = "'findListByRoleId:' + #p0")
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
+	public List<MenuVo> findListByRoleId(String roleId) {
+		List<MenuVo> menuAllList = repository.findMenuVoAllList();
+		List<MenuVo> menuVoList = repository.findMenuVoListByRoleId(roleId);
 		List<String> parentIdList = Lists.newArrayList();
 		for (MenuVo menuVo : menuVoList) {
 			if (menuVo.getParentId() != null) {
@@ -114,14 +178,14 @@ public class MenuServiceImpl extends
 	}
 
 	@Override
-	@CacheEvict(value = "menu_details", allEntries = true)
-	public void removeMenuById(List<String> ids) {
+	public void removeByIds(Set<String> ids) {
 		ids.forEach(id -> {
+			SysCacheUtil.delMenuCaches(id);
 			// 查询父节点为当前节点的节点
 			List<Menu> menuList = this.list(Wrappers.<Menu>query()
 				.lambda().eq(Menu::getParentId, id));
 			if (CollUtil.isNotEmpty(menuList)) {
-				throw new RuntimeMsgException("菜单含有下级不能删除");
+				throw new BadRequestException("菜单含有下级不能删除");
 			}
 
 			roleMenuRepository
@@ -130,117 +194,104 @@ public class MenuServiceImpl extends
 			//删除当前菜单及其子菜单
 			this.removeById(id);
 		});
+	}
+
+	public Boolean exitMenuByPermission(MenuDto menuDto) {
+		return getOne(Wrappers.<Menu>query()
+			.ne(StringUtil.isNotEmpty(menuDto.getId()), MenuDto.F_ID, menuDto.getId())
+			.eq(MenuDto.F_PERMISSION, menuDto.getPermission())) != null;
+	}
+
+
+	@Override
+	public void saveOrUpdate(MenuDto menuDto) {
+		boolean add = StringUtil.isEmpty(menuDto.getId());
+		// permission before comparing with database
+		if (StringUtil.isNotEmpty(menuDto.getPermission()) &&
+			exitMenuByPermission(menuDto)) {
+			throw new EntityExistException(MenuDto.class, "permission", menuDto.getPermission());
+		}
+
+		super.saveOrUpdate(menuDto);
+
+		if (!add) {
+			SysCacheUtil.delMenuCaches(menuDto.getId());
+		}
 
 	}
 
 	@Override
-	@CacheEvict(value = "menu_details", allEntries = true)
-	public MenuDataVo save(MenuDataVo form) {
-		return super.save(form);
-	}
+	public boolean saveByGenScheme(GenSchemeDto schemeDto) {
 
-	@Override
-	@CacheEvict(value = "menu_details", allEntries = true)
-	public boolean saveByGenScheme(GenSchemeDataVo schemeDataVo) {
-
-		String moduleName = schemeDataVo.getSchemeName(),
-			parentMenuId = schemeDataVo.getParentMenuId(),
-			url = schemeDataVo.getUrl();
+		String moduleName = schemeDto.getSchemeName(),
+			parentMenuId = schemeDto.getParentMenuId(),
+			url = schemeDto.getUrl();
 		String permission = StringUtil.toCamelCase(StringUtil.lowerFirst(url), CharUtil.DASHED)
-			.replace("/", "_").substring(1),
+			.replace(StringUtil.SLASH, "_").substring(1),
 			permissionLike = permission.substring(0, permission.length() - 1);
-		List<Menu> currentMenuList = baseMapper.selectList(Wrappers.<Menu>query()
+		List<Menu> currentMenuList = repository.selectList(Wrappers.<Menu>query()
 			.lambda().eq(Menu::getName, moduleName).or()
 			.likeLeft(Menu::getPermission, permissionLike)
 		);
 		for (Menu currentMenu : currentMenuList) {
 			if (currentMenu != null) {
-				baseMapper.delete(Wrappers.<Menu>query()
+				List<String> idList = repository.selectList(Wrappers.<Menu>query()
 					.lambda()
 					.likeLeft(Menu::getPermission, permissionLike)
 					.or(i -> i.eq(Menu::getId, currentMenu.getId())
 						.or().eq(Menu::getParentId, currentMenu.getId()))
-				);
+				).stream().map(Menu::getId).collect(Collectors.toList());
+				roleMenuRepository
+					.delete(Wrappers.<RoleMenu>query()
+						.lambda().in(RoleMenu::getMenuId, idList));
+				repository.deleteBatchIds(idList);
 			}
 		}
-		Menu parentMenu = baseMapper.selectById(parentMenuId);
+		Menu parentMenu = repository.selectById(parentMenuId);
 		Assert.isTrue(parentMenu != null, StringUtil.toAppendStr("根据模块id[", parentMenuId, "无法查询到模块信息]"));
 
 
 		Menu module = new Menu();
-//		module.setPermission(permission.substring(0, permission.length() - 1));
+
 		module.setName(moduleName);
 		module.setParentId(parentMenu.getId());
 		module.setType(Menu.TYPE_MENU);
 		module.setIcon("icon-right-square");
-		module.setPath(StringUtil.toRevertCamelCase(StringUtil.lowerFirst(schemeDataVo.getClassName()), CharUtil.DASHED));
-		module.setComponent("views" + url + "index");
+		module.setPath(StringUtil.toRevertCamelCase(StringUtil.lowerFirst(schemeDto.getClassName()), CharUtil.DASHED));
+		module.setComponent(url.substring(1) + "index");
 		save(module);
 
 		Menu moduleView = new Menu();
 		moduleView.setParent(module);
 		moduleView.setName(moduleName + "查看");
-//		moduleView.setIcon("fa-info-circle");
 		moduleView.setPermission(permission + "view");
 		moduleView.setParentId(module.getId());
 		moduleView.setType(Menu.TYPE_BUTTON);
 		moduleView.setSort(20);
-//		moduleView.setPath(url);
 		save(moduleView);
 		Menu moduleEdit = new Menu();
 		moduleEdit.setParent(module);
 		moduleEdit.setName(moduleName + "编辑");
-//        moduleEdit.setIconCls("icon-edit-fill");
 		moduleEdit.setPermission(permission + "edit");
 		moduleEdit.setParentId(module.getId());
 		moduleEdit.setType(Menu.TYPE_BUTTON);
 		moduleEdit.setSort(40);
-//		moduleEdit.setPath(url);
 		save(moduleEdit);
 		Menu moduleDelete = new Menu();
 		moduleDelete.setParent(module);
 		moduleDelete.setName(moduleName + "删除");
-//        moduleDelete.setIconCls("fa-trash-o");
 		moduleDelete.setPermission(permission + "del");
 		moduleDelete.setParentId(module.getId());
 		moduleDelete.setType(Menu.TYPE_BUTTON);
 		moduleDelete.setSort(80);
-//		moduleDelete.setPath(url);
 		save(moduleDelete);
 		return true;
 	}
 
-	@Override
-	public List<MenuTree> listMenuTrees(TreeQuery treeQuery) {
-		List<Menu> menuEntities = baseMapper.selectList(Wrappers.emptyWrapper());
-		String extId = treeQuery.getExtId();
-		List<MenuTree> treeList = menuEntities.stream().filter(item ->
-			(ObjectUtil.isEmpty(extId) || ObjectUtil.isEmpty(item.getParentIds()) ||
-				(ObjectUtil.isNotEmpty(extId) && !extId.equals(item.getId()) && item.getParentIds() != null
-					&& item.getParentIds().indexOf("," + extId + ",") == -1))
-		)
-			.sorted(Comparator.comparingInt(Menu::getSort))
-			.map(menu -> {
-				MenuTree node = new MenuTree();
-				node.setId(menu.getId());
-				node.setParentId(menu.getParentId());
-				node.setName(menu.getName());
-				node.setPath(menu.getPath());
-				node.setCode(menu.getPermission());
-				node.setLabel(menu.getName());
-				node.setComponent(menu.getComponent());
-				node.setIcon(menu.getIcon());
-				node.setKeepAlive(menu.getKeepAlive());
-				return node;
-			}).collect(Collectors.toList());
-		return TreeUtil.buildByLoop(treeList, Menu.ROOT);
-	}
 
 	@Override
-	@CacheEvict(value = "menu_details", allEntries = true)
-	public void sortUpdate(MenuDataSortVo menuDataSortVo) {
-
-		menuDataSortVo.getMenuSortVoList().forEach(menuSortVo -> {
+	public void sortUpdate(MenuSortDto menuSortDto) {
+		menuSortDto.getMenuSortList().forEach(menuSortVo -> {
 			Menu menu = repository.selectById(menuSortVo.getId());
 			if (menu != null) {
 				menu.setSort(menuSortVo.getSort());
@@ -249,4 +300,5 @@ public class MenuServiceImpl extends
 		});
 
 	}
+
 }

@@ -1,47 +1,61 @@
 package com.albedo.java.common.persistence.service;
 
-import com.albedo.java.common.core.vo.TreeQuery;
-import com.albedo.java.common.core.vo.TreeResult;
-import com.albedo.java.common.persistence.domain.TreeEntity;
-import com.albedo.java.common.persistence.repository.TreeRepository;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.transaction.annotation.Transactional;
+import com.albedo.java.common.core.vo.TreeDto;
+import com.albedo.java.common.core.vo.TreeNode;
+import com.albedo.java.common.persistence.domain.TreeEntityAbstract;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface TreeService<Repository extends TreeRepository<T>, T extends TreeEntity>
-	extends IService<T>, BaseService<Repository, T, String>,
-	DataService<Repository, T, String> {
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	T findTreeOne(Serializable id);
-
+/**
+ * TreeService
+ *
+ * @param <T>
+ * @param <D>
+ * @author somewhere
+ */
+public interface TreeService<T extends TreeEntityAbstract, D extends TreeDto> extends DataService<T, D, String> {
+	/**
+	 * countByParentId
+	 *
+	 * @param parentId
+	 * @return
+	 */
 	Integer countByParentId(String parentId);
 
+	/**
+	 * getTreeWrapper
+	 *
+	 * @param query
+	 * @param <Q>
+	 * @return
+	 */
+	<Q> QueryWrapper<T> getTreeWrapper(Q query);
 
+	/**
+	 * findTreeNode
+	 *
+	 * @param queryCriteria
+	 * @param <Q>
+	 * @return
+	 */
+	<Q> List<TreeNode> findTreeNode(Q queryCriteria);
+
+	/**
+	 * findTreeList
+	 *
+	 * @param queryCriteria
+	 * @param <Q>
+	 * @return
+	 */
+	<Q> List<T> findTreeList(Q queryCriteria);
+
+	/**
+	 * findAllByParentIdsLike
+	 *
+	 * @param parentIds
+	 * @return
+	 */
 	List<T> findAllByParentIdsLike(String parentIds);
 
-	List<T> findAllByParentId(String parentId);
-
-	List<T> findTop1ByParentIdOrderBySortDesc(String parentId);
-
-	List<T> findAllOrderBySort();
-
-	List<T> findAllByIdOrParentIdsLike(String id, String likeParentIds);
-
-	@Override
-	boolean saveOrUpdate(T entity);
-
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	List<TreeResult> findTreeData(TreeQuery query);
-
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	Integer countTopByParentId(String parentId);
-
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	T findTopByParentId(String parentId);
-
-	void deleteByParentIds(List<String> ids);
-
-	void deleteByParentIds(String id);
 }

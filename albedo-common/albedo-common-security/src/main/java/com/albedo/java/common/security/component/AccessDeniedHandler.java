@@ -24,7 +24,7 @@ package com.albedo.java.common.security.component;
 import cn.hutool.http.HttpStatus;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.exception.AccessDeniedException;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -60,7 +60,7 @@ public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
 		log.info("授权失败，禁止访问 {}", request.getRequestURI());
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(CommonConstants.CONTENT_TYPE);
-		R<String> result = new R<>(new AccessDeniedException("授权失败，禁止访问"));
+		Result<String> result = new Result<>(new AccessDeniedException("授权失败，禁止访问"));
 		response.setStatus(HttpStatus.HTTP_FORBIDDEN);
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));

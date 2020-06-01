@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,26 +17,25 @@
 package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.RuntimeMsgException;
-import com.albedo.java.common.core.util.ClassUtil;
-import com.albedo.java.common.core.util.ObjectUtil;
-import com.albedo.java.common.core.util.R;
+import com.albedo.java.common.core.util.BeanUtil;
+import com.albedo.java.common.core.util.ResponseEntityBuilder;
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
-import com.albedo.java.common.log.enums.BusinessType;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.util.ExcelUtil;
-import com.albedo.java.common.web.resource.DataVoResource;
-import com.albedo.java.modules.sys.domain.User;
-import com.albedo.java.modules.sys.domain.vo.UserDataVo;
+import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.modules.sys.domain.dto.UserDto;
+import com.albedo.java.modules.sys.domain.dto.UserInfoDto;
+import com.albedo.java.modules.sys.domain.dto.UserQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.UserExcelVo;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.albedo.java.modules.sys.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Lists;
-import lombok.extern.log4j.Log4j2;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,20 +44,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2019/2/1
  */
 @RestController
 @RequestMapping("/user")
-@Log4j2
-public class UserResource extends DataVoResource<UserService, UserDataVo> {
+@AllArgsConstructor
+public class UserResource extends BaseResource {
 
-
-	public UserResource(UserService service) {
-		super(service);
-	}
+	private final UserService userService;
 
 	/**
 	 * @param id
@@ -66,82 +63,9 @@ public class UserResource extends DataVoResource<UserService, UserDataVo> {
 	 */
 	@GetMapping(CommonConstants.URL_ID_REGEX)
 	@PreAuthorize("@pms.hasPermission('sys_user_view')")
-	public R get(@PathVariable String id) {
+	public Result get(@PathVariable String id) {
 		log.debug("REST request to get Entity : {}", id);
-		return R.buildOkData(service.getUserVoById(id));
-	}
-
-	/**
-	 * 获取当前用户全部信息
-	 *
-	 * @return 用户信息
-	 */
-	@GetMapping(value = {"/info"})
-	public R info() {
-		String username = SecurityUtil.getUser().getUsername();
-		UserVo userVo = service.findOneVoByUserName(username);
-		if (userVo == null) {
-			return R.buildFail("获取当前用户信息失败");
-		}
-		return R.buildOkData(service.getUserInfo(userVo));
-	}
-
-	/**
-	 * 根据用户名查询用户信息
-	 *
-	 * @param username 用户名
-	 * @return
-	 */
-	@GetMapping("/details/{username}")
-	public R detailsUser(@PathVariable String username) {
-		User condition = new User();
-		condition.setUsername(username);
-		return new R<>(service.getOne(new QueryWrapper<>(condition)));
-	}
-
-	/**
-	 * 删除用户
-	 *
-	 * @param ids
-	 * @return
-	 */
-	@Log(value = "用户管理", businessType = BusinessType.DELETE)
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
-	@PreAuthorize("@pms.hasPermission('sys_user_del')")
-	public R removeByIds(@PathVariable String ids) {
-		service.removeByIds(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("操作成功");
-	}
-
-	/**
-	 * 添加/更新用户信息
-	 *
-	 * @param userDataVo 用户信息
-	 * @return R
-	 */
-	@Log(value = "用户管理", businessType = BusinessType.EDIT)
-	@PostMapping("/")
-	@PreAuthorize("@pms.hasPermission('sys_user_edit')")
-	public R saveUser(@Valid @RequestBody UserDataVo userDataVo) {
-		log.debug("REST request to save userDataVo : {}", userDataVo);
-		if (StringUtil.isNotEmpty(userDataVo.getPassword()) &&
-			!userDataVo.getPassword().equals(userDataVo.getConfirmPassword())) {
-			throw new RuntimeMsgException("两次输入密码不一致");
-		}
-		// username before comparing with database
-		if (!checkByProperty(ClassUtil.createObj(UserDataVo.class,
-			Lists.newArrayList(UserDataVo.F_ID, UserDataVo.F_USERNAME),
-			userDataVo.getId(), userDataVo.getUsername()))) {
-			throw new RuntimeMsgException("登录Id已存在");
-		}
-		// email before comparing with database
-		if (StringUtil.isNotEmpty(userDataVo.getEmail()) &&
-			!checkByProperty(ClassUtil.createObj(UserDataVo.class,
-				Lists.newArrayList(UserDataVo.F_ID, UserDataVo.F_EMAIL), userDataVo.getId(), userDataVo.getEmail()))) {
-			throw new RuntimeMsgException("邮箱已存在");
-		}
-		service.save(userDataVo);
-		return R.buildOk("操作成功");
+		return Result.buildOkData(userService.findDtoById(id));
 	}
 
 	/**
@@ -150,19 +74,108 @@ public class UserResource extends DataVoResource<UserService, UserDataVo> {
 	 * @param pm 参数集
 	 * @return 用户集合
 	 */
-	@GetMapping("/")
+	@GetMapping
+	@Log(value = "用户管理查看")
 	@PreAuthorize("@pms.hasPermission('sys_user_view')")
-	public R getUserPage(PageModel pm) {
-		return R.buildOkData(service.getUserPage(pm, SecurityUtil.getUser().getDataScope()));
+	public Result<IPage<UserVo>> findPage(PageModel pm, UserQueryCriteria userQueryCriteria) {
+		return Result.buildOkData(userService.findPage(pm, userQueryCriteria, SecurityUtil.getDataScope()));
 	}
+
+	@Log(value = "用户管理导出")
+	@GetMapping(value = "/download")
+	@PreAuthorize("@pms.hasPermission('sys_user_view')")
+	public void download(UserQueryCriteria userQueryCriteria, HttpServletResponse response) {
+		ExcelUtil<UserVo> util = new ExcelUtil(UserVo.class);
+		util.exportExcel(userService.findPage(userQueryCriteria,
+			SecurityUtil.getDataScope()), "用户数据", response);
+	}
+
+	/**
+	 * 获取当前用户全部信息
+	 *
+	 * @return 用户信息
+	 */
+	@GetMapping(value = {"/info"})
+	public Result info() {
+		String username = SecurityUtil.getUser().getUsername();
+		UserVo userVo = userService.findVoByUsername(username);
+		if (userVo == null) {
+			return Result.buildFail("获取当前用户信息失败");
+		}
+		return Result.buildOkData(userService.getInfo(userVo));
+	}
+
+	/**
+	 * 个人中心更新信息
+	 *
+	 * @param userInfoDto 用户信息
+	 * @return R
+	 */
+	@Log(value = "用户管理编辑")
+	@PostMapping("/info")
+	public Result saveInfo(@Valid @RequestBody UserInfoDto userInfoDto) {
+		log.debug("REST request to save userDto : {}", userInfoDto);
+		UserDto userDto = BeanUtil.copyPropertiesByClass(userInfoDto, UserDto.class);
+		userDto.setId(SecurityUtil.getUser().getId());
+		userDto.setUsername(SecurityUtil.getUser().getUsername());
+		userService.saveOrUpdate(userDto);
+		return Result.buildOk("更新成功");
+	}
+
+	/**
+	 * 获取指定用户全部信息
+	 *
+	 * @return 用户信息
+	 */
+	@GetMapping("/info/{username}")
+	public Result info(@PathVariable String username) {
+		UserVo userVo = userService.findVoByUsername(username);
+		if (userVo == null) {
+			return Result.buildFail(String.format("用户信息为空 %s", username));
+		}
+		return Result.buildOkData(userService.getInfo(userVo));
+	}
+
+	/**
+	 * 删除用户
+	 *
+	 * @param ids
+	 * @return
+	 */
+	@Log(value = "用户管理删除")
+	@DeleteMapping
+	@PreAuthorize("@pms.hasPermission('sys_user_del')")
+	public Result removeByIds(@RequestBody Set<String> ids) {
+		return Result.buildByFlag(userService.removeByIds(ids));
+	}
+
+	/**
+	 * 添加/更新用户信息
+	 *
+	 * @param userDto 用户信息
+	 * @return R
+	 */
+	@Log(value = "用户管理编辑")
+	@PostMapping
+	@PreAuthorize("@pms.hasPermission('sys_user_edit')")
+	public Result save(@Valid @RequestBody UserDto userDto) {
+		log.debug("REST request to save userDto : {}", userDto);
+		boolean add = StringUtil.isEmpty(userDto.getId());
+		if (add) {
+			userDto.setPassword("123456");
+		}
+		userService.saveOrUpdate(userDto);
+		return Result.buildOk(add ? "新增成功，默认密码：123456" : "修改成功");
+	}
+
 
 	/**
 	 * @param username 用户名称
 	 * @return 上级部门用户列表
 	 */
 	@GetMapping("/ancestor/{username}")
-	public R listAncestorUsers(@PathVariable String username) {
-		return new R<>(service.listAncestorUsersByUsername(username));
+	public Result listAncestorUsers(@PathVariable String username) {
+		return Result.buildOkData(userService.listAncestorUsersByUsername(username));
 	}
 
 
@@ -170,54 +183,41 @@ public class UserResource extends DataVoResource<UserService, UserDataVo> {
 	 * @param ids
 	 * @return
 	 */
-	@PutMapping(CommonConstants.URL_IDS_REGEX)
-	@Log(value = "用户管理", businessType = BusinessType.LOCK)
+	@PutMapping
+	@Log(value = "用户管理锁定/解锁")
 	@PreAuthorize("@pms.hasPermission('sys_user_lock')")
-	public R lockOrUnLock(@PathVariable String ids) {
-		service.lockOrUnLock(Lists.newArrayList(ids.split(StringUtil.SPLIT_DEFAULT)));
-		return R.buildOk("操作成功");
+	public Result lockOrUnLock(@RequestBody Set<String> ids) {
+		userService.lockOrUnLock(ids);
+		return Result.buildOk("操作成功");
 	}
 
 
 	@PostMapping(value = "/upload")
 	@PreAuthorize("@pms.hasPermission('sys_user_upload')")
-	@Log(value = "用户管理", businessType = BusinessType.IMPORT)
-	public R uploadData(@RequestParam("uploadFile") MultipartFile dataFile, HttpServletResponse response) throws Exception {
+	@Log(value = "用户管理导入")
+	public ResponseEntity uploadData(@RequestParam("uploadFile") MultipartFile dataFile, HttpServletResponse response) throws Exception {
 		if (dataFile.isEmpty()) {
-			return R.buildFail("上传文件为空");
+			return ResponseEntityBuilder.buildFail("上传文件为空");
 		}
 		ExcelUtil<UserExcelVo> util = new ExcelUtil(UserExcelVo.class);
 		List<UserExcelVo> dataList = util.importExcel(dataFile.getInputStream());
-		;
 		for (UserExcelVo userExcelVo : dataList) {
 			if (userExcelVo.getPhone().length() != 11) {
 				BigDecimal bd = new BigDecimal(userExcelVo.getPhone());
 				userExcelVo.setPhone(bd.toPlainString());
 			}
-			if (!checkByProperty(ClassUtil.createObj(UserDataVo.class, Lists.newArrayList(UserVo.F_USERNAME),
-				userExcelVo.getUsername()))) {
-				throw new RuntimeMsgException("登录Id" + userExcelVo.getUsername() + "已存在");
-			}
-			if (ObjectUtil.isNotEmpty(userExcelVo.getPhone()) && !checkByProperty(ClassUtil.createObj(UserDataVo.class,
-				Lists.newArrayList(UserVo.F_PHONE), userExcelVo.getPhone()))) {
-				throw new RuntimeMsgException("手机" + userExcelVo.getPhone() + "已存在");
-			}
-			if (ObjectUtil.isNotEmpty(userExcelVo.getEmail()) && !checkByProperty(ClassUtil.createObj(UserDataVo.class,
-				Lists.newArrayList(UserVo.F_EMAIL), userExcelVo.getEmail()))) {
-				throw new RuntimeMsgException("邮箱" + userExcelVo.getEmail() + "已存在");
-			}
-			service.save(userExcelVo);
+			userService.save(userExcelVo);
 		}
-		return R.buildOk("操作成功");
+		return ResponseEntityBuilder.buildOk("操作成功");
 
 	}
 
 	@GetMapping(value = "/importTemplate")
 	@PreAuthorize("@pms.hasPermission('sys_user_view')")
-	public R importTemplate() {
+	@Log(value = "用户导入模板导出")
+	public void importTemplate(HttpServletResponse response) {
 		ExcelUtil<UserExcelVo> util = new ExcelUtil(UserExcelVo.class);
-		return util.exportExcel(Lists.newArrayList(new UserExcelVo()), "操作日志");
+		util.exportExcel(Lists.newArrayList(new UserExcelVo()), "操作日志", response);
 	}
-
 
 }

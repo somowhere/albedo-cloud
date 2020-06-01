@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 package com.albedo.java.modules.sys.service;
 
 
+import com.albedo.java.common.persistence.service.BaseService;
 import com.albedo.java.modules.sys.domain.RoleDept;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
  * 角色菜单表 服务类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
-public interface RoleDeptService extends IService<RoleDept> {
+public interface RoleDeptService extends BaseService<RoleDept> {
 
 }

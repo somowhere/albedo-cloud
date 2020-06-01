@@ -30,6 +30,8 @@ import org.springframework.security.oauth2.provider.token.UserAuthenticationConv
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
+
 /**
  * @author somowhere
  * @date 2019/03/08
@@ -40,15 +42,15 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 public class ResourceServerConfigurerAdapter extends org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter {
-	@Autowired
+	@Resource
 	protected ResourceAuthExceptionEntryPoint resourceAuthExceptionEntryPoint;
-	@Autowired
+	@Resource
 	protected RemoteTokenServices remoteTokenServices;
-	@Autowired
+	@Resource
 	private FilterIgnoreProperties ignorePropertiesConfig;
-	@Autowired
+	@Resource
 	private AccessDeniedHandler pigAccessDeniedHandler;
-	@Autowired
+	@Resource
 	private RestTemplate lbRestTemplate;
 
 	/**

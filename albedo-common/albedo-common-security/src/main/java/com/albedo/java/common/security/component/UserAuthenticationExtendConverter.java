@@ -39,7 +39,6 @@ import java.util.Map;
 public class UserAuthenticationExtendConverter implements UserAuthenticationConverter {
 	private static final String USER_ID = "user_id";
 	private static final String DEPT_ID = "dept_id";
-	private static final String PARENT_DEPT_ID = "parent_dept_id";
 	private static final String DEPT_NAME = "dept_name";
 	private static final String TENANT_ID = "tenant_id";
 	private static final String DATA_SCOPE = "data_scope";
@@ -59,7 +58,6 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 			UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 			response.put(USER_ID, userDetail.getId());
 			response.put(DEPT_ID, userDetail.getDeptId());
-			response.put(PARENT_DEPT_ID, userDetail.getParentDeptId());
 			response.put(DEPT_NAME, userDetail.getDeptName());
 			response.put(DATA_SCOPE, Json.toJsonString(userDetail.getDataScope()));
 		}
@@ -83,10 +81,9 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 			String username = (String) map.get(USERNAME);
 			String id = (String) map.get(USER_ID);
 			String deptId = (String) map.get(DEPT_ID);
-			String parentDeptId = (String) map.get(PARENT_DEPT_ID);
 			String deptName = (String) map.get(DEPT_NAME);
 			DataScope dataScope = Json.parseObject((String) map.get(DATA_SCOPE), DataScope.class);
-			UserDetail user = new UserDetail(id, deptId, parentDeptId,deptName, username, N_A, true
+			UserDetail user = new UserDetail(id, deptId, deptName, username, N_A, true
 				, true, true, true, authorities, dataScope);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}

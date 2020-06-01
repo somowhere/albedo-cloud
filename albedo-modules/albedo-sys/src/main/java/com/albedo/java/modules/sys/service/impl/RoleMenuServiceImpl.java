@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@
 
 package com.albedo.java.modules.sys.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.modules.sys.domain.RoleMenu;
+import com.albedo.java.modules.sys.domain.dto.RoleMenuDto;
 import com.albedo.java.modules.sys.repository.RoleMenuRepository;
 import com.albedo.java.modules.sys.service.RoleMenuService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,42 +36,33 @@ import java.util.stream.Collectors;
  * 角色菜单表 服务实现类
  * </p>
  *
- * @author somowhere
+ * @author somewhere
  * @since 2019/2/1
  */
 @Service
 @AllArgsConstructor
 public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuRepository, RoleMenu>
 	implements RoleMenuService {
-	private final CacheManager cacheManager;
 
 	/**
-	 * @param role
-	 * @param roleId  角色
-	 * @param menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
+	 * @param roleMenuDto 角色菜单
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@CacheEvict(value = "menu_details", key = "#roleId + '_menu'")
-	public Boolean saveRoleMenus(String role, String roleId, String menuIds) {
+	@CacheEvict(value = {CacheNameConstants.ROLE_DETAILS, CacheNameConstants.MENU_DETAILS}, allEntries = true)
+	public Boolean saveRoleMenus(RoleMenuDto roleMenuDto) {
 		this.remove(Wrappers.<RoleMenu>query().lambda()
-			.eq(RoleMenu::getRoleId, roleId));
+			.eq(RoleMenu::getRoleId, roleMenuDto.getRoleId()));
 
-		if (StrUtil.isBlank(menuIds)) {
-			return Boolean.TRUE;
-		}
-		List<RoleMenu> roleMenuList = Arrays
-			.stream(menuIds.split(","))
+		List<RoleMenu> roleMenuList = roleMenuDto.getMenuIdList().stream()
 			.map(menuId -> {
 				RoleMenu roleMenu = new RoleMenu();
-				roleMenu.setRoleId(roleId);
+				roleMenu.setRoleId(roleMenuDto.getRoleId());
 				roleMenu.setMenuId(menuId);
 				return roleMenu;
 			}).collect(Collectors.toList());
 
-		//清空userinfo
-		cacheManager.getCache("user_details").clear();
 		return this.saveBatch(roleMenuList);
 	}
 }

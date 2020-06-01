@@ -1,11 +1,12 @@
 package com.albedo.java.modules.sys.web;
 
+import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.GlobalExceptionHandler;
+import com.albedo.java.common.core.exception.handler.GlobalExceptionHandler;
 import com.albedo.java.modules.AlbedoSysApplication;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.sys.domain.Dept;
-import com.albedo.java.modules.sys.domain.vo.DeptDataVo;
+import com.albedo.java.modules.sys.domain.dto.DeptDto;
 import com.albedo.java.modules.sys.service.DeptService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.albedo.java.modules.TestUtil.createFormattingConversionService;
@@ -48,18 +50,20 @@ public class DeptResourceIntTest {
 	private static final String DEFAULT_DESCRIPTION = "DESCRIPTION1";
 	private static final String UPDATED_DESCRIPTION = "DESCRIPTION2";
 	private String DEFAULT_API_URL;
-	@Autowired
+	@Resource
 	private DeptService deptService;
 
 	private MockMvc restDeptMockMvc;
-	@Autowired
+	@Resource
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-	@Autowired
+	@Resource
 	private GlobalExceptionHandler globalExceptionHandler;
+	@Resource
+	private ApplicationProperties applicationProperties;
 
-	private DeptDataVo dept;
+	private DeptDto dept;
 
-	private DeptDataVo anotherDept = new DeptDataVo();
+	private DeptDto anotherDept = new DeptDto();
 
 	@BeforeEach
 	public void setup() {
@@ -79,8 +83,8 @@ public class DeptResourceIntTest {
 	 * This is a static method, as tests for other entities might also need it,
 	 * if they test an domain which has a required relationship to the Dept domain.
 	 */
-	public DeptDataVo createEntity() {
-		DeptDataVo dept = new DeptDataVo();
+	public DeptDto createEntity() {
+		DeptDto dept = new DeptDto();
 		dept.setName(DEFAULT_NAME);
 		dept.setSort(DEFAULT_SORT);
 		dept.setDescription(DEFAULT_DESCRIPTION);
@@ -96,13 +100,13 @@ public class DeptResourceIntTest {
 		anotherDept.setParentId(DEFAULT_ANOTHER_PARENTID);
 		anotherDept.setSort(DEFAULT_SORT);
 		anotherDept.setDescription(DEFAULT_DESCRIPTION);
-		deptService.save(anotherDept);
+		deptService.saveOrUpdate(anotherDept);
 
 		dept.setParentId(anotherDept.getId());
 	}
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void createDept() throws Exception {
 		List<Dept> databaseSizeBeforeCreate = deptService.list();
 
@@ -115,7 +119,7 @@ public class DeptResourceIntTest {
 		// Validate the Dept in the database
 		List<Dept> deptList = deptService.list();
 		assertThat(deptList).hasSize(databaseSizeBeforeCreate.size() + 1);
-		Dept testDept = deptService.findOne(Wrappers.<Dept>query().lambda()
+		Dept testDept = deptService.getOne(Wrappers.<Dept>query().lambda()
 			.eq(Dept::getName, dept.getName()));
 		assertThat(testDept.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testDept.getSort()).isEqualTo(DEFAULT_SORT);
@@ -127,39 +131,39 @@ public class DeptResourceIntTest {
 	}
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void getDept() throws Exception {
 		// Initialize the database
-		deptService.save(dept);
+		deptService.saveOrUpdate(dept);
 
 		// Get the dept
 		restDeptMockMvc.perform(get(DEFAULT_API_URL + "{id}", dept.getId()))
 			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.data.name").value(DEFAULT_NAME))
 			.andExpect(jsonPath("$.data.parentId").value(anotherDept.getId()))
 			.andExpect(jsonPath("$.data.description").value(DEFAULT_DESCRIPTION));
 	}
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void getNonExistingDept() throws Exception {
 		restDeptMockMvc.perform(get("/sys/dept/ddd/unknown"))
 			.andExpect(status().isNotFound());
 	}
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void updateDept() throws Exception {
 		// Initialize the database
-		deptService.save(dept);
+		deptService.saveOrUpdate(dept);
 		int databaseSizeBeforeUpdate = deptService.list().size();
 
 		// Update the dept
-		Dept updatedDept = deptService.findOneById(dept.getId());
+		Dept updatedDept = deptService.getById(dept.getId());
 
 
-		DeptDataVo managedDeptVM = new DeptDataVo();
+		DeptDto managedDeptVM = new DeptDto();
 		managedDeptVM.setName(UPDATED_NAME);
 		managedDeptVM.setSort(UPDATED_SORT);
 		managedDeptVM.setParentId(UPDATED_PARENTID);
@@ -175,7 +179,7 @@ public class DeptResourceIntTest {
 		// Validate the Dept in the database
 		List<Dept> deptList = deptService.list();
 		assertThat(deptList).hasSize(databaseSizeBeforeUpdate);
-		Dept testDept = deptService.findOneById(updatedDept.getId());
+		Dept testDept = deptService.getById(updatedDept.getId());
 		assertThat(testDept.getName()).isEqualTo(UPDATED_NAME);
 		assertThat(testDept.getSort()).isEqualTo(UPDATED_SORT);
 		assertThat(testDept.getParentId()).isEqualTo(UPDATED_PARENTID);
@@ -187,11 +191,11 @@ public class DeptResourceIntTest {
 
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteDept() throws Exception {
 		// Initialize the database
-		deptService.save(dept);
-		long databaseSizeBeforeDelete = deptService.findCount();
+		deptService.saveOrUpdate(dept);
+		long databaseSizeBeforeDelete = deptService.count();
 
 		// Delete the dept
 		restDeptMockMvc.perform(delete(DEFAULT_API_URL + "{id}", dept.getId())
@@ -199,12 +203,12 @@ public class DeptResourceIntTest {
 			.andExpect(status().isOk());
 
 		// Validate the database is empty
-		long databaseSizeAfterDelete = deptService.findCount();
+		long databaseSizeAfterDelete = deptService.count();
 		assertThat(databaseSizeAfterDelete == databaseSizeBeforeDelete - 1);
 	}
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void testDeptEquals() throws Exception {
 		TestUtil.equalsVerifier(Dept.class);
 		Dept dept1 = new Dept();

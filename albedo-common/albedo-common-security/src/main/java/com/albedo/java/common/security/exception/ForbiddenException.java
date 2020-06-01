@@ -25,7 +25,7 @@ import org.springframework.http.HttpStatus;
  * @date 2019/2/1
  */
 @JsonSerialize(using = Auth2ExceptionSerializer.class)
-public class ForbiddenException extends PigAuth2Exception {
+public class ForbiddenException extends Auth2Exception {
 
 	public ForbiddenException(String msg, Throwable t) {
 		super(msg);

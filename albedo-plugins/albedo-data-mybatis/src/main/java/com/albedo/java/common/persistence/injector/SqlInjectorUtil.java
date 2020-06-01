@@ -1,27 +1,28 @@
 package com.albedo.java.common.persistence.injector;
 
-import com.albedo.java.common.core.util.BeanVoUtil;
+import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.common.core.util.ClassUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.persistence.annotation.ManyToOne;
-import com.albedo.java.common.persistence.domain.TreeEntity;
+import com.albedo.java.common.persistence.domain.TreeEntityAbstract;
 import com.albedo.java.common.persistence.injector.methods.SqlCustomMethod;
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
-import org.apache.ibatis.session.Configuration;
 
 import java.beans.PropertyDescriptor;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author somewhere
+ * @description
+ * @date 2020/5/31 17:12
+ */
 @Slf4j
+@Deprecated
 public class SqlInjectorUtil {
 	public static String sqlWordConvert(String column) {
 		return String.format("`%s`", column);
@@ -49,13 +50,13 @@ public class SqlInjectorUtil {
 				size = fieldList.size();
 			}
 
-			if (StringUtils.isNotBlank(table.getKeyProperty())) {
+			if (StringUtil.isNotEmpty(table.getKeyProperty())) {
 				if (StringUtil.isNotEmpty(columnPrefix)) {
 					columns.append('`').append(columnPrefix).append("`.");
 				}
 				String keyProperty = table.getKeyProperty();
 				if (StringUtil.isNotEmpty(selectProfix)) {
-					keyProperty = selectProfix + "." + keyProperty;
+					keyProperty = selectProfix + StringUtil.DOT + keyProperty;
 				}
 				columns.append(table.getKeyColumn()).append(" AS ").append(sqlWordConvert(keyProperty));
 
@@ -71,7 +72,7 @@ public class SqlInjectorUtil {
 					TableFieldInfo fieldInfo = (TableFieldInfo) iterator.next();
 					String property = fieldInfo.getProperty();
 					if (StringUtil.isNotEmpty(selectProfix)) {
-						property = selectProfix + "." + property;
+						property = selectProfix + StringUtil.DOT + property;
 					}
 					String wordConvert = sqlWordConvert(property);
 					if (StringUtil.isNotEmpty(columnPrefix)) {
@@ -96,9 +97,9 @@ public class SqlInjectorUtil {
 
 	public static String parseSql(MapperBuilderAssistant builderAssistant,
 								  SqlCustomMethod sqlMethod, Class<?> modelClass, TableInfo tableInfo, String sqlWhereEntityWrapper) {
-		String tableNameAlias = StringUtil.lowerCase(modelClass.getSimpleName());
+		String tableNameAlias = StringUtil.lowerCase(modelClass.getSimpleName()), tempNameAlias;
 		TableInfo tableAlias;
-		PropertyDescriptor[] ps = BeanVoUtil.getPropertyDescriptors(modelClass);
+		PropertyDescriptor[] ps = BeanUtil.getPropertyDescriptors(modelClass);
 		StringBuffer sbSelectCoumns = new StringBuffer(SqlInjectorUtil.sqlSelectColumns(tableInfo, false, tableNameAlias, null)),
 			sbLeftJoin = new StringBuffer(tableInfo.getTableName()).append(" `").append(tableNameAlias).append("`");
 		for (PropertyDescriptor p : ps) {
@@ -110,7 +111,7 @@ public class SqlInjectorUtil {
 					.append(SqlInjectorUtil.sqlSelectColumns(tableAlias, false, p.getName(), p.getName()));
 				sbLeftJoin.append(" LEFT JOIN ").append(tableAlias.getTableName()).append(" `").append(p.getName())
 					.append("` ON `").append(tableNameAlias).append("`.").append(annotation.name())
-					.append(" = `").append(p.getName()).append("`.").append(TreeEntity.F_SQL_ID);
+					.append(" = `").append(p.getName()).append("`.").append(TreeEntityAbstract.F_SQL_ID);
 			}
 		}
 

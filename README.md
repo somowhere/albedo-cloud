@@ -16,9 +16,29 @@
 
 #### 快速开始
 
+1. 在host添加
 
-1. 启动AlbedoRegisterApplication、AlbedoAuthApplication、AlbedoSysApplication、AlbedoGenApplication、AlbedoQuartzApplication、AlbedoMonitorApplication、AlbedoSentinelApplication、AlbedoGatewayApplication
-2. 启动前端[albedi-ui](https://github.com/somowhere/albedo-ui) 访问[localhost](http://localhost:4000)
+```
+127.0.0.1 albedo-mysql
+127.0.0.1 albedo-redis
+127.0.0.1 albedo-auth
+127.0.0.1 albedo-gateway
+127.0.0.1 albedo-register
+```
+
+2. 依次启动
+
+```
+AlbedoRegisterApplication
+AlbedoAuthApplication
+AlbedoSysApplication
+AlbedoGenApplication
+AlbedoQuartzApplication
+AlbedoMonitorApplication
+AlbedoSentinelApplication
+AlbedoGatewayApplication
+```
+3. 启动前端[albedi-ui](https://github.com/somowhere/albedo-ui) 访问[localhost](http://localhost:4000)
 
 #### 系统预览
 
@@ -51,7 +71,7 @@ Avue | 2.3
 
 
 #### 模块说明
-```lua
+```
 albedo
 ├── albedo-auth -- 授权服务提供[3000]
 └── albedo-common -- 系统公共模块 

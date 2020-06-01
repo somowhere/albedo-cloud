@@ -41,9 +41,9 @@ public class RemoteDictServiceImpl implements RemoteDictService {
 	private final DictService dictService;
 
 	@Override
-	public String getDictAll() {
+	public String findAllOrderBySort() {
 
-		List<Dict> list = dictService.list(Wrappers.emptyWrapper());
+		List<Dict> list = dictService.findAllOrderBySort();
 		return Json.toJsonString(list);
 	}
 }
