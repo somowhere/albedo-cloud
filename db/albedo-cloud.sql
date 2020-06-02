@@ -11,7 +11,7 @@
  Target Server Version : 50729
  File Encoding         : 65001
 
- Date: 01/06/2020 19:40:11
+ Date: 02/06/2020 13:06:03
 */
 
 SET NAMES utf8mb4;
@@ -328,7 +328,7 @@ CREATE TABLE `qrtz_scheduler_state` (
 -- Records of qrtz_scheduler_state
 -- ----------------------------
 BEGIN;
-INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'somewheredembp.lan1590996646286', 1591011610783, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'somewheredembp.lan1591060407700', 1591074351133, 15000);
 COMMIT;
 
 -- ----------------------------
@@ -411,9 +411,9 @@ CREATE TABLE `qrtz_triggers` (
 -- Records of qrtz_triggers
 -- ----------------------------
 BEGIN;
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1590996650000, -1, 5, 'PAUSED', 'CRON', 1590996646000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1590996660000, -1, 5, 'PAUSED', 'CRON', 1590996647000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1590996660000, -1, 5, 'PAUSED', 'CRON', 1590996647000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1591060410000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1591060410000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1591060420000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
 COMMIT;
 
 -- ----------------------------
@@ -426,8 +426,8 @@ CREATE TABLE `sys_dept` (
   `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
   `name` varchar(50) DEFAULT NULL COMMENT '部门名称',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
-  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
   `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
+  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
   `created_by` varchar(50) NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `last_modified_by` varchar(50) DEFAULT NULL,
@@ -442,17 +442,14 @@ CREATE TABLE `sys_dept` (
 -- Records of sys_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept` VALUES ('1', '-1', NULL, '山东农信', NULL, '1', b'0', '', '2018-01-22 19:00:23.000', NULL, '2019-07-04 16:57:18.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('10', '8', NULL, '院校沙县', NULL, '1', b'0', '', '2018-12-10 21:19:26.000', NULL, '2019-06-15 10:56:41.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('2', '-1', NULL, '沙县国际', NULL, '1', b'0', '', '2018-01-22 19:00:38.000', NULL, '2019-07-04 16:57:22.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('3', '1', NULL, '潍坊农信', NULL, '1', b'0', '', '2018-01-22 19:00:44.000', NULL, '2019-06-15 10:56:41.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('4', '3', NULL, '高新农信', 30, '1', b'0', '', '2018-01-22 19:00:52.000', '1', '2019-07-14 09:02:57.000', 6, '', '0');
-INSERT INTO `sys_dept` VALUES ('5', '4', NULL, '院校农信', 30, '1', b'0', '', '2018-01-22 19:00:57.000', '1', '2019-07-14 09:10:44.000', 1, '', '0');
-INSERT INTO `sys_dept` VALUES ('5f86e2a82b040b1f618aefc62f403024', '5', '5,', '11', 1, '1', b'1', '1', '2019-07-14 09:10:45.000', '1', '2019-07-14 09:10:57.000', 0, NULL, '1');
-INSERT INTO `sys_dept` VALUES ('6', '5', NULL, '潍院农信', NULL, '1', b'0', '', '2018-01-22 19:01:06.000', NULL, '2019-01-09 10:58:18.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('7', '2', NULL, '山东沙县', NULL, '1', b'0', '', '2018-01-22 19:01:57.000', NULL, '2019-06-15 10:56:41.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('8', '7', NULL, '潍坊沙县', NULL, '1', b'0', '', '2018-01-22 19:02:03.000', NULL, '2019-06-15 10:56:41.000', 0, '', '0');
-INSERT INTO `sys_dept` VALUES ('9', '8', NULL, '高新沙县', NULL, '1', b'0', '', '2018-01-22 19:02:14.000', NULL, '2018-09-13 01:46:44.000', 0, '', '0');
+INSERT INTO `sys_dept` VALUES ('1', '-1', NULL, '总部', 30, b'0', '1', '1', '2020-05-16 02:26:57.020', '1', '2020-05-21 03:09:24.266', 12, '', '0');
+INSERT INTO `sys_dept` VALUES ('4981e65fbb6059f3a5ceddd6b3426e6d', '9e4dcac1683359bfeac1871ccdc29e9f', '9e4dcac1683359bfeac1871ccdc29e9f,', 'ddd', 1, b'1', '1', '1', '2020-05-16 03:05:18.140', '1', '2020-05-16 03:05:23.939', 0, NULL, '1');
+INSERT INTO `sys_dept` VALUES ('6304292a4ecb1448c33447adc0c35f08', '1', '1,', '运营部', 30, b'1', '1', '1', '2020-05-16 03:03:46.542', '1', '2020-05-16 05:27:11.787', 2, '', '0');
+INSERT INTO `sys_dept` VALUES ('701903b72179df2c79d383f621eab9c8', '1', '1,', 'AI部', 30, b'1', '1', '1', '2020-05-16 03:04:11.395', '1', '2020-05-16 03:04:11.395', 0, NULL, '0');
+INSERT INTO `sys_dept` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '-1', NULL, 'test', 1, b'0', '1', '1', '2020-05-16 03:05:05.919', '1', '2020-05-16 03:05:23.939', 1, NULL, '1');
+INSERT INTO `sys_dept` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', '-1', NULL, '平台', 30, b'1', '1', '1', '2020-05-16 02:28:08.383', '1', '2020-05-16 03:04:55.462', 2, NULL, '0');
+INSERT INTO `sys_dept` VALUES ('db32c981785f619401518127c48b6247', '1', '1,', '测试部', 30, b'1', '1', '1', '2020-05-16 03:03:57.184', '1', '2020-05-16 03:03:57.184', 0, NULL, '0');
+INSERT INTO `sys_dept` VALUES ('f52e1e844bf0fbadf5213214fb621e27', '1', '1,', '开发部', 30, b'1', '1', '1', '2020-05-16 03:03:23.518', '1', '2020-05-21 03:09:24.277', 3, NULL, '0');
 COMMIT;
 
 -- ----------------------------
@@ -462,6 +459,7 @@ DROP TABLE IF EXISTS `sys_dept_relation`;
 CREATE TABLE `sys_dept_relation` (
   `ancestor` varchar(32) NOT NULL COMMENT '祖先节点',
   `descendant` varchar(32) NOT NULL COMMENT '后代节点',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`ancestor`,`descendant`) USING BTREE,
   KEY `idx1` (`ancestor`) USING BTREE,
   KEY `idx2` (`descendant`) USING BTREE
@@ -471,27 +469,19 @@ CREATE TABLE `sys_dept_relation` (
 -- Records of sys_dept_relation
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept_relation` VALUES ('1', '1');
-INSERT INTO `sys_dept_relation` VALUES ('1', '3');
-INSERT INTO `sys_dept_relation` VALUES ('1', '4');
-INSERT INTO `sys_dept_relation` VALUES ('1', '5');
-INSERT INTO `sys_dept_relation` VALUES ('10', '10');
-INSERT INTO `sys_dept_relation` VALUES ('11', '11');
-INSERT INTO `sys_dept_relation` VALUES ('2', '11');
-INSERT INTO `sys_dept_relation` VALUES ('2', '2');
-INSERT INTO `sys_dept_relation` VALUES ('2', '7');
-INSERT INTO `sys_dept_relation` VALUES ('2', '8');
-INSERT INTO `sys_dept_relation` VALUES ('3', '3');
-INSERT INTO `sys_dept_relation` VALUES ('3', '4');
-INSERT INTO `sys_dept_relation` VALUES ('3', '5');
-INSERT INTO `sys_dept_relation` VALUES ('4', '4');
-INSERT INTO `sys_dept_relation` VALUES ('4', '5');
-INSERT INTO `sys_dept_relation` VALUES ('5', '5');
-INSERT INTO `sys_dept_relation` VALUES ('7', '11');
-INSERT INTO `sys_dept_relation` VALUES ('7', '7');
-INSERT INTO `sys_dept_relation` VALUES ('7', '8');
-INSERT INTO `sys_dept_relation` VALUES ('8', '11');
-INSERT INTO `sys_dept_relation` VALUES ('8', '8');
+INSERT INTO `sys_dept_relation` VALUES ('1', '1', '0');
+INSERT INTO `sys_dept_relation` VALUES ('1', '6304292a4ecb1448c33447adc0c35f08', '0');
+INSERT INTO `sys_dept_relation` VALUES ('1', '701903b72179df2c79d383f621eab9c8', '0');
+INSERT INTO `sys_dept_relation` VALUES ('1', 'db32c981785f619401518127c48b6247', '0');
+INSERT INTO `sys_dept_relation` VALUES ('1', 'f52e1e844bf0fbadf5213214fb621e27', '0');
+INSERT INTO `sys_dept_relation` VALUES ('4981e65fbb6059f3a5ceddd6b3426e6d', '4981e65fbb6059f3a5ceddd6b3426e6d', '1');
+INSERT INTO `sys_dept_relation` VALUES ('6304292a4ecb1448c33447adc0c35f08', '6304292a4ecb1448c33447adc0c35f08', '0');
+INSERT INTO `sys_dept_relation` VALUES ('701903b72179df2c79d383f621eab9c8', '701903b72179df2c79d383f621eab9c8', '0');
+INSERT INTO `sys_dept_relation` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '4981e65fbb6059f3a5ceddd6b3426e6d', '1');
+INSERT INTO `sys_dept_relation` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '9e4dcac1683359bfeac1871ccdc29e9f', '1');
+INSERT INTO `sys_dept_relation` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', 'c095173c3aebcd7ff9c6177fbf7a8b69', '0');
+INSERT INTO `sys_dept_relation` VALUES ('db32c981785f619401518127c48b6247', 'db32c981785f619401518127c48b6247', '0');
+INSERT INTO `sys_dept_relation` VALUES ('f52e1e844bf0fbadf5213214fb621e27', 'f52e1e844bf0fbadf5213214fb621e27', '0');
 COMMIT;
 
 -- ----------------------------
@@ -661,12 +651,46 @@ CREATE TABLE `sys_log_operate` (
   KEY `sys_log_create_by` (`created_by`) USING BTREE,
   KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
   KEY `sys_log_create_date` (`created_date`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=724 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=758 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='操作日志表';
 
 -- ----------------------------
 -- Records of sys_log_operate
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_log_operate` VALUES (724, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '4509', 'MANAGE', '0', NULL, '1', '2020-06-01 19:40:24.038', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (725, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '8454', 'MANAGE', '0', NULL, '1', '2020-06-01 19:41:36.947', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (726, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B31971591011736308%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:42:35.789', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (727, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '3146', 'MANAGE', '0', NULL, '1', '2020-06-01 19:42:36.463', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (728, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '27', 'MANAGE', '0', NULL, '1', '2020-06-01 19:44:03.351', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (729, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B62411591011849394%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:44:11.794', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (730, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B28741591011899599%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:45:04.472', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (731, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B63281591011904966%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:45:13.649', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (732, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B35651591011914184%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:45:16.486', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (733, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B66511591011916966%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:45:19.494', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (734, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B38981591011920054%5D&code=%5B2312%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:45:22.148', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (735, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B66841591061539458%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 09:36:34.609', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (736, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B39291591061826556%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 09:38:20.521', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (737, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B39291591061826556%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 09:43:02.414', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (738, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B51441591062182540%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 09:46:41.916', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (739, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B17661591062557467%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 09:49:29.578', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (740, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B17661591062557467%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 10:06:37.248', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (741, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B88871591063605648%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 10:06:48.474', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (742, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B88871591063605648%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 10:28:33.694', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (743, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B56581591064913963%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 10:29:50.295', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (744, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '326', 'MANAGE', '0', NULL, '1', '2020-06-02 10:30:37.632', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (745, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '54', 'MANAGE', '0', NULL, '1', '2020-06-02 10:31:11.508', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (746, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '24', 'MANAGE', '0', NULL, '1', '2020-06-02 10:31:28.215', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (747, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '14', 'MANAGE', '0', NULL, '1', '2020-06-02 10:31:43.229', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (748, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '576', 'MANAGE', '0', NULL, '1', '2020-06-02 10:31:44.958', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (749, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '15', 'MANAGE', '0', NULL, '1', '2020-06-02 10:32:01.889', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (750, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B39301591065342689%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 10:35:46.245', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (751, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '22', 'MANAGE', '0', NULL, '1', '2020-06-02 10:35:46.993', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (752, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B53791591068459894%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:27:44.736', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (753, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B81701591069495907%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:45:27.017', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (754, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B78001591070041582%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:54:13.549', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (755, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (756, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (757, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
 COMMIT;
 
 -- ----------------------------
@@ -863,7 +887,7 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
   `level` int(11) DEFAULT NULL COMMENT '角色级别',
   `data_scope` char(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置',
   `available` char(1) COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
@@ -881,8 +905,11 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('1', '管理员', NULL, '1', '1', '', '2017-10-29 15:45:51.000', '1', '2019-10-23 14:51:52.673', NULL, 61, '0');
-INSERT INTO `sys_role` VALUES ('2', 'ROLE_CQQ', NULL, '2', '1', '', '2018-11-11 19:42:26.000', '90da0206c39867a1b36ac36ced80c1a9', '2020-04-03 16:49:12.114', NULL, 22, '0');
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', 1, '1', '1', '', '2017-10-30 06:45:51.000', '1', '2020-05-15 02:00:00.741', NULL, 75, '0');
+INSERT INTO `sys_role` VALUES ('2', '机构管理员', 2, '2', '1', '', '2018-11-12 11:42:26.000', '1', '2020-05-15 02:01:14.154', NULL, 18, '0');
+INSERT INTO `sys_role` VALUES ('262da20a182dd09e70422cbca05503b7', 'tets', 3, '5', '1', '1', '2020-05-15 02:21:30.869', '1', '2020-05-15 02:28:55.628', NULL, 0, '1');
+INSERT INTO `sys_role` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '部门管理员', 3, '3', '1', '1', '2020-05-15 02:02:13.389', '1', '2020-05-26 02:13:04.474', NULL, 3, '0');
+INSERT INTO `sys_role` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '普通管理员', 4, '4', '1', '1', '2020-05-15 02:00:50.813', '1', '2020-05-15 02:30:26.577', '普通管理', 6, '0');
 COMMIT;
 
 -- ----------------------------
@@ -900,11 +927,11 @@ CREATE TABLE `sys_role_dept` (
 -- Records of sys_role_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_dept` VALUES ('1f22837ee7b6f7aacf0563cd5ed1fb8f', '2', '4');
-INSERT INTO `sys_role_dept` VALUES ('60ea8dc84a13664c1b8b26bc7af11158', '2', '1');
-INSERT INTO `sys_role_dept` VALUES ('7addd9aa594621c74007263800ac2b7b', '1', '8');
-INSERT INTO `sys_role_dept` VALUES ('a5619c152b46b9d015bea34f7bde52fb', '2', '3');
-INSERT INTO `sys_role_dept` VALUES ('ef156f1e7751861a972c5e5f635901b3', '2', '5');
+INSERT INTO `sys_role_dept` VALUES ('28e2bd6452d0aff99f014136336eab61', '1', '8');
+INSERT INTO `sys_role_dept` VALUES ('34481e9777757dd6ffe1c799749b4db5', '2', '5');
+INSERT INTO `sys_role_dept` VALUES ('5c5c58ad79db6edea88100e6491e5e30', '2', '4');
+INSERT INTO `sys_role_dept` VALUES ('64af22db5dbe5cf69de8fa7f2d917922', '2', '3');
+INSERT INTO `sys_role_dept` VALUES ('c3b5457350bb7a9be8201fa3f88d3c2c', '262da20a182dd09e70422cbca05503b7', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -921,7 +948,9 @@ CREATE TABLE `sys_role_menu` (
 -- Records of sys_role_menu
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_role_menu` VALUES ('1', '0d0be247863fcbf08b3db943e5f45992');
 INSERT INTO `sys_role_menu` VALUES ('1', '1000');
+INSERT INTO `sys_role_menu` VALUES ('1', '10bd98f30a42427dd7ef75418ad3da6b');
 INSERT INTO `sys_role_menu` VALUES ('1', '1100');
 INSERT INTO `sys_role_menu` VALUES ('1', '1101');
 INSERT INTO `sys_role_menu` VALUES ('1', '1102');
@@ -934,57 +963,64 @@ INSERT INTO `sys_role_menu` VALUES ('1', '1300');
 INSERT INTO `sys_role_menu` VALUES ('1', '1301');
 INSERT INTO `sys_role_menu` VALUES ('1', '1302');
 INSERT INTO `sys_role_menu` VALUES ('1', '1303');
-INSERT INTO `sys_role_menu` VALUES ('1', '1304');
 INSERT INTO `sys_role_menu` VALUES ('1', '13093fb658c1806ad5bd0600316158f2');
+INSERT INTO `sys_role_menu` VALUES ('1', '133f1408f5e3187d3e1a00b0260b7165');
 INSERT INTO `sys_role_menu` VALUES ('1', '1400');
 INSERT INTO `sys_role_menu` VALUES ('1', '1401');
 INSERT INTO `sys_role_menu` VALUES ('1', '1402');
 INSERT INTO `sys_role_menu` VALUES ('1', '1403');
 INSERT INTO `sys_role_menu` VALUES ('1', '18d6b5e0f6b986cd074bf23de11ecd34');
-INSERT INTO `sys_role_menu` VALUES ('1', '1a900c3f10ef5b0987e0a8ee4445316d');
+INSERT INTO `sys_role_menu` VALUES ('1', '1ae562534a64d4473899e52497c40b2e');
 INSERT INTO `sys_role_menu` VALUES ('1', '2000');
 INSERT INTO `sys_role_menu` VALUES ('1', '2100');
 INSERT INTO `sys_role_menu` VALUES ('1', '2101');
 INSERT INTO `sys_role_menu` VALUES ('1', '2200');
 INSERT INTO `sys_role_menu` VALUES ('1', '2201');
 INSERT INTO `sys_role_menu` VALUES ('1', '2202');
-INSERT INTO `sys_role_menu` VALUES ('1', '23430df88fb72179c2a85c39eaf4d50b');
 INSERT INTO `sys_role_menu` VALUES ('1', '247071d42ff40267c8d8c44eac92da67');
 INSERT INTO `sys_role_menu` VALUES ('1', '2500');
 INSERT INTO `sys_role_menu` VALUES ('1', '2600');
 INSERT INTO `sys_role_menu` VALUES ('1', '2601');
 INSERT INTO `sys_role_menu` VALUES ('1', '29de79df95e70d8e8fbdc7945acf214a');
-INSERT INTO `sys_role_menu` VALUES ('1', '2c8fdecfee63a310266b2e4b94fd3f4c');
-INSERT INTO `sys_role_menu` VALUES ('1', '34acb71268387bb85c80849f7377c7fd');
-INSERT INTO `sys_role_menu` VALUES ('1', '3c1c5a48888650b9a7ba5a1763f2e205');
 INSERT INTO `sys_role_menu` VALUES ('1', '413892fe8d52c1163d6659f51299dc96');
 INSERT INTO `sys_role_menu` VALUES ('1', '52715698214e88cb09fa4dd1ea5ad348');
-INSERT INTO `sys_role_menu` VALUES ('1', '5da31e19f05edeea6a7041e3101deefe');
+INSERT INTO `sys_role_menu` VALUES ('1', '5404c3df9f771dbc0237578814bbe44b');
+INSERT INTO `sys_role_menu` VALUES ('1', '5b39ca5a25c772105c71f8c51d1f19d4');
+INSERT INTO `sys_role_menu` VALUES ('1', '618ee4b9660265a85a8b61277de2a579');
 INSERT INTO `sys_role_menu` VALUES ('1', '621e50e1c7d66a1febeb699bebb2fe35');
+INSERT INTO `sys_role_menu` VALUES ('1', '64b61b8966e1c74d9b309069b2f622d1');
+INSERT INTO `sys_role_menu` VALUES ('1', '6e3f89cda84ac2c6e715e7812c102ae8');
 INSERT INTO `sys_role_menu` VALUES ('1', '74f2b2a8871a298e0acc4d7129d10e9c');
 INSERT INTO `sys_role_menu` VALUES ('1', '76d6087052dc26b32f3efa71b9cc119b');
+INSERT INTO `sys_role_menu` VALUES ('1', '7754b1457826c48290bc189bb1289740');
+INSERT INTO `sys_role_menu` VALUES ('1', '795b4d5cf0eb3ed80e24cbab39727b9d');
 INSERT INTO `sys_role_menu` VALUES ('1', '7b14af9e9fbff286856338a194422b07');
-INSERT INTO `sys_role_menu` VALUES ('1', '7c7a876f4cceba2dd92aa539dea6b6e5');
-INSERT INTO `sys_role_menu` VALUES ('1', '825f7504bb7932eec7b19716c9afea0f');
-INSERT INTO `sys_role_menu` VALUES ('1', '94b57a562063d103423e2c6125cb30ad');
+INSERT INTO `sys_role_menu` VALUES ('1', '92f78825551a22fa130c03066f398448');
 INSERT INTO `sys_role_menu` VALUES ('1', '9763343d9cce11ce9eb4f21c8e49122b');
 INSERT INTO `sys_role_menu` VALUES ('1', '97722c6d56c8b9990cc3c1a6eea3d6bb');
+INSERT INTO `sys_role_menu` VALUES ('1', '9f02e346b5350366968f217daef3f1b7');
 INSERT INTO `sys_role_menu` VALUES ('1', 'a18b33e15bde209a3c9115517c56d9ec');
+INSERT INTO `sys_role_menu` VALUES ('1', 'b8eafb6c3a8bf0919230f0bfa59d86b6');
 INSERT INTO `sys_role_menu` VALUES ('1', 'b961670cbf3454f5927c4bd2a327e915');
 INSERT INTO `sys_role_menu` VALUES ('1', 'b963a451117f430703817b3b6c87402a');
 INSERT INTO `sys_role_menu` VALUES ('1', 'bb9dd4b7a2a462193d0f01517308f812');
 INSERT INTO `sys_role_menu` VALUES ('1', 'bd62904371247f56594741ff8e9bded9');
-INSERT INTO `sys_role_menu` VALUES ('1', 'c93f8fca7ca6f8631d383b08ab67009a');
+INSERT INTO `sys_role_menu` VALUES ('1', 'c0ba37c10abaecd89a738c5cf2a2fd24');
 INSERT INTO `sys_role_menu` VALUES ('1', 'caaec41413c5713c6f290efe08c11415');
 INSERT INTO `sys_role_menu` VALUES ('1', 'd4c16faad8f883650a3a8eab829ebad9');
+INSERT INTO `sys_role_menu` VALUES ('1', 'd9d87cf8ed7c29ed2eda06d5dec4dcda');
 INSERT INTO `sys_role_menu` VALUES ('1', 'e086c4aa4943a883b29cf94680608b89');
 INSERT INTO `sys_role_menu` VALUES ('1', 'e5ea38c1f97dee0043e78f3fb27b25d6');
 INSERT INTO `sys_role_menu` VALUES ('1', 'e710a66583fe0e324492462adb16014e');
-INSERT INTO `sys_role_menu` VALUES ('1', 'ec1ff71a4dd5318b6def9b2be47a95e1');
+INSERT INTO `sys_role_menu` VALUES ('1', 'eb17cee437ea6b630dad59fff2a059ca');
 INSERT INTO `sys_role_menu` VALUES ('1', 'ef2382c0cc2d99ee73444e684237a88a');
+INSERT INTO `sys_role_menu` VALUES ('1', 'f15e2186907d22765cd149a94905842a');
+INSERT INTO `sys_role_menu` VALUES ('1', 'fe4c7938e146ec223e99d426aaa87109');
+INSERT INTO `sys_role_menu` VALUES ('2', '1000');
+INSERT INTO `sys_role_menu` VALUES ('2', '1100');
 INSERT INTO `sys_role_menu` VALUES ('2', '1101');
 INSERT INTO `sys_role_menu` VALUES ('2', '1102');
-INSERT INTO `sys_role_menu` VALUES ('2', '1103');
+INSERT INTO `sys_role_menu` VALUES ('2', '1200');
 INSERT INTO `sys_role_menu` VALUES ('2', '1201');
 INSERT INTO `sys_role_menu` VALUES ('2', '1202');
 INSERT INTO `sys_role_menu` VALUES ('2', '1203');
@@ -992,13 +1028,39 @@ INSERT INTO `sys_role_menu` VALUES ('2', '1300');
 INSERT INTO `sys_role_menu` VALUES ('2', '1301');
 INSERT INTO `sys_role_menu` VALUES ('2', '1302');
 INSERT INTO `sys_role_menu` VALUES ('2', '1303');
-INSERT INTO `sys_role_menu` VALUES ('2', '1304');
+INSERT INTO `sys_role_menu` VALUES ('2', '13093fb658c1806ad5bd0600316158f2');
 INSERT INTO `sys_role_menu` VALUES ('2', '1400');
 INSERT INTO `sys_role_menu` VALUES ('2', '1401');
 INSERT INTO `sys_role_menu` VALUES ('2', '1402');
 INSERT INTO `sys_role_menu` VALUES ('2', '1403');
-INSERT INTO `sys_role_menu` VALUES ('2', '1a900c3f10ef5b0987e0a8ee4445316d');
-INSERT INTO `sys_role_menu` VALUES ('2', 'caaec41413c5713c6f290efe08c11415');
+INSERT INTO `sys_role_menu` VALUES ('2', '18d6b5e0f6b986cd074bf23de11ecd34');
+INSERT INTO `sys_role_menu` VALUES ('2', '2000');
+INSERT INTO `sys_role_menu` VALUES ('2', '2100');
+INSERT INTO `sys_role_menu` VALUES ('2', '2101');
+INSERT INTO `sys_role_menu` VALUES ('2', '2200');
+INSERT INTO `sys_role_menu` VALUES ('2', '2201');
+INSERT INTO `sys_role_menu` VALUES ('2', '2202');
+INSERT INTO `sys_role_menu` VALUES ('2', '2600');
+INSERT INTO `sys_role_menu` VALUES ('2', '2601');
+INSERT INTO `sys_role_menu` VALUES ('2', '29de79df95e70d8e8fbdc7945acf214a');
+INSERT INTO `sys_role_menu` VALUES ('2', '621e50e1c7d66a1febeb699bebb2fe35');
+INSERT INTO `sys_role_menu` VALUES ('2', '74f2b2a8871a298e0acc4d7129d10e9c');
+INSERT INTO `sys_role_menu` VALUES ('2', '76d6087052dc26b32f3efa71b9cc119b');
+INSERT INTO `sys_role_menu` VALUES ('2', '7b14af9e9fbff286856338a194422b07');
+INSERT INTO `sys_role_menu` VALUES ('2', '9763343d9cce11ce9eb4f21c8e49122b');
+INSERT INTO `sys_role_menu` VALUES ('2', 'b963a451117f430703817b3b6c87402a');
+INSERT INTO `sys_role_menu` VALUES ('2', 'd4c16faad8f883650a3a8eab829ebad9');
+INSERT INTO `sys_role_menu` VALUES ('2', 'ef2382c0cc2d99ee73444e684237a88a');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1100');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1101');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1102');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1103');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1300');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1301');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1302');
+INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1303');
+INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1000');
+INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1100');
 COMMIT;
 
 -- ----------------------------
@@ -1034,9 +1096,14 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$6z14VGdfVnlWY2K1pvdzJOHkvjLmOuBrJXXeZ0mGIqB60Qd6WYDoC', NULL, '17034642999', NULL, '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 07:15:18.000', '1', '2020-06-01 18:22:31.691', NULL, 9, '0');
-INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$81JhU58/uM.JmWKiCAcxoOiSS///NT6rXbSRATa.UgGG8stlA1ABy', NULL, '12343543432', '837158@qq.com', NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:32:17.000', '1', '2020-03-19 15:49:47.956', NULL, 19, '0');
-INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$G2sntp9sArZVIxq3VjDkve3GLEfm3fZb9nJf5TwQrtvf09niORfri', NULL, NULL, NULL, NULL, '3', NULL, NULL, '1', '1', '2019-07-07 14:35:13.000', '1', '2020-04-03 15:54:40.694', NULL, 40, '0');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$6z14VGdfVnlWY2K1pvdzJOHkvjLmOuBrJXXeZ0mGIqB60Qd6WYDoC', 'albedo', '17034642999', '22@ss.com', '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 22:15:18.000', '1', '2020-05-31 18:35:54.900', '11', 46, '0');
+INSERT INTO `sys_user` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', 'test1', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254642311', '13@qqx.om', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 00:51:46.703', '1', '2020-05-30 07:42:57.177', NULL, 6, '0');
+INSERT INTO `sys_user` VALUES ('4c2796f3667e3e5907a04623d7fd8de4', 'ttttt', '$2a$10$KYuAjYBhucUG4GbYQTuRO.YOl6JJlGdEdD5zGLkfrSumnjEF59S7G', '1', '13245678975', '1@e.com', '', 'c095173c3aebcd7ff9c6177fbf7a8b69', NULL, NULL, '1', '1', '2020-05-30 07:41:21.126', '4c2796f3667e3e5907a04623d7fd8de4', '2020-05-31 18:35:26.113', NULL, 7, '0');
+INSERT INTO `sys_user` VALUES ('5168fcfd16b8bad9fb38edfab4409023', 'www', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258465211', 'qq@ee.com', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 01:22:11.393', '1', '2020-05-30 07:42:57.181', NULL, 18, '0');
+INSERT INTO `sys_user` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', 'dddd', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', 'dd', '13258465214', '1@1.com', NULL, '1', NULL, NULL, '1', '1', '2020-05-28 18:08:17.639', '1', '2020-05-30 07:42:57.184', NULL, 0, '0');
+INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462101', '837158@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:32:17.000', '1', '2020-05-30 07:42:57.186', '11', 26, '0');
+INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462222', 'ww@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:35:13.000', '1', '2020-05-30 07:42:57.187', NULL, 50, '0');
+INSERT INTO `sys_user` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', 'ttt', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254732131', '2113@ed.bom', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 01:06:21.381', '1', '2020-05-30 07:42:57.190', NULL, 1, '1');
 COMMIT;
 
 -- ----------------------------
@@ -1084,7 +1151,14 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_user_role` VALUES ('1', '1');
+INSERT INTO `sys_user_role` VALUES ('1', '2');
+INSERT INTO `sys_user_role` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', '2');
+INSERT INTO `sys_user_role` VALUES ('4c2796f3667e3e5907a04623d7fd8de4', '2');
+INSERT INTO `sys_user_role` VALUES ('5168fcfd16b8bad9fb38edfab4409023', '2');
+INSERT INTO `sys_user_role` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', '4647a907ad1dd30b28cbdaa229b67fc1');
+INSERT INTO `sys_user_role` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', '1');
 INSERT INTO `sys_user_role` VALUES ('90da0206c39867a1b36ac36ced80c1a9', '2');
+INSERT INTO `sys_user_role` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', '2');
 COMMIT;
 
 -- ----------------------------
