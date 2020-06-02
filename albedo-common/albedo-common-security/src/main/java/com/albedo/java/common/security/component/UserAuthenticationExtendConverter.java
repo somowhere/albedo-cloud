@@ -19,6 +19,7 @@ package com.albedo.java.common.security.component;
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.common.security.service.UserDetail;
+import com.alibaba.fastjson.JSON;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,7 +60,7 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 			response.put(USER_ID, userDetail.getId());
 			response.put(DEPT_ID, userDetail.getDeptId());
 			response.put(DEPT_NAME, userDetail.getDeptName());
-			response.put(DATA_SCOPE, Json.toJsonString(userDetail.getDataScope()));
+			response.put(DATA_SCOPE, JSON.toJSONString(userDetail.getDataScope()));
 		}
 		if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
 			response.put(AUTHORITIES, AuthorityUtils.authorityListToSet(authentication.getAuthorities()));

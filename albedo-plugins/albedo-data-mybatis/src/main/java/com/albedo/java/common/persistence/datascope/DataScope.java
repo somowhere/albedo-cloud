@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -30,8 +31,10 @@ import java.util.Set;
  * 数据权限查询参数
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class DataScope extends HashMap {
+public class DataScope implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 限制范围的字段名称
 	 */

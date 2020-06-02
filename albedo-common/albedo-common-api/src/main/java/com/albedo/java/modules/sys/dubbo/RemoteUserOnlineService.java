@@ -27,7 +27,7 @@ import java.util.Map;
  * @date 2019/2/1
  */
 
-public interface RemoteTokenService {
+public interface RemoteUserOnlineService {
 	/**
 	 * 分页查询token 信息
 	 *

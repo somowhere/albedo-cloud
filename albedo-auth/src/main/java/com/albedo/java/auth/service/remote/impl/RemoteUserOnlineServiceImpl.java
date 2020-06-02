@@ -18,21 +18,27 @@ package com.albedo.java.auth.service.remote.impl;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.core.util.ObjectUtil;
-import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.util.*;
 import com.albedo.java.common.security.service.UserDetail;
-import com.albedo.java.modules.sys.dubbo.RemoteTokenService;
+import com.albedo.java.common.util.RedisUtil;
+import com.albedo.java.modules.sys.domain.UserOnline;
+import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
+import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
+import com.baomidou.mybatisplus.core.toolkit.EncryptUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.data.redis.core.ConvertingCursor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -41,10 +47,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author somowhere
@@ -53,12 +58,35 @@ import java.util.Map;
  */
 @Service(protocol = "dubbo")
 @AllArgsConstructor
-public class RemoteTokenServiceImpl implements RemoteTokenService {
+public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 	private static final String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
+	private static final String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
 	private static final String CURRENT = "current";
 	private static final String SIZE = "size";
 	private final TokenStore tokenStore;
 	private final RedisTemplate redisTemplate;
+
+	/**
+	 * save 保存在线用户信息
+	 * @author somewhere
+	 * @param oAuth2Authentication
+	 * @param request
+	 * @updateTime 2020/6/2 11:00
+	 */
+	@SneakyThrows
+	public void save(OAuth2Authentication oAuth2Authentication, HttpServletRequest request){
+		OAuth2AccessToken token = tokenStore.getAccessToken(oAuth2Authentication);
+		UserDetail userDetail = (UserDetail) oAuth2Authentication.getPrincipal();
+		String ip = WebUtil.getIp(request);
+		String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
+		UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
+		UserOnlineDto userOnlineDto = new UserOnlineDto(EncryptUtil.desDecrypt(token.getValue()), userDetail.getDeptId(),
+			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),
+			userAgentStr, userAgent.getBrowser().getName(), userAgent.getOs().getName(), new Date(), token.getExpiration());
+
+		RedisUtil.setCacheObject(PROJECT_OAUTH_ONLINE + token, userOnlineDto, token.getExpiresIn(), TimeUnit.SECONDS);
+	}
+
 
 	/**
 	 * 令牌管理调用
@@ -87,7 +115,8 @@ public class RemoteTokenServiceImpl implements RemoteTokenService {
 			params.put(SIZE, 20);
 		}
 		//根据分页参数获取对应数据
-		List<String> tokenStrs = findKeysForPage(PROJECT_OAUTH_ACCESS + "*", MapUtil.getStr(params, "username"), MapUtil.getInt(params, CURRENT), MapUtil.getInt(params, SIZE));
+		List<String> tokenStrs = findKeysForPage(PROJECT_OAUTH_ACCESS + "*", MapUtil.getStr(params, "username"),
+			MapUtil.getInt(params, CURRENT), MapUtil.getInt(params, SIZE));
 
 		for (String tokenStr : tokenStrs) {
 			OAuth2AccessToken token = tokenStore.readAccessToken(tokenStr);

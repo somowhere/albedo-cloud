@@ -2,20 +2,20 @@ package com.albedo.java.modules.sys.component;
 
 
 import com.albedo.java.modules.sys.dubbo.RemoteDictService;
-import com.albedo.java.modules.sys.dubbo.RemoteTokenService;
+import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
 import org.apache.dubbo.config.annotation.Reference;
 
 public class RemoteServiceComponent {
 	@Reference(check = false)
 	private RemoteDictService remoteDictService;
 	@Reference(check = false)
-	private RemoteTokenService remoteTokenService;
+	private RemoteUserOnlineService remoteUserOnlineService;
 
 	public RemoteDictService getRemoteDictService() {
 		return remoteDictService;
 	}
 
-	public RemoteTokenService getRemoteTokenService() {
-		return remoteTokenService;
+	public RemoteUserOnlineService getRemoteUserOnlineService() {
+		return remoteUserOnlineService;
 	}
 }

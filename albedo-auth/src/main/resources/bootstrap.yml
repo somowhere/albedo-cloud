@@ -4,6 +4,7 @@ server:
 logging:
   level:
     ROOT: INFO
+    org.springframework.security.oauth2: DEBUG
     com.albedo.java: DEBUG
 spring:
   application:

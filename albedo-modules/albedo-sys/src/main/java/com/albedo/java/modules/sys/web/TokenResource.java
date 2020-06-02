@@ -18,7 +18,7 @@ package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.modules.sys.dubbo.RemoteTokenService;
+import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ import java.util.Map;
 public class TokenResource {
 
 	@Reference(check = false)
-	private RemoteTokenService remoteTokenService;
+	private RemoteUserOnlineService remoteUserOnlineService;
 
 	/**
 	 * 分页token 信息
@@ -45,7 +45,7 @@ public class TokenResource {
 	 */
 	@GetMapping("/")
 	public Result token(@RequestParam Map<String, Object> params) {
-		return remoteTokenService.getTokenPage(params);
+		return remoteUserOnlineService.getTokenPage(params);
 	}
 
 	/**
@@ -57,6 +57,6 @@ public class TokenResource {
 	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
 	@PreAuthorize("@pms.hasPermission('sys_token_del')")
 	public Result<Boolean> delete(@PathVariable String ids) {
-		return remoteTokenService.removeToken(ids);
+		return remoteUserOnlineService.removeToken(ids);
 	}
 }
