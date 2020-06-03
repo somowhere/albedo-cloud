@@ -17,20 +17,30 @@
 package com.albedo.java.auth.handler;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
+import com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl;
+import com.albedo.java.common.core.util.AddressUtils;
 import com.albedo.java.common.core.util.SpringContextHolder;
+import com.albedo.java.common.core.util.WebUtil;
 import com.albedo.java.common.log.enums.LogType;
 import com.albedo.java.common.log.enums.OperatorType;
 import com.albedo.java.common.log.event.SysLogEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.common.security.handler.AbstractAuthenticationSuccessEventHandler;
+import com.albedo.java.common.security.service.UserDetail;
+import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.sys.domain.LogOperate;
+import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -51,19 +61,43 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 	@Override
 	public void handle(Authentication authentication) {
 		log.info("用户：{} 登录成功", authentication.getPrincipal());
-		String useruame = null;
-		if(authentication.getPrincipal() instanceof String){
-			useruame = (String) authentication.getPrincipal();
-		}
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		LogOperate logOperate = SysLogUtils.getSysLog();
+		if(authentication.getPrincipal() instanceof String){
+			logOperate.setUsername((String) authentication.getPrincipal());
+		}else if(authentication.getPrincipal() instanceof UserDetail){
+			UserDetail principal = (UserDetail) authentication.getPrincipal();
+			logOperate.setUsername(principal.getUsername());
+			logOperate.setCreatedBy(principal.getId());
+			saveUserOnline(principal, request);
+		}
 		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
-		logOperate.setUsername(useruame);
 		logOperate.setLogType(LogType.INFO.name());
 		logOperate.setTitle("用户登录成功");
 		logOperate.setOperatorType(OperatorType.MANAGE.name());
 		// 发送异步日志事件
 		SpringContextHolder.publishEvent(new SysLogEvent(logOperate));
+
+
 	}
+
+	/**
+	 * saveUserOnline 保存在线用户信息
+	 * @author somewhere
+	 * @param userDetail
+	 * @param request
+	 * @updateTime 2020/6/2 11:00
+	 */
+	public void saveUserOnline(UserDetail userDetail, HttpServletRequest request){
+		String ip = WebUtil.getIp(request);
+		String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
+		UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
+		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
+			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),
+			userAgentStr, userAgent.getBrowser().getName(), userAgent.getOs().getName(), new Date());
+		RedisUtil.setCacheObject(RemoteUserOnlineServiceImpl.PROJECT_OAUTH_ONLINE + userOnlineDto.getUserId(), userOnlineDto);
+	}
+
+
 }

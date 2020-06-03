@@ -16,11 +16,14 @@
 
 package com.albedo.java.modules.sys.dubbo;
 
+import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.Result;
+import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author somowhere
@@ -29,18 +32,19 @@ import java.util.Map;
 
 public interface RemoteUserOnlineService {
 	/**
-	 * 分页查询token 信息
+	 * 分页查询 信息
 	 *
-	 * @param params 分页参数
+	 * @param userOnlineQueryCriteria 分页参数
 	 * @return page
 	 */
-	Result getTokenPage(@RequestBody Map<String, Object> params);
+	Result findPage(UserOnlineQueryCriteria userOnlineQueryCriteria);
 
 	/**
-	 * 删除token
+	 * 删除
 	 *
-	 * @param tokens tokens
+	 * @param tokens
+	 * @param userId
 	 * @return
 	 */
-	Result<Boolean> removeToken(@PathVariable("tokens") String tokens);
+	Result<Boolean> removeByTokens(Set<String> tokens, String userId) throws BadRequestException;
 }

@@ -37,8 +37,7 @@ public class RemoteMenuServiceImpl implements RemoteMenuService {
 	private final MenuService menuService;
 
 	@Override
-	public boolean saveByGenScheme(GenSchemeDto schemeDto) {
-
+	public boolean saveByGenScheme(GenSchemeDto schemeDto) throws IllegalArgumentException {
 		return menuService.saveByGenScheme(schemeDto);
 	}
 }

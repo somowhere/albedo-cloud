@@ -16,6 +16,6 @@ public interface RemoteMenuService {
 	 * @updateTime 2020/6/1 11:10
 	 * @return boolean
 	 */
-	boolean saveByGenScheme(GenSchemeDto schemeDto) ;
+	boolean saveByGenScheme(GenSchemeDto schemeDto) throws IllegalArgumentException ;
 
 }

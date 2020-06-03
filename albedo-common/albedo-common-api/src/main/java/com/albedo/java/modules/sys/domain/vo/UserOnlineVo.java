@@ -1,17 +1,8 @@
-package com.albedo.java.modules.sys.domain.dto;
+package com.albedo.java.modules.sys.domain.vo;
 
-import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.constant.DictNameConstants;
-import com.albedo.java.common.core.vo.DataDto;
 import com.albedo.java.common.core.vo.GeneralDto;
-import com.albedo.java.common.persistence.domain.BaseEntity;
-import com.albedo.java.modules.sys.domain.enums.OnlineStatus;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -21,8 +12,7 @@ import java.util.Date;
  * @author somewhere
  */
 @Data
-@AllArgsConstructor
-public class UserOnlineDto extends GeneralDto {
+public class UserOnlineVo extends GeneralDto {
 
 	/**
 	 * 部门ID
@@ -72,6 +62,19 @@ public class UserOnlineDto extends GeneralDto {
 	 * 登录时间
 	 */
 	private Date loginTime;
+
+	private String tokenType;
+
+	private String accessToken;
+
+	private Date expiresIn;
+
+	private String clientId;
+
+	private String grantType;
+
+
+
 
 
 }

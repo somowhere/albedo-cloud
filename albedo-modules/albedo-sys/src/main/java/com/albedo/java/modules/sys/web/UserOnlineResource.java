@@ -16,14 +16,16 @@
 
 package com.albedo.java.modules.sys.web;
 
-import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
+import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.security.util.SecurityUtil;
+import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author somowhere
@@ -31,32 +33,34 @@ import java.util.Map;
  * getTokenPage 管理
  */
 @RestController
-@RequestMapping("/token")
-public class TokenResource {
+@RequestMapping("/user-online")
+public class UserOnlineResource {
 
 	@Reference(check = false)
 	private RemoteUserOnlineService remoteUserOnlineService;
 
 	/**
-	 * 分页token 信息
 	 *
-	 * @param params 参数集
-	 * @return token集合
+	 * @param userOnlineQueryCriteria 参数集
+	 * @return
 	 */
-	@GetMapping("/")
-	public Result token(@RequestParam Map<String, Object> params) {
-		return remoteUserOnlineService.getTokenPage(params);
+	@Log(value = "在线用户查看")
+	@GetMapping
+	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
+	public Result findPage(UserOnlineQueryCriteria userOnlineQueryCriteria) {
+		return remoteUserOnlineService.findPage(userOnlineQueryCriteria);
 	}
 
 	/**
 	 * 删除
 	 *
-	 * @param ids IDs
-	 * @return success/false
+	 * @param tokens
+	 * @return Result
 	 */
-	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
-	@PreAuthorize("@pms.hasPermission('sys_token_del')")
-	public Result<Boolean> delete(@PathVariable String ids) {
-		return remoteUserOnlineService.removeToken(ids);
+	@Log(value = "强退在线用户")
+	@DeleteMapping
+	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
+	public Result removeByTokens(@RequestBody Set<String> tokens) {
+		return remoteUserOnlineService.removeByTokens(tokens, SecurityUtil.getUser().getId());
 	}
 }

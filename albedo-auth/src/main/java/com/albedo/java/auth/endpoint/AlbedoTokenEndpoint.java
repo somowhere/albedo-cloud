@@ -17,11 +17,9 @@
 package com.albedo.java.auth.endpoint;
 
 import cn.hutool.core.util.StrUtil;
-import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.modules.sys.component.RemoteServiceComponent;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
@@ -39,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/token")
+@Slf4j
 public class AlbedoTokenEndpoint {
 	private final TokenStore tokenStore;
 
@@ -56,13 +55,13 @@ public class AlbedoTokenEndpoint {
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			return Result.buildFailData(Boolean.FALSE, "退出失败，token 无效");
+			log.info("token 无效"+tokenValue);
+			return Result.buildOkData(Boolean.TRUE);
 		}
 		tokenStore.removeAccessToken(accessToken);
 
 		OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
 		tokenStore.removeRefreshToken(refreshToken);
-
 
 		return Result.buildOkData(Boolean.TRUE);
 	}

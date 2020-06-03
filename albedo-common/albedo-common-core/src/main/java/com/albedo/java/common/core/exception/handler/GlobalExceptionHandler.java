@@ -23,6 +23,7 @@ import com.albedo.java.common.core.util.BeanValidators;
 import com.albedo.java.common.core.util.ResponseEntityBuilder;
 import com.albedo.java.common.core.util.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.rpc.RpcException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -54,6 +55,9 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public Result exception(Exception e) {
 		log.error("全局异常信息 ex={}", e);
+		if(e instanceof RpcException){
+			return Result.buildFail("远程服务调用失败");
+		}
 		return Result.buildFail(e.getMessage());
 	}
 
