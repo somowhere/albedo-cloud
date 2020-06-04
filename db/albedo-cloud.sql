@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50729
+ Source Server Version : 50725
  Source Host           : localhost:3306
  Source Schema         : albedo-cloud
 
  Target Server Type    : MySQL
- Target Server Version : 50729
+ Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 02/06/2020 13:06:03
+ Date: 04/06/2020 16:02:56
 */
 
 SET NAMES utf8mb4;
@@ -21,427 +21,356 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for gen_scheme
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_scheme`;
-CREATE TABLE `gen_scheme` (
-  `id` varchar(64) NOT NULL COMMENT '编号',
-  `name` varchar(200) DEFAULT NULL COMMENT '名称',
-  `category` varchar(2000) DEFAULT NULL COMMENT '分类',
-  `view_type` char(2) DEFAULT NULL COMMENT '视图类型 0  普通表格 1  表格采用ajax刷新',
-  `package_name` varchar(500) DEFAULT NULL COMMENT '生成包路径',
-  `module_name` varchar(30) DEFAULT NULL COMMENT '生成模块名',
-  `sub_module_name` varchar(30) DEFAULT NULL COMMENT '生成子模块名',
-  `function_name` varchar(500) DEFAULT NULL COMMENT '生成功能名',
-  `function_name_simple` varchar(100) DEFAULT NULL COMMENT '生成功能名（简写）',
-  `function_author` varchar(100) DEFAULT NULL COMMENT '生成功能作者',
-  `gen_table_id` varchar(200) DEFAULT NULL COMMENT '生成表编号',
-  `version` int(11) DEFAULT '0' COMMENT '默认0，必填，离线乐观锁',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `gen_scheme`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `category` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类',
+  `view_type` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '视图类型 0  普通表格 1  表格采用ajax刷新',
+  `package_name` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成包路径',
+  `module_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成模块名',
+  `sub_module_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成子模块名',
+  `function_name` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成功能名',
+  `function_name_simple` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成功能名（简写）',
+  `function_author` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成功能作者',
+  `gen_table_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '生成表编号',
+  `version` int(11) NULL DEFAULT 0 COMMENT '默认0，必填，离线乐观锁',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='生成方案';
-
--- ----------------------------
--- Records of gen_scheme
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '生成方案' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for gen_table
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table`;
-CREATE TABLE `gen_table` (
-  `id` varchar(64) NOT NULL COMMENT '编号',
-  `name` varchar(200) DEFAULT NULL COMMENT '名称',
-  `comments` varchar(500) DEFAULT NULL COMMENT '描述',
-  `class_name` varchar(100) DEFAULT NULL COMMENT '实体类名称',
-  `parent_table` varchar(200) DEFAULT NULL COMMENT '关联父表',
-  `parent_table_fk` varchar(100) DEFAULT NULL COMMENT '关联父表外键',
-  `version` int(11) DEFAULT '0' COMMENT '默认0，必填，离线乐观锁',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `gen_table`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `comments` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `class_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '实体类名称',
+  `parent_table` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联父表',
+  `parent_table_fk` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联父表外键',
+  `version` int(11) NULL DEFAULT 0 COMMENT '默认0，必填，离线乐观锁',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id` (`id`) USING BTREE,
-  KEY `gen_table_name` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='业务表';
-
--- ----------------------------
--- Records of gen_table
--- ----------------------------
-BEGIN;
-COMMIT;
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `gen_table_name`(`name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for gen_table_column
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table_column`;
-CREATE TABLE `gen_table_column` (
-  `id` varchar(64) NOT NULL COMMENT '编号',
-  `gen_table_id` varchar(64) DEFAULT NULL COMMENT '归属表编号',
-  `name` varchar(200) DEFAULT NULL COMMENT '名称',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `comments` varchar(500) DEFAULT NULL COMMENT '描述备注',
-  `jdbc_type` varchar(100) DEFAULT NULL COMMENT '列的数据类型的字节长度',
-  `java_type` varchar(500) DEFAULT NULL COMMENT 'JAVA类型',
-  `java_field` varchar(200) DEFAULT NULL COMMENT 'JAVA字段名',
-  `is_pk` bit(1) DEFAULT NULL COMMENT '是否主键',
-  `is_unique` bit(1) DEFAULT NULL COMMENT '是否唯一（1：是；0：否）',
-  `is_null` bit(1) DEFAULT NULL COMMENT '是否可为空',
-  `is_insert` bit(1) DEFAULT NULL COMMENT '是否为插入字段',
-  `is_edit` bit(1) DEFAULT NULL COMMENT '是否编辑字段',
-  `is_list` bit(1) DEFAULT NULL COMMENT '是否列表字段',
-  `is_query` bit(1) DEFAULT NULL COMMENT '是否查询字段',
-  `query_type` varchar(200) DEFAULT NULL COMMENT '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）',
-  `show_type` varchar(200) DEFAULT NULL COMMENT '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）',
-  `dict_type` varchar(200) DEFAULT NULL COMMENT '字典类型',
-  `settings` varchar(2000) DEFAULT NULL COMMENT '其它设置（扩展字段JSON）',
-  `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
-  `version` int(11) DEFAULT '0' COMMENT '默认0，必填，离线乐观锁',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `gen_table_column`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `gen_table_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '归属表编号',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题',
+  `comments` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述备注',
+  `jdbc_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '列的数据类型的字节长度',
+  `java_type` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` bit(1) NULL DEFAULT NULL COMMENT '是否主键',
+  `is_unique` bit(1) NULL DEFAULT NULL COMMENT '是否唯一（1：是；0：否）',
+  `is_null` bit(1) NULL DEFAULT NULL COMMENT '是否可为空',
+  `is_insert` bit(1) NULL DEFAULT NULL COMMENT '是否为插入字段',
+  `is_edit` bit(1) NULL DEFAULT NULL COMMENT '是否编辑字段',
+  `is_list` bit(1) NULL DEFAULT NULL COMMENT '是否列表字段',
+  `is_query` bit(1) NULL DEFAULT NULL COMMENT '是否查询字段',
+  `query_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）',
+  `show_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）',
+  `dict_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典类型',
+  `settings` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '其它设置（扩展字段JSON）',
+  `sort` decimal(10, 0) NULL DEFAULT NULL COMMENT '排序（升序）',
+  `version` int(11) NULL DEFAULT 0 COMMENT '默认0，必填，离线乐观锁',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `gen_table_column_table_id` (`gen_table_id`) USING BTREE,
-  KEY `gen_table_column_name` (`name`) USING BTREE,
-  KEY `gen_table_column_sort` (`sort`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='业务表字段';
-
--- ----------------------------
--- Records of gen_table_column
--- ----------------------------
-BEGIN;
-COMMIT;
+  INDEX `gen_table_column_table_id`(`gen_table_id`) USING BTREE,
+  INDEX `gen_table_column_name`(`name`) USING BTREE,
+  INDEX `gen_table_column_sort`(`sort`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for gen_table_fk
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table_fk`;
-CREATE TABLE `gen_table_fk` (
-  `id` varchar(64) NOT NULL COMMENT '编号',
-  `gen_table_id` varchar(64) DEFAULT NULL COMMENT '归属表编号',
-  `name` varchar(200) DEFAULT NULL COMMENT '名称',
-  `comments` varchar(500) DEFAULT NULL COMMENT '描述',
-  `jdbc_type` varchar(100) DEFAULT NULL COMMENT '列的数据类型的字节长度',
-  `java_type` varchar(500) DEFAULT NULL COMMENT 'JAVA类型',
-  `java_field` varchar(200) DEFAULT NULL COMMENT 'JAVA字段名',
-  `is_pk` char(1) DEFAULT NULL COMMENT '是否主键',
-  `is_unique` char(1) DEFAULT '0' COMMENT '是否唯一（1：是；0：否）',
-  `is_null` char(1) DEFAULT NULL COMMENT '是否可为空',
-  `is_insert` char(1) DEFAULT NULL COMMENT '是否为插入字段',
-  `is_edit` char(1) DEFAULT NULL COMMENT '是否编辑字段',
-  `is_list` char(1) DEFAULT NULL COMMENT '是否列表字段',
-  `is_query` char(1) DEFAULT NULL COMMENT '是否查询字段',
-  `query_type` varchar(200) DEFAULT NULL COMMENT '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）',
-  `show_type` varchar(200) DEFAULT NULL COMMENT '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）',
-  `dict_type` varchar(200) DEFAULT NULL COMMENT '字典类型',
-  `settings` varchar(2000) DEFAULT NULL COMMENT '其它设置（扩展字段JSON）',
-  `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
-  `version` int(11) DEFAULT '0' COMMENT '默认0，必填，离线乐观锁',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `gen_table_fk`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `gen_table_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '归属表编号',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `comments` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `jdbc_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '列的数据类型的字节长度',
+  `java_type` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否主键',
+  `is_unique` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '是否唯一（1：是；0：否）',
+  `is_null` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否可为空',
+  `is_insert` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否为插入字段',
+  `is_edit` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否编辑字段',
+  `is_list` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否列表字段',
+  `is_query` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否查询字段',
+  `query_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）',
+  `show_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）',
+  `dict_type` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典类型',
+  `settings` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '其它设置（扩展字段JSON）',
+  `sort` decimal(10, 0) NULL DEFAULT NULL COMMENT '排序（升序）',
+  `version` int(11) NULL DEFAULT 0 COMMENT '默认0，必填，离线乐观锁',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `gen_table_column_table_id` (`gen_table_id`) USING BTREE,
-  KEY `gen_table_column_name` (`name`) USING BTREE,
-  KEY `gen_table_column_sort` (`sort`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='业务表字段';
-
--- ----------------------------
--- Records of gen_table_fk
--- ----------------------------
-BEGIN;
-COMMIT;
+  INDEX `gen_table_column_table_id`(`gen_table_id`) USING BTREE,
+  INDEX `gen_table_column_name`(`name`) USING BTREE,
+  INDEX `gen_table_column_sort`(`sort`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
-CREATE TABLE `qrtz_blob_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  `blob_data` blob,
-  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_blob_triggers
--- ----------------------------
-BEGIN;
-COMMIT;
+CREATE TABLE `qrtz_blob_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `blob_data` blob NULL,
+  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_calendars
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
-CREATE TABLE `qrtz_calendars` (
-  `sched_name` varchar(120) NOT NULL,
-  `calendar_name` varchar(200) NOT NULL,
+CREATE TABLE `qrtz_calendars`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `calendar` blob NOT NULL,
-  PRIMARY KEY (`sched_name`,`calendar_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_calendars
--- ----------------------------
-BEGIN;
-COMMIT;
+  PRIMARY KEY (`sched_name`, `calendar_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_cron_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_cron_triggers`;
-CREATE TABLE `qrtz_cron_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  `cron_expression` varchar(200) NOT NULL,
-  `time_zone_id` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `qrtz_cron_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cron_expression` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `time_zone_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
 -- ----------------------------
-BEGIN;
-INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', '0/10 * * * * ?', 'Asia/Shanghai');
-INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', '0/15 * * * * ?', 'Asia/Shanghai');
-INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', '0/20 * * * * ?', 'Asia/Shanghai');
-COMMIT;
+INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', '0/10 * * * * ?', 'Asia/Singapore');
+INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', '0/15 * * * * ?', 'Asia/Singapore');
+INSERT INTO `qrtz_cron_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', '0/20 * * * * ?', 'Asia/Singapore');
 
 -- ----------------------------
 -- Table structure for qrtz_fired_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_fired_triggers`;
-CREATE TABLE `qrtz_fired_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `entry_id` varchar(95) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  `instance_name` varchar(200) NOT NULL,
+CREATE TABLE `qrtz_fired_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `entry_id` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `fired_time` bigint(13) NOT NULL,
   `sched_time` bigint(13) NOT NULL,
   `priority` int(11) NOT NULL,
-  `state` varchar(16) NOT NULL,
-  `job_name` varchar(200) DEFAULT NULL,
-  `job_group` varchar(200) DEFAULT NULL,
-  `is_nonconcurrent` varchar(1) DEFAULT NULL,
-  `requests_recovery` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`sched_name`,`entry_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_fired_triggers
--- ----------------------------
-BEGIN;
-COMMIT;
+  `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`sched_name`, `entry_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_job_details
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
-CREATE TABLE `qrtz_job_details` (
-  `sched_name` varchar(120) NOT NULL,
-  `job_name` varchar(200) NOT NULL,
-  `job_group` varchar(200) NOT NULL,
-  `description` varchar(250) DEFAULT NULL,
-  `job_class_name` varchar(250) NOT NULL,
-  `is_durable` varchar(1) NOT NULL,
-  `is_nonconcurrent` varchar(1) NOT NULL,
-  `is_update_data` varchar(1) NOT NULL,
-  `requests_recovery` varchar(1) NOT NULL,
-  `job_data` blob,
-  PRIMARY KEY (`sched_name`,`job_name`,`job_group`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `qrtz_job_details`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `job_class_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_durable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_update_data` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_data` blob NULL,
+  PRIMARY KEY (`sched_name`, `job_name`, `job_group`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_job_details
 -- ----------------------------
-BEGIN;
 INSERT INTO `qrtz_job_details` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 'com.albedo.java.modules.quartz.util.QuartzDisallowConcurrentExecution', '0', '1', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720029636F6D2E616C6265646F2E6A6176612E6D6F64756C65732E71756172747A2E646F6D61696E2E4A6F62000000000000000102000A4C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C0005656D61696C71007E00094C000567726F757071007E00094C000269647400134C6A6176612F6C616E672F496E74656765723B4C000C696E766F6B6554617267657471007E00094C000D6D697366697265506F6C69637971007E00094C00046E616D6571007E00094C000673746174757371007E00094C00077375625461736B71007E00097872003C636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E416273747261637444617461456E7469747900000000000000010200064C000963726561746564427971007E00094C000B63726561746564446174657400194C6A6176612F74696D652F4C6F63616C4461746554696D653B4C000B6465736372697074696F6E71007E00094C000E6C6173744D6F646966696564427971007E00094C00106C6173744D6F6469666965644461746571007E000C4C000776657273696F6E71007E000A78720034636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E42617365456E7469747900000000000000010200014C000764656C466C616771007E000978720037636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E47656E6572616C456E74697479000000000000000102000078720035636F6D2E62616F6D69646F752E6D796261746973706C75732E657874656E73696F6E2E6163746976657265636F72642E4D6F64656C00000000000000010200007870740001307400007372000D6A6176612E74696D652E536572955D84BA1B2248B20C00007870770A05000007E3080E0A15DB7870740001317371007E0013770E05000007E405100F26182B64660078737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000097400013174000E302F3130202A202A202A202A203F7074000744454641554C547371007E00170000000174001573696D706C655461736B2E646F4E6F506172616D7374000133740018E7B3BBE7BB9FE9BB98E8AEA4EFBC88E697A0E58F82EFBC8974000130740001327800);
 INSERT INTO `qrtz_job_details` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 'com.albedo.java.modules.quartz.util.QuartzDisallowConcurrentExecution', '0', '1', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720029636F6D2E616C6265646F2E6A6176612E6D6F64756C65732E71756172747A2E646F6D61696E2E4A6F62000000000000000102000A4C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C0005656D61696C71007E00094C000567726F757071007E00094C000269647400134C6A6176612F6C616E672F496E74656765723B4C000C696E766F6B6554617267657471007E00094C000D6D697366697265506F6C69637971007E00094C00046E616D6571007E00094C000673746174757371007E00094C00077375625461736B71007E00097872003C636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E416273747261637444617461456E7469747900000000000000010200064C000963726561746564427971007E00094C000B63726561746564446174657400194C6A6176612F74696D652F4C6F63616C4461746554696D653B4C000B6465736372697074696F6E71007E00094C000E6C6173744D6F646966696564427971007E00094C00106C6173744D6F6469666965644461746571007E000C4C000776657273696F6E71007E000A78720034636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E42617365456E7469747900000000000000010200014C000764656C466C616771007E000978720037636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E47656E6572616C456E74697479000000000000000102000078720035636F6D2E62616F6D69646F752E6D796261746973706C75732E657874656E73696F6E2E6163746976657265636F72642E4D6F64656C00000000000000010200007870740001307400007372000D6A6176612E74696D652E536572955D84BA1B2248B20C00007870770E05000007E3080E0A1524389FD9807870740001317371007E0013770E05000007E405100F1C18171126C078737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000127400013174000E302F3135202A202A202A202A203F7074000744454641554C547371007E00170000000274001D73696D706C655461736B2E646F506172616D732827616C6265646F272974000133740018E7B3BBE7BB9FE9BB98E8AEA4EFBC88E69C89E58F82EFBC8974000130707800);
 INSERT INTO `qrtz_job_details` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 'com.albedo.java.modules.quartz.util.QuartzDisallowConcurrentExecution', '0', '1', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000F5441534B5F50524F5045525449455373720029636F6D2E616C6265646F2E6A6176612E6D6F64756C65732E71756172747A2E646F6D61696E2E4A6F62000000000000000102000A4C000A636F6E63757272656E747400124C6A6176612F6C616E672F537472696E673B4C000E63726F6E45787072657373696F6E71007E00094C0005656D61696C71007E00094C000567726F757071007E00094C000269647400134C6A6176612F6C616E672F496E74656765723B4C000C696E766F6B6554617267657471007E00094C000D6D697366697265506F6C69637971007E00094C00046E616D6571007E00094C000673746174757371007E00094C00077375625461736B71007E00097872003C636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E416273747261637444617461456E7469747900000000000000010200064C000963726561746564427971007E00094C000B63726561746564446174657400194C6A6176612F74696D652F4C6F63616C4461746554696D653B4C000B6465736372697074696F6E71007E00094C000E6C6173744D6F646966696564427971007E00094C00106C6173744D6F6469666965644461746571007E000C4C000776657273696F6E71007E000A78720034636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E42617365456E7469747900000000000000010200014C000764656C466C616771007E000978720037636F6D2E616C6265646F2E6A6176612E636F6D6D6F6E2E70657273697374656E63652E646F6D61696E2E47656E6572616C456E74697479000000000000000102000078720035636F6D2E62616F6D69646F752E6D796261746973706C75732E657874656E73696F6E2E6163746976657265636F72642E4D6F64656C00000000000000010200007870740001307400007372000D6A6176612E74696D652E536572955D84BA1B2248B20C00007870770A05000007E3080E0A15DB7870740001317371007E0013770E05000007E405100F0C320F60C48078737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000047400013174000E302F3230202A202A202A202A203F7074000744454641554C547371007E00170000000374004073696D706C655461736B2E646F4D756C7469706C65506172616D732827616C6265646F272C20747275652C20323030304C2C203331362E3530442C203130302974000133740018E7B3BBE7BB9FE9BB98E8AEA4EFBC88E5A49AE58F82EFBC8974000130707800);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for qrtz_locks
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
-CREATE TABLE `qrtz_locks` (
-  `sched_name` varchar(120) NOT NULL,
-  `lock_name` varchar(40) NOT NULL,
-  PRIMARY KEY (`sched_name`,`lock_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `qrtz_locks`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`sched_name`, `lock_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_locks
 -- ----------------------------
-BEGIN;
 INSERT INTO `qrtz_locks` VALUES ('AlbedoScheduler', 'STATE_ACCESS');
 INSERT INTO `qrtz_locks` VALUES ('AlbedoScheduler', 'TRIGGER_ACCESS');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for qrtz_paused_trigger_grps
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
-CREATE TABLE `qrtz_paused_trigger_grps` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  PRIMARY KEY (`sched_name`,`trigger_group`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_paused_trigger_grps
--- ----------------------------
-BEGIN;
-COMMIT;
+CREATE TABLE `qrtz_paused_trigger_grps`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`sched_name`, `trigger_group`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_scheduler_state
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
-CREATE TABLE `qrtz_scheduler_state` (
-  `sched_name` varchar(120) NOT NULL,
-  `instance_name` varchar(200) NOT NULL,
+CREATE TABLE `qrtz_scheduler_state`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `last_checkin_time` bigint(13) NOT NULL,
   `checkin_interval` bigint(13) NOT NULL,
-  PRIMARY KEY (`sched_name`,`instance_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+  PRIMARY KEY (`sched_name`, `instance_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-BEGIN;
-INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'somewheredembp.lan1591060407700', 1591074351133, 15000);
-COMMIT;
+INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'DESKTOP-CHC8CQ91591194321846', 1591195011856, 15000);
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simple_triggers`;
-CREATE TABLE `qrtz_simple_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
+CREATE TABLE `qrtz_simple_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `repeat_count` bigint(7) NOT NULL,
   `repeat_interval` bigint(12) NOT NULL,
   `times_triggered` bigint(10) NOT NULL,
-  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_simple_triggers
--- ----------------------------
-BEGIN;
-COMMIT;
+  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_simprop_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
-CREATE TABLE `qrtz_simprop_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  `str_prop_1` varchar(512) DEFAULT NULL,
-  `str_prop_2` varchar(512) DEFAULT NULL,
-  `str_prop_3` varchar(512) DEFAULT NULL,
-  `int_prop_1` int(11) DEFAULT NULL,
-  `int_prop_2` int(11) DEFAULT NULL,
-  `long_prop_1` bigint(20) DEFAULT NULL,
-  `long_prop_2` bigint(20) DEFAULT NULL,
-  `dec_prop_1` decimal(13,4) DEFAULT NULL,
-  `dec_prop_2` decimal(13,4) DEFAULT NULL,
-  `bool_prop_1` varchar(1) DEFAULT NULL,
-  `bool_prop_2` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of qrtz_simprop_triggers
--- ----------------------------
-BEGIN;
-COMMIT;
+CREATE TABLE `qrtz_simprop_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `str_prop_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `str_prop_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `str_prop_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `int_prop_1` int(11) NULL DEFAULT NULL,
+  `int_prop_2` int(11) NULL DEFAULT NULL,
+  `long_prop_1` bigint(20) NULL DEFAULT NULL,
+  `long_prop_2` bigint(20) NULL DEFAULT NULL,
+  `dec_prop_1` decimal(13, 4) NULL DEFAULT NULL,
+  `dec_prop_2` decimal(13, 4) NULL DEFAULT NULL,
+  `bool_prop_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `bool_prop_2` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for qrtz_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_triggers`;
-CREATE TABLE `qrtz_triggers` (
-  `sched_name` varchar(120) NOT NULL,
-  `trigger_name` varchar(200) NOT NULL,
-  `trigger_group` varchar(200) NOT NULL,
-  `job_name` varchar(200) NOT NULL,
-  `job_group` varchar(200) NOT NULL,
-  `description` varchar(250) DEFAULT NULL,
-  `next_fire_time` bigint(13) DEFAULT NULL,
-  `prev_fire_time` bigint(13) DEFAULT NULL,
-  `priority` int(11) DEFAULT NULL,
-  `trigger_state` varchar(16) NOT NULL,
-  `trigger_type` varchar(8) NOT NULL,
+CREATE TABLE `qrtz_triggers`  (
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `next_fire_time` bigint(13) NULL DEFAULT NULL,
+  `prev_fire_time` bigint(13) NULL DEFAULT NULL,
+  `priority` int(11) NULL DEFAULT NULL,
+  `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `start_time` bigint(13) NOT NULL,
-  `end_time` bigint(13) DEFAULT NULL,
-  `calendar_name` varchar(200) DEFAULT NULL,
-  `misfire_instr` smallint(2) DEFAULT NULL,
-  `job_data` blob,
-  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-  KEY `sched_name` (`sched_name`,`job_name`,`job_group`) USING BTREE,
-  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+  `end_time` bigint(13) NULL DEFAULT NULL,
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `misfire_instr` smallint(2) NULL DEFAULT NULL,
+  `job_data` blob NULL,
+  PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
+  INDEX `sched_name`(`sched_name`, `job_name`, `job_group`) USING BTREE,
+  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-BEGIN;
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1591060410000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1591060410000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1591060420000, -1, 5, 'PAUSED', 'CRON', 1591060408000, 0, NULL, 2, '');
-COMMIT;
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1591194330000, -1, 5, 'PAUSED', 'CRON', 1591194322000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1591194330000, -1, 5, 'PAUSED', 'CRON', 1591194322000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1591194340000, -1, 5, 'PAUSED', 'CRON', 1591194322000, 0, NULL, 2, '');
 
 -- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
-CREATE TABLE `sys_dept` (
-  `id` varchar(32) NOT NULL,
-  `parent_id` varchar(32) DEFAULT NULL,
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
-  `name` varchar(50) DEFAULT NULL COMMENT '部门名称',
-  `sort` int(11) DEFAULT NULL COMMENT '排序',
-  `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
-  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `sys_dept`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `parent_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单IDs',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名称',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `leaf` bit(1) NULL DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
+  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '1' COMMENT '1-正常，0-锁定',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   `version` int(11) NOT NULL,
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门管理';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '部门管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_dept` VALUES ('1', '-1', NULL, '总部', 30, b'0', '1', '1', '2020-05-16 02:26:57.020', '1', '2020-05-21 03:09:24.266', 12, '', '0');
 INSERT INTO `sys_dept` VALUES ('4981e65fbb6059f3a5ceddd6b3426e6d', '9e4dcac1683359bfeac1871ccdc29e9f', '9e4dcac1683359bfeac1871ccdc29e9f,', 'ddd', 1, b'1', '1', '1', '2020-05-16 03:05:18.140', '1', '2020-05-16 03:05:23.939', 0, NULL, '1');
 INSERT INTO `sys_dept` VALUES ('6304292a4ecb1448c33447adc0c35f08', '1', '1,', '运营部', 30, b'1', '1', '1', '2020-05-16 03:03:46.542', '1', '2020-05-16 05:27:11.787', 2, '', '0');
@@ -450,25 +379,23 @@ INSERT INTO `sys_dept` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '-1', NULL, '
 INSERT INTO `sys_dept` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', '-1', NULL, '平台', 30, b'1', '1', '1', '2020-05-16 02:28:08.383', '1', '2020-05-16 03:04:55.462', 2, NULL, '0');
 INSERT INTO `sys_dept` VALUES ('db32c981785f619401518127c48b6247', '1', '1,', '测试部', 30, b'1', '1', '1', '2020-05-16 03:03:57.184', '1', '2020-05-16 03:03:57.184', 0, NULL, '0');
 INSERT INTO `sys_dept` VALUES ('f52e1e844bf0fbadf5213214fb621e27', '1', '1,', '开发部', 30, b'1', '1', '1', '2020-05-16 03:03:23.518', '1', '2020-05-21 03:09:24.277', 3, NULL, '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_dept_relation
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_relation`;
-CREATE TABLE `sys_dept_relation` (
-  `ancestor` varchar(32) NOT NULL COMMENT '祖先节点',
-  `descendant` varchar(32) NOT NULL COMMENT '后代节点',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
-  PRIMARY KEY (`ancestor`,`descendant`) USING BTREE,
-  KEY `idx1` (`ancestor`) USING BTREE,
-  KEY `idx2` (`descendant`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='部门关系表';
+CREATE TABLE `sys_dept_relation`  (
+  `ancestor` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '祖先节点',
+  `descendant` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '后代节点',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`ancestor`, `descendant`) USING BTREE,
+  INDEX `idx1`(`ancestor`) USING BTREE,
+  INDEX `idx2`(`descendant`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci COMMENT = '部门关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept_relation
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_dept_relation` VALUES ('1', '1', '0');
 INSERT INTO `sys_dept_relation` VALUES ('1', '6304292a4ecb1448c33447adc0c35f08', '0');
 INSERT INTO `sys_dept_relation` VALUES ('1', '701903b72179df2c79d383f621eab9c8', '0');
@@ -482,39 +409,37 @@ INSERT INTO `sys_dept_relation` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '9e4
 INSERT INTO `sys_dept_relation` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', 'c095173c3aebcd7ff9c6177fbf7a8b69', '0');
 INSERT INTO `sys_dept_relation` VALUES ('db32c981785f619401518127c48b6247', 'db32c981785f619401518127c48b6247', '0');
 INSERT INTO `sys_dept_relation` VALUES ('f52e1e844bf0fbadf5213214fb621e27', 'f52e1e844bf0fbadf5213214fb621e27', '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
-CREATE TABLE `sys_dict` (
-  `id` varchar(32) NOT NULL COMMENT '编号',
-  `name` varchar(100) NOT NULL COMMENT '标签名',
-  `val` varchar(100) DEFAULT NULL COMMENT '数据值',
-  `code` varchar(100) NOT NULL COMMENT '类型',
-  `parent_id` varchar(32) DEFAULT NULL COMMENT '父菜单ID',
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
+CREATE TABLE `sys_dict`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编号',
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标签名',
+  `val` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '数据值',
+  `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
+  `parent_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单ID',
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单IDs',
   `sort` int(10) NOT NULL COMMENT '排序（升序）',
-  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
-  `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
-  `created_by` varchar(50) NOT NULL,
+  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '1' COMMENT '1-正常，0-锁定',
+  `leaf` bit(1) NULL DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注信息',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
-  `version` int(11) NOT NULL DEFAULT '0',
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `version` int(11) NOT NULL DEFAULT 0,
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `sys_dict_value` (`val`) USING BTREE,
-  KEY `sys_dict_label` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='字典表';
+  INDEX `sys_dict_value`(`val`) USING BTREE,
+  INDEX `sys_dict_label`(`name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '字典表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_dict` VALUES ('05d01334ecdbe94b856038a32a42512b', '任务分组', NULL, 'sys_job_group', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', NULL, '1', '2019-08-15 16:33:54.745', '1', '2019-08-15 16:34:47.136', 2, NULL, '0');
 INSERT INTO `sys_dict` VALUES ('0b2420638683f1eec41242beb9912069', '在线', 'on_line', 'sys_online_status_on_line', 'f3592a047c466e348279983336ebaf28', '1,cfd5f62f601817a3b0f38f5ccb1f5128,f3592a047c466e348279983336ebaf28,', 30, '1', b'1', NULL, '1', '2019-08-11 11:17:28.210', '1', '2019-08-11 11:17:28.210', 0, NULL, '0');
 INSERT INTO `sys_dict` VALUES ('0da02abef85f0c0b4350eaeefb4ca78d', '仅本人数据', '4', 'sys_data_scope_4', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 40, '1', b'1', NULL, '1', '2019-07-14 06:00:03.000', '1', '2019-08-09 11:26:04.724', 5, NULL, '0');
@@ -558,105 +483,95 @@ INSERT INTO `sys_dict` VALUES ('f3592a047c466e348279983336ebaf28', '在线状态
 INSERT INTO `sys_dict` VALUES ('f35adf75d9ab0ca5cec43815b7db5274', '执行一次', '2', 'sys_misfire_policy_2', 'cb3d07975904460c94e9e2b30755c04b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,cb3d07975904460c94e9e2b30755c04b,', 30, '1', b'1', NULL, '1', '2019-08-15 10:24:39.273', '1', '2019-08-15 10:24:39.273', 0, NULL, '0');
 INSERT INTO `sys_dict` VALUES ('f83a718756762758707c67db3d271c9d', '手机端用户', '2', 'sys_operate_type_2', '6b8211aef2fec451b0398b19857443a7', '1,cfd5f62f601817a3b0f38f5ccb1f5128,6b8211aef2fec451b0398b19857443a7,', 30, '1', b'1', NULL, '1', '2019-08-07 16:49:00.766', '1', '2019-08-09 11:26:04.746', 2, NULL, '0');
 INSERT INTO `sys_dict` VALUES ('fafe8843b2f4091f8096dc0df09c300c', '失败', '0', 'sys_status_0', '952c07b027bf0be298a9243af701b8c5', '1,cfd5f62f601817a3b0f38f5ccb1f5128,952c07b027bf0be298a9243af701b8c5,', 30, '1', b'1', NULL, '1', '2019-08-14 11:28:11.000', '1', '2019-08-15 09:08:49.884', 1, NULL, '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_job
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
-CREATE TABLE `sys_job` (
+CREATE TABLE `sys_job`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
-  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
-  `group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
-  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
-  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
-  `misfire_policy` varchar(20) DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
-  `concurrent` char(1) DEFAULT '1' COMMENT '是否并发执行（1允许 0禁止）',
-  `sub_task` varchar(100) DEFAULT NULL COMMENT '子任务id 多个用逗号隔开',
-  `email` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '报警邮箱',
-  `status` char(1) DEFAULT '0' COMMENT '状态(1-运行中，0-暂停)',
-  `created_by` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '是否并发执行（1允许 0禁止）',
+  `sub_task` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '子任务id 多个用逗号隔开',
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '报警邮箱',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '状态(1-运行中，0-暂停)',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `last_modified_date` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3),
-  `description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `last_modified_date` datetime(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3),
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `version` int(11) NOT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务调度表';
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_job` VALUES (1, '系统默认（无参）', 'DEFAULT', 'simpleTask.doNoParams', '0/10 * * * * ?', '3', '1', '2', NULL, '0', '', '2019-08-14 10:21:36.000', '1', '2020-05-16 15:38:24.728', NULL, 9, '0');
 INSERT INTO `sys_job` VALUES (2, '系统默认（有参）', 'DEFAULT', 'simpleTask.doParams(\'albedo\')', '0/15 * * * * ?', '3', '1', NULL, NULL, '0', '', '2019-08-14 10:21:36.950', '1', '2020-05-16 15:28:24.387', NULL, 18, '0');
 INSERT INTO `sys_job` VALUES (3, '系统默认（多参）', 'DEFAULT', 'simpleTask.doMultipleParams(\'albedo\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?', '3', '1', NULL, NULL, '0', '', '2019-08-14 10:21:36.000', '1', '2020-05-16 15:12:50.258', NULL, 4, '0');
 INSERT INTO `sys_job` VALUES (4, 'test', 'DEFAULT', 'test', '0/20 * * * * ?', '2', '1', '1', NULL, '0', '1', '2020-05-16 15:06:05.098', '1', '2020-05-16 15:21:10.516', NULL, 1, '1');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_job_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
-CREATE TABLE `sys_job_log` (
+CREATE TABLE `sys_job_log`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
-  `job_name` varchar(64) NOT NULL COMMENT '任务名称',
-  `job_group` varchar(64) NOT NULL COMMENT '任务组名',
-  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
-  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
-  `job_message` varchar(500) DEFAULT NULL COMMENT '日志信息',
-  `status` char(1) DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
-  `start_time` datetime(3) DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime(3) DEFAULT NULL COMMENT '结束时间',
-  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
-  `exception_info` varchar(3000) DEFAULT '' COMMENT '异常信息',
-  `description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
+  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
+  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'cron执行表达式',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `start_time` datetime(3) NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime(3) NULL DEFAULT NULL COMMENT '结束时间',
+  `create_time` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
+  `exception_info` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '异常信息',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
-
--- ----------------------------
--- Records of sys_job_log
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_log_operate
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log_operate`;
-CREATE TABLE `sys_log_operate` (
+CREATE TABLE `sys_log_operate`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `title` varchar(255) DEFAULT '' COMMENT '日志标题',
-  `log_type` varchar(255) DEFAULT NULL COMMENT '日志类型',
-  `username` varchar(255) DEFAULT NULL COMMENT '用户名',
-  `service_id` varchar(32) DEFAULT NULL COMMENT '服务ID',
-  `ip_address` varchar(255) DEFAULT NULL COMMENT 'IP地址',
-  `ip_location` varchar(255) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '登录地点',
-  `browser` varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '操作系统',
-  `user_agent` varchar(1000) DEFAULT NULL COMMENT '用户代理',
-  `request_uri` varchar(255) DEFAULT NULL COMMENT '请求URI',
-  `method` varchar(255) DEFAULT NULL COMMENT '请求方法',
-  `params` text COMMENT '操作提交的数据',
-  `time` mediumtext COMMENT '执行时间',
-  `operator_type` varchar(20) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
-  `business_type` varchar(20) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
-  `exception` text COMMENT '异常信息',
-  `created_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '日志标题',
+  `log_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志类型',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `service_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '服务ID',
+  `ip_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `ip_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作系统',
+  `user_agent` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户代理',
+  `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求URI',
+  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求方法',
+  `params` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '操作提交的数据',
+  `time` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '执行时间',
+  `operator_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `business_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `exception` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '异常信息',
+  `created_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建者',
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `sys_log_create_by` (`created_by`) USING BTREE,
-  KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
-  KEY `sys_log_create_date` (`created_date`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=758 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='操作日志表';
+  INDEX `sys_log_create_by`(`created_by`) USING BTREE,
+  INDEX `sys_log_request_uri`(`request_uri`) USING BTREE,
+  INDEX `sys_log_create_date`(`created_date`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 825 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log_operate
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_log_operate` VALUES (724, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '4509', 'MANAGE', '0', NULL, '1', '2020-06-01 19:40:24.038', NULL, '0');
 INSERT INTO `sys_log_operate` VALUES (725, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '8454', 'MANAGE', '0', NULL, '1', '2020-06-01 19:41:36.947', NULL, '0');
 INSERT INTO `sys_log_operate` VALUES (726, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B31971591011736308%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-01 19:42:35.789', NULL, '0');
@@ -691,41 +606,106 @@ INSERT INTO `sys_log_operate` VALUES (754, '用户登录成功', 'INFO', NULL, N
 INSERT INTO `sys_log_operate` VALUES (755, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
 INSERT INTO `sys_log_operate` VALUES (756, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
 INSERT INTO `sys_log_operate` VALUES (757, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B19241591070233568%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-02 11:58:10.053', NULL, '0');
-COMMIT;
+INSERT INTO `sys_log_operate` VALUES (758, '用户登录成功', 'INFO', NULL, NULL, '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B45221591185685919%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, NULL, '2020-06-03 20:04:43.875', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (759, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B75371591187765581%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2020-06-03 20:47:48.574', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (760, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B75371591187765581%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2020-06-03 20:47:58.811', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (761, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B55481591188439319%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2020-06-03 20:48:45.885', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (762, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '422', 'MANAGE', '0', NULL, '1', '2020-06-03 20:52:23.502', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (763, '菜单管理删除', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu', 'com.albedo.java.modules.sys.web.MenuResource.removeByIds()', '{ ids: [2600] }', '49', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 菜单含有下级不能删除\r\n	at com.albedo.java.modules.sys.service.impl.MenuServiceImpl.lambda$removeByIds$3(MenuServiceImpl.java:188)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.modules.sys.service.impl.MenuServiceImpl.removeByIds(MenuServiceImpl.java:182)\r\n	at com.albedo.java.modules.sys.service.impl.MenuServiceImpl$$FastClassBySpringCGLIB$$6ae2146d.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:366)\r\n	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)\r\n	at com.albedo.java.modules.sys.service.impl.MenuServiceImpl$$EnhancerBySpringCGLIB$$d13cb553.removeByIds(<generated>)\r\n	at com.albedo.java.modules.sys.web.MenuResource.removeByIds(MenuResource.java:136)\r\n	at com.albedo.java.modules.sys.web.MenuResource$$FastClassBySpringCGLIB$$3f5bd433.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:644)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:633)\r\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)\r\n	at org.springframewo', '1', '2020-06-03 20:53:37.439', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (764, '菜单管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu', 'com.albedo.java.modules.sys.web.MenuResource.save()', '{ menuDto: MenuDto(permission=null, icon=dev, component=monitor/persistent-token/index, type=1, hidden=1, cache=0, iframe=0, path=persistent-token) }', '81', 'MANAGE', '0', NULL, '1', '2020-06-03 20:53:57.385', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (765, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '332', 'MANAGE', '0', NULL, '1', '2020-06-03 20:53:57.997', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (766, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '387', 'MANAGE', '0', NULL, '1', '2020-06-03 20:54:13.405', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (767, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '44', 'MANAGE', '0', NULL, '1', '2020-06-03 20:54:18.202', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (768, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '24', 'MANAGE', '0', NULL, '1', '2020-06-03 20:56:25.679', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (769, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '6', 'MANAGE', '0', NULL, '1', '2020-06-03 20:57:11.626', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (770, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '31', 'MANAGE', '0', NULL, '1', '2020-06-03 20:58:07.520', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (771, '在线用户查看', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '57', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method findPage in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Failed to invoke remote method: findPage, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.RemotingException: com.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42468)\r\ncom.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42468)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.logDeserializeError(JavaDeserializer.java:167)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectFieldDeserializer.deserialize(JavaDeserializer.java:410)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2717)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.CollectionDeserializer.readLengthList(CollectionDeserializer.java:122)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2203)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectListFieldDeserializer.deserialize(JavaDeserializer.java:523)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.He', '1', '2020-06-03 21:00:00.027', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (772, '在线用户查看', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '45', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method findPage in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Failed to invoke remote method: findPage, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.RemotingException: com.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42457)\r\ncom.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42457)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.logDeserializeError(JavaDeserializer.java:167)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectFieldDeserializer.deserialize(JavaDeserializer.java:410)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2717)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.CollectionDeserializer.readLengthList(CollectionDeserializer.java:122)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2203)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectListFieldDeserializer.deserialize(JavaDeserializer.java:523)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.He', '1', '2020-06-03 21:00:11.055', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (773, '在线用户查看', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '25', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method findPage in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Failed to invoke remote method: findPage, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.RemotingException: com.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42444)\r\ncom.alibaba.com.caucho.hessian.io.HessianFieldException: com.albedo.java.modules.sys.domain.vo.UserOnlineVo.expiresIn: expected date at 0xd4 java.lang.Integer (42444)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.logDeserializeError(JavaDeserializer.java:167)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectFieldDeserializer.deserialize(JavaDeserializer.java:410)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2717)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2278)\r\n	at com.alibaba.com.caucho.hessian.io.CollectionDeserializer.readLengthList(CollectionDeserializer.java:122)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2203)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer$ObjectListFieldDeserializer.deserialize(JavaDeserializer.java:523)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:276)\r\n	at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:203)\r\n	at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:536)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2820)\r\n	at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2743)\r\n	at com.alibaba.com.caucho.hessian.io.He', '1', '2020-06-03 21:00:24.598', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (774, '在线用户查看', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '3059', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method findPage in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: findPage, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 21:01:09.802, end time: 2020-06-03 21:01:10.820, client elapsed: 0 ms, server elapsed: 1018 ms, timeout: 1000 ms, request: Request [id=21, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:61038 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.findPage(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.findPage(UserOnlineResource.java:50)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.ref', '1', '2020-06-03 21:01:07.762', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (775, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '44', 'MANAGE', '0', NULL, '1', '2020-06-03 21:02:50.298', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (776, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '10', 'MANAGE', '0', NULL, '1', '2020-06-03 21:03:24.054', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (777, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '12', 'MANAGE', '0', NULL, '1', '2020-06-03 21:09:34.124', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (778, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '11', 'MANAGE', '0', NULL, '1', '2020-06-03 21:09:42.298', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (779, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '46', 'MANAGE', '0', NULL, '1', '2020-06-03 21:11:55.997', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (780, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByIds()', '{ ids: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '20', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByIds in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Failed to invoke remote method: removeByIds, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.RemotingException: org.apache.dubbo.rpc.RpcException: Failed to invoke remote proxy method removeByIds to registry://localhost:9090/org.apache.dubbo.registry.RegistryService?application=albedo-auth&dubbo=2.0.2&export=dubbo%3A%2F%2F169.254.175.124%3A20880%2Fcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%3Fanyhost%3Dtrue%26application%3Dalbedo-auth%26bind.ip%3D169.254.175.124%26bind.port%3D20880%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%26methods%3DremoveByTokens%2CfindPage%26pid%3D13560%26qos.enable%3Dfalse%26release%3D2.7.6%26side%3Dprovider%26timestamp%3D1591189842531&pid=13560&qos.enable=false&registry=spring-cloud&release=2.7.6&timestamp=1591189842531, cause: Not found method \"removeByIds\" in class com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.\r\norg.apache.dubbo.rpc.RpcException: Failed to invoke remote proxy method removeByIds to registry://localhost:9090/org.apache.dubbo.registry.RegistryService?application=albedo-auth&dubbo=2.0.2&export=dubbo%3A%2F%2F169.254.175.124%3A20880%2Fcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%3Fanyhost%3Dtrue%26application%3Dalbedo-auth%26bind.ip%3D169.254.175.124%26bind.port%3D20880%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%26methods%3DremoveByTokens%2CfindPage%26pid%3D13560%26qos.enable%3Dfalse%26release%3D2.7.6%26side%3Dprovider%26timestamp%3D1591189842531&pid=13560&qos.enable=false&registry=spring-cloud&release=2.7.6&timestamp=1591189842531, cause: Not found method \"removeByIds\" in class com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:106)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r', '1', '2020-06-03 21:11:59.585', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (781, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByIds()', '{ ids: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '11', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByIds in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Failed to invoke remote method: removeByIds, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByIds,findPage&pid=9204&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591187885071, cause: org.apache.dubbo.remoting.RemotingException: org.apache.dubbo.rpc.RpcException: Failed to invoke remote proxy method removeByIds to registry://localhost:9090/org.apache.dubbo.registry.RegistryService?application=albedo-auth&dubbo=2.0.2&export=dubbo%3A%2F%2F169.254.175.124%3A20880%2Fcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%3Fanyhost%3Dtrue%26application%3Dalbedo-auth%26bind.ip%3D169.254.175.124%26bind.port%3D20880%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%26methods%3DremoveByTokens%2CfindPage%26pid%3D13560%26qos.enable%3Dfalse%26release%3D2.7.6%26side%3Dprovider%26timestamp%3D1591189842531&pid=13560&qos.enable=false&registry=spring-cloud&release=2.7.6&timestamp=1591189842531, cause: Not found method \"removeByIds\" in class com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.\r\norg.apache.dubbo.rpc.RpcException: Failed to invoke remote proxy method removeByIds to registry://localhost:9090/org.apache.dubbo.registry.RegistryService?application=albedo-auth&dubbo=2.0.2&export=dubbo%3A%2F%2F169.254.175.124%3A20880%2Fcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%3Fanyhost%3Dtrue%26application%3Dalbedo-auth%26bind.ip%3D169.254.175.124%26bind.port%3D20880%26deprecated%3Dfalse%26dubbo%3D2.0.2%26dynamic%3Dtrue%26generic%3Dfalse%26interface%3Dcom.albedo.java.modules.sys.dubbo.RemoteUserOnlineService%26methods%3DremoveByTokens%2CfindPage%26pid%3D13560%26qos.enable%3Dfalse%26release%3D2.7.6%26side%3Dprovider%26timestamp%3D1591189842531&pid=13560&qos.enable=false&registry=spring-cloud&release=2.7.6&timestamp=1591189842531, cause: Not found method \"removeByIds\" in class com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:106)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r', '1', '2020-06-03 21:12:46.790', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (782, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [null] }', '17', 'MANAGE', '0', 'java.lang.NullPointerException\r\n	at org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore.readAuthentication(RedisTokenStore.java:134)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:67)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:65)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolE', '1', '2020-06-03 21:16:19.942', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (783, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [null] }', '6', 'MANAGE', '0', 'java.lang.NullPointerException\r\n	at org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore.readAuthentication(RedisTokenStore.java:134)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:67)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:65)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolE', '1', '2020-06-03 21:17:47.764', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (784, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '17', 'MANAGE', '0', NULL, '1', '2020-06-03 21:18:32.227', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (785, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '7', 'MANAGE', '0', 'java.lang.NullPointerException\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:70)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:65)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)\r\n', '1', '2020-06-03 21:18:36.411', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (786, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '3088', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: removeByTokens, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByTokens,findPage&pid=4220&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591189842531, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 21:19:10.363, end time: 2020-06-03 21:19:11.385, client elapsed: 1 ms, server elapsed: 1021 ms, timeout: 1000 ms, request: Request [id=18, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:61973 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:63)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.', '1', '2020-06-03 21:19:08.298', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (787, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '8', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. No provider available for the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService from registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Please check if the providers have been started and registered.\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.checkInvokers(AbstractClusterInvoker.java:282)\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:59)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy0.removeByTokens(proxy0.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:644)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:633)\r\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurity', '1', '2020-06-03 21:23:26.141', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (788, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '23', 'MANAGE', '0', 'java.lang.RuntimeException: com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\ncom.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.Th', '1', '2020-06-03 21:24:04.395', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (789, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '10', 'MANAGE', '0', 'java.lang.RuntimeException: com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\ncom.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.Th', '1', '2020-06-03 21:24:12.705', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (790, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '11', 'MANAGE', '0', 'java.lang.RuntimeException: com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\ncom.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.Th', '1', '2020-06-03 21:24:44.189', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (791, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '15', 'MANAGE', '0', 'java.lang.RuntimeException: com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\ncom.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.Th', '1', '2020-06-03 22:02:02.687', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (792, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '34', 'MANAGE', '0', 'java.lang.RuntimeException: com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\ncom.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.Th', '1', '2020-06-03 22:04:04.217', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (793, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '3045', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: removeByTokens, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByTokens,findPage&pid=5040&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591190575420, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 22:06:19.024, end time: 2020-06-03 22:06:20.043, client elapsed: 0 ms, server elapsed: 1019 ms, timeout: 1000 ms, request: Request [id=18, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:64111 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.', '1', '2020-06-03 22:06:17.001', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (794, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '1', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: No provider available from registry localhost:9090 for service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService on consumer 169.254.175.124 use dubbo version 2.7.6, please check status of providers(disabled, not registered or in blacklist).\r\n	at org.apache.dubbo.registry.integration.RegistryDirectory.doList(RegistryDirectory.java:599)\r\n	at org.apache.dubbo.rpc.cluster.directory.AbstractDirectory.list(AbstractDirectory.java:75)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.list(AbstractClusterInvoker.java:291)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:256)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:644)\r\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:633)\r\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:69)\r\n	at org.springframewor', '1', '2020-06-03 22:07:47.295', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (795, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '16', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)', '1', '2020-06-03 22:09:06.188', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (796, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '7', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)', '1', '2020-06-03 22:09:12.788', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (797, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '7', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)', '1', '2020-06-03 22:10:22.781', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (798, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '3055', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: removeByTokens, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByTokens,findPage&pid=5040&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591190575420, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 22:10:39.124, end time: 2020-06-03 22:10:40.143, client elapsed: 0 ms, server elapsed: 1019 ms, timeout: 1000 ms, request: Request [id=70, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:64509 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.', '1', '2020-06-03 22:10:37.090', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (799, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '3052', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: removeByTokens, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByTokens,findPage&pid=5040&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591190575420, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 22:12:13.113, end time: 2020-06-03 22:12:14.135, client elapsed: 1 ms, server elapsed: 1021 ms, timeout: 1000 ms, request: Request [id=74, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:64509 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.', '1', '2020-06-03 22:12:11.086', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (800, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '3082', 'MANAGE', '0', 'org.apache.dubbo.rpc.RpcException: Failed to invoke the method removeByTokens in the service com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService. Tried 3 times of the providers [169.254.175.124:20880] (1/1) from the registry localhost:9090 on the consumer 169.254.175.124 using the dubbo version 2.7.6. Last error is: Invoke remote method timeout. method: removeByTokens, provider: dubbo://169.254.175.124:20880/com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService?anyhost=true&application=albedo-sys&check=false&deprecated=false&dubbo=2.0.2&dynamic=true&generic=false&init=false&interface=com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService&methods=removeByTokens,findPage&pid=13816&qos.enable=false&register.ip=169.254.175.124&release=2.7.6&remote.application=albedo-auth&side=consumer&sticky=false&timestamp=1591193310215, cause: org.apache.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2020-06-03 22:15:46.567, end time: 2020-06-03 22:15:47.586, client elapsed: 1 ms, server elapsed: 1018 ms, timeout: 1000 ms, request: Request [id=12, version=2.0.2, twoway=true, event=false, broken=false, data=null], channel: /169.254.175.124:64846 -> /169.254.175.124:20880\r\n	at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:113)\r\n	at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:259)\r\n	at org.apache.dubbo.rpc.cluster.interceptor.ClusterInterceptor.intercept(ClusterInterceptor.java:47)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.AbstractCluster$InterceptorInvokerNode.invoke(AbstractCluster.java:92)\r\n	at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:82)\r\n	at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:74)\r\n	at org.apache.dubbo.common.bytecode.proxy1.removeByTokens(proxy1.java)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:64)\r\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl', '1', '2020-06-03 22:15:44.506', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (801, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '6', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)', '1', '2020-06-03 22:15:58.636', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (802, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '94', 'MANAGE', '0', NULL, '1', '2020-06-03 22:16:10.257', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (803, '用户管理编辑', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=test, nickname=null, password=null, email=1@1.com, phone=13245632453, avatar=null, deptId=1, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '8', 'MANAGE', '0', 'com.albedo.java.common.core.exception.EntityExistException: UserDto with username test existed\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl.saveOrUpdate(UserServiceImpl.java:222)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl.saveOrUpdate(UserServiceImpl.java:76)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl$$FastClassBySpringCGLIB$$1a2e4281.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:366)\r\n	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.cache.interceptor.CacheInterceptor.lambda$invoke$0(CacheInterceptor.java:53)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.invokeOperation(CacheAspectSupport.java:365)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:420)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:345)\r\n	at org.springframework.cache.interceptor.CacheInterceptor.invoke(CacheInterceptor.java:61)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$24cb1211.saveOrUpdate(<generated>)\r\n	at com.albedo.java.modules.sys.web.UserResource.save(UserResource.java:167)\r\n	at com.albedo.java.modules.sys.web.UserResource$$FastClassBySpringCGLIB$$4e087e9f.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysL', '1', '2020-06-03 22:16:37.885', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (804, '用户管理编辑', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=test3, nickname=null, password=null, email=1@1.com, phone=13245632453, avatar=null, deptId=1, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '19', 'MANAGE', '0', 'com.albedo.java.common.core.exception.EntityExistException: UserDto with email 1@1.com existed\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl.saveOrUpdate(UserServiceImpl.java:226)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl.saveOrUpdate(UserServiceImpl.java:76)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl$$FastClassBySpringCGLIB$$1a2e4281.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:366)\r\n	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:118)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.cache.interceptor.CacheInterceptor.lambda$invoke$0(CacheInterceptor.java:53)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.invokeOperation(CacheAspectSupport.java:365)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:420)\r\n	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:345)\r\n	at org.springframework.cache.interceptor.CacheInterceptor.invoke(CacheInterceptor.java:61)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)\r\n	at com.albedo.java.modules.sys.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$24cb1211.saveOrUpdate(<generated>)\r\n	at com.albedo.java.modules.sys.web.UserResource.save(UserResource.java:167)\r\n	at com.albedo.java.modules.sys.web.UserResource$$FastClassBySpringCGLIB$$4e087e9f.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)\r\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)\r\n	at com.albedo.java.common.log.aspect.SysL', '1', '2020-06-03 22:16:43.920', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (805, '用户管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=test3, nickname=null, password=null, email=1@13.com, phone=13245632453, avatar=null, deptId=1, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '168', 'MANAGE', '0', NULL, '1', '2020-06-03 22:16:52.242', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (806, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '60', 'MANAGE', '0', NULL, '1', '2020-06-03 22:16:52.526', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (807, '用户登录成功', 'INFO', 'test', NULL, '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/oauth/token', 'POST', 'password=%5B123456%5D&randomStr=%5B96571591193759991%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Btest%5D', NULL, 'MANAGE', '0', NULL, '90da0206c39867a1b36ac36ced80c1a9', '2020-06-03 22:17:33.437', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (808, '用户管理查看', 'INFO', 'test', 'albedo', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '50', 'MANAGE', '0', NULL, '90da0206c39867a1b36ac36ced80c1a9', '2020-06-03 22:17:34.548', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (809, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '39', 'MANAGE', '0', NULL, '1', '2020-06-03 22:17:50.448', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (810, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [fe2222e2-7fe8-4bc8-a71c-e0340757fd50] }', '5', 'MANAGE', '0', 'com.albedo.java.common.core.exception.BadRequestException: 当前登陆用户无法强退\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.lambda$removeByTokens$0(RemoteUserOnlineServiceImpl.java:75)\r\n	at java.lang.Iterable.forEach(Iterable.java:75)\r\n	at com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl.removeByTokens(RemoteUserOnlineServiceImpl.java:69)\r\n	at org.apache.dubbo.common.bytecode.Wrapper8.invokeMethod(Wrapper8.java)\r\n	at org.apache.dubbo.rpc.proxy.javassist.JavassistProxyFactory$1.doInvoke(JavassistProxyFactory.java:47)\r\n	at org.apache.dubbo.rpc.proxy.AbstractProxyInvoker.invoke(AbstractProxyInvoker.java:84)\r\n	at org.apache.dubbo.config.invoker.DelegateProviderMetaDataInvoker.invoke(DelegateProviderMetaDataInvoker.java:56)\r\n	at org.apache.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:56)\r\n	at org.apache.dubbo.rpc.filter.ExceptionFilter.invoke(ExceptionFilter.java:52)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:89)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.TimeoutFilter.invoke(TimeoutFilter.java:44)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.filter.TraceFilter.invoke(TraceFilter.java:77)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ContextFilter.invoke(ContextFilter.java:118)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.GenericFilter.invoke(GenericFilter.java:152)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.ClassLoaderFilter.invoke(ClassLoaderFilter.java:38)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.filter.EchoFilter.invoke(EchoFilter.java:41)\r\n	at org.apache.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:81)\r\n	at org.apache.dubbo.rpc.protocol.dubbo.DubboProtocol$1.reply(DubboProtocol.java:145)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.handleRequest(HeaderExchangeHandler.java:100)\r\n	at org.apache.dubbo.remoting.exchange.support.header.HeaderExchangeHandler.received(HeaderExchangeHandler.java:175)\r\n	at org.apache.dubbo.remoting.transport.DecodeHandler.received(DecodeHandler.java:51)\r\n	at org.apache.dubbo.remoting.transport.dispatcher.ChannelEventRunnable.run(ChannelEventRunnable.java:57)\r\n	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\r\n	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\r\n	at java.lang.Thread.run(Thread.java:748)', '1', '2020-06-03 22:17:56.053', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (811, '强退在线用户', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [c0593b3b-19ea-4d92-8f22-f11cde399063] }', '25', 'MANAGE', '0', NULL, '1', '2020-06-03 22:17:58.326', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (812, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '10', 'MANAGE', '0', NULL, '1', '2020-06-03 22:17:58.729', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (813, '用户登录成功', 'INFO', 'test', NULL, '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/oauth/token', 'POST', 'password=%5B123456%5D&randomStr=%5B23921591193855278%5D&code=%5B1111%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Btest%5D', NULL, 'MANAGE', '0', NULL, '90da0206c39867a1b36ac36ced80c1a9', '2020-06-03 22:19:20.629', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (814, '部门管理查看', 'INFO', 'test', 'albedo', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '5', 'MANAGE', '0', NULL, '90da0206c39867a1b36ac36ced80c1a9', '2020-06-03 22:19:21.184', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (815, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '9', 'MANAGE', '0', NULL, '1', '2020-06-03 22:19:27.040', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (816, '强退在线用户', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [c0593b3b-19ea-4d92-8f22-f11cde399063] }', '4', 'MANAGE', '0', NULL, '1', '2020-06-03 22:19:30.394', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (817, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '10', 'MANAGE', '0', NULL, '1', '2020-06-03 22:19:30.672', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (818, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '11', 'MANAGE', '0', NULL, '1', '2020-06-03 22:23:19.510', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (819, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '290', 'MANAGE', '0', NULL, '1', '2020-06-03 22:23:20.243', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (820, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '2840', 'MANAGE', '0', NULL, '1', '2020-06-03 22:23:22.274', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (821, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '353', 'MANAGE', '0', NULL, '1', '2020-06-03 22:30:22.911', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (822, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '354', 'MANAGE', '0', NULL, '1', '2020-06-03 22:32:40.664', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (823, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '352', 'MANAGE', '0', NULL, '1', '2020-06-03 22:34:04.047', NULL, '0');
+INSERT INTO `sys_log_operate` VALUES (824, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '347', 'MANAGE', '0', NULL, '1', '2020-06-03 22:35:18.679', NULL, '0');
 
 -- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
-CREATE TABLE `sys_menu` (
-  `id` varchar(32) NOT NULL COMMENT '菜单ID',
-  `name` varchar(32) NOT NULL COMMENT '菜单名称',
-  `type` char(1) DEFAULT NULL COMMENT '菜单类型 （0目录 1菜单 2按钮）',
-  `permission` varchar(32) DEFAULT NULL COMMENT '菜单权限标识',
-  `path` varchar(128) DEFAULT NULL COMMENT '前端URL',
-  `parent_id` varchar(32) DEFAULT NULL COMMENT '父菜单ID',
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
-  `icon` varchar(32) DEFAULT NULL COMMENT '图标',
-  `component` varchar(64) DEFAULT NULL COMMENT 'VUE页面',
-  `hidden` bit(1) DEFAULT b'0' COMMENT '隐藏',
-  `iframe` bit(1) DEFAULT b'0' COMMENT '是否外链',
-  `cache` bit(1) DEFAULT b'0' COMMENT '缓存',
-  `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
-  `sort` int(11) DEFAULT '1' COMMENT '排序值',
-  `created_by` varchar(50) NOT NULL,
+CREATE TABLE `sys_menu`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单ID',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单名称',
+  `type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单类型 （0目录 1菜单 2按钮）',
+  `permission` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单权限标识',
+  `path` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '前端URL',
+  `parent_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单ID',
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单IDs',
+  `icon` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `component` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'VUE页面',
+  `hidden` bit(1) NULL DEFAULT b'0' COMMENT '隐藏',
+  `iframe` bit(1) NULL DEFAULT b'0' COMMENT '是否外链',
+  `cache` bit(1) NULL DEFAULT b'0' COMMENT '缓存',
+  `leaf` bit(1) NULL DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
+  `sort` int(11) NULL DEFAULT 1 COMMENT '排序值',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `version` int(11) NOT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='菜单权限表';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_menu` VALUES ('06874adacf1f272be7928badd4fe8ed1', '配置日志', '1', NULL, 'log', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'dev', 'admin/log/index', b'0', b'0', b'0', b'1', 30, '1', '2019-08-06 07:16:06.000', '1', '2020-05-18 08:54:34.755', NULL, 1, '1');
 INSERT INTO `sys_menu` VALUES ('0747d9d8f651f19e49748ba68f18c6f5', '任务调度方案编辑', '2', 'quartz_job_edit', NULL, 'c77855e4171d00ae3f97563a8391f70a', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-15 01:36:03.602', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
 INSERT INTO `sys_menu` VALUES ('0a160cff2d071eeec3db97f0cb0b30d6', '测试树编辑', '2', 'test_testTreeBook_edit', NULL, '3956b4690e4f49cfb1e065384c1dc0b9', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 00:35:47.308', '1', '2020-05-26 01:12:00.658', NULL, 0, '1');
@@ -757,7 +737,7 @@ INSERT INTO `sys_menu` VALUES ('17a713e918513ecd42d3e915d1fc79c1', '测试书籍
 INSERT INTO `sys_menu` VALUES ('18d6b5e0f6b986cd074bf23de11ecd34', '任务调度删除', '2', 'quartz_job_del', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-15 01:36:47.091', '1', '2020-05-17 04:24:22.873', NULL, 1, '0');
 INSERT INTO `sys_menu` VALUES ('1a900c3f10ef5b0987e0a8ee4445316d', '用户查看', '2', 'sys_user_view', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 10, '1', '2019-08-08 08:27:34.000', '1', '2020-05-16 12:06:35.180', NULL, 4, '1');
 INSERT INTO `sys_menu` VALUES ('1ae562534a64d4473899e52497c40b2e', '二级菜单1', '1', NULL, 'menu1', 'eb17cee437ea6b630dad59fff2a059ca', 'eb17cee437ea6b630dad59fff2a059ca,', 'dev', 'nested/menu1/index', b'0', b'0', b'0', b'0', 10, '1', '2020-05-19 02:10:06.354', '1', '2020-05-26 01:13:50.580', NULL, 9, '0');
-INSERT INTO `sys_menu` VALUES ('2000', '系统监控', '0', NULL, '/sys', '-1', NULL, 'system', 'Layout', b'0', b'0', b'0', b'0', 20, '', '2017-11-08 12:56:00.000', '1', '2020-05-18 07:52:02.575', NULL, 39, '0');
+INSERT INTO `sys_menu` VALUES ('2000', '系统监控', '0', NULL, '/sys', '-1', NULL, 'system', 'Layout', b'0', b'0', b'0', b'0', 20, '', '2017-11-08 12:56:00.000', '1', '2020-06-03 20:53:57.412', NULL, 40, '0');
 INSERT INTO `sys_menu` VALUES ('2100', '操作日志', '1', NULL, 'log-operate', '2000', '2000,', 'log', 'monitor/log-operate/index', b'0', b'0', b'0', b'0', 40, '', '2017-11-21 06:06:22.000', '1', '2020-05-18 01:23:57.530', NULL, 12, '0');
 INSERT INTO `sys_menu` VALUES ('2101', '操作日志删除', '2', 'sys_logOperate_del', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '', '2017-11-21 12:37:37.000', '1', '2020-05-18 01:23:57.545', NULL, 3, '0');
 INSERT INTO `sys_menu` VALUES ('2200', '字典管理', '1', 'sys_dict_view', 'dict', '1000', '1000,', 'dictionary', 'sys/dict/index', b'0', b'0', b'0', b'0', 50, '', '2017-11-30 03:30:52.000', '1', '2020-05-17 08:56:34.943', NULL, 11, '0');
@@ -767,8 +747,8 @@ INSERT INTO `sys_menu` VALUES ('2245134851ecd3537c454ba8a3ef915c', '测试书籍
 INSERT INTO `sys_menu` VALUES ('23430df88fb72179c2a85c39eaf4d50b', '任务调度日志清空', '2', 'quartz_jobLog_clean', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2019-08-16 07:12:26.285', '1', '2020-05-17 06:40:21.370', NULL, 2, '1');
 INSERT INTO `sys_menu` VALUES ('247071d42ff40267c8d8c44eac92da67', '生成方案', '1', NULL, 'scheme', '413892fe8d52c1163d6659f51299dc96', '413892fe8d52c1163d6659f51299dc96,', 'dev', 'gen/scheme/index', b'0', b'0', b'0', b'0', 30, '1', '2019-07-22 04:27:35.000', '1', '2020-05-19 02:39:42.026', NULL, 21, '0');
 INSERT INTO `sys_menu` VALUES ('2500', '接口文档', '1', NULL, 'swagger2', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'swagger', 'tool/swagger/index', b'0', b'0', b'0', b'1', 20, '', '2018-06-27 01:50:32.000', '1', '2020-05-19 17:17:26.914', NULL, 8, '0');
-INSERT INTO `sys_menu` VALUES ('2600', '令牌管理', '1', NULL, 'persistent-token', '2000', '2000,', 'dev', 'monitor/persistent-token/index', b'0', b'0', b'0', b'0', 20, '', '2018-09-04 20:58:41.000', '1', '2020-05-17 08:57:31.286', NULL, 14, '0');
-INSERT INTO `sys_menu` VALUES ('2601', '令牌删除', '2', 'sys_persistentToken_del', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 1, '', '2018-09-04 20:59:50.000', '1', '2020-05-17 08:57:31.293', NULL, 6, '0');
+INSERT INTO `sys_menu` VALUES ('2600', '令牌管理', '1', NULL, 'persistent-token', '2000', '2000,', 'dev', 'monitor/persistent-token/index', b'1', b'0', b'0', b'0', 20, '', '2018-09-04 20:58:41.000', '1', '2020-06-03 20:53:57.431', NULL, 15, '0');
+INSERT INTO `sys_menu` VALUES ('2601', '令牌删除', '2', 'sys_persistentToken_del', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 1, '', '2018-09-04 20:59:50.000', '1', '2020-06-03 20:53:57.444', NULL, 7, '0');
 INSERT INTO `sys_menu` VALUES ('2836ced373377be75936827ecddf7fad', '测试树管理编辑', '2', 'test_testTreeBook_edit', NULL, '8d3517427e527df11d51da528261c915', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-12 05:32:06.856', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
 INSERT INTO `sys_menu` VALUES ('29de79df95e70d8e8fbdc7945acf214a', '任务调度查看', '2', 'quartz_job_view', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 10, '1', '2019-08-15 01:36:47.085', '1', '2020-05-17 03:10:40.648', NULL, 1, '0');
 INSERT INTO `sys_menu` VALUES ('29fa5859c9418ab919e172b7d21162de', '测试树查看', '2', 'test_testTreeBook_view', NULL, 'dab11e5104d690be6991002ae4da0cbd', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2020-05-26 01:15:02.872', '1', '2020-05-30 07:36:26.994', NULL, 0, '1');
@@ -803,7 +783,7 @@ INSERT INTO `sys_menu` VALUES ('74f2b2a8871a298e0acc4d7129d10e9c', '任务调度
 INSERT INTO `sys_menu` VALUES ('76d6087052dc26b32f3efa71b9cc119b', '任务调度日志', '2', 'quartz_jobLog_view', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 50, '1', '2019-08-16 07:11:30.986', '1', '2020-05-17 04:43:44.992', NULL, 3, '0');
 INSERT INTO `sys_menu` VALUES ('7754b1457826c48290bc189bb1289740', '支付宝工具', '1', NULL, 'alipay', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'alipay', 'tool/alipay/index', b'0', b'0', b'0', b'1', 40, '1', '2020-05-18 08:58:06.876', '1', '2020-05-19 17:17:53.063', NULL, 2, '0');
 INSERT INTO `sys_menu` VALUES ('795b4d5cf0eb3ed80e24cbab39727b9d', 'Markdown', '1', NULL, 'markdown', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'markdown', 'components/MarkDown', b'0', b'0', b'0', b'1', 40, '1', '2020-05-16 12:21:46.675', '1', '2020-05-16 12:22:53.122', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('7b14af9e9fbff286856338a194422b07', '令牌查看', '2', 'sys_persistentToken_view', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-09 00:44:25.617', '1', '2020-05-17 08:57:31.295', NULL, 4, '0');
+INSERT INTO `sys_menu` VALUES ('7b14af9e9fbff286856338a194422b07', '令牌查看', '2', 'sys_persistentToken_view', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-09 00:44:25.617', '1', '2020-06-03 20:53:57.448', NULL, 5, '0');
 INSERT INTO `sys_menu` VALUES ('7c7a876f4cceba2dd92aa539dea6b6e5', '任务日志清空', '2', 'quartz_jobLog_clean', NULL, 'c93f8fca7ca6f8631d383b08ab67009a', '2000,c93f8fca7ca6f8631d383b08ab67009a,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-16 04:55:37.892', '1', '2020-05-17 04:43:17.774', NULL, 1, '1');
 INSERT INTO `sys_menu` VALUES ('84f55c785ae71eb65e7325e148818041', '测试树查看', '2', 'test_testTreeBook_view', NULL, 'c206444a1d18c7b505dea8ed5a617669', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 20, '1', '2020-05-26 01:12:00.667', '1', '2020-05-26 01:15:02.864', NULL, 0, '1');
 INSERT INTO `sys_menu` VALUES ('862fa87cbc10766da4de286804e01d13', '测试树删除', '2', 'test_testTreeBook_del', NULL, 'dab11e5104d690be6991002ae4da0cbd', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2020-05-26 01:15:02.877', '1', '2020-05-30 07:36:26.973', NULL, 0, '1');
@@ -849,105 +829,97 @@ INSERT INTO `sys_menu` VALUES ('f15e2186907d22765cd149a94905842a', '在线用户
 INSERT INTO `sys_menu` VALUES ('f6d6b0be40b21899380fd7983d371c3a', '测试书籍删除', '2', 'test_testBook_del', NULL, '2c0688c2ad9259b9a7e7088a2f6ade4e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 00:36:39.132', '1', '2020-05-26 01:12:05.946', NULL, 0, '1');
 INSERT INTO `sys_menu` VALUES ('f9ad900ea905f0d388d9d2da66a42aef', '测试树编辑', '2', 'test_testTreeBook_edit', NULL, 'c206444a1d18c7b505dea8ed5a617669', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 01:12:00.671', '1', '2020-05-26 01:15:02.864', NULL, 0, '1');
 INSERT INTO `sys_menu` VALUES ('fe4c7938e146ec223e99d426aaa87109', '三级菜单2', '1', NULL, 'menu1-2', '1ae562534a64d4473899e52497c40b2e', 'eb17cee437ea6b630dad59fff2a059ca,1ae562534a64d4473899e52497c40b2e,', 'dev', 'nested/menu1/menu1-2', b'0', b'0', b'0', b'1', 30, '1', '2020-05-19 02:13:18.819', '1', '2020-05-26 01:13:50.588', NULL, 3, '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_oauth_client_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_oauth_client_detail`;
-CREATE TABLE `sys_oauth_client_detail` (
-  `client_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '客户端ID',
-  `resource_ids` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '资源ID',
-  `client_secret` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户端密钥',
-  `scope` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '作用域',
-  `authorized_grant_types` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '授权方式',
-  `web_server_redirect_uri` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '重定向地址',
-  `authorities` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '权限',
-  `access_token_validity` int(11) DEFAULT NULL COMMENT '请求令牌有效时间',
-  `refresh_token_validity` int(11) DEFAULT NULL COMMENT '刷新令牌有效时间',
-  `additional_information` varchar(4096) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '扩展信息',
-  `autoapprove` varchar(256) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '是否自动放行',
+CREATE TABLE `sys_oauth_client_detail`  (
+  `client_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '客户端ID',
+  `resource_ids` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '资源ID',
+  `client_secret` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '客户端密钥',
+  `scope` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '作用域',
+  `authorized_grant_types` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '授权方式',
+  `web_server_redirect_uri` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '重定向地址',
+  `authorities` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '权限',
+  `access_token_validity` int(11) NULL DEFAULT NULL COMMENT '请求令牌有效时间',
+  `refresh_token_validity` int(11) NULL DEFAULT NULL COMMENT '刷新令牌有效时间',
+  `additional_information` varchar(4096) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '扩展信息',
+  `autoapprove` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '是否自动放行',
   PRIMARY KEY (`client_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='终端信息表';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '终端信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oauth_client_detail
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_oauth_client_detail` VALUES ('albedo', NULL, 'albedo', 'server', 'password,refresh_token,authorization_code,client_credentials', 'http://localhost:4040/sso1/login,http://localhost:4041/sso1/login', NULL, NULL, NULL, NULL, 'true');
 INSERT INTO `sys_oauth_client_detail` VALUES ('app', NULL, 'app', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true');
 INSERT INTO `sys_oauth_client_detail` VALUES ('daemon', NULL, 'daemon', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true');
 INSERT INTO `sys_oauth_client_detail` VALUES ('gen', NULL, 'gen', 'server', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true');
 INSERT INTO `sys_oauth_client_detail` VALUES ('swagger', NULL, 'swagger', 'all', 'password,refresh_token', NULL, NULL, NULL, NULL, NULL, 'true');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
-  `name` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
-  `level` int(11) DEFAULT NULL COMMENT '角色级别',
-  `data_scope` char(1) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置',
-  `available` char(1) COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
-  `created_by` varchar(50) CHARACTER SET utf8 NOT NULL,
+CREATE TABLE `sys_role`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `level` int(11) NULL DEFAULT NULL COMMENT '角色级别',
+  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置',
+  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '1' COMMENT '1-正常，0-锁定',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3),
-  `description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `version` int(11) NOT NULL,
-  `del_flag` char(1) COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='系统角色表';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_role` VALUES ('1', '超级管理员', 1, '1', '1', '', '2017-10-30 06:45:51.000', '1', '2020-05-15 02:00:00.741', NULL, 75, '0');
 INSERT INTO `sys_role` VALUES ('2', '机构管理员', 2, '2', '1', '', '2018-11-12 11:42:26.000', '1', '2020-05-15 02:01:14.154', NULL, 18, '0');
 INSERT INTO `sys_role` VALUES ('262da20a182dd09e70422cbca05503b7', 'tets', 3, '5', '1', '1', '2020-05-15 02:21:30.869', '1', '2020-05-15 02:28:55.628', NULL, 0, '1');
 INSERT INTO `sys_role` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '部门管理员', 3, '3', '1', '1', '2020-05-15 02:02:13.389', '1', '2020-05-26 02:13:04.474', NULL, 3, '0');
 INSERT INTO `sys_role` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '普通管理员', 4, '4', '1', '1', '2020-05-15 02:00:50.813', '1', '2020-05-15 02:30:26.577', '普通管理', 6, '0');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_dept`;
-CREATE TABLE `sys_role_dept` (
-  `id` varchar(32) NOT NULL,
-  `role_id` varchar(32) DEFAULT NULL COMMENT '角色ID',
-  `dept_id` varchar(32) DEFAULT NULL COMMENT '部门ID',
+CREATE TABLE `sys_role_dept`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `role_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色ID',
+  `dept_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色与部门对应关系';
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色与部门对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_dept
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_role_dept` VALUES ('28e2bd6452d0aff99f014136336eab61', '1', '8');
 INSERT INTO `sys_role_dept` VALUES ('34481e9777757dd6ffe1c799749b4db5', '2', '5');
 INSERT INTO `sys_role_dept` VALUES ('5c5c58ad79db6edea88100e6491e5e30', '2', '4');
 INSERT INTO `sys_role_dept` VALUES ('64af22db5dbe5cf69de8fa7f2d917922', '2', '3');
 INSERT INTO `sys_role_dept` VALUES ('c3b5457350bb7a9be8201fa3f88d3c2c', '262da20a182dd09e70422cbca05503b7', NULL);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
-CREATE TABLE `sys_role_menu` (
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
-  `menu_id` varchar(32) NOT NULL COMMENT '菜单ID',
-  PRIMARY KEY (`role_id`,`menu_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色菜单表';
+CREATE TABLE `sys_role_menu`  (
+  `role_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色ID',
+  `menu_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单ID',
+  PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_role_menu` VALUES ('1', '0d0be247863fcbf08b3db943e5f45992');
 INSERT INTO `sys_role_menu` VALUES ('1', '1000');
 INSERT INTO `sys_role_menu` VALUES ('1', '10bd98f30a42427dd7ef75418ad3da6b');
@@ -1061,41 +1033,39 @@ INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1302');
 INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1303');
 INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1000');
 INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1100');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user` (
-  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL DEFAULT '1' COMMENT '主键ID',
-  `username` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT '用户名',
-  `password` varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `nickname` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '昵称',
-  `phone` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '简介',
-  `email` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邮箱',
-  `avatar` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '头像',
-  `dept_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门ID',
-  `qq_open_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'QQ openid',
-  `wx_open_id` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '微信openid',
-  `available` char(1) COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
-  `created_by` varchar(50) CHARACTER SET utf8 NOT NULL,
+CREATE TABLE `sys_user`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '1' COMMENT '主键ID',
+  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `nickname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '昵称',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '简介',
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '邮箱',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '头像',
+  `dept_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '部门ID',
+  `qq_open_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT 'QQ openid',
+  `wx_open_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '微信openid',
+  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '1' COMMENT '1-正常，0-锁定',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
-  `description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `version` int(11) NOT NULL,
-  `del_flag` char(1) COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `user_wx_openid` (`wx_open_id`) USING BTREE,
-  KEY `user_qq_openid` (`qq_open_id`) USING BTREE,
-  KEY `user_idx1_username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='用户表';
+  INDEX `user_wx_openid`(`wx_open_id`) USING BTREE,
+  INDEX `user_qq_openid`(`qq_open_id`) USING BTREE,
+  INDEX `user_idx1_username`(`username`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$6z14VGdfVnlWY2K1pvdzJOHkvjLmOuBrJXXeZ0mGIqB60Qd6WYDoC', 'albedo', '17034642999', '22@ss.com', '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 22:15:18.000', '1', '2020-05-31 18:35:54.900', '11', 46, '0');
 INSERT INTO `sys_user` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', 'test1', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254642311', '13@qqx.om', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 00:51:46.703', '1', '2020-05-30 07:42:57.177', NULL, 6, '0');
 INSERT INTO `sys_user` VALUES ('4c2796f3667e3e5907a04623d7fd8de4', 'ttttt', '$2a$10$KYuAjYBhucUG4GbYQTuRO.YOl6JJlGdEdD5zGLkfrSumnjEF59S7G', '1', '13245678975', '1@e.com', '', 'c095173c3aebcd7ff9c6177fbf7a8b69', NULL, NULL, '1', '1', '2020-05-30 07:41:21.126', '4c2796f3667e3e5907a04623d7fd8de4', '2020-05-31 18:35:26.113', NULL, 7, '0');
@@ -1103,53 +1073,22 @@ INSERT INTO `sys_user` VALUES ('5168fcfd16b8bad9fb38edfab4409023', 'www', '$2a$1
 INSERT INTO `sys_user` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', 'dddd', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', 'dd', '13258465214', '1@1.com', NULL, '1', NULL, NULL, '1', '1', '2020-05-28 18:08:17.639', '1', '2020-05-30 07:42:57.184', NULL, 0, '0');
 INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462101', '837158@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:32:17.000', '1', '2020-05-30 07:42:57.186', '11', 26, '0');
 INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462222', 'ww@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:35:13.000', '1', '2020-05-30 07:42:57.187', NULL, 50, '0');
+INSERT INTO `sys_user` VALUES ('db351fa51ba2fb6db590d8d8a673a243', 'test3', '$2a$10$J4IpQRDNuzNWAwKsu3Q/xeH/wtCB.bF3aG1NhVcGTLzxD2975f/y.', NULL, '13245632453', '1@13.com', NULL, '1', NULL, NULL, '1', '1', '2020-06-03 22:16:52.382', '1', '2020-06-03 22:16:52.382', NULL, 0, '0');
 INSERT INTO `sys_user` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', 'ttt', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254732131', '2113@ed.bom', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 01:06:21.381', '1', '2020-05-30 07:42:57.190', NULL, 1, '1');
-COMMIT;
-
--- ----------------------------
--- Table structure for sys_user_online
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_online`;
-CREATE TABLE `sys_user_online` (
-  `id` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `session_id` varchar(50) NOT NULL DEFAULT '' COMMENT '用户会话id',
-  `user_id` varchar(32) DEFAULT NULL COMMENT '登录ID',
-  `username` varchar(50) DEFAULT '' COMMENT '登录账号',
-  `dept_id` varchar(32) DEFAULT NULL COMMENT '部门ID',
-  `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
-  `ip_address` varchar(50) DEFAULT '' COMMENT 'IP',
-  `ip_location` varchar(255) DEFAULT '' COMMENT 'IP地址',
-  `user_agent` varchar(2000) DEFAULT NULL COMMENT '用户代理',
-  `browser` varchar(50) DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) DEFAULT '' COMMENT '操作系统',
-  `status` varchar(10) DEFAULT '' COMMENT '在线状态on_line在线off_line离线',
-  `start_timestamp` datetime DEFAULT NULL COMMENT 'session创建时间',
-  `last_access_time` datetime DEFAULT NULL COMMENT 'session最后访问时间',
-  `expire_time` int(5) DEFAULT '0' COMMENT '超时时间，单位为分钟',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='在线用户记录';
-
--- ----------------------------
--- Records of sys_user_online
--- ----------------------------
-BEGIN;
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
-CREATE TABLE `sys_user_role` (
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户角色表';
+CREATE TABLE `sys_user_role`  (
+  `user_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
+  `role_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-BEGIN;
 INSERT INTO `sys_user_role` VALUES ('1', '1');
 INSERT INTO `sys_user_role` VALUES ('1', '2');
 INSERT INTO `sys_user_role` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', '2');
@@ -1158,74 +1097,62 @@ INSERT INTO `sys_user_role` VALUES ('5168fcfd16b8bad9fb38edfab4409023', '2');
 INSERT INTO `sys_user_role` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', '4647a907ad1dd30b28cbdaa229b67fc1');
 INSERT INTO `sys_user_role` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', '1');
 INSERT INTO `sys_user_role` VALUES ('90da0206c39867a1b36ac36ced80c1a9', '2');
+INSERT INTO `sys_user_role` VALUES ('db351fa51ba2fb6db590d8d8a673a243', '2');
 INSERT INTO `sys_user_role` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', '2');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for test_book
 -- ----------------------------
 DROP TABLE IF EXISTS `test_book`;
-CREATE TABLE `test_book` (
-  `id` varchar(32) NOT NULL,
-  `title_` varchar(32) DEFAULT NULL COMMENT '标题',
-  `author_` varchar(50) NOT NULL COMMENT '作者',
-  `name_` varchar(50) DEFAULT NULL COMMENT '名称',
-  `email_` varchar(100) DEFAULT NULL COMMENT '邮箱',
-  `phone_` varchar(32) DEFAULT NULL COMMENT '手机',
+CREATE TABLE `test_book`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `title_` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
+  `author_` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '作者',
+  `name_` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `email_` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `phone_` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机',
   `activated_` bit(1) NOT NULL,
-  `number_` int(11) DEFAULT NULL COMMENT 'key',
-  `money_` decimal(20,2) DEFAULT NULL,
-  `amount_` double(11,2) DEFAULT NULL,
+  `number_` int(11) NULL DEFAULT NULL COMMENT 'key',
+  `money_` decimal(20, 2) NULL DEFAULT NULL,
+  `amount_` double(11, 2) NULL DEFAULT NULL,
   `reset_date` timestamp(3) NULL DEFAULT NULL,
-  `created_by` varchar(50) NOT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `version` int(11) DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `version` int(11) NULL DEFAULT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='测试书籍';
-
--- ----------------------------
--- Records of test_book
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '测试书籍' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for test_tree_book
 -- ----------------------------
 DROP TABLE IF EXISTS `test_tree_book`;
-CREATE TABLE `test_tree_book` (
-  `id` varchar(32) NOT NULL,
-  `parent_id` varchar(32) DEFAULT NULL,
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
-  `name` varchar(50) DEFAULT NULL COMMENT '部门名称',
-  `sort` int(11) DEFAULT NULL COMMENT '排序',
-  `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
-  `author_` varchar(50) NOT NULL COMMENT '作者',
-  `email_` varchar(100) DEFAULT NULL COMMENT '邮箱',
-  `phone_` varchar(32) DEFAULT NULL COMMENT '手机',
+CREATE TABLE `test_tree_book`  (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `parent_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父菜单IDs',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '部门名称',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `leaf` bit(1) NULL DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
+  `author_` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '作者',
+  `email_` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `phone_` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机',
   `activated_` bit(1) NOT NULL,
-  `number_` int(11) DEFAULT NULL COMMENT 'key',
-  `money_` decimal(20,2) DEFAULT NULL,
-  `amount_` double(11,2) DEFAULT NULL,
+  `number_` int(11) NULL DEFAULT NULL COMMENT 'key',
+  `money_` decimal(20, 2) NULL DEFAULT NULL,
+  `amount_` double(11, 2) NULL DEFAULT NULL,
   `reset_date` timestamp(3) NULL DEFAULT NULL,
-  `created_by` varchar(50) NOT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '0-正常，1-删除',
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   `version` int(11) NOT NULL,
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='  测试树书';
-
--- ----------------------------
--- Records of test_tree_book
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '  测试树书' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
