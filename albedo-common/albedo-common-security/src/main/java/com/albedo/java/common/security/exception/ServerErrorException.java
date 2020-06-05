@@ -27,7 +27,7 @@ import org.springframework.http.HttpStatus;
 @JsonSerialize(using = Auth2ExceptionSerializer.class)
 public class ServerErrorException extends Auth2Exception {
 
-	public ServerErrorException(String msg, Throwable t) {
+	public ServerErrorException(String msg) {
 		super(msg);
 	}
 

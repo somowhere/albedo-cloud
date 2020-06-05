@@ -24,6 +24,6 @@ public class ApplicationProperties {
 	private String urlSuffix = ".html";
 	private Boolean developMode = true;
 	private String staticFileDirectory = "";
-	private String logPath = ".logs/";
+	private String logPath = "logs/";
 
 }

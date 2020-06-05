@@ -16,9 +16,11 @@
 
 package com.albedo.java.common.security.component;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.albedo.java.common.security.exception.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.rpc.RpcException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +53,12 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 		// Try to extract a SpringSecurityException from the stacktrace
 		Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 
+		for (Throwable cause : causeChain){
+			if(cause instanceof RpcException){
+				return handleOAuth2Exception(new ServerErrorException("服务调用失败"));
+			}
+		}
+
 		Exception ase = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class,
 			causeChain);
 		if (ase != null) {
@@ -82,7 +90,7 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 			return handleOAuth2Exception((OAuth2Exception) ase);
 		}
 
-		return handleOAuth2Exception(new ServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e));
+		return handleOAuth2Exception(new ServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
 
 	}
 

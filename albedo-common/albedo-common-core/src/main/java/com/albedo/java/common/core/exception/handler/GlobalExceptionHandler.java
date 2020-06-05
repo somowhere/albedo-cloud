@@ -56,7 +56,12 @@ public class GlobalExceptionHandler {
 	public Result exception(Exception e) {
 		log.error("全局异常信息 ex={}", e);
 		if(e instanceof RpcException){
-			return Result.buildFail("远程服务调用失败");
+			try {
+				String method = e.getMessage().substring(e.getMessage().indexOf("method") + 6, e.getMessage().indexOf(" in "));
+				return Result.buildFail("远程服务["+method+"]调用失败");
+			}catch (Exception e1){
+				return Result.buildFail("远程服务调用失败");
+			}
 		}
 		return Result.buildFail(e.getMessage());
 	}
