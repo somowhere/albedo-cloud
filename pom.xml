@@ -36,18 +36,20 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-admin.version>2.2.3</spring-boot-admin.version>
 		<hutool.version>5.3.5</hutool.version>
-		<mybatis-plus.version>3.3.1</mybatis-plus.version>
+		<mybatis-plus.version>3.3.2</mybatis-plus.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<jackson.version>2.9.9</jackson.version>
 		<h2.version>1.4.199</h2.version>
-		<poi.version>3.17</poi.version>
+		<poi.version>4.1.2</poi.version>
 		<springfox.version>2.9.2</springfox.version>
 		<guava.version>20.0</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
+		<fastjson.version>1.2.69</fastjson.version>
+		<swagger.version>1.5.20</swagger.version>
 
 		<profile.dev.log.level>INFO</profile.dev.log.level>
 		<profile.prod.log.level>INFO</profile.prod.log.level>
@@ -134,21 +136,24 @@
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${security.oauth.version}</version>
 			</dependency>
-			<!--jackson模块-->
+			<!--fastjson 版本-->
 			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
 			</dependency>
-			<!--jackson模块-->
+			<!--web 模块-->
 			<dependency>
-				<groupId>com.fasterxml.jackson.module</groupId>
-				<artifactId>jackson-modules-java8</artifactId>
-				<version>${jackson.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<!--排除tomcat依赖-->
+					<exclusion>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+						<groupId>org.springframework.boot</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

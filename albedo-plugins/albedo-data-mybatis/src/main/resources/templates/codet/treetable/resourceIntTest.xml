@@ -92,15 +92,15 @@ public class ${ClassName}ResourceIntTest {
 		</#if>
 	</#list>
 
-    @autowired
+    @Autowired
 	private ${ClassName}Service ${className}Service;
 
 	private MockMvc rest${ClassName}MockMvc;
-	@autowired
+	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-	@autowired
+	@Autowired
 	private GlobalExceptionHandler globalExceptionHandler;
-	@autowired
+	@Autowired
 	private ApplicationProperties applicationProperties;
 
 	private ${ClassName}Dto ${className}Dto;
@@ -108,11 +108,10 @@ public class ${ClassName}ResourceIntTest {
 	private ${ClassName}Dto another${ClassName}Dto = new ${ClassName}Dto();
 	@BeforeEach
 	public void setup() {
-		DEFAULT_API_URL = applicationProperties.getAdminPath("/${urlPrefix}/");
+		DEFAULT_API_URL = "/${urlPrefix}/";
 		MockitoAnnotations.initMocks(this);
 		final ${ClassName}Resource ${className}Resource = new ${ClassName}Resource(${className}Service);
 		this.rest${ClassName}MockMvc = MockMvcBuilders.standaloneSetup(${className}Resource)
-			.addPlaceholderValue(TestUtil.ADMIN_PATH, applicationProperties.getAdminPath())
 			.setControllerAdvice(globalExceptionHandler)
 			.setConversionService(TestUtil.createFormattingConversionService())
 			.setMessageConverters(jacksonMessageConverter)

@@ -12,7 +12,6 @@
 	<artifactId>albedo-common-module</artifactId>
 
 	<properties>
-		<poi.version>3.9</poi.version>
 	</properties>
 	<dependencies>
 		<!--工具类核心包-->
@@ -25,29 +24,6 @@
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-data-mybatis</artifactId>
 			<version>${project.release.version}</version>
-		</dependency>
-
-		<!-- poi office -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>${poi.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>${poi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>${poi.version}</version>
 		</dependency>
 
 

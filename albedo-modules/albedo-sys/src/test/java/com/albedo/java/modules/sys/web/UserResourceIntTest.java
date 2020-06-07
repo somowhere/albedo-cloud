@@ -24,11 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 import static com.albedo.java.modules.TestUtil.createFormattingConversionService;
@@ -41,9 +41,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for the UserResource REST web.
  *
- * @see UserResource
+ * @see com.albedo.java.modules.sys.web.UserResource
  */
 @SpringBootTest(classes = {AlbedoSysApplication.class})
+@WithMockUser(username = "admin")
 @Slf4j
 public class UserResourceIntTest {
 
@@ -65,18 +66,18 @@ public class UserResourceIntTest {
 	private static final Integer UPDATED_AVAILABLE = CommonConstants.NO;
 	UserDto anotherUser = new UserDto();
 	private String DEFAULT_API_URL;
-	@Resource
+	@Autowired
 	private UserService userService;
-	@Resource
+	@Autowired
 	private RoleService roleService;
-	@Resource
+	@Autowired
 	private DeptService deptService;
 	private MockMvc restUserMockMvc;
-	@Resource
+	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-	@Resource
+	@Autowired
 	private GlobalExceptionHandler globalExceptionHandler;
-	@Resource
+	@Autowired
 	private ApplicationProperties applicationProperties;
 	private UserDto user;
 	private List<Role> roleList;
@@ -351,7 +352,9 @@ public class UserResourceIntTest {
 		User tempUser = userService.getById(user.getId());
 		assertThat(CommonConstants.STR_YES.equals(tempUser.getAvailable()));
 		// lockOrUnLock the user
-		restUserMockMvc.perform(put(DEFAULT_API_URL).content(user.getId())
+		restUserMockMvc.perform(put(DEFAULT_API_URL)
+			.contentType(TestUtil.APPLICATION_JSON_UTF8)
+			.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
 			.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
