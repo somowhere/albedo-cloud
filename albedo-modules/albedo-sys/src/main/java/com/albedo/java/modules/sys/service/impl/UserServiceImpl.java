@@ -292,6 +292,7 @@ public class UserServiceImpl extends DataServiceImpl<UserRepository, User, UserD
 	public void lockOrUnLock(Set<String> idList) {
 		Assert.isTrue(CollUtil.isNotEmpty(idList), "idList不能为空");
 		for (String id : idList) {
+			Assert.isTrue(SecurityUtil.getUser()!=null, "无法获取当前登录用户");
 			Assert.isTrue(!StringUtil.equals(SecurityUtil.getUser().getId(), id), "不能操作当前登录用户");
 			User user = repository.selectById(id);
 			Assert.isTrue(user != null, "无法找到ID为" + id + "的数据");

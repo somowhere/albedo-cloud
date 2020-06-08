@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:8_server-jre_unlimited
 
-MAINTAINER wangiegie@gmail.com
+MAINTAINER somewhere0813@gmail.com
 
 ENV TZ=Asia/Shanghai
 
