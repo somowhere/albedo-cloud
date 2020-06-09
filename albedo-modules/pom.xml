@@ -33,5 +33,6 @@
 		<module>albedo-gen</module>
 		<module>albedo-monitor</module>
 		<module>albedo-quartz</module>
+		<module>albedo-sentinel</module>
 	</modules>
 </project>
