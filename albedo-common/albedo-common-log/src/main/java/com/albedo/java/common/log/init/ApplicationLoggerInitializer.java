@@ -12,7 +12,7 @@
  * Neither the name of the pig4cloud.com developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: somewhere (wangiegie@gmail.com)
+ * Author: somewhere (somewhere0813@gmail.com)
  */
 
 package com.albedo.java.common.log.init;

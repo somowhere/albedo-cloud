@@ -1,15 +1,15 @@
  <p align="center">
   <img src="https://img.shields.io/badge/Avue-2.3-green.svg" alt="Build Status">
-   <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR2-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.0.RELEASE-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.2.5.RELEASE-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR4-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.1.RELEASE-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.3.0.RELEASE-blue.svg" alt="Downloads">
  </p>  
  
 **albedo-cloud Microservice Architecture**
 - 全网最新spring-cloud-alibaba微服务架构
 - 前端<a href="https://github.com/somowhere/albedo-ui" target="_blank">albedo-ui </a>
 - 基于<a href="https://gitee.com/log4j/pig" target="_blank">pix</a>开源版本（保持更新）二次开发(同时借鉴<a href="https://www.jhipster.tech/" target="_blank">jhipster</a>)
-- 基于 Spring Cloud Greenwich.SR2 、Spring Security OAuth2 的RBAC权限管理系统  
+- 基于 Spring Cloud 、Spring Security OAuth2 的RBAC权限管理系统  
 - 基于数据驱动视图的理念封装 Element-ui，即使没有 vue 的使用经验也能快速上手  
 - 提供对常见容器化支持 Docker、Kubernetes、Rancher2 支持  
 - 提供 lambda 、stream api 、webflux 的生产实践   
@@ -42,31 +42,43 @@ AlbedoGatewayApplication
 
 #### 系统预览
 
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-20-37.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-21-13.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-22-00.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-22-14.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-22-36.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-22-57.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-23-22.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-23-35.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-24-07.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-24-21.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-24-41.png)   
-![](https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo-cloud/Snipaste_2019-10-10_10-24-54.png)   
-
+<table>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/1.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/2.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/3.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/4.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/5.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/6.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/7.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/8.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/9.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/10.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/11.png"/></td>
+        <td></td>
+    </tr>
+</table>
 #### 核心依赖 
 
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.2.5.RELEASE  
-Spring Cloud | Hoxton.SR2 
-Spring Cloud Alibaba | 2.2.0.RELEASE
+Spring Boot |  2.3.0.RELEASE  
+Spring Cloud | Hoxton.SR4 
+Spring Cloud Alibaba | 2.2.1.RELEASE
 Spring Security OAuth2 | 2.3.6.RELEASE
 Mybatis Plus | 3.3.1
-hutool | 5.1.4
-Avue | 2.3
+hutool | 5.3.4
    
 
 
@@ -104,11 +116,16 @@ albedo
 
 4. QQ群: 685728393 
 
-#### 开源协议
 
+#### 项目捐赠
 
-![](https://images.gitee.com/uploads/images/2019/0330/065147_e07bc645_410595.png)
+项目的发展离不开您的支持，请作者喝杯咖啡吧☕  
 
-
-#### 关注我们
+<table>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/alipay.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/wxpay.png"/></td>
+    </tr>
+</table>
+ 
 

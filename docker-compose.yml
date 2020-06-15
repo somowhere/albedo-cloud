@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: ./db/Dockerfile
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 111111
     restart: always
     container_name: albedo-mysql
     image: albedo-mysql
@@ -20,16 +20,16 @@ services:
     container_name: albedo-redis
     hostname: albedo-redis
 
-  albedo-eureka:
+  albedo-register:
     build:
       context: ./
-      dockerfile: ./albedo-eureka/Dockerfile
+      dockerfile: ./albedo-register/Dockerfile
     restart: always
     ports:
-      - 8761:8761
-    container_name: albedo-eureka
-    hostname: albedo-eureka
-    image: albedo-eureka
+      - 8848:8848
+    container_name: albedo-register
+    hostname: albedo-register
+    image: albedo-register
 
   albedo-gateway:
     build:
@@ -63,7 +63,7 @@ services:
   albedo-monitor:
     build:
       context: ./
-      dockerfile: ./albedo-visual/albedo-monitor/Dockerfile
+      dockerfile: ./albedo-modules/albedo-monitor/Dockerfile
     restart: always
     ports:
       - 5001:5001
@@ -74,9 +74,17 @@ services:
   albedo-gen:
     build:
       context: ./
-      dockerfile: ./albedo-visual/albedo-gen/Dockerfile
+      dockerfile: ./albedo-modules/albedo-gen/Dockerfile
     restart: always
     container_name: albedo-gen
     hostname: albedo-gen
     image: albedo-gen
 
+  albedo-quartz:
+    build:
+      context: ./
+      dockerfile: ./albedo-modules/albedo-quartz/Dockerfile
+    restart: always
+    container_name: albedo-quartz
+    hostname: albedo-quartz
+    image: albedo-quartz

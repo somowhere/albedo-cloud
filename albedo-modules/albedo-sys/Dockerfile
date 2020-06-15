@@ -10,6 +10,6 @@ WORKDIR /albedo-sys
 
 EXPOSE 4000
 
-ADD ./albedo-module/albedo-sys-biz/target/albedo-sys-biz.jar ./
+ADD ./albedo-modules/albedo-sys/target/albedo-sys.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar albedo-sys-biz.jar
+CMD java -Djava.security.egd=file:/dev/./urandom -jar albedo-sys.jar

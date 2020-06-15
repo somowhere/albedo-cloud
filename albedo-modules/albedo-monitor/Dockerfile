@@ -10,6 +10,6 @@ WORKDIR /albedo-monitor
 
 EXPOSE 5001
 
-ADD ./albedo-visual/albedo-monitor/target/albedo-monitor.jar ./
+ADD ./albedo-modules/albedo-monitor/target/albedo-monitor.jar ./
 
 CMD java -Djava.security.egd=file:/dev/./urandom -jar albedo-monitor.jar

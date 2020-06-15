@@ -10,6 +10,6 @@ WORKDIR /albedo-gen
 
 EXPOSE 5003
 
-ADD ./albedo-visual/albedo-gen/target/albedo-gen.jar ./
+ADD ./albedo-modules/albedo-gen/target/albedo-gen.jar ./
 
 CMD java -Djava.security.egd=file:/dev/./urandom -jar albedo-gen.jar
