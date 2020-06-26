@@ -60,6 +60,12 @@
 			<artifactId>albedo-swagger-api</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
+		<!--断路器依赖-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-sentinel</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
 		<!--配置中心客户端-->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

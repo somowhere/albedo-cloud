@@ -79,6 +79,11 @@
 		</filter>
 	</appender>
 
+	<!--nacos 心跳 INFO 屏蔽-->
+	<logger name="com.alibaba.nacos" level="OFF">
+		<appender-ref ref="error"/>
+	</logger>
+
 	<logger name="org.springframework.web" level="INFO"/>
 	<logger name="org.springframework.security" level="INFO"/>
 	<logger name="org.springframework" level="INFO"/>

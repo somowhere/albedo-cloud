@@ -23,7 +23,25 @@ public class ApplicationProperties {
 	private final CorsConfiguration cors = new CorsConfiguration();
 	private String urlSuffix = ".html";
 	private Boolean developMode = true;
-	private String staticFileDirectory = "";
+	private Boolean addressEnabled = true;
+	private StaticFileDirectory staticFileDirectory;
 	private String logPath = "logs/";
+	private Rsa rsa = new Rsa();
+	@Data
+	public static class StaticFileDirectory {
 
+		private String mac;
+		private String linux;
+		private String win;
+
+	}
+
+
+	@Data
+	public static class Rsa {
+
+		private String publicKey;
+		private String privateKey;
+
+	}
 }

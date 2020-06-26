@@ -43,7 +43,7 @@ public class SecurityBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
 		}
 
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-		beanDefinition.setBeanClass(ResourceServerConfigurerAdapter.class);
+		beanDefinition.setBeanClass(AlbedoResourceServerConfigurerAdapter.class);
 		registry.registerBeanDefinition(SecurityConstants.RESOURCE_SERVER_CONFIGURER, beanDefinition);
 
 	}

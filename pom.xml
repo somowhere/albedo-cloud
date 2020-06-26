@@ -43,7 +43,6 @@
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
-		<jackson.version>2.9.9</jackson.version>
 		<h2.version>1.4.199</h2.version>
 		<poi.version>4.1.2</poi.version>
 		<springfox.version>2.9.2</springfox.version>
@@ -64,6 +63,7 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!--配置文件加解密-->
 		<dependency>
 			<groupId>com.github.ulisesbocchio</groupId>
 			<artifactId>jasypt-spring-boot-starter</artifactId>
@@ -79,11 +79,6 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>${spring-boot-admin.version}</version>
-		</dependency>
-		<!--断路器依赖-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
 		<!--Lombok-->
 		<dependency>

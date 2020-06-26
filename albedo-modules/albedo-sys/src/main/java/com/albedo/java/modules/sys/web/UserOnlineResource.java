@@ -16,11 +16,12 @@
 
 package com.albedo.java.modules.sys.web;
 
+import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
-import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
+import lombok.AllArgsConstructor;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ import java.util.Set;
 public class UserOnlineResource {
 
 	@Reference(check = false)
-	private RemoteUserOnlineService remoteUserOnlineService;
+	RemoteUserOnlineService remoteUserOnlineService;
 
 	/**
 	 *

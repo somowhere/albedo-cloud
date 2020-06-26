@@ -21,7 +21,6 @@ import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.*;
 import com.albedo.java.common.security.service.UserDetail;
-import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
@@ -50,8 +49,6 @@ import java.util.*;
 @Service(protocol = "dubbo")
 @AllArgsConstructor
 public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
-	public static final String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
-	public static final String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
 	private final TokenStore tokenStore;
 	private final RedisTemplate redisTemplate;
 
@@ -74,9 +71,9 @@ public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 				if(userId.equals(userDetail.getId())){
 					throw new BadRequestException("当前登陆用户无法强退");
 				}
-				redisTemplate.delete(PROJECT_OAUTH_ONLINE + userDetail.getId());
+				redisTemplate.delete(SecurityConstants.PROJECT_OAUTH_ONLINE + userDetail.getId());
 			}
-			redisTemplate.delete(PROJECT_OAUTH_ACCESS + token);
+			redisTemplate.delete(SecurityConstants.PROJECT_OAUTH_ACCESS + token);
 		});
 		return Result.buildOk("操作成功");
 	}
@@ -92,7 +89,7 @@ public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 
 		List<UserOnlineVo> list = new ArrayList<>();
 		//根据分页参数获取对应数据
-		List<String> tokenStrs = findKeysForPage(PROJECT_OAUTH_ACCESS + "*", userOnlineQueryCriteria.getUsername(),
+		List<String> tokenStrs = findKeysForPage(SecurityConstants.PROJECT_OAUTH_ACCESS + "*", userOnlineQueryCriteria.getUsername(),
 			userOnlineQueryCriteria.getCurrent(), userOnlineQueryCriteria.getSize());
 
 		for (String tokenStr : tokenStrs) {
@@ -102,7 +99,7 @@ public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 			UserOnlineVo userOnlineVo = new UserOnlineVo();
 			if (authentication.getPrincipal() instanceof UserDetail) {
 				UserDetail userDetail = (UserDetail) authentication.getPrincipal();
-				UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(RemoteUserOnlineServiceImpl.PROJECT_OAUTH_ONLINE + userDetail.getId());
+				UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(SecurityConstants.PROJECT_OAUTH_ONLINE + userDetail.getId());
 				BeanUtil.copyProperties(userOnlineDto, userOnlineVo);
 			}
 			userOnlineVo.setTokenType(token.getTokenType());
@@ -115,7 +112,7 @@ public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 
 		Page result = new Page(userOnlineQueryCriteria.getCurrent(), userOnlineQueryCriteria.getSize());
 		result.setRecords(list);
-		result.setTotal(Long.valueOf(redisTemplate.keys(PROJECT_OAUTH_ACCESS + "*").size()));
+		result.setTotal(Long.valueOf(redisTemplate.keys(SecurityConstants.PROJECT_OAUTH_ACCESS + "*").size()));
 		return Result.buildOkData(result);
 
 	}
@@ -132,7 +129,7 @@ public class RemoteUserOnlineServiceImpl implements RemoteUserOnlineService {
 		assert cursor != null;
 		while (cursor.hasNext()) {
 			String token = cursor.next().toString(), targetName = "";
-			String realToken = StrUtil.subAfter(token, PROJECT_OAUTH_ACCESS, true);
+			String realToken = StrUtil.subAfter(token, SecurityConstants.PROJECT_OAUTH_ACCESS, true);
 			OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(realToken);
 			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(oAuth2AccessToken);
 			Authentication authentication = oAuth2Auth.getUserAuthentication();

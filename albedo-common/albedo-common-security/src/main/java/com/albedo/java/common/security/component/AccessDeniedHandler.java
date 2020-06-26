@@ -26,7 +26,7 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.exception.AccessDeniedException;
 import com.albedo.java.common.core.util.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
@@ -43,7 +43,7 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
 	private final ObjectMapper objectMapper;
 

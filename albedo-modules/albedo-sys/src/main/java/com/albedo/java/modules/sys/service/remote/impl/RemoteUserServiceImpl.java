@@ -25,6 +25,7 @@ import com.albedo.java.modules.sys.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import java.util.List;
 

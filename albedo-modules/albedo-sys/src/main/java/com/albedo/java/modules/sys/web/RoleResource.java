@@ -110,6 +110,7 @@ public class RoleResource extends BaseResource {
 	 */
 	@GetMapping
 	@Log(value = "角色管理查看")
+	@PreAuthorize("@pms.hasPermission('sys_role_view')")
 	public Result<IPage> getPage(PageModel pm, RoleQueryCriteria roleQueryCriteria) {
 		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, roleQueryCriteria);
 		return Result.buildOkData(roleService.page(pm, wrapper));

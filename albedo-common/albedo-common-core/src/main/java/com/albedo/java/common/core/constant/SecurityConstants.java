@@ -30,6 +30,10 @@ public interface SecurityConstants {
 	 */
 	String PROJECT_PREFIX = "albedo_";
 
+
+	String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
+	String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
+
 	/**
 	 * oauth 相关前缀
 	 */
@@ -179,5 +183,12 @@ public interface SecurityConstants {
 	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
 	 */
 	String ROLE_DATA_SCOPE_CUSTOM = "5";
+
+
+	 String USER_ID = "user_id";
+	 String DEPT_ID = "dept_id";
+	 String DEPT_NAME = "dept_name";
+	 String TENANT_ID = "tenant_id";
+	 String DATA_SCOPE = "data_scope";
 
 }

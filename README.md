@@ -30,8 +30,8 @@
 
 ```
 AlbedoRegisterApplication
-AlbedoAuthApplication
 AlbedoSysApplication
+AlbedoAuthApplication
 AlbedoGenApplication
 AlbedoQuartzApplication
 AlbedoMonitorApplication

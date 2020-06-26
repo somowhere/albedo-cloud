@@ -16,10 +16,10 @@
 
 package com.albedo.java.auth.config;
 
+import com.albedo.java.common.security.handler.FormAuthenticationFailureHandler;
 import com.albedo.java.common.security.handler.MobileLoginSuccessHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -33,6 +33,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.annotation.Resource;
@@ -56,7 +57,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring()
+		web.ignoring().antMatchers("/css/**")
 			.antMatchers("/*.{js,html}")
 			.antMatchers("/webjars/**");
 	}
@@ -64,14 +65,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http
-			.authorizeRequests()
+		http.formLogin().loginPage("/token/login").loginProcessingUrl("/token/form")
+			.failureHandler(authenticationFailureHandler()).and().authorizeRequests()
 			.antMatchers("/actuator/**",
 				"/token/**",
 				"/v2/**",
-				"/swagger-resources/**").permitAll()
-			.anyRequest().authenticated()
-			.and().csrf().disable();
+				"/swagger-resources/**").permitAll().anyRequest().authenticated().and()
+			.csrf().disable();
 	}
 
 	@Bean
@@ -90,6 +90,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.defaultAuthorizationServerTokenServices(defaultAuthorizationServerTokenServices).build();
 	}
 
+	@Bean
+	public AuthenticationFailureHandler authenticationFailureHandler() {
+		return new FormAuthenticationFailureHandler();
+	}
 
 	/**
 	 * https://spring.io/blog/2017/11/01/spring-security-5-0-0-rc1-released#password-storage-updated

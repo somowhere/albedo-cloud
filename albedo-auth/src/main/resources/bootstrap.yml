@@ -4,7 +4,7 @@ server:
 logging:
   level:
     ROOT: INFO
-    org.springframework.security.oauth2: DEBUG
+    org.springframework.security: TRACE
     com.albedo.java: DEBUG
 spring:
   application:
@@ -13,6 +13,7 @@ spring:
     nacos:
       discovery:
         server-addr: ${NACOS-HOST:albedo-register}:${NACOS-PORT:8848}
+        ip: @artifactId@
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yml
@@ -20,4 +21,5 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @spring.profiles.active@
+
 

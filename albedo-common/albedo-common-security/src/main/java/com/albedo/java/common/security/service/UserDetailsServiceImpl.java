@@ -57,11 +57,11 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	@Reference(check = false)
+	@Reference(check = false, interfaceClass = RemoteUserService.class)
 	private RemoteUserService remoteUserService;
-	@Reference(check = false)
+	@Reference(check = false, interfaceClass = RemoteRoleService.class)
 	private RemoteRoleService remoteRoleService;
-	@Reference(check = false)
+	@Reference(check = false, interfaceClass = RemoteDeptService.class)
 	private RemoteDeptService remoteDeptService;
 	@Resource
 	private CacheManager cacheManager;

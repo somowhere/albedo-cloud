@@ -16,11 +16,12 @@
 
 package com.albedo.java.auth.config;
 
-import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.security.component.UserAuthenticationExtendConverter;
 import com.albedo.java.common.security.component.WebResponseExceptionExtendTranslator;
 import com.albedo.java.common.security.service.ClientDetailsService;
+import com.albedo.java.common.security.service.UserDetail;
+import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -77,10 +78,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
 			.tokenStore(tokenStore())
 			.tokenEnhancer(tokenEnhancer())
-			.accessTokenConverter(accessTokenConverter())
 			.userDetailsService(userDetailsService)
 			.authenticationManager(authenticationManager)
 			.reuseRefreshTokens(false)
+			.pathMapping("/oauth/confirm_access", "/token/confirm_access")
 			.exceptionTranslator(new WebResponseExceptionExtendTranslator());
 	}
 
@@ -96,18 +97,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public TokenEnhancer tokenEnhancer() {
 		return (accessToken, authentication) -> {
 			final Map<String, Object> additionalInfo = new HashMap<>(1);
+			UserDetail userDetail = (UserDetail) authentication.getUserAuthentication().getPrincipal();
 			additionalInfo.put("license", SecurityConstants.PROJECT_LICENSE);
+			additionalInfo.put(SecurityConstants.USER_ID, userDetail.getId());
+			additionalInfo.put(SecurityConstants.DEPT_ID, userDetail.getDeptId());
+			additionalInfo.put(SecurityConstants.DEPT_NAME, userDetail.getDeptName());
+			additionalInfo.put(SecurityConstants.DATA_SCOPE, JSON.toJSONString(userDetail.getDataScope()));
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 			return accessToken;
 		};
-	}
-
-	@Bean
-	public AccessTokenConverter accessTokenConverter() {
-		DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
-		UserAuthenticationConverter userTokenConverter = new UserAuthenticationExtendConverter();
-		accessTokenConverter.setUserTokenConverter(userTokenConverter);
-		return accessTokenConverter;
 	}
 
 }

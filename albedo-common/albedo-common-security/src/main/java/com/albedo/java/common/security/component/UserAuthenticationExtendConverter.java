@@ -16,10 +16,10 @@
 
 package com.albedo.java.common.security.component;
 
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.common.security.service.UserDetail;
-import com.alibaba.fastjson.JSON;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,11 +38,6 @@ import java.util.Map;
  * 根据checktoken 的结果转化用户信息
  */
 public class UserAuthenticationExtendConverter implements UserAuthenticationConverter {
-	private static final String USER_ID = "user_id";
-	private static final String DEPT_ID = "dept_id";
-	private static final String DEPT_NAME = "dept_name";
-	private static final String TENANT_ID = "tenant_id";
-	private static final String DATA_SCOPE = "data_scope";
 	private static final String N_A = "N/A";
 
 	/**
@@ -55,13 +50,6 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 	public Map<String, ?> convertUserAuthentication(Authentication authentication) {
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put(USERNAME, authentication.getName());
-		if (authentication.getPrincipal() instanceof UserDetail) {
-			UserDetail userDetail = (UserDetail) authentication.getPrincipal();
-			response.put(USER_ID, userDetail.getId());
-			response.put(DEPT_ID, userDetail.getDeptId());
-			response.put(DEPT_NAME, userDetail.getDeptName());
-			response.put(DATA_SCOPE, JSON.toJSONString(userDetail.getDataScope()));
-		}
 		if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
 			response.put(AUTHORITIES, AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
 		}
@@ -80,10 +68,10 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
 
 			String username = (String) map.get(USERNAME);
-			String id = (String) map.get(USER_ID);
-			String deptId = (String) map.get(DEPT_ID);
-			String deptName = (String) map.get(DEPT_NAME);
-			DataScope dataScope = Json.parseObject((String) map.get(DATA_SCOPE), DataScope.class);
+			String id = (String) map.get(SecurityConstants.USER_ID);
+			String deptId = (String) map.get(SecurityConstants.DEPT_ID);
+			String deptName = (String) map.get(SecurityConstants.DEPT_NAME);
+			DataScope dataScope = Json.parseObject((String) map.get(SecurityConstants.DATA_SCOPE), DataScope.class);
 			UserDetail user = new UserDetail(id, deptId, deptName, username, N_A, true
 				, true, true, true, authorities, dataScope);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);

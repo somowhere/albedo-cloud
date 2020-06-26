@@ -20,5 +20,6 @@
 		<module>albedo-common-security</module>
 		<module>albedo-common-module</module>
 		<module>albedo-common-api</module>
+		<module>albedo-common-sentinel</module>
 	</modules>
 </project>

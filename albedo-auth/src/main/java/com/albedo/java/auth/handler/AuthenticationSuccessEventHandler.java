@@ -19,7 +19,7 @@ package com.albedo.java.auth.handler;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.albedo.java.auth.service.remote.impl.RemoteUserOnlineServiceImpl;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.AddressUtils;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.WebUtil;
@@ -96,7 +96,7 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
 			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),
 			userAgentStr, userAgent.getBrowser().getName(), userAgent.getOs().getName(), new Date());
-		RedisUtil.setCacheObject(RemoteUserOnlineServiceImpl.PROJECT_OAUTH_ONLINE + userOnlineDto.getUserId(), userOnlineDto);
+		RedisUtil.setCacheObject(SecurityConstants.PROJECT_OAUTH_ONLINE + userOnlineDto.getUserId(), userOnlineDto);
 	}
 
 

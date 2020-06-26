@@ -131,7 +131,6 @@ public class SwaggerAutoConfiguration {
 			.useDefaultResponseMessages(applicationSwaggerProperties.isUseDefaultResponseMessages())
 			.groupName(MANAGEMENT_GROUP_NAME)
 			.host(applicationSwaggerProperties.getHost())
-			.protocols(new HashSet<>(Arrays.asList(applicationSwaggerProperties.getProtocols())))
 			.forCodeGeneration(true)
 			.directModelSubstitute(ByteBuffer.class, String.class)
 			.genericModelSubstitutes(ResponseEntity.class)

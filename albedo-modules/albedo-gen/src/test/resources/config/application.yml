@@ -21,7 +21,7 @@ security:
   oauth2:
     resource:
       loadBalanced: true
-      token-info-uri: http://albedo-auth:4000/oauth/check_token
+      token-info-uri: http://albedo-auth:3000/oauth/check_token
     client:
       client-id: ENC(WJRDLZlPlWkmLu/d+gkeAw==)
       client-secret: ENC(gyOtaeY+fxP8/Rkd3PKm8Q==)

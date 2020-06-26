@@ -67,6 +67,12 @@
 			<artifactId>albedo-common-core</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
+		<!--断路器依赖-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-sentinel</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
