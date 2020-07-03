@@ -22,14 +22,17 @@ import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.domain.dto.MenuQueryCriteria;
 import com.albedo.java.modules.sys.domain.dto.MenuSortDto;
 import com.albedo.java.modules.sys.domain.vo.MenuVo;
 import com.albedo.java.modules.sys.service.MenuService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -96,6 +99,21 @@ public class MenuResource extends BaseResource {
 	}
 
 	/**
+	 * 查询菜单信息
+	 *
+	 * @return 分页对象
+	 */
+	@GetMapping
+	@PreAuthorize("@pms.hasPermission('sys_menu_view')")
+	@Log(value = "菜单管理查看")
+	public Result<IPage<MenuVo>> findTreeList(MenuQueryCriteria menuQueryCriteria) {
+		List<MenuVo> menuVoList = menuService.findTreeList(menuQueryCriteria).stream()
+			.map(item -> BeanUtil.copyPropertiesByClass(item, MenuVo.class)).collect(Collectors.toList());
+		return Result.buildOkData(new PageModel<>(Lists.newArrayList(TreeUtil.buildByLoopAutoRoot(menuVoList)),
+			menuVoList.size()));
+	}
+
+	/**
 	 * 新增菜单
 	 *
 	 * @param menuDto 菜单信息
@@ -124,6 +142,19 @@ public class MenuResource extends BaseResource {
 	}
 
 	/**
+	 * 保存菜单信息
+	 *
+	 * @param schemeDto 菜单信息
+	 * @return success/false
+	 */
+	@Inner
+	@PostMapping("/save-gen-scheme")
+	public Result<Boolean> saveByGenScheme(@RequestBody GenSchemeDto schemeDto) {
+		return Result.buildOkData(menuService.saveByGenScheme(schemeDto));
+	}
+
+
+	/**
 	 * 删除菜单
 	 *
 	 * @param ids 菜单ID
@@ -137,19 +168,6 @@ public class MenuResource extends BaseResource {
 		return Result.buildOk("操作成功");
 	}
 
-	/**
-	 * 查询菜单信息
-	 *
-	 * @return 分页对象
-	 */
-	@GetMapping
-	@PreAuthorize("@pms.hasPermission('sys_menu_view')")
-	@Log(value = "菜单管理查看")
-	public Result<IPage<MenuVo>> findTreeList(MenuQueryCriteria menuQueryCriteria) {
-		List<MenuVo> menuVoList = menuService.findTreeList(menuQueryCriteria).stream()
-			.map(item -> BeanUtil.copyPropertiesByClass(item, MenuVo.class)).collect(Collectors.toList());
-		return Result.buildOkData(new PageModel<>(Lists.newArrayList(TreeUtil.buildByLoopAutoRoot(menuVoList)),
-			menuVoList.size()));
-	}
+
 
 }

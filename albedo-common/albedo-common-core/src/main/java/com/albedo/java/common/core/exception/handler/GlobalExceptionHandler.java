@@ -20,10 +20,12 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.albedo.java.common.core.exception.*;
 import com.albedo.java.common.core.util.BeanValidators;
+import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.ResponseEntityBuilder;
 import com.albedo.java.common.core.util.Result;
+import com.alibaba.fastjson.JSONObject;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.rpc.RpcException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -52,20 +54,39 @@ public class GlobalExceptionHandler {
 	 * @return R
 	 */
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public Result exception(Exception e) {
-		log.error("全局异常信息 ex={}", e);
-		if(e instanceof RpcException){
+	public ResponseEntity<Result> exception(Exception e) {
+//		if(e instanceof RpcException){
+//			try {
+//				String method = e.getMessage().substring(e.getMessage().indexOf("method") + 6, e.getMessage().indexOf(" in "));
+//				return Result.buildFail("远程服务["+method+"]调用失败");
+//			}catch (Exception e1){
+//				return Result.buildFail("远程服务调用失败");
+//			}
+//		}
+		if(e instanceof HystrixRuntimeException){
 			try {
-				String method = e.getMessage().substring(e.getMessage().indexOf("method") + 6, e.getMessage().indexOf(" in "));
-				return Result.buildFail("远程服务["+method+"]调用失败");
+				if(e.getCause() instanceof feign.FeignException){
+					return ResponseEntityBuilder.build(Json.parseObject(((feign.FeignException) e.getCause()).contentUTF8(), Result.class));
+				}
 			}catch (Exception e1){
-				return Result.buildFail("远程服务调用失败");
+				return ResponseEntityBuilder.buildFail("远程服务调用失败");
 			}
 		}
-		return Result.buildFail(e.getMessage());
+		log.error("全局异常信息 ex={}", e);
+		return ResponseEntityBuilder.buildFail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 	}
-
+	/**
+	 * validation Exception
+	 *
+	 * @param exception
+	 * @return R
+	 */
+	@ExceptionHandler({FeignException.class})
+	@ResponseStatus(BAD_REQUEST)
+	public Result feignExceptionHandler(FeignException exception) {
+		log.warn("FeignException:{}", exception);
+		return Result.buildFail("远程服务调用失败");
+	}
 	/**
 	 * validation Exception
 	 *
@@ -111,7 +132,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = {BadRequestException.class, EntityExistException.class, IllegalArgumentException.class})
 	public ResponseEntity<Result> badException(Exception e) {
 		// 打印堆栈信息
-		log.error(ExceptionUtil.stacktraceToString(e));
+		log.warn(ExceptionUtil.stacktraceToString(e));
 		return ResponseEntityBuilder.buildFail(BAD_REQUEST, e.getMessage());
 	}
 
@@ -121,7 +142,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = EntityNotFoundException.class)
 	public ResponseEntity<Result> entityNotFoundException(EntityNotFoundException e) {
 		// 打印堆栈信息
-		log.error(ExceptionUtil.stacktraceToString(e));
+		log.warn(ExceptionUtil.stacktraceToString(e));
 		return ResponseEntityBuilder.buildFail(NOT_FOUND, e.getMessage());
 	}
 }

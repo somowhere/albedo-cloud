@@ -16,24 +16,20 @@
 
 package com.albedo.java.common.security.service;
 
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.exception.AccessDeniedException;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.modules.sys.domain.Role;
-import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
-import com.albedo.java.modules.sys.dubbo.RemoteDeptService;
-import com.albedo.java.modules.sys.dubbo.RemoteRoleService;
-import com.albedo.java.modules.sys.dubbo.RemoteUserService;
+import com.albedo.java.modules.sys.feign.RemoteDeptService;
+import com.albedo.java.modules.sys.feign.RemoteRoleService;
+import com.albedo.java.modules.sys.feign.RemoteUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -42,7 +38,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -55,17 +50,13 @@ import java.util.Set;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	@Reference(check = false, interfaceClass = RemoteUserService.class)
-	private RemoteUserService remoteUserService;
-	@Reference(check = false, interfaceClass = RemoteRoleService.class)
-	private RemoteRoleService remoteRoleService;
-	@Reference(check = false, interfaceClass = RemoteDeptService.class)
-	private RemoteDeptService remoteDeptService;
-	@Resource
-	private CacheManager cacheManager;
-
+	private final RemoteUserService remoteUserService;
+	private final RemoteRoleService remoteRoleService;
+	private final RemoteDeptService remoteDeptService;
+	private final CacheManager cacheManager;
 
 	/**
 	 * 用户密码登录
@@ -76,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-		UserDetails userDetails = getUserDetails(remoteUserService.getUserInfo(username));
+		UserDetails userDetails = getUserDetails(remoteUserService.getInfo(username, SecurityConstants.FROM_IN).getData());
 		return userDetails;
 	}
 
@@ -110,15 +101,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					dataScope.setAll(true);
 					break;
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())){
-					dataScope.getDeptIds().addAll(remoteDeptService.findDescendantIdList(userVo.getDeptId()));
+					dataScope.getDeptIds().addAll(remoteDeptService.findDescendantIdList(userVo.getDeptId(), SecurityConstants.FROM_IN).getData());
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())){
 					dataScope.getDeptIds().add(userVo.getDeptId());
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())){
 					dataScope.setSelf(true);
 				}else if(SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())){
-					dataScope.getDeptIds().addAll(remoteRoleService.findDeptIdsByRoleId(role.getId()));
+					dataScope.getDeptIds().addAll(remoteRoleService.findDeptIdsByRoleId(role.getId(), SecurityConstants.FROM_IN).getData());
 				}
 			}
+		}else{
+			throw new AccessDeniedException("没有角色权限");
 		}
 		// 构造security用户
 		return new UserDetail(userVo.getId(), userVo.getDeptId(), userVo.getDeptName(), userVo.getUsername(), SecurityConstants.BCRYPT + userVo.getPassword(),

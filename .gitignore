@@ -37,7 +37,7 @@ target/*.zip
 *.tar.gz
 
 ### logs ####
-/logs/
+logs/
 *.log
 
 ### temp ignore ###

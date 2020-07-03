@@ -15,7 +15,9 @@
  */
 package com.albedo.java.modules.tool.web;
 
+import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.modules.tool.domain.EmailConfig;
 import com.albedo.java.modules.tool.domain.vo.EmailVo;
 import com.albedo.java.modules.tool.service.EmailService;
@@ -42,23 +44,30 @@ public class EmailResource {
 	private final EmailService emailService;
 
 	@GetMapping
-	public ResponseEntity<Object> get() {
-		return new ResponseEntity<>(emailService.find(), HttpStatus.OK);
+	public Result<EmailConfig> get() {
+		return Result.buildOkData(emailService.find());
 	}
 
 	@Log("配置邮件")
 	@PutMapping
 	@ApiOperation("配置邮件")
-	public ResponseEntity<Object> updateConfig(@Validated @RequestBody EmailConfig emailConfig) throws Exception {
+	public Result updateConfig(@Validated @RequestBody EmailConfig emailConfig) throws Exception {
 		emailService.config(emailConfig, emailService.find());
-		return new ResponseEntity<>(HttpStatus.OK);
+		return Result.buildOk("操作成功");
 	}
 
 	@Log("发送邮件")
 	@PostMapping
 	@ApiOperation("发送邮件")
-	public ResponseEntity<Object> send(@Validated @RequestBody EmailVo emailVo) {
+	public Result send(@Validated @RequestBody EmailVo emailVo) {
 		emailService.send(emailVo, emailService.find());
-		return new ResponseEntity<>(HttpStatus.OK);
+		return Result.buildOk("发送成功");
+	}
+
+	@Inner
+	@PostMapping("/send")
+	public Result sendInner(@Validated @RequestBody EmailVo emailVo) {
+		emailService.send(emailVo, emailService.find());
+		return Result.buildOk("发送成功");
 	}
 }

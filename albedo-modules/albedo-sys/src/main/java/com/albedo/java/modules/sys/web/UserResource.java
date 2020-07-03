@@ -23,6 +23,7 @@ import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.util.ExcelUtil;
 import com.albedo.java.common.web.resource.BaseResource;
@@ -127,6 +128,7 @@ public class UserResource extends BaseResource {
 	 *
 	 * @return 用户信息
 	 */
+	@Inner
 	@GetMapping("/info/{username}")
 	public Result info(@PathVariable String username) {
 		UserVo userVo = userService.findVoByUsername(username);

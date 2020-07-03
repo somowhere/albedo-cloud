@@ -19,6 +19,7 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.sys.domain.dto.DeptDto;
@@ -31,6 +32,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -130,4 +132,15 @@ public class DeptResource extends BaseResource {
 	}
 
 
+	/**
+	 * 删除
+	 *
+	 * @param deptId ID
+	 * @return success/false
+	 */
+	@Inner
+	@GetMapping("/descendant-ids/{deptId}")
+	public Result<List<String>> findDescendantIdList(@PathVariable("deptId") String deptId) {
+		return Result.buildOkData(deptService.findDescendantIdList(deptId));
+	}
 }
