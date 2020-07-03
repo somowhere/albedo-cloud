@@ -24,6 +24,7 @@
 127.0.0.1 albedo-auth
 127.0.0.1 albedo-gateway
 127.0.0.1 albedo-register
+127.0.0.1 albedo-sentinel
 ```
 
 2. 依次启动
