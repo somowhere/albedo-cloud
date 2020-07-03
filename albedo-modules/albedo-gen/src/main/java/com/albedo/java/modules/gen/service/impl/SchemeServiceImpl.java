@@ -1,6 +1,7 @@
 package com.albedo.java.modules.gen.service.impl;
 
 import cn.hutool.core.util.CharUtil;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.FreeMarkers;
 import com.albedo.java.common.core.util.StringUtil;
@@ -25,19 +26,16 @@ import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
-import com.albedo.java.modules.sys.dubbo.RemoteMenuService;
+import com.albedo.java.modules.sys.feign.RemoteMenuService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
-import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -49,21 +47,14 @@ import java.util.stream.Collectors;
  * @author somewhere
  */
 @Service
+@RequiredArgsConstructor
 public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme, SchemeDto, String> implements SchemeService {
 
 	private final TableRepository tableRepository;
 	private final TableService tableService;
 	private final TableColumnService tableColumnService;
+	private final RemoteMenuService remoteMenuService;
 
-
-	@Reference(check = false)
-	private RemoteMenuService remoteMenuService;
-
-	public SchemeServiceImpl(TableRepository tableRepository, TableService tableService, TableColumnService tableColumnService) {
-		this.tableRepository = tableRepository;
-		this.tableService = tableService;
-		this.tableColumnService = tableColumnService;
-	}
 
 	@Override
 	public List<Scheme> findAllListIdNot(String id) {
@@ -225,7 +216,7 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 		String url = StringUtil.toAppendStr("/", StringUtil.lowerCase(SchemeDto.getModuleName()), (StringUtil.isNotBlank(SchemeDto.getSubModuleName()) ? "/" + StringUtil.lowerCase(SchemeDto.getSubModuleName()) : ""), "/",
 			StringUtil.toRevertCamelCase(StringUtil.lowerFirst(tableDataVo.getClassName()), CharUtil.DASHED), "/");
 		remoteMenuService.saveByGenScheme(new GenSchemeDto(SchemeDto.getName(),
-			schemeGenDataVo.getParentMenuId(), url, tableDataVo.getClassName()));
+			schemeGenDataVo.getParentMenuId(), url, tableDataVo.getClassName()), SecurityConstants.FROM_IN);
 		return SchemeDto;
 	}
 

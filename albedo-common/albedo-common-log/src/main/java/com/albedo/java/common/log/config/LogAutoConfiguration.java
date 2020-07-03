@@ -18,8 +18,8 @@ package com.albedo.java.common.log.config;
 
 import com.albedo.java.common.log.aspect.SysLogAspect;
 import com.albedo.java.common.log.event.SysLogListener;
-import com.albedo.java.modules.sys.dubbo.RemoteLogOperateService;
-import org.apache.dubbo.config.annotation.Reference;
+import com.albedo.java.modules.sys.feign.RemoteLogOperateService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,11 +31,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * 日志自动配置
  */
 @EnableAsync
-@Configuration
 @ConditionalOnWebApplication
+@Configuration(proxyBeanMethods = false)
+@RequiredArgsConstructor
 public class LogAutoConfiguration {
-	@Reference(check = false)
-	private RemoteLogOperateService remoteLogOperateService;
+	private final RemoteLogOperateService remoteLogOperateService;
 
 	@Bean
 	public SysLogListener sysLogListener() {

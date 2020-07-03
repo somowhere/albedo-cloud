@@ -7,13 +7,14 @@ import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.ScheduleConstants;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.modules.quartz.domain.Job;
 import com.albedo.java.modules.quartz.domain.JobLog;
 import com.albedo.java.modules.quartz.service.JobLogService;
 import com.albedo.java.modules.quartz.service.JobService;
 import com.albedo.java.modules.tool.domain.vo.EmailVo;
-import com.albedo.java.modules.tool.dubbo.RemoteEmailService;
+import com.albedo.java.modules.tool.feign.RemoteEmailService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -94,7 +95,7 @@ public abstract class AbstractQuartzJob implements org.quartz.Job {
 			if (job.getEmail() != null) {
 				// 邮箱报警
 				EmailVo emailVo = taskAlarm(job, jobLog.getExceptionInfo());
-				emailService.send(emailVo);
+				emailService.send(emailVo, SecurityConstants.FROM_IN);
 			}
 		} else {
 			jobLog.setStatus(CommonConstants.STR_SUCCESS);

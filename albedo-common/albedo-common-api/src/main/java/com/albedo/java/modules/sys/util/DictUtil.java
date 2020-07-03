@@ -2,11 +2,11 @@ package com.albedo.java.modules.sys.util;
 
 import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.*;
 import com.albedo.java.common.core.vo.SelectResult;
-import com.albedo.java.modules.sys.component.RemoteServiceComponent;
 import com.albedo.java.modules.sys.domain.Dict;
-import com.albedo.java.modules.sys.dubbo.RemoteDictService;
+import com.albedo.java.modules.sys.feign.RemoteDictService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DictUtil {
 	public static CacheManager cacheManager = SpringContextHolder.getBean(CacheManager.class);
-	public static RemoteDictService remoteDictService = SpringContextHolder.getBean(RemoteServiceComponent.class).getRemoteDictService();
+	public static RemoteDictService remoteDictService = SpringContextHolder.getBean(RemoteDictService.class);
 
 	public static List<Dict> getDictList() {
 		Cache cache = cacheManager.getCache(CacheNameConstants.DICT_DETAILS);
@@ -33,7 +33,7 @@ public class DictUtil {
 			return (List<Dict>) cache.get(CacheNameConstants.DICT_ALL).get();
 		}
 		try {
-			String dictListStr = remoteDictService.findAllOrderBySort();
+			String dictListStr = remoteDictService.findAllOrderBySort(SecurityConstants.FROM_IN).getData();
 			if (ObjectUtil.isNotEmpty(dictListStr)) {
 				List<Dict> dictList = Json.parseArray(dictListStr, Dict.class);
 				cache.put(CacheNameConstants.DICT_ALL, dictList);

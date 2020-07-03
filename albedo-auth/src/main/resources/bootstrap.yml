@@ -4,7 +4,7 @@ server:
 logging:
   level:
     ROOT: INFO
-    org.springframework.security: TRACE
+    org.springframework.web: DEBUG
     com.albedo.java: DEBUG
 spring:
   application:

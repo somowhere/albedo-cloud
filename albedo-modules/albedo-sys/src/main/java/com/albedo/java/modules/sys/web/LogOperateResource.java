@@ -20,6 +20,7 @@ import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.log.enums.LogType;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.util.ExcelUtil;
 import com.albedo.java.modules.sys.domain.LogOperate;
@@ -30,11 +31,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Set;
 
 /**
@@ -51,6 +54,17 @@ import java.util.Set;
 public class LogOperateResource {
 	private final LogOperateService logOperateService;
 
+	/**
+	 * 插入日志
+	 *
+	 * @param logOperate 日志实体
+	 * @return
+	 */
+	@Inner
+	@PostMapping
+	public Result<IPage> save(@Valid @RequestBody LogOperate logOperate) {
+		return Result.buildOkData(logOperateService.save(logOperate));
+	}
 	/**
 	 * 简单分页查询
 	 *

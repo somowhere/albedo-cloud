@@ -1,3 +1,19 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.albedo.java.common.config.JacksonMapperConfig,\
-  com.albedo.java.modules.sys.component.RemoteServiceComponent
+  com.albedo.java.modules.sys.feign.fallback.RemoteDeptServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteDictServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteLogOperateServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteMenuServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteRoleServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteUserOnlineServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.fallback.RemoteUserServiceFallbackImpl,\
+  com.albedo.java.modules.tool.feign.fallback.RemoteEmailServiceFallbackImpl,\
+  com.albedo.java.modules.sys.feign.factory.RemoteDeptServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteDictServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteLogOperateServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteMenuServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteRoleServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteUserOnlineServiceFallbackFactory,\
+  com.albedo.java.modules.sys.feign.factory.RemoteUserServiceFallbackFactory,\
+  com.albedo.java.modules.tool.feign.factory.RemoteEmailServiceFallbackFactory
+

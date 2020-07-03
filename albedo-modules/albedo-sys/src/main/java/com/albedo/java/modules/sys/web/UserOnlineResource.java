@@ -16,13 +16,14 @@
 
 package com.albedo.java.modules.sys.web;
 
-import com.albedo.java.modules.sys.dubbo.RemoteUserOnlineService;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
-import lombok.AllArgsConstructor;
-import org.apache.dubbo.config.annotation.Reference;
+import com.albedo.java.modules.sys.domain.vo.TokenVo;
+import com.albedo.java.modules.sys.feign.RemoteUserOnlineService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +36,10 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/user-online")
+@RequiredArgsConstructor
 public class UserOnlineResource {
 
-	@Reference(check = false)
-	RemoteUserOnlineService remoteUserOnlineService;
+	private final RemoteUserOnlineService remoteUserOnlineService;
 
 	/**
 	 *
@@ -49,7 +50,7 @@ public class UserOnlineResource {
 	@GetMapping
 	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
 	public Result findPage(UserOnlineQueryCriteria userOnlineQueryCriteria) {
-		return remoteUserOnlineService.findPage(userOnlineQueryCriteria);
+		return remoteUserOnlineService.findPage(userOnlineQueryCriteria, SecurityConstants.FROM_IN);
 	}
 
 	/**
@@ -62,6 +63,6 @@ public class UserOnlineResource {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
 	public Result removeByTokens(@RequestBody Set<String> tokens) {
-		return remoteUserOnlineService.removeByTokens(tokens, SecurityUtil.getUser().getId());
+		return remoteUserOnlineService.removeByTokens(new TokenVo(tokens, SecurityUtil.getUser().getId()), SecurityConstants.FROM_IN);
 	}
 }

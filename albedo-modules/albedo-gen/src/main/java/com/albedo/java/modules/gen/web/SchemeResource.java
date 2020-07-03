@@ -1,22 +1,15 @@
 package com.albedo.java.modules.gen.web;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.CharUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.Log;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.gen.domain.dto.*;
 import com.albedo.java.modules.gen.service.SchemeService;
-import com.albedo.java.modules.gen.service.TableService;
-import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
-import com.albedo.java.modules.sys.dubbo.RemoteMenuService;
-import com.mysql.cj.protocol.ResultBuilder;
 import lombok.AllArgsConstructor;
-import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

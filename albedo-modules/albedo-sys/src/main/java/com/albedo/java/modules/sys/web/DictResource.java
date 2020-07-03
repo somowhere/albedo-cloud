@@ -146,10 +146,9 @@ public class DictResource extends BaseResource {
 	 *
 	 * @return 所有类型字典
 	 */
-
 	@GetMapping("/all")
-	public Result<String> findAllList() {
-		List<Dict> list = dictService.list();
+	public Result<String> findAllOrderBySort() {
+		List<Dict> list = dictService.findAllOrderBySort();
 		return Result.buildOkData(Json.toJsonString(list));
 	}
 

@@ -16,7 +16,6 @@
 
 package com.albedo.java.common.security.component;
 
-import com.alibaba.cloud.dubbo.annotation.DubboTransported;
 import lombok.SneakyThrows;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,10 +40,9 @@ public class ResourceServerAutoConfiguration {
 	@Bean
 	@Primary
 	@LoadBalanced
-	@DubboTransported
 	public RestTemplate lbRestTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
-
+		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 		// 传递ACCEPT JSON
 		restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
 			request.getHeaders().set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
