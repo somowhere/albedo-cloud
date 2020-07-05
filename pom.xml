@@ -51,6 +51,12 @@
 		<alipay.version>4.9.153.ALL</alipay.version>
 		<fastjson.version>1.2.69</fastjson.version>
 		<swagger.version>1.5.20</swagger.version>
+		<docker.plugin.version>0.32.0</docker.plugin.version>
+		<docker.host>http://192.168.154:2375</docker.host>
+		<docker.registry>192.168.154</docker.registry>
+		<docker.namespace>library</docker.namespace>
+		<docker.username>admin</docker.username>
+		<docker.password>Harbor12345</docker.password>
 
 		<profile.dev.log.level>INFO</profile.dev.log.level>
 		<profile.prod.log.level>INFO</profile.prod.log.level>
@@ -179,6 +185,33 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker.plugin.version}</version>
+					<configuration>
+						<!-- Docker Remote Api-->
+						<dockerHost>${docker.host}</dockerHost>
+						<!-- Docker 镜像私服-->
+						<registry>${docker.registry}</registry>
+						<!-- 认证信息-->
+						<authConfig>
+							<push>
+								<username>${docker.username}</username>
+								<password>${docker.password}</password>
+							</push>
+						</authConfig>
+						<images>
+							<image>
+								<!-- 镜像名称： 172.17.0.111/library/pig-gateway:2.6.3-->
+								<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
+								<build>
+									<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+								</build>
+							</image>
+						</images>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
