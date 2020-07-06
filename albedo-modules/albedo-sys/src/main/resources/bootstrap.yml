@@ -19,3 +19,4 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @spring.profiles.active@
+
