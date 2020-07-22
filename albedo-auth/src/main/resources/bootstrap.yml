@@ -4,7 +4,7 @@ server:
 logging:
   level:
     ROOT: INFO
-    org.springframework.web: DEBUG
+    org.springframework.web: INFO
     com.albedo.java: DEBUG
 spring:
   application:

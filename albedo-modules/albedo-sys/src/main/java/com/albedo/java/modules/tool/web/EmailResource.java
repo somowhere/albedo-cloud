@@ -16,7 +16,7 @@
 package com.albedo.java.modules.tool.web;
 
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.modules.tool.domain.EmailConfig;
 import com.albedo.java.modules.tool.domain.vo.EmailVo;
@@ -24,8 +24,6 @@ import com.albedo.java.modules.tool.service.EmailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +46,7 @@ public class EmailResource {
 		return Result.buildOkData(emailService.find());
 	}
 
-	@Log("配置邮件")
+	@LogOperate("配置邮件")
 	@PutMapping
 	@ApiOperation("配置邮件")
 	public Result updateConfig(@Validated @RequestBody EmailConfig emailConfig) throws Exception {
@@ -56,7 +54,7 @@ public class EmailResource {
 		return Result.buildOk("操作成功");
 	}
 
-	@Log("发送邮件")
+	@LogOperate("发送邮件")
 	@PostMapping
 	@ApiOperation("发送邮件")
 	public Result send(@Validated @RequestBody EmailVo emailVo) {

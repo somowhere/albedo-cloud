@@ -19,7 +19,7 @@ package com.albedo.java.modules.sys.web;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.log.enums.BusinessType;
 import com.albedo.java.modules.sys.domain.OauthClientDetail;
 import com.albedo.java.modules.sys.service.OauthClientDetailService;
@@ -75,7 +75,7 @@ public class OauthClientDetailResource {
 	 * @param oauthClientDetail 实体
 	 * @return success/false
 	 */
-	@Log(value = "终端管理", businessType = BusinessType.EDIT)
+	@LogOperate(value = "终端管理", businessType = BusinessType.EDIT)
 	@PostMapping("/")
 	@PreAuthorize("@pms.hasPermission('sys_client_edit')")
 	public Result save(@Valid @RequestBody OauthClientDetail oauthClientDetail) {
@@ -88,7 +88,7 @@ public class OauthClientDetailResource {
 	 * @param id ID
 	 * @return success/false
 	 */
-	@Log(value = "终端管理", businessType = BusinessType.DELETE)
+	@LogOperate(value = "终端管理", businessType = BusinessType.DELETE)
 	@DeleteMapping(CommonConstants.URL_IDS_REGEX)
 	@PreAuthorize("@pms.hasPermission('sys_client_del')")
 	public Result removeById(@PathVariable String id) {

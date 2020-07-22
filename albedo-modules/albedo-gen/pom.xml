@@ -155,7 +155,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<!--  log configuration -->
+				<!--  logOperate configuration -->
 				<logback.loglevel>${profile.dev.log.level}</logback.loglevel>
 				<!-- default Spring profiles -->
 				<spring.profiles.active>dev</spring.profiles.active>
@@ -164,7 +164,7 @@
 		<profile>
 			<id>prod</id>
 			<properties>
-				<!--  log configuration -->
+				<!--  logOperate configuration -->
 				<logback.loglevel>${profile.prod.log.level}</logback.loglevel>
 				<!-- default Spring profiles -->
 				<spring.profiles.active>prod,micro</spring.profiles.active>

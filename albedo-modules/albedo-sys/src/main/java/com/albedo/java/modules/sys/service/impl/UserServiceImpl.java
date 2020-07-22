@@ -38,10 +38,7 @@ import com.albedo.java.modules.sys.domain.UserRole;
 import com.albedo.java.modules.sys.domain.dto.UserDto;
 import com.albedo.java.modules.sys.domain.dto.UserEmailDto;
 import com.albedo.java.modules.sys.domain.dto.UserQueryCriteria;
-import com.albedo.java.modules.sys.domain.vo.MenuVo;
-import com.albedo.java.modules.sys.domain.vo.UserExcelVo;
-import com.albedo.java.modules.sys.domain.vo.UserInfo;
-import com.albedo.java.modules.sys.domain.vo.UserVo;
+import com.albedo.java.modules.sys.domain.vo.*;
 import com.albedo.java.modules.sys.domain.vo.account.PasswordChangeVo;
 import com.albedo.java.modules.sys.domain.vo.account.PasswordRestVo;
 import com.albedo.java.modules.sys.repository.UserRepository;
@@ -170,11 +167,11 @@ public class UserServiceImpl extends DataServiceImpl<UserRepository, User, UserD
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public IPage<UserVo> findPage(PageModel pm, UserQueryCriteria userQueryCriteria, DataScope dataScope) {
+	public IPage<UserPageVo> findPage(PageModel pm, UserQueryCriteria userQueryCriteria, DataScope dataScope) {
 //		pm.addOrder(OrderItem.desc("a.created_date"));
 		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, userQueryCriteria);
 		wrapper.eq("a.del_flag", User.FLAG_NORMAL);
-		IPage<UserVo> userVosPage = repository.findUserVoPage(pm, wrapper, dataScope);
+		IPage<UserPageVo> userVosPage = repository.findUserVoPage(pm, wrapper, dataScope);
 		return userVosPage;
 	}
 

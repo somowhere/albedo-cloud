@@ -1,6 +1,7 @@
 package com.albedo.java.common.config.apidoc.customizer;
 
 import com.albedo.java.common.config.ApplicationSwaggerProperties;
+import com.albedo.java.common.core.vo.PageModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -56,11 +57,11 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 		ApiInfo apiInfo = new ApiInfo(applicationSwaggerProperties.getTitle(), applicationSwaggerProperties.getDescription(), applicationSwaggerProperties.getVersion(), applicationSwaggerProperties.getTermsOfServiceUrl(), contact, applicationSwaggerProperties.getLicense(), applicationSwaggerProperties.getLicenseUrl(), new ArrayList());
 		docket.host(applicationSwaggerProperties.getHost())
 			.apiInfo(apiInfo)
-			.forCodeGeneration(true)
 			.securitySchemes(Collections.singletonList(securitySchema(applicationSwaggerProperties)))
 			.securityContexts(Collections.singletonList(securityContext(applicationSwaggerProperties))).pathMapping("/")
 			.forCodeGeneration(true).directModelSubstitute(ByteBuffer.class, String.class)
-			.genericModelSubstitutes(new Class[]{ResponseEntity.class}).select()
+			.genericModelSubstitutes(new Class[]{ResponseEntity.class})
+			.ignoredParameterTypes(PageModel.class).select()
 			.apis(RequestHandlerSelectors.basePackage(applicationSwaggerProperties.getBasePackage()))
 			.paths(Predicates.and(Predicates.not(Predicates.or(excludePath)), Predicates.or(basePath)))
 			.build();

@@ -20,6 +20,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,5 +37,5 @@ public class RoleQueryCriteria implements Serializable {
 	private Integer available;
 
 	@Query(operator = Query.Operator.between)
-	private List<Timestamp> createdDate;
+	private List<Date> createdDate;
 }

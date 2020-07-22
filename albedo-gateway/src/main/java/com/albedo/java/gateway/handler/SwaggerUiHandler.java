@@ -39,15 +39,11 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class SwaggerUiHandler implements HandlerFunction<ServerResponse> {
-	@Autowired(required = false)
-	private UiConfiguration uiConfiguration;
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.OK)
 			.contentType(MediaType.APPLICATION_JSON)
-			.body(BodyInserters.fromValue(
-				Optional.ofNullable(uiConfiguration)
-					.orElse(UiConfigurationBuilder.builder().build())));
+			.body(BodyInserters.fromValue(UiConfigurationBuilder.builder().build()));
 	}
 }

@@ -50,7 +50,6 @@ public class SysLogUtils {
 		logOperate.setCreatedDate(LocalDateTime.now());
 		logOperate.setUsername(getUsername());
 		logOperate.setIpAddress(WebUtil.getIp(request));
-		logOperate.setIpLocation(AddressUtils.getRealAddressByIp(logOperate.getIpAddress()));
 		logOperate.setUserAgent(request.getHeader("User-Agent"));
 		UserAgent userAgent = UserAgentUtil.parse(logOperate.getUserAgent());
 		logOperate.setBrowser(userAgent.getBrowser().getName());

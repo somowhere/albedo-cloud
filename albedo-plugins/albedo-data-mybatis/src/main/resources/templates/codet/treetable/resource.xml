@@ -14,7 +14,7 @@ import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperateion.Log;
 import com.albedo.java.common.log.enums.BusinessType;
 import com.albedo.java.common.web.resource.BaseResource;
 import ${packageName}.${moduleName}.domain.vo<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Vo;
@@ -51,7 +51,7 @@ public class ${ClassName}Resource extends BaseResource {
 	@GetMapping(CommonConstants.URL_ID_REGEX)
 	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_view')")
 	public Result get(@PathVariable String id) {
-		log.debug("REST request to get Entity : {}", id);
+		logOperate.debug("REST request to get Entity : {}", id);
 		return Result.buildOkData(service.getOneDto(id));
 	}
     /**
@@ -89,7 +89,7 @@ public class ${ClassName}Resource extends BaseResource {
 	@PostMapping
 	@Log(value = "${functionName}编辑")
 	public Result save(@Valid @RequestBody ${ClassName}Dto ${className}Vo) {
-		log.debug("REST request to save ${ClassName} : {}", ${className}Vo);
+		logOperate.debug("REST request to save ${ClassName} : {}", ${className}Vo);
 		service.saveOrUpdate(${className}Vo);
 		return Result.buildOk("保存${functionNameSimple}成功");
 	}
@@ -104,7 +104,7 @@ public class ${ClassName}Resource extends BaseResource {
 	@DeleteMapping
 	@Log(value = "${functionName}删除")
 	public Result delete(@RequestBody Set<String> ids) {
-		log.debug("REST request to delete ${ClassName}: {}", ids);
+		logOperate.debug("REST request to delete ${ClassName}: {}", ids);
 		service.removeByIds(ids);
 		return Result.buildOk("删除${functionNameSimple}成功");
 	}

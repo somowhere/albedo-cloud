@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class QueryWrapperUtil {
 				field.setAccessible(accessible);
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			log.warn(e.getMessage(), e);
 		}
 		return entityWrapper;
 	}
@@ -133,6 +134,7 @@ public class QueryWrapperUtil {
 				break;
 			case between:
 				List<Object> between = new ArrayList<>((List<Object>) val);
+				Assert.isTrue(between.size()==2, "between must have two value "+between);
 				entityWrapper.between(attributeName, between.get(0), between.get(1));
 				break;
 			default:

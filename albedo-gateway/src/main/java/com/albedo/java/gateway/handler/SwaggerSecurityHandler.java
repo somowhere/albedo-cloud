@@ -39,15 +39,11 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class SwaggerSecurityHandler implements HandlerFunction<ServerResponse> {
-	@Autowired(required = false)
-	private SecurityConfiguration securityConfiguration;
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.OK)
 			.contentType(MediaType.APPLICATION_JSON)
-			.body(BodyInserters.fromValue(
-				Optional.ofNullable(securityConfiguration)
-					.orElse(SecurityConfigurationBuilder.builder().build())));
+			.body(BodyInserters.fromValue(SecurityConfigurationBuilder.builder().build()));
 	}
 }

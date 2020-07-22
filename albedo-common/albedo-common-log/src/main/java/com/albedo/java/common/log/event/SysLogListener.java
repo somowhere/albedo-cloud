@@ -17,6 +17,7 @@
 package com.albedo.java.common.log.event;
 
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.util.AddressUtils;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import com.albedo.java.modules.sys.feign.RemoteLogOperateService;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,9 @@ public class SysLogListener {
 	@Order
 	@EventListener(SysLogEvent.class)
 	public void saveSysLog(SysLogEvent event) {
+		log.debug("{}", event);
 		LogOperate logOperate = (LogOperate) event.getSource();
+		logOperate.setIpLocation(AddressUtils.getRealAddressByIp(logOperate.getIpAddress()));
 		remoteLogOperateService.save(logOperate, SecurityConstants.FROM_IN);
 	}
 }

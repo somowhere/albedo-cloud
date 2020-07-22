@@ -16,10 +16,12 @@
 package com.albedo.java.modules.sys.domain.dto;
 
 import com.albedo.java.common.core.annotation.Query;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -43,5 +45,6 @@ public class UserQueryCriteria implements Serializable {
 	private String deptId;
 
 	@Query(propName = "a.created_date", operator = Query.Operator.between)
-	private List<Timestamp> createdDate;
+	@ApiModelProperty(value = "时间范围 between createdDate[0] and createdDate[1]")
+	private List<Date> createdDate;
 }

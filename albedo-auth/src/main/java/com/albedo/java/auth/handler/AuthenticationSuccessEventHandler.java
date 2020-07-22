@@ -42,6 +42,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 /**
  * @author somowhere
@@ -50,6 +51,13 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuccessEventHandler {
+
+
+	private final Executor taskExecutor;
+
+	public AuthenticationSuccessEventHandler(Executor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
 
 	/**
 	 * 处理登录成功方法
@@ -70,7 +78,9 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 			UserDetail principal = (UserDetail) authentication.getPrincipal();
 			logOperate.setUsername(principal.getUsername());
 			logOperate.setCreatedBy(principal.getId());
-			saveUserOnline(principal, request);
+			String ip = WebUtil.getIp(request);
+			String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
+			taskExecutor.execute(()->{saveUserOnline(principal, ip, userAgentStr);});
 		}
 		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
 		logOperate.setLogType(LogType.INFO.name());
@@ -78,20 +88,15 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		logOperate.setOperatorType(OperatorType.MANAGE.name());
 		// 发送异步日志事件
 		SpringContextHolder.publishEvent(new SysLogEvent(logOperate));
-
-
 	}
 
 	/**
 	 * saveUserOnline 保存在线用户信息
-	 * @author somewhere
 	 * @param userDetail
-	 * @param request
-	 * @updateTime 2020/6/2 11:00
+	 * @param ip
+	 * @param userAgentStr
 	 */
-	public void saveUserOnline(UserDetail userDetail, HttpServletRequest request){
-		String ip = WebUtil.getIp(request);
-		String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
+	public void saveUserOnline(UserDetail userDetail, String ip, String userAgentStr){
 		UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
 		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
 			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),

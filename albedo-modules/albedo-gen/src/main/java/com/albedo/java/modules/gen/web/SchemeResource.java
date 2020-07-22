@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.gen.domain.dto.*;
@@ -35,7 +35,7 @@ public class SchemeResource extends BaseResource {
 	 */
 	@GetMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_view')")
-	@Log(value = "生成方案查看")
+	@LogOperate(value = "生成方案查看")
 	public Result getPage(PageModel pm, SchemeQueryCriteria schemeQueryCriteria) {
 		return Result.buildOkData(schemeService.getSchemeVoPage(pm, schemeQueryCriteria));
 	}
@@ -56,7 +56,7 @@ public class SchemeResource extends BaseResource {
 		return Result.buildOkData(formData);
 	}
 
-	@Log(value = "方案生成代码")
+	@LogOperate(value = "方案生成代码")
 	@PutMapping(value = "/gen-code")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_code')")
 	public Result genCode(@Valid @RequestBody GenCodeDto genCodeDto) {
@@ -67,7 +67,7 @@ public class SchemeResource extends BaseResource {
 		return Result.buildOk("生成", genSchemeDto.getName(), "代码成功");
 	}
 
-	@Log(value = "生成方案编辑")
+	@LogOperate(value = "生成方案编辑")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_edit')")
 	public Result save(@Valid @RequestBody SchemeDto schemeDto) {
@@ -79,7 +79,7 @@ public class SchemeResource extends BaseResource {
 		return Result.buildOk("保存", schemeDto.getName(), "成功");
 	}
 
-	@Log(value = "生成方案编辑")
+	@LogOperate(value = "生成方案编辑")
 	@PostMapping("/gen-menu")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_menu')")
 	public Result genMenu(@Valid @RequestBody SchemeGenDto schemeGenDto) {
@@ -88,7 +88,7 @@ public class SchemeResource extends BaseResource {
 	}
 
 
-	@Log(value = "生成方案删除")
+	@LogOperate(value = "生成方案删除")
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('gen_scheme_del')")
 	public Result delete(@RequestBody Set<String> ids) {

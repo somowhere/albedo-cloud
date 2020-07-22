@@ -20,6 +20,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -46,5 +47,5 @@ public class DeptQueryCriteria implements Serializable {
 	private String parentId;
 
 	@Query(operator = Query.Operator.between)
-	private List<Timestamp> createdDate;
+	private List<Date> createdDate;
 }

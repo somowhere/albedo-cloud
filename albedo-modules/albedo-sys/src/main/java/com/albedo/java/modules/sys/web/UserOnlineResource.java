@@ -18,7 +18,7 @@ package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.TokenVo;
@@ -46,7 +46,7 @@ public class UserOnlineResource {
 	 * @param userOnlineQueryCriteria 参数集
 	 * @return
 	 */
-	@Log(value = "在线用户查看")
+	@LogOperate(value = "在线用户查看")
 	@GetMapping
 	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
 	public Result findPage(UserOnlineQueryCriteria userOnlineQueryCriteria) {
@@ -59,7 +59,7 @@ public class UserOnlineResource {
 	 * @param tokens
 	 * @return Result
 	 */
-	@Log(value = "强退在线用户")
+	@LogOperate(value = "强退在线用户")
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
 	public Result removeByTokens(@RequestBody Set<String> tokens) {

@@ -25,6 +25,7 @@ import com.albedo.java.modules.sys.domain.dto.UserEmailDto;
 import com.albedo.java.modules.sys.domain.dto.UserQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.UserExcelVo;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
+import com.albedo.java.modules.sys.domain.vo.UserPageVo;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.albedo.java.modules.sys.domain.vo.account.PasswordChangeVo;
 import com.albedo.java.modules.sys.domain.vo.account.PasswordRestVo;
@@ -56,7 +57,7 @@ public interface UserService extends DataService<User, UserDto, String> {
 	 * @author somewhere
 	 * @updateTime 2020/5/31 17:35
 	 */
-	IPage<UserVo> findPage(PageModel pm, UserQueryCriteria userQueryCriteria, DataScope dataScope);
+	IPage<UserPageVo> findPage(PageModel pm, UserQueryCriteria userQueryCriteria, DataScope dataScope);
 
 	/**
 	 * findPage

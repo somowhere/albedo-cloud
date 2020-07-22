@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
 		if(e instanceof HystrixRuntimeException){
 			try {
 				if(e.getCause() instanceof feign.FeignException){
-					return ResponseEntityBuilder.build(Json.parseObject(((feign.FeignException) e.getCause()).contentUTF8(), Result.class));
+					return ResponseEntityBuilder.buildFailData(Json.parseObject(((feign.FeignException) e.getCause()).contentUTF8(), Result.class));
 				}
 			}catch (Exception e1){
 				return ResponseEntityBuilder.buildFail("远程服务调用失败");

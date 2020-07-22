@@ -21,7 +21,7 @@ import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
@@ -32,7 +32,6 @@ import com.albedo.java.modules.sys.domain.vo.MenuVo;
 import com.albedo.java.modules.sys.service.MenuService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -105,7 +104,7 @@ public class MenuResource extends BaseResource {
 	 */
 	@GetMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_view')")
-	@Log(value = "菜单管理查看")
+	@LogOperate(value = "菜单管理查看")
 	public Result<IPage<MenuVo>> findTreeList(MenuQueryCriteria menuQueryCriteria) {
 		List<MenuVo> menuVoList = menuService.findTreeList(menuQueryCriteria).stream()
 			.map(item -> BeanUtil.copyPropertiesByClass(item, MenuVo.class)).collect(Collectors.toList());
@@ -119,7 +118,7 @@ public class MenuResource extends BaseResource {
 	 * @param menuDto 菜单信息
 	 * @return success/false
 	 */
-	@Log(value = "菜单管理编辑")
+	@LogOperate(value = "菜单管理编辑")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_edit')")
 	public Result save(@Valid @RequestBody com.albedo.java.modules.sys.domain.dto.MenuDto menuDto) {
@@ -133,7 +132,7 @@ public class MenuResource extends BaseResource {
 	 * @param menuSortDto 菜单信息
 	 * @return success/false
 	 */
-	@Log(value = "菜单管理编辑")
+	@LogOperate(value = "菜单管理编辑")
 	@PostMapping("/sort-update")
 	@PreAuthorize("@pms.hasPermission('sys_menu_edit')")
 	public Result sortUpdate(@Valid @RequestBody MenuSortDto menuSortDto) {
@@ -162,7 +161,7 @@ public class MenuResource extends BaseResource {
 	 */
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_del')")
-	@Log(value = "菜单管理删除")
+	@LogOperate(value = "菜单管理删除")
 	public Result removeByIds(@RequestBody Set<String> ids) {
 		menuService.removeByIds(ids);
 		return Result.buildOk("操作成功");

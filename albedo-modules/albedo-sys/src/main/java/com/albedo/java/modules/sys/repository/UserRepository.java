@@ -19,6 +19,7 @@ package com.albedo.java.modules.sys.repository;
 import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.common.persistence.repository.BaseRepository;
 import com.albedo.java.modules.sys.domain.User;
+import com.albedo.java.modules.sys.domain.vo.UserPageVo;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -53,7 +54,7 @@ public interface UserRepository extends BaseRepository<User> {
 	 * @param dataScope 数据权限
 	 * @return list
 	 */
-	IPage<UserVo> findUserVoPage(IPage page, @Param(Constants.WRAPPER) Wrapper<User> wrapper, DataScope dataScope);
+	IPage<UserPageVo> findUserVoPage(IPage page, @Param(Constants.WRAPPER) Wrapper<User> wrapper, DataScope dataScope);
 
 	/**
 	 * 分页查询用户信息（含角色）

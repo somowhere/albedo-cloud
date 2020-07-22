@@ -25,13 +25,13 @@ public class AddressUtils {
 			return "内网IP";
 		}
 		if (ApplicationConfig.isAddressEnabled()) {
-			String rspStr = HttpUtil.post(IP_URL, "ip=" + ip);
-			if (StringUtil.isEmpty(rspStr)) {
-				log.error("获取地理位置异常 {}", ip);
-				return address;
-			}
-			JSONObject obj;
 			try {
+				String rspStr = HttpUtil.post(IP_URL, "ip=" + ip);
+				if (StringUtil.isEmpty(rspStr)) {
+					log.error("获取地理位置异常 {}", ip);
+					return address;
+				}
+				JSONObject obj;
 				obj = JSON.parseObject(rspStr, JSONObject.class);
 				JSONObject data = obj.getJSONObject("data");
 				String region = data.getString("region");

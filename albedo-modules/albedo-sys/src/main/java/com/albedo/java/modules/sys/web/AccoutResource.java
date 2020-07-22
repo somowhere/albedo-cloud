@@ -1,16 +1,12 @@
 package com.albedo.java.modules.sys.web;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.log.annotation.Log;
+import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.util.SecurityUtil;
-import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.sys.domain.dto.UserEmailDto;
 import com.albedo.java.modules.sys.domain.vo.account.PasswordChangeVo;
@@ -18,23 +14,14 @@ import com.albedo.java.modules.sys.domain.vo.account.PasswordRestVo;
 import com.albedo.java.modules.sys.service.UserService;
 import com.albedo.java.modules.tool.domain.vo.EmailVo;
 import com.albedo.java.modules.tool.service.EmailService;
-import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 账户相关数据接口
@@ -81,7 +68,7 @@ public class AccoutResource extends BaseResource {
 		return Result.buildOk("头像修改成功");
 	}
 
-	@Log("修改邮箱")
+	@LogOperate("修改邮箱")
 	@ApiOperation("修改邮箱")
 	@PostMapping(value = "/change-email/{code}")
 	public ResponseEntity<Object> updateEmail(@PathVariable String code, @RequestBody UserEmailDto userEmailDto) {
