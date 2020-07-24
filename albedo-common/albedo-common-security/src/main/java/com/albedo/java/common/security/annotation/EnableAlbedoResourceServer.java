@@ -16,8 +16,8 @@
 
 package com.albedo.java.common.security.annotation;
 
-import com.albedo.java.common.security.component.ResourceServerAutoConfiguration;
-import com.albedo.java.common.security.component.SecurityBeanDefinitionRegistrar;
+import com.albedo.java.common.security.component.AlbedoResourceServerAutoConfiguration;
+import com.albedo.java.common.security.component.AlbedoSecurityBeanDefinitionRegistrar;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -36,7 +36,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Import({ResourceServerAutoConfiguration.class, SecurityBeanDefinitionRegistrar.class})
+@Import({AlbedoResourceServerAutoConfiguration.class, AlbedoSecurityBeanDefinitionRegistrar.class})
 public @interface EnableAlbedoResourceServer {
 
 }

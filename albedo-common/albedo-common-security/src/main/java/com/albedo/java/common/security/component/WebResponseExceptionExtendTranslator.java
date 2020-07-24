@@ -47,7 +47,7 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 	@Override
 	@SneakyThrows
 	public ResponseEntity<OAuth2Exception> translate(Exception e) {
-
+		log.warn("{}", e.getMessage());
 		// Try to extract a SpringSecurityException from the stacktrace
 		Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 

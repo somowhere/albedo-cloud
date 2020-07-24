@@ -36,7 +36,7 @@ import java.util.Collections;
  * @date 2019/03/08
  */
 @ComponentScan("com.albedo.java.common.security")
-public class ResourceServerAutoConfiguration {
+public class AlbedoResourceServerAutoConfiguration {
 	@Bean
 	@Primary
 	@LoadBalanced

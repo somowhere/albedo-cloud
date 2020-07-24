@@ -28,7 +28,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @date 2019/03/08
  */
 @Slf4j
-public class SecurityBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
+public class AlbedoSecurityBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
 	/**
 	 * 根据注解值动态注入资源服务器的相关属性
 	 *

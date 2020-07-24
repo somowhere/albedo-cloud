@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
@@ -50,10 +51,14 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(CommonConstants.CONTENT_TYPE);
 		Result<String> result = new Result<>();
-		result.setCode(HttpStatus.HTTP_UNAUTHORIZED);
+		result.setCode(CommonConstants.FAIL);
 		if (authException != null) {
-			result.addMessage("error");
-			result.setData(authException.getMessage());
+			if(authException.getCause() instanceof ClientAuthenticationException){
+				ClientAuthenticationException clientAuthenticationException = (ClientAuthenticationException) authException.getCause();
+				result.addMessage(clientAuthenticationException.getOAuth2ErrorCode()+" "+authException.getMessage());
+			}else{
+				result.addMessage(authException.getMessage());
+			}
 		}
 		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
 		PrintWriter printWriter = response.getWriter();
