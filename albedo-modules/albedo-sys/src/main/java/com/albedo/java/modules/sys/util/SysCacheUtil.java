@@ -78,7 +78,7 @@ public class SysCacheUtil {
 	}
 
 	/**
-	 * 清理字典缓存
+	 * 清理部门缓存
 	 *
 	 * @param deptId /
 	 */

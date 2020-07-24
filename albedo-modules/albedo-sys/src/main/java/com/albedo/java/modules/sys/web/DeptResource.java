@@ -128,7 +128,7 @@ public class DeptResource extends BaseResource {
 	@PreAuthorize("@pms.hasPermission('sys_dept_del')")
 	@LogOperate(value = "部门管理删除")
 	public Result removeById(@RequestBody Set<String> ids) {
-		return Result.buildOkData(deptService.removeByIds(ids));
+		return Result.buildByFlag(deptService.removeByIds(ids));
 	}
 
 

@@ -24,6 +24,7 @@ import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.log.annotation.LogOperate;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.sys.domain.Role;
@@ -70,6 +71,17 @@ public class RoleResource extends BaseResource {
 		return Result.buildOkData(roleService.getOneDto(id));
 	}
 
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	@Inner
+	@GetMapping("/dept-ids/{id}")
+	public Result findDeptIdsByRoleId(@PathVariable String id) {
+		log.debug("REST request to findDeptIdsByRoleId Entity : {}", id);
+		return Result.buildOkData(roleService.findDeptIdsByRoleId(id));
+	}
 	/**
 	 * 添加角色
 	 *

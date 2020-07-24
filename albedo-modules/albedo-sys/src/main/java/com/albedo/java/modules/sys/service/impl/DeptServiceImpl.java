@@ -88,8 +88,8 @@ public class DeptServiceImpl extends
 			relation.setAncestor(deptDto.getParentId());
 			relation.setDescendant(deptDto.getId());
 			deptRelationService.updateDeptRelation(relation);
-			SysCacheUtil.delDeptCaches(deptDto.getId());
 		}
+		SysCacheUtil.delDeptCaches(deptDto.getId());
 	}
 
 
@@ -116,7 +116,7 @@ public class DeptServiceImpl extends
 				.collect(Collectors.toSet());
 
 			if (CollUtil.isNotEmpty(idList)) {
-				this.removeByIds(idList);
+				super.removeByIds(idList);
 			}
 
 			//删除部门级联关系
