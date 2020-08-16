@@ -20,6 +20,17 @@ services:
     container_name: albedo-redis
     hostname: albedo-redis
 
+  albedo-sentinel:
+    build:
+      context: ./
+      dockerfile: ./albedo-modules/albedo-sentinel/Dockerfile
+    ports:
+      - 8858:8858
+    restart: always
+    container_name: albedo-sentinel
+    hostname: albedo-sentinel
+    image: albedo-sentinel
+
   albedo-register:
     build:
       context: ./
@@ -54,7 +65,7 @@ services:
   albedo-sys:
     build:
       context: ./
-      dockerfile: ./albedo-sys/albedo-sys-biz/Dockerfile
+      dockerfile: ./albedo-modules/albedo-sys/Dockerfile
     restart: always
     container_name: albedo-sys
     hostname: albedo-sys
@@ -88,3 +99,11 @@ services:
     container_name: albedo-quartz
     hostname: albedo-quartz
     image: albedo-quartz
+
+  albedo-ui:
+    restart: always
+    container_name: albedo-ui
+    hostname: albedo-ui
+    image: albedocloud/albedo-ui:2.2.0
+    ports:
+      - 8081:80

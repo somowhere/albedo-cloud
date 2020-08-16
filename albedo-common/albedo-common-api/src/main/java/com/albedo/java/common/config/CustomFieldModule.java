@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
 
+/**
+ * @author somewhere
+ */
 public class CustomFieldModule extends SimpleModule {
 
 

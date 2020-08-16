@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author somewhere
+ */
 @Log4j2
 public class ExtraFieldSerializer extends BeanSerializerBase {
 

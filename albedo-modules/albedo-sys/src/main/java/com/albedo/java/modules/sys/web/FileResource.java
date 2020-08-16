@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * 通用请求处理
+ * 文件通用请求处理
  *
  * @author somewhere
  */

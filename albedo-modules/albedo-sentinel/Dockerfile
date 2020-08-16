@@ -12,6 +12,6 @@ WORKDIR /albedo-sentinel
 
 EXPOSE 5003
 
-ADD ./target/albedo-sentinel-dashboard.jar ./
+ADD ./albedo-modules/albedo-sentinel/target/albedo-sentinel.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-sentinel-dashboard.jar
+CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-sentinel.jar

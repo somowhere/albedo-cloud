@@ -12,7 +12,7 @@ WORKDIR /albedo-register
 
 EXPOSE 8848
 
-ADD ./target/albedo-register.jar ./
+ADD ./albedo-register/target/albedo-register.jar ./
 
 CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-register.jar
 

@@ -18,6 +18,9 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * @author somewhere
+ */
 @Configuration
 @ConditionalOnClass(ObjectMapper.class)
 public class JacksonMapperConfig {

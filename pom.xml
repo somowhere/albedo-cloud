@@ -29,15 +29,15 @@
 	<properties>
 		<project.release.version>2.2.0-SNAPSHOT</project.release.version>
 		<spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR5</spring-cloud.version>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.2.3</spring-boot-admin.version>
+		<spring-boot-admin.version>2.3.0</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.22</spring.checkstyle.plugin>
-		<hutool.version>5.3.8</hutool.version>
+		<hutool.version>5.3.10</hutool.version>
 		<mybatis-plus.version>3.3.2</mybatis-plus.version>
 		<knife4j.version>2.0.4</knife4j.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
@@ -50,11 +50,11 @@
 		<guava.version>20.0</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
-		<fastjson.version>1.2.69</fastjson.version>
+		<fastjson.version>1.2.73</fastjson.version>
 		<swagger.version>1.5.20</swagger.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
-		<docker.host>http://192.168.154:2375</docker.host>
-		<docker.registry>192.168.154</docker.registry>
+		<docker.host>http://192.168.86.154:2375</docker.host>
+		<docker.registry>192.168.86.154</docker.registry>
 		<docker.namespace>library</docker.namespace>
 		<docker.username>admin</docker.username>
 		<docker.password>Harbor12345</docker.password>
