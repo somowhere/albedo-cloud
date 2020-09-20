@@ -2,8 +2,7 @@ version: '2'
 services:
   albedo-mysql:
     build:
-      context: ./
-      dockerfile: ./db/Dockerfile
+      context: ./db
     environment:
       MYSQL_ROOT_PASSWORD: 111111
     restart: always
@@ -22,20 +21,18 @@ services:
 
   albedo-sentinel:
     build:
-      context: ./
-      dockerfile: ./albedo-modules/albedo-sentinel/Dockerfile
+      context: ./albedo-modules/albedo-sentinel
     ports:
       - 8858:8858
-    restart: always
+    #restart: always
     container_name: albedo-sentinel
     hostname: albedo-sentinel
     image: albedo-sentinel
 
   albedo-register:
     build:
-      context: ./
-      dockerfile: ./albedo-register/Dockerfile
-    restart: always
+      context: ./albedo-register
+    #restart: always
     ports:
       - 8848:8848
     container_name: albedo-register
@@ -44,9 +41,8 @@ services:
 
   albedo-gateway:
     build:
-      context: ./
-      dockerfile: ./albedo-gateway/Dockerfile
-    restart: always
+      context: ./albedo-gateway
+    #restart: always
     ports:
       - 9999:9999
     container_name: albedo-gateway
@@ -55,27 +51,24 @@ services:
 
   albedo-auth:
     build:
-      context: ./
-      dockerfile: ./albedo-auth/Dockerfile
-    restart: always
+      context: ./albedo-auth
+    #restart: always
     container_name: albedo-auth
     hostname: albedo-auth
     image: albedo-auth
 
   albedo-sys:
     build:
-      context: ./
-      dockerfile: ./albedo-modules/albedo-sys/Dockerfile
-    restart: always
+      context: ./albedo-modules/albedo-sys
+    #restart: always
     container_name: albedo-sys
     hostname: albedo-sys
     image: albedo-sys
 
   albedo-monitor:
     build:
-      context: ./
-      dockerfile: ./albedo-modules/albedo-monitor/Dockerfile
-    restart: always
+      context: ./albedo-modules/albedo-monitor
+    #restart: always
     ports:
       - 5001:5001
     container_name: albedo-monitor
@@ -84,26 +77,36 @@ services:
 
   albedo-gen:
     build:
-      context: ./
-      dockerfile: ./albedo-modules/albedo-gen/Dockerfile
-    restart: always
+      context: ./albedo-modules/albedo-gen
+    #restart: always
     container_name: albedo-gen
     hostname: albedo-gen
     image: albedo-gen
 
   albedo-quartz:
     build:
-      context: ./
-      dockerfile: ./albedo-modules/albedo-quartz/Dockerfile
-    restart: always
+      context: ./albedo-modules/albedo-quartz
+    #restart: always
     container_name: albedo-quartz
     hostname: albedo-quartz
     image: albedo-quartz
 
+
+  albedo-job:
+    build:
+      context: ./albedo-modules/albedo-job
+    #restart: always
+    container_name: albedo-job
+    hostname: albedo-job
+    image: albedo-job
+    ports:
+      - 5005:5005
+
+
   albedo-ui:
-    restart: always
+    #restart: always
     container_name: albedo-ui
     hostname: albedo-ui
-    image: albedocloud/albedo-ui:2.2.0
+    image: albedocloud/albedo-ui:3.0.1
     ports:
       - 8081:80

@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author xuxueli 2018-10-28 00:38:13
  */
 @SpringBootApplication
-public class AlbedoXxlJobAdminApplication {
+public class AlbedoJobApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AlbedoXxlJobAdminApplication.class, args);
+		SpringApplication.run(AlbedoJobApplication.class, args);
 	}
 
 }

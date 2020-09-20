@@ -1,8 +1,8 @@
-FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM moxm/java:1.8-full
 
 MAINTAINER somewhere0813@gmail.com
 
-ENV TZ=Asia/Shanghai
+ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
 
 RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -12,6 +12,6 @@ WORKDIR /albedo-sentinel
 
 EXPOSE 5003
 
-ADD ./albedo-modules/albedo-sentinel/target/albedo-sentinel.jar ./
+ADD ./target/albedo-sentinel.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-sentinel.jar
+CMD sleep 30;java $JAVA_OPTS -jar albedo-sentinel.jar

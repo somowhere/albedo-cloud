@@ -1,8 +1,8 @@
-FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM moxm/java:1.8-full
 
 MAINTAINER somewhere0813@gmail.com
 
-ENV TZ=Asia/Shanghai
+ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
 
 RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -12,8 +12,8 @@ WORKDIR /albedo-register
 
 EXPOSE 8848
 
-ADD ./albedo-register/target/albedo-register.jar ./
+ADD ./target/albedo-register.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-register.jar
+CMD sleep 30;java $JAVA_OPTS -jar albedo-register.jar
 
 

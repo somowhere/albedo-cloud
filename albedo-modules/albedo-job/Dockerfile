@@ -6,12 +6,12 @@ ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/
 
 RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN mkdir -p /albedo-gen
+RUN mkdir -p /albedo-job
 
-WORKDIR /albedo-gen
+WORKDIR /albedo-job
 
-EXPOSE 5003
+EXPOSE 5005
 
-ADD ./target/albedo-gen.jar ./
+ADD ./target/albedo-job.jar ./
 
-CMD sleep 60;java $JAVA_OPTS -jar albedo-gen.jar
+CMD sleep 60;java $JAVA_OPTS -jar albedo-job.jar

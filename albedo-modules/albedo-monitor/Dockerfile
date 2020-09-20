@@ -1,8 +1,10 @@
-FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM moxm/java:1.8-full
 
 MAINTAINER somewhere0813@gmail.com
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
+
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir -p /albedo-monitor
 
@@ -10,6 +12,6 @@ WORKDIR /albedo-monitor
 
 EXPOSE 5001
 
-ADD ./albedo-modules/albedo-monitor/target/albedo-monitor.jar ./
+ADD ./target/albedo-monitor.jar ./
 
-CMD java -Djava.security.egd=file:/dev/./urandom -jar albedo-monitor.jar
+CMD sleep 60;java $JAVA_OPTS -jar albedo-monitor.jar
