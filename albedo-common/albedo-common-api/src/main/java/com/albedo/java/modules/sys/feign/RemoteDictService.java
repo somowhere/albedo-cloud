@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
-* @description
-* @author somewhere
-* @date 2020/6/1 11:10
-*/
+ * @author somewhere
+ * @description
+ * @date 2020/6/1 11:10
+ */
 @FeignClient(contextId = "remoteDictService", value = ServiceNameConstants.UMPS_SERVICE,
 	fallbackFactory = RemoteDictServiceFallbackFactory.class)
 public interface RemoteDictService {
 
 	/**
 	 * findAllOrderBySort
+	 *
+	 * @return java.lang.String
 	 * @author somewhere
 	 * @updateTime 2020/6/1 11:09
-	 * @return java.lang.String
 	 */
 	@GetMapping("/dict/all")
 	Result<String> findAllOrderBySort(@RequestHeader(SecurityConstants.FROM) String from);

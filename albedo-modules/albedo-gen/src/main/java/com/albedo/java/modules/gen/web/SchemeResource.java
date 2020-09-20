@@ -7,7 +7,11 @@ import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
-import com.albedo.java.modules.gen.domain.dto.*;
+import com.albedo.java.modules.gen.domain.dto.GenCodeDto;
+import com.albedo.java.modules.gen.domain.dto.SchemeDto;
+import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
+import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
+import com.albedo.java.modules.gen.domain.vo.SchemeFormDataVo;
 import com.albedo.java.modules.gen.service.SchemeService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,9 +54,9 @@ public class SchemeResource extends BaseResource {
 
 	@GetMapping(value = "/form-data")
 	@PreAuthorize("@pms.hasPermission('gen_scheme_view')")
-	public Result formData(SchemeDto schemeDto) {
+	public Result<SchemeFormDataVo> formData(SchemeDto schemeDto) {
 		String username = SecurityUtil.getUser().getUsername();
-		Map<String, Object> formData = schemeService.findFormData(schemeDto, username);
+		SchemeFormDataVo formData = schemeService.findFormData(schemeDto, username);
 		return Result.buildOkData(formData);
 	}
 

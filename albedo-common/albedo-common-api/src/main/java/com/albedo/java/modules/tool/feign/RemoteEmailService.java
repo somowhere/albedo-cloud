@@ -32,8 +32,9 @@ public interface RemoteEmailService {
 
 	/**
 	 * send
-	 * @author somewhere
+	 *
 	 * @param emailVo
+	 * @author somewhere
 	 * @updateTime 2020/6/1 11:54
 	 */
 	@PostMapping("/email/send")

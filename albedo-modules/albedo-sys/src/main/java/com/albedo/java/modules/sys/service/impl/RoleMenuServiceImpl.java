@@ -21,6 +21,7 @@ import com.albedo.java.modules.sys.domain.RoleMenu;
 import com.albedo.java.modules.sys.domain.dto.RoleMenuDto;
 import com.albedo.java.modules.sys.repository.RoleMenuRepository;
 import com.albedo.java.modules.sys.service.RoleMenuService;
+import com.albedo.java.modules.sys.util.SysCacheUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuRepository, RoleMen
 	@Transactional(rollbackFor = Exception.class)
 	@CacheEvict(value = {CacheNameConstants.ROLE_DETAILS, CacheNameConstants.MENU_DETAILS}, allEntries = true)
 	public Boolean saveRoleMenus(RoleMenuDto roleMenuDto) {
+		SysCacheUtil.delRoleCaches(roleMenuDto.getRoleId());
 		this.remove(Wrappers.<RoleMenu>query().lambda()
 			.eq(RoleMenu::getRoleId, roleMenuDto.getRoleId()));
 

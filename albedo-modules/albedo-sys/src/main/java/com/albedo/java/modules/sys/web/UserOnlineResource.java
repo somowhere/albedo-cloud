@@ -42,7 +42,6 @@ public class UserOnlineResource {
 	private final RemoteUserOnlineService remoteUserOnlineService;
 
 	/**
-	 *
 	 * @param userOnlineQueryCriteria 参数集
 	 * @return
 	 */

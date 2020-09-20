@@ -6,6 +6,7 @@ import com.albedo.java.modules.gen.domain.Scheme;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
+import com.albedo.java.modules.gen.domain.vo.SchemeFormDataVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
@@ -42,11 +43,11 @@ public interface SchemeService extends DataService<Scheme, SchemeDto, String> {
 	 *
 	 * @param schemeDto
 	 * @param loginId
-	 * @return java.util.Map<java.lang.String, java.lang.Object>
+	 * @return SchemeFormDataVo
 	 * @author somewhere
 	 * @updateTime 2020/5/31 17:34
 	 */
-	Map<String, Object> findFormData(SchemeDto schemeDto, String loginId);
+	SchemeFormDataVo findFormData(SchemeDto schemeDto, String loginId);
 
 	/**
 	 * getSchemeVoPage  分页查询用户信息（含有角色信息）
@@ -71,12 +72,13 @@ public interface SchemeService extends DataService<Scheme, SchemeDto, String> {
 	Map<String, Object> previewCode(String id, String username);
 
 
-/**
- * genMenu
- * @author somewhere
- * @param schemeGenDto
- * @updateTime 2020/6/1 14:04
- * @return com.albedo.java.modules.gen.domain.dto.SchemeDto
- */
+	/**
+	 * genMenu
+	 *
+	 * @param schemeGenDto
+	 * @return com.albedo.java.modules.gen.domain.dto.SchemeDto
+	 * @author somewhere
+	 * @updateTime 2020/6/1 14:04
+	 */
 	SchemeDto genMenu(SchemeGenDto schemeGenDto);
 }

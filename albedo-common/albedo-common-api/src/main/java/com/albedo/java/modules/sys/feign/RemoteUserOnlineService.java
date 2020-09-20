@@ -18,17 +18,15 @@ package com.albedo.java.modules.sys.feign;
 
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.constant.ServiceNameConstants;
-import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.TokenVo;
-import com.albedo.java.modules.sys.feign.factory.RemoteRoleServiceFallbackFactory;
 import com.albedo.java.modules.sys.feign.factory.RemoteUserOnlineServiceFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Set;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * @author somowhere

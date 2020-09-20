@@ -30,13 +30,12 @@ import java.util.*;
  */
 public abstract class AbstractQuartzJob implements org.quartz.Job {
 	private static final Logger log = LoggerFactory.getLogger(AbstractQuartzJob.class);
-	RemoteEmailService emailService = SpringContextHolder.getBean(RemoteEmailService.class);
-	JobService jobService = SpringContextHolder.getBean(JobService.class);
-
 	/**
 	 * 线程本地变量
 	 */
 	private static ThreadLocal<Date> threadLocal = new ThreadLocal<>();
+	RemoteEmailService emailService = SpringContextHolder.getBean(RemoteEmailService.class);
+	JobService jobService = SpringContextHolder.getBean(JobService.class);
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {

@@ -17,6 +17,7 @@
 package com.albedo.java.modules;
 
 
+import com.albedo.java.common.datasource.annotation.EnableDynamicDataSource;
 import com.albedo.java.common.security.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ import java.net.InetAddress;
  * @date 2018年06月21日
  * 代码生成系统
  */
+@EnableDynamicDataSource
 @EnableAlbedoResourceServer
 @EnableAlbedoFeignClients
 @SpringCloudApplication

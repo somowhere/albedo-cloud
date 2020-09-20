@@ -1,8 +1,7 @@
 package com.albedo.java.common.core.util;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.albedo.java.common.core.vo.ComboData;
-import com.albedo.java.common.core.vo.SelectResult;
+import com.albedo.java.common.core.vo.SelectVo;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
@@ -66,19 +65,11 @@ public class CollUtil extends cn.hutool.core.collection.CollUtil {
 		return list;
 	}
 
-	public static List<ComboData> convertComboDataList(List<?> dataList, String idFieldName, String nameFieldName) {
-		List<ComboData> comboDataList = Lists.newArrayList();
-		dataList.forEach(item -> comboDataList.add(
-			new ComboData(StringUtil.toStrString(BeanUtil.getFieldValue(item, idFieldName)),
-				StringUtil.toStrString(ClassUtil.invokeGetter(item, nameFieldName)))));
-		return comboDataList;
-	}
-
-	public static List<SelectResult> convertSelectDataList(List<?> dataList, String idFieldName, String nameFieldName) {
-		List<SelectResult> selectResultList = Lists.newArrayList();
-		dataList.forEach(item -> selectResultList.add(new SelectResult(StringUtil.toStrString(BeanUtil.getFieldValue(item, idFieldName)),
+	public static List<SelectVo> convertSelectVoList(List<?> dataList, String idFieldName, String nameFieldName) {
+		List<SelectVo> selectVoList = Lists.newArrayList();
+		dataList.forEach(item -> selectVoList.add(new SelectVo(StringUtil.toStrString(BeanUtil.getFieldValue(item, idFieldName)),
 			StringUtil.toStrString(ClassUtil.invokeGetter(item, nameFieldName)))));
-		return selectResultList;
+		return selectVoList;
 	}
 
 	/**

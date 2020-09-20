@@ -82,6 +82,7 @@ public class RoleResource extends BaseResource {
 		log.debug("REST request to findDeptIdsByRoleId Entity : {}", id);
 		return Result.buildOkData(roleService.findDeptIdsByRoleId(id));
 	}
+
 	/**
 	 * 添加角色
 	 *

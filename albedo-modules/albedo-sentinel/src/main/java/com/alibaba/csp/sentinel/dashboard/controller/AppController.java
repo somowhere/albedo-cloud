@@ -15,24 +15,19 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.alibaba.csp.sentinel.dashboard.discovery.AppInfo;
 import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.MachineInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author Carpenter Lee
@@ -64,21 +59,20 @@ public class AppController {
 		}
 		List<MachineInfo> list = new ArrayList<>(appInfo.getMachines());
 		Collections.sort(list, Comparator.comparing(MachineInfo::getApp).thenComparing(MachineInfo::getIp)
-				.thenComparingInt(MachineInfo::getPort));
+			.thenComparingInt(MachineInfo::getPort));
 		return Result.ofSuccess(MachineInfoVo.fromMachineInfoList(list));
 	}
 
 	@RequestMapping(value = "/{app}/machine/remove.json")
 	public Result<String> removeMachineById(@PathVariable("app") String app, @RequestParam(name = "ip") String ip,
-			@RequestParam(name = "port") int port) {
+											@RequestParam(name = "port") int port) {
 		AppInfo appInfo = appManagement.getDetailApp(app);
 		if (appInfo == null) {
 			return Result.ofSuccess(null);
 		}
 		if (appManagement.removeMachine(app, ip, port)) {
 			return Result.ofSuccessMsg("success");
-		}
-		else {
+		} else {
 			return Result.ofFail(1, "remove failed");
 		}
 	}

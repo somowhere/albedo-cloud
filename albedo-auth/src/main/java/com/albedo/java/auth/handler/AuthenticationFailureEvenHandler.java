@@ -24,7 +24,6 @@ import com.albedo.java.common.log.enums.OperatorType;
 import com.albedo.java.common.log.event.SysLogEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.common.security.handler.AbstractAuthenticationFailureEvenHandler;
-import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,14 +48,14 @@ public class AuthenticationFailureEvenHandler extends AbstractAuthenticationFail
 	 * 处理登录失败方法
 	 * <p>
 	 *
-	 * @param exception 登录的authentication 对象
-	 * @param authentication          登录的authenticationException 对象
+	 * @param exception      登录的authentication 对象
+	 * @param authentication 登录的authenticationException 对象
 	 */
 	@Override
 	public void handle(AuthenticationException exception, Authentication authentication) {
 		log.info("用户：{} 登录失败，异常：{}", authentication.getPrincipal(), exception.getLocalizedMessage());
 		String useruame = null;
-		if(authentication.getPrincipal() instanceof String){
+		if (authentication.getPrincipal() instanceof String) {
 			useruame = (String) authentication.getPrincipal();
 		}
 

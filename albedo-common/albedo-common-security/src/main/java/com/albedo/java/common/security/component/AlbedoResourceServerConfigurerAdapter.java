@@ -16,8 +16,6 @@
 
 package com.albedo.java.common.security.component;
 
-import com.albedo.java.common.core.config.ApplicationProperties;
-import com.albedo.java.common.core.config.FilterIgnoreProperties;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

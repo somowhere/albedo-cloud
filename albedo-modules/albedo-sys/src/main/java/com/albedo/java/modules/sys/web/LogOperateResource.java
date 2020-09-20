@@ -63,6 +63,7 @@ public class LogOperateResource {
 	public Result<IPage> save(@Valid @RequestBody com.albedo.java.modules.sys.domain.LogOperate logOperate) {
 		return Result.buildOkData(logOperateService.save(logOperate));
 	}
+
 	/**
 	 * 简单分页查询
 	 *

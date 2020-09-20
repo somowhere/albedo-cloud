@@ -20,11 +20,8 @@ package com.albedo.java.modules.sys.feign.fallback;
 
 import com.albedo.java.common.core.exception.FeignException;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.feign.RemoteDictService;
-import com.albedo.java.modules.sys.feign.RemoteUserService;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +38,7 @@ public class RemoteDictServiceFallbackImpl implements RemoteDictService {
 
 	/**
 	 * 通过所有字典数据信息
+	 *
 	 * @param from 内外标志
 	 * @return R
 	 */

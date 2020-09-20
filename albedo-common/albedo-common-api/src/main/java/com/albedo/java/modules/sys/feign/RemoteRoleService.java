@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
-* @description
-* @author somewhere
-* @date 2020/6/1 11:18
-*/
+ * @author somewhere
+ * @description
+ * @date 2020/6/1 11:18
+ */
 @FeignClient(contextId = "remoteRoleService", value = ServiceNameConstants.UMPS_SERVICE,
 	fallbackFactory = RemoteRoleServiceFallbackFactory.class)
 public interface RemoteRoleService {
 	/**
 	 * findDescendantIdList
-	 * @author somewhere
+	 *
 	 * @param roleId
-	 * @updateTime 2020/6/1 11:09
 	 * @return List<java.lang.String>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:09
 	 */
 	@GetMapping("/role/dept-ids/{roleId}")
 	Result<List<String>> findDeptIdsByRoleId(@PathVariable("roleId") String roleId, @RequestHeader(SecurityConstants.FROM) String from);

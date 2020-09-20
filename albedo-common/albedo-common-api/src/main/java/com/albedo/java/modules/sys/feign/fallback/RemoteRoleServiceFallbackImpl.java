@@ -22,7 +22,6 @@ import com.albedo.java.common.core.exception.FeignException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.feign.RemoteRoleService;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -41,11 +40,11 @@ public class RemoteRoleServiceFallbackImpl implements RemoteRoleService {
 
 	/**
 	 * @param roleId
-	 * @param from 内外标志
+	 * @param from   内外标志
 	 * @return R
 	 */
 	@Override
-	public Result<List<String>> findDeptIdsByRoleId(String roleId, String from){
+	public Result<List<String>> findDeptIdsByRoleId(String roleId, String from) {
 		log.error("feign 查询DeptIds信息失败:{}", roleId, cause);
 		throw new FeignException(cause);
 	}

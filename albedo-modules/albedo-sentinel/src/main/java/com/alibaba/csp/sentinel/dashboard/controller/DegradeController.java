@@ -15,20 +15,15 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller;
 
-import java.util.Date;
-import java.util.List;
-
 import com.alibaba.csp.sentinel.dashboard.auth.AuthAction;
-import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
-import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-import com.alibaba.csp.sentinel.util.StringUtil;
-
+import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.InMemDegradeRuleStore;
-
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +31,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author leyou
@@ -70,8 +68,7 @@ public class DegradeController {
 			List<DegradeRuleEntity> rules = sentinelApiClient.fetchDegradeRuleOfMachine(app, ip, port);
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("queryApps error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -81,7 +78,7 @@ public class DegradeController {
 	@RequestMapping("/new.json")
 	@AuthAction(PrivilegeType.WRITE_RULE)
 	public Result<DegradeRuleEntity> add(String app, String ip, Integer port, String limitApp, String resource,
-			Double count, Integer timeWindow, Integer grade) {
+										 Double count, Integer timeWindow, Integer grade) {
 		if (StringUtil.isBlank(app)) {
 			return Result.ofFail(-1, "app can't be null or empty");
 		}
@@ -123,8 +120,7 @@ public class DegradeController {
 		entity.setGmtModified(date);
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("add error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -138,7 +134,7 @@ public class DegradeController {
 	@RequestMapping("/save.json")
 	@AuthAction(PrivilegeType.WRITE_RULE)
 	public Result<DegradeRuleEntity> updateIfNotNull(Long id, String app, String limitApp, String resource,
-			Double count, Integer timeWindow, Integer grade) {
+													 Double count, Integer timeWindow, Integer grade) {
 		if (id == null) {
 			return Result.ofFail(-1, "id can't be null");
 		}
@@ -175,8 +171,7 @@ public class DegradeController {
 		entity.setGmtModified(date);
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("save error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -201,8 +196,7 @@ public class DegradeController {
 
 		try {
 			repository.delete(id);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("delete error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}

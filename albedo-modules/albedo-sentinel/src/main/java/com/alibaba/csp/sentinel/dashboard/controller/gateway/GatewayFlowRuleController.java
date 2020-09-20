@@ -36,9 +36,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static com.alibaba.csp.sentinel.slots.block.RuleConstant.*;
 import static com.alibaba.csp.sentinel.adapter.gateway.common.SentinelGatewayConstants.*;
 import static com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity.*;
+import static com.alibaba.csp.sentinel.slots.block.RuleConstant.*;
 
 /**
  * Gateway flow rule Controller for manage gateway flow rules.
@@ -76,8 +76,7 @@ public class GatewayFlowRuleController {
 			List<GatewayFlowRuleEntity> rules = sentinelApiClient.fetchGatewayFlowRules(app, ip, port).get();
 			repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("query gateway flow rules error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -133,14 +132,14 @@ public class GatewayFlowRuleController {
 			// 参数属性 0-ClientIP 1-Remote Host 2-Header 3-URL参数 4-Cookie
 			Integer parseStrategy = paramItem.getParseStrategy();
 			if (!Arrays.asList(PARAM_PARSE_STRATEGY_CLIENT_IP, PARAM_PARSE_STRATEGY_HOST, PARAM_PARSE_STRATEGY_HEADER,
-					PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE).contains(parseStrategy)) {
+				PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE).contains(parseStrategy)) {
 				return Result.ofFail(-1, "invalid parseStrategy: " + parseStrategy);
 			}
 			itemEntity.setParseStrategy(paramItem.getParseStrategy());
 
 			// 当参数属性为2-Header 3-URL参数 4-Cookie时，参数名称必填
 			if (Arrays.asList(PARAM_PARSE_STRATEGY_HEADER, PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE)
-					.contains(parseStrategy)) {
+				.contains(parseStrategy)) {
 				// 参数名称
 				String fieldName = paramItem.getFieldName();
 				if (StringUtil.isBlank(fieldName)) {
@@ -155,7 +154,7 @@ public class GatewayFlowRuleController {
 
 					Integer matchStrategy = paramItem.getMatchStrategy();
 					if (!Arrays.asList(PARAM_MATCH_STRATEGY_EXACT, PARAM_MATCH_STRATEGY_CONTAINS,
-							PARAM_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
+						PARAM_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
 						return Result.ofFail(-1, "invalid matchStrategy: " + matchStrategy);
 					}
 					itemEntity.setMatchStrategy(matchStrategy);
@@ -199,7 +198,7 @@ public class GatewayFlowRuleController {
 			return Result.ofFail(-1, "intervalUnit can't be null");
 		}
 		if (!Arrays.asList(INTERVAL_UNIT_SECOND, INTERVAL_UNIT_MINUTE, INTERVAL_UNIT_HOUR, INTERVAL_UNIT_DAY)
-				.contains(intervalUnit)) {
+			.contains(intervalUnit)) {
 			return Result.ofFail(-1, "Invalid intervalUnit: " + intervalUnit);
 		}
 		entity.setIntervalUnit(intervalUnit);
@@ -224,8 +223,7 @@ public class GatewayFlowRuleController {
 				return Result.ofFail(-1, "invalid burst: " + burst);
 			}
 			entity.setBurst(burst);
-		}
-		else if (CONTROL_BEHAVIOR_RATE_LIMITER == controlBehavior) {
+		} else if (CONTROL_BEHAVIOR_RATE_LIMITER == controlBehavior) {
 			// 1-匀速排队, 则超时时间必填
 			Integer maxQueueingTimeoutMs = reqVo.getMaxQueueingTimeoutMs();
 			if (maxQueueingTimeoutMs == null) {
@@ -243,8 +241,7 @@ public class GatewayFlowRuleController {
 
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("add gateway flow rule error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -284,14 +281,14 @@ public class GatewayFlowRuleController {
 			// 参数属性 0-ClientIP 1-Remote Host 2-Header 3-URL参数 4-Cookie
 			Integer parseStrategy = paramItem.getParseStrategy();
 			if (!Arrays.asList(PARAM_PARSE_STRATEGY_CLIENT_IP, PARAM_PARSE_STRATEGY_HOST, PARAM_PARSE_STRATEGY_HEADER,
-					PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE).contains(parseStrategy)) {
+				PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE).contains(parseStrategy)) {
 				return Result.ofFail(-1, "invalid parseStrategy: " + parseStrategy);
 			}
 			itemEntity.setParseStrategy(paramItem.getParseStrategy());
 
 			// 当参数属性为2-Header 3-URL参数 4-Cookie时，参数名称必填
 			if (Arrays.asList(PARAM_PARSE_STRATEGY_HEADER, PARAM_PARSE_STRATEGY_URL_PARAM, PARAM_PARSE_STRATEGY_COOKIE)
-					.contains(parseStrategy)) {
+				.contains(parseStrategy)) {
 				// 参数名称
 				String fieldName = paramItem.getFieldName();
 				if (StringUtil.isBlank(fieldName)) {
@@ -306,14 +303,13 @@ public class GatewayFlowRuleController {
 
 					Integer matchStrategy = paramItem.getMatchStrategy();
 					if (!Arrays.asList(PARAM_MATCH_STRATEGY_EXACT, PARAM_MATCH_STRATEGY_CONTAINS,
-							PARAM_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
+						PARAM_MATCH_STRATEGY_REGEX).contains(matchStrategy)) {
 						return Result.ofFail(-1, "invalid matchStrategy: " + matchStrategy);
 					}
 					itemEntity.setMatchStrategy(matchStrategy);
 				}
 			}
-		}
-		else {
+		} else {
 			entity.setParamItem(null);
 		}
 
@@ -353,7 +349,7 @@ public class GatewayFlowRuleController {
 			return Result.ofFail(-1, "intervalUnit can't be null");
 		}
 		if (!Arrays.asList(INTERVAL_UNIT_SECOND, INTERVAL_UNIT_MINUTE, INTERVAL_UNIT_HOUR, INTERVAL_UNIT_DAY)
-				.contains(intervalUnit)) {
+			.contains(intervalUnit)) {
 			return Result.ofFail(-1, "Invalid intervalUnit: " + intervalUnit);
 		}
 		entity.setIntervalUnit(intervalUnit);
@@ -378,8 +374,7 @@ public class GatewayFlowRuleController {
 				return Result.ofFail(-1, "invalid burst: " + burst);
 			}
 			entity.setBurst(burst);
-		}
-		else if (CONTROL_BEHAVIOR_RATE_LIMITER == controlBehavior) {
+		} else if (CONTROL_BEHAVIOR_RATE_LIMITER == controlBehavior) {
 			// 2-匀速排队, 则超时时间必填
 			Integer maxQueueingTimeoutMs = reqVo.getMaxQueueingTimeoutMs();
 			if (maxQueueingTimeoutMs == null) {
@@ -396,8 +391,7 @@ public class GatewayFlowRuleController {
 
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("update gateway flow rule error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -424,8 +418,7 @@ public class GatewayFlowRuleController {
 
 		try {
 			repository.delete(id);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("delete gateway flow rule error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}

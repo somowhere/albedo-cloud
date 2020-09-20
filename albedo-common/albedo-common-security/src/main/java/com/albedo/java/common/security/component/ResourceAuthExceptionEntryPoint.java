@@ -53,10 +53,10 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		Result<String> result = new Result<>();
 		result.setCode(CommonConstants.FAIL);
 		if (authException != null) {
-			if(authException.getCause() instanceof ClientAuthenticationException){
+			if (authException.getCause() instanceof ClientAuthenticationException) {
 				ClientAuthenticationException clientAuthenticationException = (ClientAuthenticationException) authException.getCause();
-				result.addMessage(clientAuthenticationException.getOAuth2ErrorCode()+" "+authException.getMessage());
-			}else{
+				result.addMessage(clientAuthenticationException.getOAuth2ErrorCode() + " " + authException.getMessage());
+			} else {
 				result.addMessage(authException.getMessage());
 			}
 		}

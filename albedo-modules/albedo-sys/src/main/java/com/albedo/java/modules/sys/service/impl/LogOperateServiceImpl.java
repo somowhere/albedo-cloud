@@ -21,6 +21,7 @@ import com.albedo.java.modules.sys.domain.LogOperate;
 import com.albedo.java.modules.sys.repository.LogOperateRepository;
 import com.albedo.java.modules.sys.service.LogOperateService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -31,7 +32,8 @@ import org.springframework.stereotype.Service;
  * @since 2019/2/1
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class LogOperateServiceImpl extends
-        BaseServiceImpl<LogOperateRepository, LogOperate> implements LogOperateService {
+	BaseServiceImpl<LogOperateRepository, LogOperate> implements LogOperateService {
 
 }

@@ -30,6 +30,7 @@ public interface MachineDiscovery {
 
 	/**
 	 * Remove the given app from the application registry.
+	 *
 	 * @param app application name
 	 * @since 1.5.0
 	 */
@@ -39,8 +40,9 @@ public interface MachineDiscovery {
 
 	/**
 	 * Remove the given machine instance from the application registry.
-	 * @param app the application name of the machine
-	 * @param ip machine IP
+	 *
+	 * @param app  the application name of the machine
+	 * @param ip   machine IP
 	 * @param port machine port
 	 * @return true if removed, otherwise false
 	 * @since 1.5.0

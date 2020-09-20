@@ -23,7 +23,6 @@ import com.albedo.java.common.core.util.BeanValidators;
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.ResponseEntityBuilder;
 import com.albedo.java.common.core.util.Result;
-import com.alibaba.fastjson.JSONObject;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -63,18 +62,19 @@ public class GlobalExceptionHandler {
 //				return Result.buildFail("远程服务调用失败");
 //			}
 //		}
-		if(e instanceof HystrixRuntimeException){
+		if (e instanceof HystrixRuntimeException) {
 			try {
-				if(e.getCause() instanceof feign.FeignException){
+				if (e.getCause() instanceof feign.FeignException) {
 					return ResponseEntityBuilder.buildFailData(Json.parseObject(((feign.FeignException) e.getCause()).contentUTF8(), Result.class));
 				}
-			}catch (Exception e1){
+			} catch (Exception e1) {
 				return ResponseEntityBuilder.buildFail("远程服务调用失败");
 			}
 		}
 		log.error("全局异常信息 ex={}", e);
 		return ResponseEntityBuilder.buildFail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 	}
+
 	/**
 	 * validation Exception
 	 *
@@ -87,6 +87,7 @@ public class GlobalExceptionHandler {
 		log.warn("FeignException:{}", exception);
 		return Result.buildFail("远程服务调用失败");
 	}
+
 	/**
 	 * validation Exception
 	 *

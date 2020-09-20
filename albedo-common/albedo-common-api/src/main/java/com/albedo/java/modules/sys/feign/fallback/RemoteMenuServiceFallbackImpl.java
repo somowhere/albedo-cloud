@@ -23,7 +23,6 @@ import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.feign.RemoteMenuService;
 import com.baomidou.mybatisplus.extension.api.R;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

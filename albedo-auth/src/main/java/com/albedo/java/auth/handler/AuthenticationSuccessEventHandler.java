@@ -72,15 +72,17 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		LogOperate logOperate = SysLogUtils.getSysLog();
-		if(authentication.getPrincipal() instanceof String){
+		if (authentication.getPrincipal() instanceof String) {
 			logOperate.setUsername((String) authentication.getPrincipal());
-		}else if(authentication.getPrincipal() instanceof UserDetail){
+		} else if (authentication.getPrincipal() instanceof UserDetail) {
 			UserDetail principal = (UserDetail) authentication.getPrincipal();
 			logOperate.setUsername(principal.getUsername());
 			logOperate.setCreatedBy(principal.getId());
 			String ip = WebUtil.getIp(request);
 			String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
-			taskExecutor.execute(()->{saveUserOnline(principal, ip, userAgentStr);});
+			taskExecutor.execute(() -> {
+				saveUserOnline(principal, ip, userAgentStr);
+			});
 		}
 		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
 		logOperate.setLogType(LogType.INFO.name());
@@ -92,11 +94,12 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 
 	/**
 	 * saveUserOnline 保存在线用户信息
+	 *
 	 * @param userDetail
 	 * @param ip
 	 * @param userAgentStr
 	 */
-	public void saveUserOnline(UserDetail userDetail, String ip, String userAgentStr){
+	public void saveUserOnline(UserDetail userDetail, String ip, String userAgentStr) {
 		UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
 		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
 			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),

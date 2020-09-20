@@ -15,12 +15,9 @@
  */
 package com.albedo.java.modules.sys.domain.dto;
 
-import com.albedo.java.common.core.annotation.Query;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @author somewhere
@@ -30,7 +27,7 @@ import java.util.List;
 public class UserOnlineQueryCriteria implements Serializable {
 
 
-	private Integer current=1;
-	private Integer size=20;
+	private Integer current = 1;
+	private Integer size = 20;
 	private String username;
 }

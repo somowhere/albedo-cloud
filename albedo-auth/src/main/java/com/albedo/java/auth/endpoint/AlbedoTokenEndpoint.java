@@ -33,7 +33,6 @@ import com.albedo.java.modules.sys.domain.vo.UserOnlineVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ConvertingCursor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -56,7 +55,6 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author somowhere
@@ -75,8 +73,9 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 认证页面
+	 *
 	 * @param modelAndView
-	 * @param error 表单登录失败处理回调的错误信息
+	 * @param error        表单登录失败处理回调的错误信息
 	 * @return ModelAndView
 	 */
 	@GetMapping("/login")
@@ -88,6 +87,7 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 确认授权页面
+	 *
 	 * @param request
 	 * @param session
 	 * @param modelAndView
@@ -109,6 +109,7 @@ public class AlbedoTokenEndpoint {
 		modelAndView.setViewName("ftl/confirm");
 		return modelAndView;
 	}
+
 	/**
 	 * 退出并删除tokenF
 	 *
@@ -123,7 +124,7 @@ public class AlbedoTokenEndpoint {
 		String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-			log.info("token 无效"+tokenValue);
+			log.info("token 无效" + tokenValue);
 			return Result.buildOkData(Boolean.TRUE);
 		}
 		tokenStore.removeAccessToken(accessToken);
@@ -143,7 +144,7 @@ public class AlbedoTokenEndpoint {
 	@Inner
 	@DeleteMapping
 	public Result<Boolean> removeByTokens(@RequestBody TokenVo tokenVo) throws BadRequestException {
-		if(tokenVo == null || StringUtil.isEmpty(tokenVo.getUserId())){
+		if (tokenVo == null || StringUtil.isEmpty(tokenVo.getUserId())) {
 			throw new BadRequestException("当前登陆用户为空，无法操作");
 		}
 		tokenVo.getTokens().forEach(token -> {
@@ -151,7 +152,7 @@ public class AlbedoTokenEndpoint {
 			Authentication authentication = tokenStore.readAuthentication(oAuth2AccessToken).getUserAuthentication();
 			if (authentication.getPrincipal() instanceof UserDetail) {
 				UserDetail userDetail = (UserDetail) authentication.getPrincipal();
-				if(tokenVo.getUserId().equals(userDetail.getId())){
+				if (tokenVo.getUserId().equals(userDetail.getId())) {
 					throw new BadRequestException("当前登陆用户无法强退");
 				}
 				redisTemplate.delete(SecurityConstants.PROJECT_OAUTH_ONLINE + userDetail.getId());

@@ -36,6 +36,7 @@ public class AlbedoHeaderRequestOriginParser implements RequestOriginParser {
 
 	/**
 	 * Parse the origin from given HTTP request.
+	 *
 	 * @param request HTTP request
 	 * @return parsed origin
 	 */

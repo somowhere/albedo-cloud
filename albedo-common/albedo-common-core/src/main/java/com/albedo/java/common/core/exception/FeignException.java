@@ -1,4 +1,5 @@
 package com.albedo.java.common.core.exception;
+
 /**
  * @author somewhere
  * @date 2018-11-23

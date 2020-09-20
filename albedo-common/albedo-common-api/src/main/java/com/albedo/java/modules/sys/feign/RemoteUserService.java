@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 	fallbackFactory = RemoteUserServiceFallbackFactory.class)
 public interface RemoteUserService {
 	/**
-	 *
 	 * 通过用户名查询用户、角色信息
+	 *
 	 * @param username 用户名
-	 * @param from 调用标志
+	 * @param from     调用标志
 	 * @return R
 	 */
 	@GetMapping("/user/info/{username}")

@@ -64,8 +64,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @CacheConfig(cacheNames = CacheNameConstants.MENU_DETAILS)
+@Transactional(rollbackFor = Exception.class)
 public class MenuServiceImpl extends
-        TreeServiceImpl<MenuRepository, Menu, MenuDto> implements MenuService {
+	TreeServiceImpl<MenuRepository, Menu, MenuDto> implements MenuService {
 	private final RoleRepository roleRepository;
 	private final RoleMenuRepository roleMenuRepository;
 
@@ -256,7 +257,7 @@ public class MenuServiceImpl extends
 		module.setName(moduleName);
 		module.setParentId(parentMenu.getId());
 		module.setType(Menu.TYPE_MENU);
-		module.setIcon("icon-right-square");
+		module.setIcon("list");
 		module.setPath(StringUtil.toRevertCamelCase(StringUtil.lowerFirst(schemeDto.getClassName()), CharUtil.DASHED));
 		module.setComponent(url.substring(1) + "index");
 		save(module);

@@ -29,15 +29,12 @@ public interface SecurityConstants {
 	 * 前缀
 	 */
 	String PROJECT_PREFIX = "albedo_";
-
-
-	String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
-	String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
-
 	/**
 	 * oauth 相关前缀
 	 */
 	String OAUTH_PREFIX = "oauth:";
+	String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
+	String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
 	/**
 	 * 项目的license
 	 */
@@ -185,10 +182,10 @@ public interface SecurityConstants {
 	String ROLE_DATA_SCOPE_CUSTOM = "5";
 
 
-	 String USER_ID = "user_id";
-	 String DEPT_ID = "dept_id";
-	 String DEPT_NAME = "dept_name";
-	 String TENANT_ID = "tenant_id";
-	 String DATA_SCOPE = "data_scope";
+	String USER_ID = "user_id";
+	String DEPT_ID = "dept_id";
+	String DEPT_NAME = "dept_name";
+	String TENANT_ID = "tenant_id";
+	String DATA_SCOPE = "data_scope";
 
 }

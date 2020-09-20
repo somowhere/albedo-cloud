@@ -64,8 +64,9 @@ import java.util.stream.Collectors;
 @Service
 @CacheConfig(cacheNames = CacheNameConstants.DEPT_DETAILS)
 @AllArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class DeptServiceImpl extends
-        TreeServiceImpl<DeptRepository, Dept, DeptDto> implements DeptService {
+	TreeServiceImpl<DeptRepository, Dept, DeptDto> implements DeptService {
 	private final DeptRelationService deptRelationService;
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;

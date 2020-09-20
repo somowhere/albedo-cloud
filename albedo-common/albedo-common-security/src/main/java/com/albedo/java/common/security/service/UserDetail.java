@@ -57,7 +57,7 @@ public class UserDetail extends User {
 	 *
 	 * @param id                    用户ID
 	 * @param deptId                部门ID
-	 * @param deptName                部门名称
+	 * @param deptName              部门名称
 	 * @param loginId               the username presented to the
 	 *                              <code>DaoAuthenticationProvider</code>
 	 * @param password              the password that should be presented to the

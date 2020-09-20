@@ -3,8 +3,10 @@
     <span style="font-size: 30px;font-weight: bold;">{{app}}</span>
   </div>
   <div class="col-md-6">
-    <button class="btn btn-outline-primary" style="float: right; margin-right: 10px;" ng-disabled="!macInputModel" ng-click="addNewApi()">
-      <i class="fa fa-plus"></i>&nbsp;&nbsp;新增 API 分组</button>
+    <button class="btn btn-outline-primary" ng-click="addNewApi()" ng-disabled="!macInputModel"
+            style="float: right; margin-right: 10px;">
+      <i class="fa fa-plus"></i>&nbsp;&nbsp;新增 API 分组
+    </button>
   </div>
 </div>
 
@@ -16,11 +18,14 @@
       <div class="card">
         <div class="inputs-header">
           <span class="brand" style="font-size: 13px;">API 分组管理</span>
-          <button class="btn btn-primary" style="float: right; margin-right: 10px; height: 30px;font-size: 12px;" ng-click="getApis()">刷新</button>
-          <input class="form-control witdh-200" placeholder="关键字" ng-model="searchKey">
+          <button class="btn btn-primary" ng-click="getApis()"
+                  style="float: right; margin-right: 10px; height: 30px;font-size: 12px;">刷新
+          </button>
+          <input class="form-control witdh-200" ng-model="searchKey" placeholder="关键字">
           <div class="control-group" style="float:right;margin-right: 10px;margin-bottom: -10px;">
-            <selectize id="gsInput" class="selectize-input-200" config="macsInputConfig" options="macsInputOptions" ng-model="macInputModel"
-              placeholder="机器"></selectize>
+            <selectize class="selectize-input-200" config="macsInputConfig" id="gsInput" ng-model="macInputModel"
+                       options="macsInputOptions"
+                       placeholder="机器"></selectize>
           </div>
         </div>
 
@@ -28,43 +33,50 @@
         <div class="card-body" style="padding: 0px 0px;">
           <table class="table" style="border-left: none; border-right:none;margin-top: 10px;">
             <thead>
-              <tr style="background: #F3F5F7;">
-                <td>
-                  API 名称
-                </td>
-                <td>
-                  匹配模式
-                </td>
-                <td>
-                  匹配串
-                </td>
-                <td>
-                  操作
-                </td>
-              </tr>
+            <tr style="background: #F3F5F7;">
+              <td>
+                API 名称
+              </td>
+              <td>
+                匹配模式
+              </td>
+              <td>
+                匹配串
+              </td>
+              <td>
+                操作
+              </td>
+            </tr>
             </thead>
             <tbody>
-              <tr dir-paginate="api in apis | filter: searchKey | itemsPerPage: apisPageConfig.pageSize" current-page="apisPageConfig.currentPageIndex"
-                  pagination-id="entriesPagination">
-                <td ng-if="api.firstFlag==0" rowspan="{{api.itemSize}}" style="vertical-align: middle;">{{api.apiName}}</td>
-                <td>
-                  <span ng-if="api.matchStrategy == 0">精确</span>
-                  <span ng-if="api.matchStrategy == 1">前缀</span>
-                  <span ng-if="api.matchStrategy == 2">正则</span>
-                </td>
-                <td>{{api.pattern}}</td>
-                <td ng-if="api.firstFlag==0" rowspan="{{api.itemSize}}" style="vertical-align: middle;">
-                  <button class="btn btn-xs btn-outline-primary" type="button" ng-click="editApi(api)" style="font-size: 12px; height:25px;">编辑</button>
-                  <button class="btn btn-xs btn-outline-danger" type="button" ng-click="deleteApi(api)" style="font-size: 12px; height:25px;">删除</button>
-                </td>
-              </tr>
+            <tr current-page="apisPageConfig.currentPageIndex"
+                dir-paginate="api in apis | filter: searchKey | itemsPerPage: apisPageConfig.pageSize"
+                pagination-id="entriesPagination">
+              <td ng-if="api.firstFlag==0" rowspan="{{api.itemSize}}" style="vertical-align: middle;">{{api.apiName}}
+              </td>
+              <td>
+                <span ng-if="api.matchStrategy == 0">精确</span>
+                <span ng-if="api.matchStrategy == 1">前缀</span>
+                <span ng-if="api.matchStrategy == 2">正则</span>
+              </td>
+              <td>{{api.pattern}}</td>
+              <td ng-if="api.firstFlag==0" rowspan="{{api.itemSize}}" style="vertical-align: middle;">
+                <button class="btn btn-xs btn-outline-primary" ng-click="editApi(api)" style="font-size: 12px; height:25px;"
+                        type="button">编辑
+                </button>
+                <button class="btn btn-xs btn-outline-danger" ng-click="deleteApi(api)" style="font-size: 12px; height:25px;"
+                        type="button">删除
+                </button>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
         <!-- .card-body -->
         <div class="pagination-footer">
-          <dir-pagination-controls boundary-links="true" template-url="app/views/pagination.tpl.html" pagination-id="entriesPagination"
-            on-page-change="">
+          <dir-pagination-controls boundary-links="true" on-page-change=""
+                                   pagination-id="entriesPagination"
+                                   template-url="app/views/pagination.tpl.html">
           </dir-pagination-controls>
           <div class="tools" style="">
             <span>共 {{apisPageConfig.totalCount}} 条记录, </span>

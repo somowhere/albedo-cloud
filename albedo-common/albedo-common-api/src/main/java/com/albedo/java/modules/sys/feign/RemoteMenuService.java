@@ -11,20 +11,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
-* @description
-* @author somewhere
-* @date 2020/6/1 11:10
-*/
+ * @author somewhere
+ * @description
+ * @date 2020/6/1 11:10
+ */
 @FeignClient(contextId = "remoteMenuService", value = ServiceNameConstants.UMPS_SERVICE,
 	fallbackFactory = RemoteMenuServiceFallbackFactory.class)
 public interface RemoteMenuService {
 
 	/**
 	 * saveByGenScheme
-	 * @author somewhere
+	 *
 	 * @param schemeDto
-	 * @updateTime 2020/6/1 11:10
 	 * @return boolean
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:10
 	 */
 	@PostMapping("/menu/save-gen-scheme")
 	R<Boolean> saveByGenScheme(@RequestBody GenSchemeDto schemeDto, @RequestHeader(SecurityConstants.FROM) String from);

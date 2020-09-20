@@ -21,15 +21,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -47,7 +41,7 @@ import java.util.List;
  * <li>machine registry: {@code /registry/machine}</li>
  * <li>static resources</li>
  * </ul>
- *
+ * <p>
  * The excluded urls and urlSuffixes could be configured in {@code application.properties}
  * file.
  *
@@ -84,7 +78,7 @@ public class LoginAuthenticationFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+		throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 		String servletPath = httpRequest.getServletPath();
@@ -118,8 +112,7 @@ public class LoginAuthenticationFilter implements Filter {
 		if (authUser == null) {
 			// If auth fail, set response status code to 401
 			httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-		}
-		else {
+		} else {
 			chain.doFilter(request, response);
 		}
 	}

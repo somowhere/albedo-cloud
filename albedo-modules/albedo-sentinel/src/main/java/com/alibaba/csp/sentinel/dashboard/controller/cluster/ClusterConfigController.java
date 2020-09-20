@@ -15,18 +15,11 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller.cluster;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-
 import com.alibaba.csp.sentinel.cluster.ClusterStateManager;
 import com.alibaba.csp.sentinel.dashboard.client.CommandNotFoundException;
-import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
-import com.alibaba.csp.sentinel.util.StringUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.SentinelVersion;
+import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
+import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.request.ClusterClientModifyRequest;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.request.ClusterModifyRequest;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.request.ClusterServerModifyRequest;
@@ -37,17 +30,17 @@ import com.alibaba.csp.sentinel.dashboard.domain.cluster.state.ClusterUniversalS
 import com.alibaba.csp.sentinel.dashboard.service.ClusterConfigService;
 import com.alibaba.csp.sentinel.dashboard.util.ClusterEntityUtils;
 import com.alibaba.csp.sentinel.dashboard.util.VersionUtils;
-import com.alibaba.csp.sentinel.dashboard.domain.Result;
+import com.alibaba.csp.sentinel.util.StringUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Eric Zhao
@@ -57,13 +50,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/cluster")
 public class ClusterConfigController {
 
+	private static final String KEY_MODE = "mode";
 	private final Logger logger = LoggerFactory.getLogger(ClusterConfigController.class);
-
 	private final SentinelVersion version140 = new SentinelVersion().setMajorVersion(1).setMinorVersion(4);
-
 	@Autowired
 	private AppManagement appManagement;
-
 	@Autowired
 	private ClusterConfigService clusterConfigService;
 
@@ -77,34 +68,32 @@ public class ClusterConfigController {
 			if (body.containsKey(KEY_MODE)) {
 				int mode = body.getInteger(KEY_MODE);
 				switch (mode) {
-				case ClusterStateManager.CLUSTER_CLIENT:
-					ClusterClientModifyRequest data = JSON.parseObject(payload, ClusterClientModifyRequest.class);
-					Result<Boolean> res = checkValidRequest(data);
-					if (res != null) {
-						return res;
-					}
-					clusterConfigService.modifyClusterClientConfig(data).get();
-					return Result.ofSuccess(true);
-				case ClusterStateManager.CLUSTER_SERVER:
-					ClusterServerModifyRequest d = JSON.parseObject(payload, ClusterServerModifyRequest.class);
-					Result<Boolean> r = checkValidRequest(d);
-					if (r != null) {
-						return r;
-					}
-					// TODO: bad design here, should refactor!
-					clusterConfigService.modifyClusterServerConfig(d).get();
-					return Result.ofSuccess(true);
-				default:
-					return Result.ofFail(-1, "invalid mode");
+					case ClusterStateManager.CLUSTER_CLIENT:
+						ClusterClientModifyRequest data = JSON.parseObject(payload, ClusterClientModifyRequest.class);
+						Result<Boolean> res = checkValidRequest(data);
+						if (res != null) {
+							return res;
+						}
+						clusterConfigService.modifyClusterClientConfig(data).get();
+						return Result.ofSuccess(true);
+					case ClusterStateManager.CLUSTER_SERVER:
+						ClusterServerModifyRequest d = JSON.parseObject(payload, ClusterServerModifyRequest.class);
+						Result<Boolean> r = checkValidRequest(d);
+						if (r != null) {
+							return r;
+						}
+						// TODO: bad design here, should refactor!
+						clusterConfigService.modifyClusterServerConfig(d).get();
+						return Result.ofSuccess(true);
+					default:
+						return Result.ofFail(-1, "invalid mode");
 				}
 			}
 			return Result.ofFail(-1, "invalid parameter");
-		}
-		catch (ExecutionException ex) {
+		} catch (ExecutionException ex) {
 			logger.error("Error when modifying cluster config", ex.getCause());
 			return errorResponse(ex);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			logger.error("Error when modifying cluster config", ex);
 			return Result.ofFail(-1, ex.getMessage());
 		}
@@ -113,15 +102,14 @@ public class ClusterConfigController {
 	private <T> Result<T> errorResponse(ExecutionException ex) {
 		if (isNotSupported(ex.getCause())) {
 			return unsupportedVersion();
-		}
-		else {
+		} else {
 			return Result.ofThrowable(-1, ex.getCause());
 		}
 	}
 
 	@GetMapping("/state_single")
 	public Result<ClusterUniversalStateVO> apiGetClusterState(@RequestParam String app, @RequestParam String ip,
-			@RequestParam Integer port) {
+															  @RequestParam Integer port) {
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app cannot be null or empty");
 		}
@@ -136,12 +124,10 @@ public class ClusterConfigController {
 		}
 		try {
 			return clusterConfigService.getClusterUniversalState(app, ip, port).thenApply(Result::ofSuccess).get();
-		}
-		catch (ExecutionException ex) {
+		} catch (ExecutionException ex) {
 			logger.error("Error when fetching cluster state", ex.getCause());
 			return errorResponse(ex);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when fetching cluster state", throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -154,13 +140,11 @@ public class ClusterConfigController {
 		}
 		try {
 			return clusterConfigService.getClusterUniversalState(app)
-					.thenApply(ClusterEntityUtils::wrapToAppClusterServerState).thenApply(Result::ofSuccess).get();
-		}
-		catch (ExecutionException ex) {
+				.thenApply(ClusterEntityUtils::wrapToAppClusterServerState).thenApply(Result::ofSuccess).get();
+		} catch (ExecutionException ex) {
 			logger.error("Error when fetching cluster server state of app: " + app, ex.getCause());
 			return errorResponse(ex);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when fetching cluster server state of app: " + app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -173,13 +157,11 @@ public class ClusterConfigController {
 		}
 		try {
 			return clusterConfigService.getClusterUniversalState(app)
-					.thenApply(ClusterEntityUtils::wrapToAppClusterClientState).thenApply(Result::ofSuccess).get();
-		}
-		catch (ExecutionException ex) {
+				.thenApply(ClusterEntityUtils::wrapToAppClusterClientState).thenApply(Result::ofSuccess).get();
+		} catch (ExecutionException ex) {
 			logger.error("Error when fetching cluster token client state of app: " + app, ex.getCause());
 			return errorResponse(ex);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when fetching cluster token client state of app: " + app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -192,12 +174,10 @@ public class ClusterConfigController {
 		}
 		try {
 			return clusterConfigService.getClusterUniversalState(app).thenApply(Result::ofSuccess).get();
-		}
-		catch (ExecutionException ex) {
+		} catch (ExecutionException ex) {
 			logger.error("Error when fetching cluster state of app: " + app, ex.getCause());
 			return errorResponse(ex);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when fetching cluster state of app: " + app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -210,11 +190,10 @@ public class ClusterConfigController {
 	private boolean checkIfSupported(String app, String ip, int port) {
 		try {
 			return Optional.ofNullable(appManagement.getDetailApp(app)).flatMap(e -> e.getMachine(ip, port))
-					.flatMap(m -> VersionUtils.parseVersion(m.getVersion()).map(v -> v.greaterOrEqual(version140)))
-					.orElse(true);
+				.flatMap(m -> VersionUtils.parseVersion(m.getVersion()).map(v -> v.greaterOrEqual(version140)))
+				.orElse(true);
 			// If error occurred or cannot retrieve machine info, return true.
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return true;
 		}
 	}
@@ -240,9 +219,7 @@ public class ClusterConfigController {
 
 	private <R> Result<R> unsupportedVersion() {
 		return Result.ofFail(4041,
-				"Sentinel client not supported for cluster flow control (unsupported version or dependency absent)");
+			"Sentinel client not supported for cluster flow control (unsupported version or dependency absent)");
 	}
-
-	private static final String KEY_MODE = "mode";
 
 }

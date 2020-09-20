@@ -141,12 +141,12 @@ export default {
       ${column.javaFieldId}Options: undefined,
         </#if>
        </#list>
-	  validateNumber: (rule, value, callback) => {
-	    validate.isNumber(rule, value, callback)
-	  },
-	  validateDigits: (rule, value, callback) => {
-	    validate.isDigits(rule, value, callback)
-	  },
+      validateNumber: (rule, value, callback) => {
+        validate.isNumber(rule, value, callback)
+      },
+      validateDigits: (rule, value, callback) => {
+        validate.isDigits(rule, value, callback)
+      },
       permission: {
         edit: '${permissionPrefix}_edit',
         del: '${permissionPrefix}_del'

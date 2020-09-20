@@ -15,20 +15,17 @@
  */
 package com.alibaba.csp.sentinel.dashboard.repository.metric;
 
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.MetricEntity;
+import com.alibaba.csp.sentinel.util.StringUtil;
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.MetricEntity;
-import com.alibaba.csp.sentinel.util.StringUtil;
-
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
-import org.springframework.stereotype.Component;
 
 /**
  * Caches metrics data in a period of time in memory.
@@ -52,17 +49,17 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 			return;
 		}
 		allMetrics.computeIfAbsent(entity.getApp(), e -> new ConcurrentHashMap<>(16))
-				.computeIfAbsent(entity.getResource(),
-						e -> new ConcurrentLinkedHashMap.Builder<Long, MetricEntity>()
-								.maximumWeightedCapacity(MAX_METRIC_LIVE_TIME_MS).weigher((key, value) -> {
-									// Metric older than {@link #MAX_METRIC_LIVE_TIME_MS}
-									// will be removed.
-									int weight = (int) (System.currentTimeMillis() - key);
-									// weight must be a number greater than or equal to
-									// one
-									return Math.max(weight, 1);
-								}).build())
-				.put(entity.getTimestamp().getTime(), entity);
+			.computeIfAbsent(entity.getResource(),
+				e -> new ConcurrentLinkedHashMap.Builder<Long, MetricEntity>()
+					.maximumWeightedCapacity(MAX_METRIC_LIVE_TIME_MS).weigher((key, value) -> {
+						// Metric older than {@link #MAX_METRIC_LIVE_TIME_MS}
+						// will be removed.
+						int weight = (int) (System.currentTimeMillis() - key);
+						// weight must be a number greater than or equal to
+						// one
+						return Math.max(weight, 1);
+					}).build())
+			.put(entity.getTimestamp().getTime(), entity);
 	}
 
 	@Override
@@ -75,7 +72,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 
 	@Override
 	public synchronized List<MetricEntity> queryByAppAndResourceBetween(String app, String resource, long startTime,
-			long endTime) {
+																		long endTime) {
 		List<MetricEntity> results = new ArrayList<>();
 		if (StringUtil.isBlank(app)) {
 			return results;
@@ -123,8 +120,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 					oldEntity.addBlockQps(newEntity.getBlockQps());
 					oldEntity.addExceptionQps(newEntity.getExceptionQps());
 					oldEntity.addCount(1);
-				}
-				else {
+				} else {
 					resourceCount.put(resourceMetrics.getKey(), MetricEntity.copyOf(newEntity));
 				}
 			}

@@ -62,7 +62,7 @@ public final class AlbedoSentinelFeign {
 					// FeignClientFactoryBean because FeignClientFactoryBean is a package
 					// level class, we can not use it in our package
 					Object feignClientFactoryBean = AlbedoSentinelFeign.Builder.this.applicationContext
-							.getBean("&" + target.type().getName());
+						.getBean("&" + target.type().getName());
 
 					Class fallback = (Class) getFieldValue(feignClientFactoryBean, "fallback");
 					Class fallbackFactory = (Class) getFieldValue(feignClientFactoryBean, "fallbackFactory");
@@ -77,11 +77,11 @@ public final class AlbedoSentinelFeign {
 					if (void.class != fallback) {
 						fallbackInstance = getFromContext(beanName, "fallback", fallback, target.type());
 						return new AlbedoSentinelInvocationHandler(target, dispatch,
-								new FallbackFactory.Default(fallbackInstance));
+							new FallbackFactory.Default(fallbackInstance));
 					}
 					if (void.class != fallbackFactory) {
 						fallbackFactoryInstance = (FallbackFactory) getFromContext(beanName, "fallbackFactory",
-								fallbackFactory, FallbackFactory.class);
+							fallbackFactory, FallbackFactory.class);
 						return new AlbedoSentinelInvocationHandler(target, dispatch, fallbackFactoryInstance);
 					}
 					return new AlbedoSentinelInvocationHandler(target, dispatch);
@@ -91,13 +91,13 @@ public final class AlbedoSentinelFeign {
 					Object fallbackInstance = feignContext.getInstance(name, fallbackType);
 					if (fallbackInstance == null) {
 						throw new IllegalStateException(String.format(
-								"No %s instance of type %s found for feign client %s", type, fallbackType, name));
+							"No %s instance of type %s found for feign client %s", type, fallbackType, name));
 					}
 
 					if (!targetType.isAssignableFrom(fallbackType)) {
 						throw new IllegalStateException(String.format(
-								"Incompatible %s instance. Fallback/fallbackFactory of type %s is not assignable to %s for feign client %s",
-								type, fallbackType, targetType, name));
+							"Incompatible %s instance. Fallback/fallbackFactory of type %s is not assignable to %s for feign client %s",
+							type, fallbackType, targetType, name));
 					}
 					return fallbackInstance;
 				}
@@ -112,8 +112,7 @@ public final class AlbedoSentinelFeign {
 			field.setAccessible(true);
 			try {
 				return field.get(instance);
-			}
-			catch (IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
 				// ignore
 			}
 			return null;

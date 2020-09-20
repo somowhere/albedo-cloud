@@ -20,8 +20,9 @@ package com.albedo.java.modules.sys.web;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.Result;
-import com.albedo.java.common.core.vo.SelectResult;
+import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.common.log.annotation.LogOperate;
+import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.modules.sys.domain.dto.DictDto;
@@ -98,7 +99,7 @@ public class DictResource extends BaseResource {
 	@ApiOperation(value = "获取字典数据", notes = "codes 不传获取所有的业务字典，多个用','隔开")
 	@GetMapping(value = "/codes")
 	public Result getByCodes(String codes) {
-		Map<String, List<SelectResult>> map = dictService.findCodes(codes);
+		Map<String, List<SelectVo>> map = dictService.findCodes(codes);
 		return Result.buildOkData(map);
 	}
 
@@ -146,6 +147,7 @@ public class DictResource extends BaseResource {
 	 *
 	 * @return 所有类型字典
 	 */
+	@Inner
 	@GetMapping("/all")
 	public Result<String> findAllOrderBySort() {
 		List<Dict> list = dictService.findAllOrderBySort();

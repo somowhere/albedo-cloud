@@ -41,7 +41,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+		throws Exception {
 		if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
 			Method method = ((HandlerMethod) handler).getMethod();
 

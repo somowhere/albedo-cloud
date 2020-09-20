@@ -130,7 +130,7 @@ public class SentinelVersion {
 	@Override
 	public String toString() {
 		return "SentinelVersion{" + "majorVersion=" + majorVersion + ", minorVersion=" + minorVersion + ", fixVersion="
-				+ fixVersion + ", postfix='" + postfix + '\'' + '}';
+			+ fixVersion + ", postfix='" + postfix + '\'' + '}';
 	}
 
 }

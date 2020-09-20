@@ -15,23 +15,21 @@
  */
 package com.alibaba.csp.sentinel.dashboard.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.csp.sentinel.command.vo.NodeVo;
-
-import com.alibaba.csp.sentinel.dashboard.domain.ResourceTreeNode;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
+import com.alibaba.csp.sentinel.dashboard.domain.ResourceTreeNode;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.ResourceVo;
-
+import com.alibaba.csp.sentinel.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Carpenter Lee
@@ -47,17 +45,18 @@ public class ResourceController {
 
 	/**
 	 * Fetch real time statistics info of the machine.
-	 * @param ip ip to fetch
-	 * @param port port of the ip
-	 * @param type one of [root, default, cluster], 'root' means fetching from tree root
-	 * node, 'default' means fetching from tree default node, 'cluster' means fetching
-	 * from cluster node.
+	 *
+	 * @param ip        ip to fetch
+	 * @param port      port of the ip
+	 * @param type      one of [root, default, cluster], 'root' means fetching from tree root
+	 *                  node, 'default' means fetching from tree default node, 'cluster' means fetching
+	 *                  from cluster node.
 	 * @param searchKey key to search
 	 * @return node statistics info.
 	 */
 	@GetMapping("/machineResource.json")
 	public Result<List<ResourceVo>> fetchResourceChainListOfMachine(String ip, Integer port, String type,
-			String searchKey) {
+																	String searchKey) {
 		if (StringUtil.isEmpty(ip) || port == null) {
 			return Result.ofFail(-1, "invalid param, give ip, port");
 		}
@@ -74,8 +73,7 @@ public class ResourceController {
 			ResourceTreeNode treeNode = ResourceTreeNode.fromNodeVoList(nodeVos);
 			treeNode.searchIgnoreCase(searchKey);
 			return Result.ofSuccess(ResourceVo.fromResourceTreeNode(treeNode));
-		}
-		else {
+		} else {
 			// Normal (cluster node).
 			List<NodeVo> nodeVos = httpFetcher.fetchClusterNodeOfMachine(ip, port, true);
 			if (nodeVos == null) {
@@ -83,8 +81,8 @@ public class ResourceController {
 			}
 			if (StringUtil.isNotEmpty(searchKey)) {
 				nodeVos = nodeVos.stream()
-						.filter(node -> node.getResource().toLowerCase().contains(searchKey.toLowerCase()))
-						.collect(Collectors.toList());
+					.filter(node -> node.getResource().toLowerCase().contains(searchKey.toLowerCase()))
+					.collect(Collectors.toList());
 			}
 			return Result.ofSuccess(ResourceVo.fromNodeVoList(nodeVos));
 		}

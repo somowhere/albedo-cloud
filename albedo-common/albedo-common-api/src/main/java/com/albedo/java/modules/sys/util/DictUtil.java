@@ -4,7 +4,7 @@ import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.*;
-import com.albedo.java.common.core.vo.SelectResult;
+import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.modules.sys.feign.RemoteDictService;
 import com.google.common.collect.Lists;
@@ -50,12 +50,12 @@ public class DictUtil {
 		return getDictList().stream().filter(dict -> first.get().getId().equals(dict.getParentId())).collect(Collectors.toList());
 	}
 
-	public static Map<String, List<SelectResult>> getSelectResultListByCodes(String... codes) {
+	public static Map<String, List<SelectVo>> getSelectResultListByCodes(String... codes) {
 		return getSelectResultListByCodes(DictUtil.getDictList(), codes);
 	}
 
-	public static Map<String, List<SelectResult>> getSelectResultListByCodes(List<Dict> dictList, String... codes) {
-		Map<String, List<SelectResult>> map = Maps.newHashMap();
+	public static Map<String, List<SelectVo>> getSelectResultListByCodes(List<Dict> dictList, String... codes) {
+		Map<String, List<SelectVo>> map = Maps.newHashMap();
 		if (ObjectUtil.isEmpty(dictList)) {
 			return map;
 		}
@@ -77,7 +77,7 @@ public class DictUtil {
 			dictCodes = dictList;
 		}
 		dictCodes.forEach(dict -> {
-			List<SelectResult> dictTempList = getDictList(dictList, dict);
+			List<SelectVo> dictTempList = getDictList(dictList, dict);
 			if (CollUtil.isNotEmpty(dictTempList)) {
 				map.put(dict.getCode(), dictTempList);
 			}
@@ -89,12 +89,12 @@ public class DictUtil {
 		return map;
 	}
 
-	private static List<SelectResult> getDictList(List<Dict> dictList, Dict dict) {
-		List<SelectResult> list = Lists.newLinkedList();
+	private static List<SelectVo> getDictList(List<Dict> dictList, Dict dict) {
+		List<SelectVo> list = Lists.newLinkedList();
 		if (CollUtil.isNotEmpty(dictList)) {
 			for (Dict item : dictList) {
 				if (CommonConstants.YES.equals(item.getAvailable()) && StringUtil.isNotEmpty(item.getParentId()) && item.getParentId().equals(dict.getId())) {
-					list.add(new SelectResult(item.getVal(), item.getName(), item.getVersion()));
+					list.add(new SelectVo(item.getVal(), item.getName(), item.getVersion()));
 				}
 			}
 		}

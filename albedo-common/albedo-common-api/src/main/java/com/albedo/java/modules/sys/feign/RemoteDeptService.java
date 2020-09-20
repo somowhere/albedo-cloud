@@ -12,19 +12,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.List;
 
 /**
-* @description
-* @author somewhere
-* @date 2020/6/1 11:10
-*/
+ * @author somewhere
+ * @description
+ * @date 2020/6/1 11:10
+ */
 @FeignClient(contextId = "remoteDeptService", value = ServiceNameConstants.UMPS_SERVICE,
 	fallbackFactory = RemoteDeptServiceFallbackFactory.class)
 public interface RemoteDeptService {
 	/**
 	 * findDescendantIdList
-	 * @author somewhere
+	 *
 	 * @param deptId
-	 * @updateTime 2020/6/1 11:09
 	 * @return List<java.lang.String>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:09
 	 */
 	@GetMapping("/dept/descendant-ids/{deptId}")
 	Result<List<String>> findDescendantIdList(@PathVariable("deptId") String deptId, @RequestHeader(SecurityConstants.FROM) String from);

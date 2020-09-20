@@ -7,6 +7,7 @@ import com.albedo.java.modules.gen.repository.TableColumnRepository;
 import com.albedo.java.modules.gen.service.TableColumnService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -19,8 +20,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class TableColumnServiceImpl extends
-        DataServiceImpl<TableColumnRepository, TableColumn, TableColumnDto, String> implements TableColumnService {
+	DataServiceImpl<TableColumnRepository, TableColumn, TableColumnDto, String> implements TableColumnService {
 
+	@Transactional(readOnly = true)
 	List<TableColumn> findAllByGenTableIdOrderBySort(String id) {
 		return list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, id)
 			.orderByAsc(TableColumn.F_SORT));
@@ -28,6 +30,7 @@ public class TableColumnServiceImpl extends
 
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteByTableId(String id) {
 		List<TableColumn> tableColumnList = findAllByGenTableIdOrderBySort(id);
 		Assert.notNull(tableColumnList, "id " + id + " tableColumn 不能为空");

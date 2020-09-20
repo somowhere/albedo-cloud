@@ -1,6 +1,11 @@
 server:
   port: 5003
 
+logging:
+  level:
+    ROOT: INFO
+    com.albedo.java: DEBUG
+
 spring:
   application:
     name: @artifactId@

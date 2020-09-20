@@ -15,10 +15,10 @@
  */
 package com.alibaba.csp.sentinel.dashboard.domain.cluster.request;
 
-import java.util.Set;
-
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerFlowConfig;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportConfig;
+
+import java.util.Set;
 
 /**
  * @author Eric Zhao
@@ -110,8 +110,8 @@ public class ClusterServerModifyRequest implements ClusterModifyRequest {
 	@Override
 	public String toString() {
 		return "ClusterServerModifyRequest{" + "app='" + app + '\'' + ", ip='" + ip + '\'' + ", port=" + port
-				+ ", mode=" + mode + ", flowConfig=" + flowConfig + ", transportConfig=" + transportConfig
-				+ ", namespaceSet=" + namespaceSet + '}';
+			+ ", mode=" + mode + ", flowConfig=" + flowConfig + ", transportConfig=" + transportConfig
+			+ ", namespaceSet=" + namespaceSet + '}';
 	}
 
 }

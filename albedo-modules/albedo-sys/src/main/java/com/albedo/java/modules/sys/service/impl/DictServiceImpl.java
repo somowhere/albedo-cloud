@@ -26,7 +26,7 @@ import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.core.vo.SelectResult;
+import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.common.core.vo.TreeNode;
 import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.persistence.domain.TreeEntity;
@@ -68,8 +68,9 @@ import java.util.stream.Collectors;
 @Service
 @CacheConfig(cacheNames = CacheNameConstants.DICT_DETAILS)
 @AllArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class DictServiceImpl extends
-        TreeServiceImpl<DictRepository, Dict, DictDto> implements DictService, BaseInterface {
+	TreeServiceImpl<DictRepository, Dict, DictDto> implements DictService, BaseInterface {
 
 	private final CacheManager cacheManager;
 
@@ -107,7 +108,7 @@ public class DictServiceImpl extends
 	@Override
 	@Cacheable(key = "'findCodes:' + #p0")
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	public Map<String, List<SelectResult>> findCodes(String codes) {
+	public Map<String, List<SelectVo>> findCodes(String codes) {
 		List<Dict> dictList = findAllOrderBySort();
 		return codes != null ? DictUtil.getSelectResultListByCodes(dictList, codes.split(StringUtil.SPLIT_DEFAULT)) :
 			DictUtil.getSelectResultListByCodes(dictList);

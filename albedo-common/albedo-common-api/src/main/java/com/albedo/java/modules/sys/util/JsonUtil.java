@@ -5,7 +5,7 @@
 //import com.albedo.java.common.core.annotation.JsonField;
 //import com.albedo.java.common.core.util.*;
 //import com.albedo.java.common.core.vo.PageModel;
-//import com.albedo.java.common.core.vo.SelectResult;
+//import com.albedo.java.common.core.vo.SelectVo;
 //import com.alibaba.fastjson.JSON;
 //import com.alibaba.fastjson.JSONArray;
 //import com.alibaba.fastjson.JSONException;
@@ -44,7 +44,7 @@
 //    /*** 指定当前从数据字典检索的kindIds */
 //    private static Map<String, String> kindIdMap = Maps.newHashMap();
 //    private static String dateFormart = DateUtil.TIME_FORMAT;
-//    private static Map<String,List<SelectResult>> codeItemData = Maps.newHashMap();
+//    private static Map<String,List<SelectVo>> codeItemData = Maps.newHashMap();
 //    private static List<String> freeFilterList = Lists.newArrayList("class", "new", "persistentState", "pkName", "pk",
 //        "version");
 //
@@ -392,9 +392,9 @@
 //
 //    }
 //
-//    private Object getDictVal(List<SelectResult> selectResults,Object value){
+//    private Object getDictVal(List<SelectVo> selectResults,Object value){
 //        for (int i=0,size=selectResults.size();i<size;i++){
-//            SelectResult selectResult = selectResults.get(i);
+//            SelectVo selectResult = selectResults.get(i);
 //            if( selectResult.getValue().equals(value)){
 //                return selectResult.getLabel();
 //            }
@@ -566,8 +566,8 @@
 //    }
 //
 //
-//    private List<SelectResult> getCodeItemData(String kindId, String key) {
-//        List<SelectResult> jobj = codeItemData.get(kindId);
+//    private List<SelectVo> getCodeItemData(String kindId, String key) {
+//        List<SelectVo> jobj = codeItemData.get(kindId);
 //        if (jobj == null) {
 //            addDictItem(new HashMap<String,String>(){{
 //                put(kindId, key);
@@ -578,7 +578,7 @@
 //    }
 //
 //    private Object getDictVal(Object val, String kindId, String key) {
-//        List<SelectResult> selectResults = getCodeItemData(kindId, key);
+//        List<SelectVo> selectResults = getCodeItemData(kindId, key);
 //        if (selectResults != null) {
 //            String valStr = val + "";
 //            if (valStr.contains(StringUtil.SPLIT_DEFAULT)) {

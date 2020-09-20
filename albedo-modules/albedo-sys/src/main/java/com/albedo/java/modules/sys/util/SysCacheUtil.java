@@ -5,8 +5,6 @@ import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.domain.User;
-import com.albedo.java.modules.sys.feign.RemoteRoleService;
-import com.albedo.java.modules.sys.feign.RemoteUserService;
 import com.albedo.java.modules.sys.service.RoleService;
 import com.albedo.java.modules.sys.service.UserService;
 import lombok.extern.slf4j.Slf4j;

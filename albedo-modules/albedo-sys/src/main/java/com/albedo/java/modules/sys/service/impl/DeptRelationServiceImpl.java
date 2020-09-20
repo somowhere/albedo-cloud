@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationRepository, DeptRelation> implements DeptRelationService {
 	private final DeptRelationRepository deptRelationRepository;
 

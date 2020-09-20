@@ -15,12 +15,12 @@
  */
 package com.alibaba.csp.sentinel.dashboard.config;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.lang.NonNull;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * <p>
@@ -110,8 +110,7 @@ public class DashboardConfig {
 		int val = NumberUtils.toInt(getConfig(name));
 		if (val == 0) {
 			val = defaultVal;
-		}
-		else if (val < minVal) {
+		} else if (val < minVal) {
 			val = minVal;
 		}
 		cacheMap.put(name, val);

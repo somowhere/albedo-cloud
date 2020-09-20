@@ -61,21 +61,27 @@ public class AlbedoSentinelInvocationHandler implements InvocationHandler {
 		this.dispatch = checkNotNull(dispatch, "dispatch");
 	}
 
+	static Map<Method, Method> toFallbackMethod(Map<Method, InvocationHandlerFactory.MethodHandler> dispatch) {
+		Map<Method, Method> result = new LinkedHashMap<>();
+		for (Method method : dispatch.keySet()) {
+			method.setAccessible(true);
+			result.put(method, method);
+		}
+		return result;
+	}
+
 	@Override
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		if (EQUALS.equals(method.getName())) {
 			try {
 				Object otherHandler = args.length > 0 && args[0] != null ? Proxy.getInvocationHandler(args[0]) : null;
 				return equals(otherHandler);
-			}
-			catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				return false;
 			}
-		}
-		else if (HASH_CODE.equals(method.getName())) {
+		} else if (HASH_CODE.equals(method.getName())) {
 			return hashCode();
-		}
-		else if (TO_STRING.equals(method.getName())) {
+		} else if (TO_STRING.equals(method.getName())) {
 			return toString();
 		}
 
@@ -85,21 +91,19 @@ public class AlbedoSentinelInvocationHandler implements InvocationHandler {
 		if (target instanceof Target.HardCodedTarget) {
 			Target.HardCodedTarget hardCodedTarget = (Target.HardCodedTarget) target;
 			MethodMetadata methodMetadata = SentinelContractHolder.METADATA_MAP
-					.get(hardCodedTarget.type().getName() + Feign.configKey(hardCodedTarget.type(), method));
+				.get(hardCodedTarget.type().getName() + Feign.configKey(hardCodedTarget.type(), method));
 			// resource default is HttpMethod:protocol://url
 			if (methodMetadata == null) {
 				result = methodHandler.invoke(args);
-			}
-			else {
+			} else {
 				String resourceName = methodMetadata.template().method().toUpperCase() + ":" + hardCodedTarget.url()
-						+ methodMetadata.template().path();
+					+ methodMetadata.template().path();
 				Entry entry = null;
 				try {
 					ContextUtil.enter(resourceName);
 					entry = SphU.entry(resourceName, EntryType.OUT, 1, args);
 					result = methodHandler.invoke(args);
-				}
-				catch (Throwable ex) {
+				} catch (Throwable ex) {
 					// fallback handle
 					if (!BlockException.isBlockException(ex)) {
 						Tracer.trace(ex);
@@ -107,38 +111,32 @@ public class AlbedoSentinelInvocationHandler implements InvocationHandler {
 					if (fallbackFactory != null) {
 						try {
 							Object fallbackResult = fallbackMethodMap.get(method).invoke(fallbackFactory.create(ex),
-									args);
+								args);
 							return fallbackResult;
-						}
-						catch (IllegalAccessException e) {
+						} catch (IllegalAccessException e) {
 							// shouldn't happen as method is public due to being an
 							// interface
 							throw new AssertionError(e);
-						}
-						catch (InvocationTargetException e) {
+						} catch (InvocationTargetException e) {
 							throw new AssertionError(e.getCause());
 						}
-					}
-					else {
+					} else {
 						// 若是R类型 执行自动降级返回R
 						if (Result.class == method.getReturnType()) {
 							log.error("feign 服务间调用异常", ex);
 							return Result.buildFail(ex.getLocalizedMessage());
-						}
-						else {
+						} else {
 							throw ex;
 						}
 					}
-				}
-				finally {
+				} finally {
 					if (entry != null) {
 						entry.exit(1, args);
 					}
 					ContextUtil.exit();
 				}
 			}
-		}
-		else {
+		} else {
 			// other target type using default strategy
 			result = methodHandler.invoke(args);
 		}
@@ -163,15 +161,6 @@ public class AlbedoSentinelInvocationHandler implements InvocationHandler {
 	@Override
 	public String toString() {
 		return target.toString();
-	}
-
-	static Map<Method, Method> toFallbackMethod(Map<Method, InvocationHandlerFactory.MethodHandler> dispatch) {
-		Map<Method, Method> result = new LinkedHashMap<>();
-		for (Method method : dispatch.keySet()) {
-			method.setAccessible(true);
-			result.put(method, method);
-		}
-		return result;
 	}
 
 }

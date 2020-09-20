@@ -18,7 +18,6 @@ package com.albedo.java.common.core.config;
 
 import cn.hutool.core.date.DatePattern;
 import com.albedo.java.common.core.jackson.JavaTimeModule;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -42,7 +41,7 @@ import java.util.TimeZone;
  *
  * @author L.cm
  * @author somewhere
- * @author lishangbu
+ * @author somewhere
  * @date 2018/10/22
  */
 @Configuration

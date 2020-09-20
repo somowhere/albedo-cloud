@@ -78,20 +78,23 @@ public interface RoleService extends DataService<Role, RoleDto, String> {
 	 */
 	Integer findLevelByUserId(String userId);
 
-/**
- * findListByDeptId
- * @author somewhere
- * @param userId
- * @updateTime 2020/6/1 11:20
- * @return java.util.List<com.albedo.java.modules.sys.domain.Role>
- */
+	/**
+	 * findListByDeptId
+	 *
+	 * @param userId
+	 * @return java.util.List<com.albedo.java.modules.sys.domain.Role>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:20
+	 */
 	List<Role> findListByDeptId(String userId);
+
 	/**
 	 * findListByMenuId
-	 * @author somewhere
+	 *
 	 * @param userId
-	 * @updateTime 2020/6/1 11:20
 	 * @return java.util.List<com.albedo.java.modules.sys.domain.Role>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:20
 	 */
 	List<Role> findListByMenuId(String userId);
 }

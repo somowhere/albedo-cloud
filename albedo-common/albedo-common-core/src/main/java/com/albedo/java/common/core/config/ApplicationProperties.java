@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
  * <p>
  * Properties are configured in the application.yml file.
  * </p>
+ *
  * @author somewhere
  */
 @Configuration
@@ -27,6 +28,7 @@ public class ApplicationProperties {
 	private StaticFileDirectory staticFileDirectory;
 	private String logPath = "logs/";
 	private Rsa rsa = new Rsa();
+
 	@Data
 	public static class StaticFileDirectory {
 

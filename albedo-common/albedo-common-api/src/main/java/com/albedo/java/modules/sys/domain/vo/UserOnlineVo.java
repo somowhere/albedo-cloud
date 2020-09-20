@@ -1,7 +1,6 @@
 package com.albedo.java.modules.sys.domain.vo;
 
 import com.albedo.java.common.core.vo.GeneralDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
@@ -72,9 +71,6 @@ public class UserOnlineVo extends GeneralDto {
 	private String clientId;
 
 	private String grantType;
-
-
-
 
 
 }

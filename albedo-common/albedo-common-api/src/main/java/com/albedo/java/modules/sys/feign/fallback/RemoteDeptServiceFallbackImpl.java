@@ -22,7 +22,6 @@ import com.albedo.java.common.core.exception.FeignException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.feign.RemoteDeptService;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -41,11 +40,11 @@ public class RemoteDeptServiceFallbackImpl implements RemoteDeptService {
 
 	/**
 	 * @param deptId
-	 * @param from 内外标志
+	 * @param from   内外标志
 	 * @return R
 	 */
 	@Override
-	public Result<List<String>> findDescendantIdList(String deptId, String from){
+	public Result<List<String>> findDescendantIdList(String deptId, String from) {
 		log.error("feign 查询descendantId信息失败:{}", deptId, cause);
 		throw new FeignException(cause);
 	}

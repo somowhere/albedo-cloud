@@ -48,8 +48,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 			DataBufferFactory bufferFactory = response.bufferFactory();
 			try {
 				return bufferFactory.wrap(objectMapper.writeValueAsBytes(Result.buildFail(ex.getMessage())));
-			}
-			catch (JsonProcessingException e) {
+			} catch (JsonProcessingException e) {
 				log.error("Error writing response", ex);
 				return bufferFactory.wrap(new byte[0]);
 			}

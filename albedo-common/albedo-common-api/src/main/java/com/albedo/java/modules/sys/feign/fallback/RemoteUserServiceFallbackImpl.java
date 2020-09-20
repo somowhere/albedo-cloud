@@ -23,7 +23,6 @@ import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.feign.RemoteUserService;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +39,9 @@ public class RemoteUserServiceFallbackImpl implements RemoteUserService {
 
 	/**
 	 * 通过用户名查询用户、角色信息
+	 *
 	 * @param username 用户名
-	 * @param from 内外标志
+	 * @param from     内外标志
 	 * @return R
 	 */
 	@Override

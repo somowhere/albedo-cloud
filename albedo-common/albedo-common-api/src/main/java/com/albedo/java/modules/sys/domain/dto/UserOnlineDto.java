@@ -1,17 +1,8 @@
 package com.albedo.java.modules.sys.domain.dto;
 
-import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.constant.DictNameConstants;
-import com.albedo.java.common.core.vo.DataDto;
 import com.albedo.java.common.core.vo.GeneralDto;
-import com.albedo.java.common.persistence.domain.BaseEntity;
-import com.albedo.java.modules.sys.domain.enums.OnlineStatus;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 

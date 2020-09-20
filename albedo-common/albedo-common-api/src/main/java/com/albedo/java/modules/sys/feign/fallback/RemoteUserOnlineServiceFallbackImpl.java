@@ -18,17 +18,12 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.exception.FeignException;
-import com.albedo.java.common.core.exception.RuntimeMsgException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.TokenVo;
-import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.feign.RemoteUserOnlineService;
-import com.albedo.java.modules.sys.feign.RemoteUserService;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

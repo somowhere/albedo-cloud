@@ -18,10 +18,8 @@ package com.albedo.java.common.log.util;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.URLUtil;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.albedo.java.common.core.util.AddressUtils;
 import com.albedo.java.common.core.util.WebUtil;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import lombok.experimental.UtilityClass;

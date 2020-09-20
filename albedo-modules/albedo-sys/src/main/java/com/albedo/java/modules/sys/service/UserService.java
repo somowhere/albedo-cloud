@@ -181,18 +181,21 @@ public interface UserService extends DataService<User, UserDto, String> {
 
 	/**
 	 * findListByDeptId
-	 * @author somewhere
+	 *
 	 * @param deptId
-	 * @updateTime 2020/6/1 11:21
 	 * @return java.util.List<com.albedo.java.modules.sys.domain.User>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:21
 	 */
 	List<User> findListByDeptId(String deptId);
+
 	/**
 	 * findListByMenuId
-	 * @author somewhere
+	 *
 	 * @param menuId
-	 * @updateTime 2020/6/1 11:21
 	 * @return java.util.List<com.albedo.java.modules.sys.domain.User>
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:21
 	 */
 	List<User> findListByMenuId(String menuId);
 }

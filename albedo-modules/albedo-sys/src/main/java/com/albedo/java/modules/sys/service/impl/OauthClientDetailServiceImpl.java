@@ -26,6 +26,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Service;
  * @since 2019/2/1
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class OauthClientDetailServiceImpl extends ServiceImpl<OauthClientDetailRepository, OauthClientDetail> implements OauthClientDetailService {
 
 	/**

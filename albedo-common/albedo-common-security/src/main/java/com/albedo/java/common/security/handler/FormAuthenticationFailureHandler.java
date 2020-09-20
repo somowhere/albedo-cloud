@@ -40,17 +40,18 @@ public class FormAuthenticationFailureHandler implements AuthenticationFailureHa
 
 	/**
 	 * Called when an authentication attempt fails.
-	 * @param request the request during which the authentication attempt occurred.
-	 * @param response the response.
+	 *
+	 * @param request   the request during which the authentication attempt occurred.
+	 * @param response  the response.
 	 * @param exception the exception which was thrown to reject the authentication
 	 */
 	@Override
 	@SneakyThrows
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) {
+										AuthenticationException exception) {
 		log.debug("表单登录失败:{}", exception.getLocalizedMessage());
 		String url = HttpUtil.encodeParams(String.format("/token/login?error=%s", exception.getMessage()),
-				CharsetUtil.CHARSET_UTF_8);
+			CharsetUtil.CHARSET_UTF_8);
 		WebUtil.getResponse().sendRedirect(url);
 	}
 

@@ -22,6 +22,7 @@ import com.albedo.java.modules.sys.repository.PersistentTokenRepository;
 import com.albedo.java.modules.sys.service.PersistentTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -33,8 +34,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class PersistentTokenServiceImpl extends
-        BaseServiceImpl<PersistentTokenRepository, PersistentToken> implements PersistentTokenService {
+	BaseServiceImpl<PersistentTokenRepository, PersistentToken> implements PersistentTokenService {
 
 
 }

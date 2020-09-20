@@ -22,7 +22,6 @@ import java.lang.reflect.Type;
  * @author lj
  * @version 2014-05-16
  */
-@Transactional(rollbackFor = Exception.class)
 @Data
 public class DataServiceImpl<Repository extends BaseRepository<T>,
 	T extends BaseDataEntity, D extends DataDto, PK extends Serializable>
@@ -51,6 +50,7 @@ public class DataServiceImpl<Repository extends BaseRepository<T>,
 
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void saveOrUpdate(D entityDto) {
 		T entity = null;
 		try {

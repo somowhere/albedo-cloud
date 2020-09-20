@@ -58,8 +58,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @CacheConfig(cacheNames = CacheNameConstants.ROLE_DETAILS)
+@Transactional(rollbackFor = Exception.class)
 public class RoleServiceImpl extends
-        DataServiceImpl<RoleRepository, Role, RoleDto, String> implements RoleService {
+	DataServiceImpl<RoleRepository, Role, RoleDto, String> implements RoleService {
 	private UserRepository userRepository;
 	private RoleMenuService roleMenuService;
 	private RoleDeptService roleDeptService;
@@ -99,10 +100,12 @@ public class RoleServiceImpl extends
 	public List<Role> findListByDeptId(String userId) {
 		return repository.findListByDeptId(userId);
 	}
+
 	@Override
 	public List<Role> findListByMenuId(String userId) {
 		return repository.findListByMenuId(userId);
 	}
+
 	/**
 	 * 通过角色ID，删除角色,并清空角色菜单缓存
 	 *

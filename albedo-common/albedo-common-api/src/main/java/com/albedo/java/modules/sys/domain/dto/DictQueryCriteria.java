@@ -19,7 +19,6 @@ import com.albedo.java.common.core.annotation.Query;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 

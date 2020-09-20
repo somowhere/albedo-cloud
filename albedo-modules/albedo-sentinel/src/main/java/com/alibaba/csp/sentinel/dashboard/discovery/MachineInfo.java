@@ -15,10 +15,10 @@
  */
 package com.alibaba.csp.sentinel.dashboard.discovery;
 
-import java.util.Objects;
-
 import com.alibaba.csp.sentinel.dashboard.config.DashboardConfig;
 import com.alibaba.csp.sentinel.util.StringUtil;
+
+import java.util.Objects;
 
 public class MachineInfo implements Comparable<MachineInfo> {
 
@@ -117,6 +117,7 @@ public class MachineInfo implements Comparable<MachineInfo> {
 
 	/**
 	 * whether dead should be removed
+	 *
 	 * @return
 	 */
 	public boolean isDead() {
@@ -152,10 +153,10 @@ public class MachineInfo implements Comparable<MachineInfo> {
 	@Override
 	public String toString() {
 		return new StringBuilder("MachineInfo {").append("app='").append(app).append('\'').append(",appType='")
-				.append(appType).append('\'').append(", hostname='").append(hostname).append('\'').append(", ip='")
-				.append(ip).append('\'').append(", port=").append(port).append(", heartbeatVersion=")
-				.append(heartbeatVersion).append(", lastHeartbeat=").append(lastHeartbeat).append(", version='")
-				.append(version).append('\'').append(", healthy=").append(isHealthy()).append('}').toString();
+			.append(appType).append('\'').append(", hostname='").append(hostname).append('\'').append(", ip='")
+			.append(ip).append('\'').append(", port=").append(port).append(", heartbeatVersion=")
+			.append(heartbeatVersion).append(", lastHeartbeat=").append(lastHeartbeat).append(", version='")
+			.append(version).append('\'').append(", healthy=").append(isHealthy()).append('}').toString();
 	}
 
 	@Override
@@ -177,6 +178,7 @@ public class MachineInfo implements Comparable<MachineInfo> {
 
 	/**
 	 * Information for log
+	 *
 	 * @return
 	 */
 	public String toLogString() {

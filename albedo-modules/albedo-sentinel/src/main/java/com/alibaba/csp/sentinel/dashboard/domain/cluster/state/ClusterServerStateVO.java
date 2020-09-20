@@ -15,12 +15,12 @@
  */
 package com.alibaba.csp.sentinel.dashboard.domain.cluster.state;
 
-import java.util.List;
-import java.util.Set;
-
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.ConnectionGroupVO;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerFlowConfig;
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportConfig;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Eric Zhao
@@ -119,8 +119,8 @@ public class ClusterServerStateVO {
 	@Override
 	public String toString() {
 		return "ClusterServerStateVO{" + "appName='" + appName + '\'' + ", transport=" + transport + ", flow=" + flow
-				+ ", namespaceSet=" + namespaceSet + ", port=" + port + ", connection=" + connection
-				+ ", requestLimitData=" + requestLimitData + ", embedded=" + embedded + '}';
+			+ ", namespaceSet=" + namespaceSet + ", port=" + port + ", connection=" + connection
+			+ ", requestLimitData=" + requestLimitData + ", embedded=" + embedded + '}';
 	}
 
 }

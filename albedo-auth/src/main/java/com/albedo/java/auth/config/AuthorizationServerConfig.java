@@ -17,7 +17,6 @@
 package com.albedo.java.auth.config;
 
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.security.component.UserAuthenticationExtendConverter;
 import com.albedo.java.common.security.component.WebResponseExceptionExtendTranslator;
 import com.albedo.java.common.security.service.ClientDetailsService;
 import com.albedo.java.common.security.service.UserDetail;
@@ -36,7 +35,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;

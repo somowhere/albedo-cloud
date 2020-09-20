@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @CacheConfig(cacheNames = CacheNameConstants.USER_DETAILS)
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends DataServiceImpl<UserRepository, User, UserDto, String> implements UserService {
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	private final MenuService menuService;
@@ -83,10 +84,11 @@ public class UserServiceImpl extends DataServiceImpl<UserRepository, User, UserD
 
 	/**
 	 * checkPasswordLength 检查密码长度
-	 * @author somewhere
+	 *
 	 * @param password
-	 * @updateTime 2020/6/1 11:12
 	 * @return boolean
+	 * @author somewhere
+	 * @updateTime 2020/6/1 11:12
 	 */
 	private static boolean checkPasswordLength(String password) {
 		return !StringUtil.isEmpty(password) &&
@@ -289,7 +291,7 @@ public class UserServiceImpl extends DataServiceImpl<UserRepository, User, UserD
 	public void lockOrUnLock(Set<String> idList) {
 		Assert.isTrue(CollUtil.isNotEmpty(idList), "idList不能为空");
 		for (String id : idList) {
-			Assert.isTrue(SecurityUtil.getUser()!=null, "无法获取当前登录用户");
+			Assert.isTrue(SecurityUtil.getUser() != null, "无法获取当前登录用户");
 			Assert.isTrue(!StringUtil.equals(SecurityUtil.getUser().getId(), id), "不能操作当前登录用户");
 			User user = repository.selectById(id);
 			Assert.isTrue(user != null, "无法找到ID为" + id + "的数据");

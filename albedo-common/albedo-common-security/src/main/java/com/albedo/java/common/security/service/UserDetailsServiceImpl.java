@@ -95,22 +95,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserVo userVo = info.getUser();
 		DataScope dataScope = new DataScope();
 		dataScope.setUserId(userVo.getId());
-		if(CollUtil.isNotEmpty(userVo.getRoleList())){
-			for(Role role: userVo.getRoleList()){
-				if(SecurityConstants.ROLE_DATA_SCOPE_ALL.equals(role.getDataScope())){
+		if (CollUtil.isNotEmpty(userVo.getRoleList())) {
+			for (Role role : userVo.getRoleList()) {
+				if (SecurityConstants.ROLE_DATA_SCOPE_ALL.equals(role.getDataScope())) {
 					dataScope.setAll(true);
 					break;
-				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())){
+				} else if (SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())) {
 					dataScope.getDeptIds().addAll(remoteDeptService.findDescendantIdList(userVo.getDeptId(), SecurityConstants.FROM_IN).getData());
-				}else if(SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())){
+				} else if (SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())) {
 					dataScope.getDeptIds().add(userVo.getDeptId());
-				}else if(SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())){
+				} else if (SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())) {
 					dataScope.setSelf(true);
-				}else if(SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())){
+				} else if (SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())) {
 					dataScope.getDeptIds().addAll(remoteRoleService.findDeptIdsByRoleId(role.getId(), SecurityConstants.FROM_IN).getData());
 				}
 			}
-		}else{
+		} else {
 			throw new AccessDeniedException("没有角色权限");
 		}
 		// 构造security用户
