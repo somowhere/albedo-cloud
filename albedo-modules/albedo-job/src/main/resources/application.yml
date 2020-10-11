@@ -19,6 +19,8 @@ mybatis:
 
 # spring
 spring:
+  application:
+    name: @artifactId@
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:albedo-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:albedo-job}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
