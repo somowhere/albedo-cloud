@@ -21,14 +21,14 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.0.1-SNAPSHOT</version>
+	<version>3.0.2-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.0.1-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+		<project.release.version>3.0.2-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.3.5.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +37,7 @@
 		<spring-boot-admin.version>2.3.0</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.4.2</hutool.version>
+		<hutool.version>5.4.7</hutool.version>
 		<mybatis-plus.version>3.4.0</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
 		<knife4j.version>2.0.4</knife4j.version>
@@ -51,7 +51,7 @@
 		<guava.version>20.0</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
-		<fastjson.version>1.2.73</fastjson.version>
+		<fastjson.version>1.2.74</fastjson.version>
 		<xxl-job.version>2.2.0</xxl-job.version>
 		<swagger.version>1.5.20</swagger.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
