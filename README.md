@@ -1,7 +1,7 @@
  <p align="center">
    <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR8-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.2.RELEASE-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.3.3.RELEASE-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.3.RELEASE-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.3.5.RELEASE-blue.svg" alt="Downloads">
  </p>  
  
 **albedo-cloud Microservice Architecture**
