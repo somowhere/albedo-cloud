@@ -26,9 +26,11 @@ import com.albedo.java.modules.gen.service.TableColumnService;
 import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.User;
 import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.feign.RemoteMenuService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -153,7 +155,8 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 	@Override
 	@Transactional(readOnly = true)
 	public IPage getSchemeVoPage(PageModel pm, SchemeQueryCriteria schemeQueryCriteria) {
-		Wrapper wrapper = QueryWrapperUtil.getWrapper(pm, schemeQueryCriteria);
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, schemeQueryCriteria);
+		wrapper.eq("a.del_flag", Scheme.FLAG_NORMAL);
 		pm.addOrder(OrderItem.desc("a." + Scheme.F_SQL_CREATEDDATE));
 		IPage<List<SchemeVo>> userVosPage = repository.getSchemeVoPage(pm, wrapper);
 		return userVosPage;
