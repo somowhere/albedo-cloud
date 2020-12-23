@@ -22,16 +22,14 @@ public class JobLosedMonitorHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobLosedMonitorHelper.class);
 
 	private static JobLosedMonitorHelper instance = new JobLosedMonitorHelper();
+	private Thread monitorThread;
+
+	// ---------------------- monitor ----------------------
+	private volatile boolean toStop = false;
 
 	public static JobLosedMonitorHelper getInstance() {
 		return instance;
 	}
-
-	// ---------------------- monitor ----------------------
-
-	private Thread monitorThread;
-
-	private volatile boolean toStop = false;
 
 	public void start() {
 		monitorThread = new Thread(new Runnable() {
@@ -45,7 +43,7 @@ public class JobLosedMonitorHelper {
 						// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
 						Date losedTime = DateUtil.addMinutes(new Date(), -10);
 						List<Long> losedJobIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
-								.findLostJobIds(losedTime);
+							.findLostJobIds(losedTime);
 
 						if (losedJobIds != null && losedJobIds.size() > 0) {
 							for (Long logId : losedJobIds) {
@@ -61,8 +59,7 @@ public class JobLosedMonitorHelper {
 							}
 
 						}
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(">>>>>>>>>>> xxl-job, job fail monitor thread error:{}", e);
 						}
@@ -70,8 +67,7 @@ public class JobLosedMonitorHelper {
 
 					try {
 						TimeUnit.SECONDS.sleep(60);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(e.getMessage(), e);
 						}
@@ -94,8 +90,7 @@ public class JobLosedMonitorHelper {
 		monitorThread.interrupt();
 		try {
 			monitorThread.join();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}

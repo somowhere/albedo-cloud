@@ -19,10 +19,8 @@ package com.albedo.java.common.persistence.datascope;
 import com.albedo.java.common.persistence.domain.BaseEntity;
 import com.google.common.collect.Sets;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Set;
 
 /**

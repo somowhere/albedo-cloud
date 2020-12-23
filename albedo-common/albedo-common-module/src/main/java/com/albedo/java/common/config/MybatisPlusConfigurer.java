@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ package com.albedo.java.common.config;
 
 import com.albedo.java.common.persistence.datascope.DataScopeInterceptor;
 import com.albedo.java.common.persistence.handler.EntityMetaObjectHandler;
-import com.albedo.java.common.persistence.injector.EntityMetaSqlInjector;
-import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
 import org.mybatis.spring.annotation.MapperScan;
@@ -31,42 +32,12 @@ import org.springframework.data.domain.AuditorAware;
 import java.util.Properties;
 
 /**
- * @author somowhere
+ * @author somewhere
  * @date 2019/06/05
  */
 @Configuration
 @MapperScan("com.albedo.java.modules.*.repository")
 public class MybatisPlusConfigurer {
-	/**
-	 * 分页插件
-	 *
-	 * @return PaginationInterceptor
-	 */
-	@Bean
-	public PaginationInterceptor paginationInterceptor() {
-		return new PaginationInterceptor();
-	}
-
-	/**
-	 * 数据权限插件
-	 *
-	 * @return DataScopeInterceptor
-	 */
-	@Bean
-	public DataScopeInterceptor dataScopeInterceptor() {
-		return new DataScopeInterceptor();
-	}
-
-	/**
-	 * ql注入
-	 *
-	 * @return
-	 */
-	@Bean
-	public EntityMetaSqlInjector entityMetaSqlInjector() {
-		return new EntityMetaSqlInjector();
-	}
-
 	/**
 	 * 新增，修改 公共字段填充
 	 *
@@ -77,15 +48,18 @@ public class MybatisPlusConfigurer {
 		return new EntityMetaObjectHandler(auditorAware);
 	}
 
-
 	/**
-	 * 乐观锁拦截器 version
+	 * 插件
 	 *
 	 * @return
 	 */
 	@Bean
-	public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-		return new OptimisticLockerInterceptor();
+	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+		interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+		interceptor.addInnerInterceptor(new DataScopeInterceptor());
+		return interceptor;
 	}
 
 

@@ -61,8 +61,7 @@ public class NacosUserDetailsServiceImpl implements UserDetailsService {
 				map.put(user.getUsername(), user);
 			}
 			userMap = map;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Loggers.AUTH.warn("[LOAD-USERS] load failed", e);
 		}
 	}

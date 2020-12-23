@@ -38,8 +38,7 @@ public class I18nUtil {
 			Resource resource = new ClassPathResource(i18nFile);
 			EncodedResource encodedResource = new EncodedResource(resource, "UTF-8");
 			prop = PropertiesLoaderUtils.loadProperties(encodedResource);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return prop;
@@ -47,6 +46,7 @@ public class I18nUtil {
 
 	/**
 	 * get val of i18n key
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -56,6 +56,7 @@ public class I18nUtil {
 
 	/**
 	 * get mult val of i18n mult key, as json
+	 *
 	 * @param keys
 	 * @return
 	 */
@@ -67,8 +68,7 @@ public class I18nUtil {
 			for (String key : keys) {
 				map.put(key, prop.getProperty(key));
 			}
-		}
-		else {
+		} else {
 			for (String key : prop.stringPropertyNames()) {
 				map.put(key, prop.getProperty(key));
 			}

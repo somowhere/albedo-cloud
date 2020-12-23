@@ -134,7 +134,7 @@ public class QueryWrapperUtil {
 				break;
 			case between:
 				List<Object> between = new ArrayList<>((List<Object>) val);
-				Assert.isTrue(between.size()==2, "between must have two value "+between);
+				Assert.isTrue(between.size() == 2, "between must have two value " + between);
 				entityWrapper.between(attributeName, between.get(0), between.get(1));
 				break;
 			default:

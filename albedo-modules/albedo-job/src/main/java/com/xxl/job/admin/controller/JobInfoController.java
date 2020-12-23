@@ -42,9 +42,39 @@ public class JobInfoController {
 	@Resource
 	private XxlJobService xxlJobService;
 
+	public static List<XxlJobGroup> filterJobGroupByRole(HttpServletRequest request,
+														 List<XxlJobGroup> jobGroupList_all) {
+		List<XxlJobGroup> jobGroupList = new ArrayList<>();
+		if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
+			XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
+			if (loginUser.getRole() == 1) {
+				jobGroupList = jobGroupList_all;
+			} else {
+				List<String> groupIdStrs = new ArrayList<>();
+				if (loginUser.getPermission() != null && loginUser.getPermission().trim().length() > 0) {
+					groupIdStrs = Arrays.asList(loginUser.getPermission().trim().split(","));
+				}
+				for (XxlJobGroup groupItem : jobGroupList_all) {
+					if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
+						jobGroupList.add(groupItem);
+					}
+				}
+			}
+		}
+		return jobGroupList;
+	}
+
+	public static void validPermission(HttpServletRequest request, int jobGroup) {
+		XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
+		if (!loginUser.validPermission(jobGroup)) {
+			throw new RuntimeException(
+				I18nUtil.getString("system_permission_limit") + "[username=" + loginUser.getUsername() + "]");
+		}
+	}
+
 	@RequestMapping
 	public String index(HttpServletRequest request, Model model,
-			@RequestParam(required = false, defaultValue = "-1") int jobGroup) {
+						@RequestParam(required = false, defaultValue = "-1") int jobGroup) {
 
 		// 枚举-字典
 		model.addAttribute("ExecutorRouteStrategyEnum", ExecutorRouteStrategyEnum.values()); // 路由策略-列表
@@ -66,42 +96,11 @@ public class JobInfoController {
 		return "jobinfo/jobinfo.index";
 	}
 
-	public static List<XxlJobGroup> filterJobGroupByRole(HttpServletRequest request,
-			List<XxlJobGroup> jobGroupList_all) {
-		List<XxlJobGroup> jobGroupList = new ArrayList<>();
-		if (jobGroupList_all != null && jobGroupList_all.size() > 0) {
-			XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
-			if (loginUser.getRole() == 1) {
-				jobGroupList = jobGroupList_all;
-			}
-			else {
-				List<String> groupIdStrs = new ArrayList<>();
-				if (loginUser.getPermission() != null && loginUser.getPermission().trim().length() > 0) {
-					groupIdStrs = Arrays.asList(loginUser.getPermission().trim().split(","));
-				}
-				for (XxlJobGroup groupItem : jobGroupList_all) {
-					if (groupIdStrs.contains(String.valueOf(groupItem.getId()))) {
-						jobGroupList.add(groupItem);
-					}
-				}
-			}
-		}
-		return jobGroupList;
-	}
-
-	public static void validPermission(HttpServletRequest request, int jobGroup) {
-		XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
-		if (!loginUser.validPermission(jobGroup)) {
-			throw new RuntimeException(
-					I18nUtil.getString("system_permission_limit") + "[username=" + loginUser.getUsername() + "]");
-		}
-	}
-
 	@RequestMapping("/pageList")
 	@ResponseBody
 	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
-			@RequestParam(required = false, defaultValue = "10") int length, int jobGroup, int triggerStatus,
-			String jobDesc, String executorHandler, String author) {
+										@RequestParam(required = false, defaultValue = "10") int length, int jobGroup, int triggerStatus,
+										String jobDesc, String executorHandler, String author) {
 
 		return xxlJobService.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
 	}
@@ -160,13 +159,11 @@ public class JobInfoController {
 				lastTime = cronExpression.getNextValidTimeAfter(lastTime);
 				if (lastTime != null) {
 					result.add(DateUtil.formatDateTime(lastTime));
-				}
-				else {
+				} else {
 					break;
 				}
 			}
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			return new ReturnT<List<String>>(ReturnT.FAIL_CODE, I18nUtil.getString("jobinfo_field_cron_unvalid"));
 		}
 		return new ReturnT<List<String>>(result);

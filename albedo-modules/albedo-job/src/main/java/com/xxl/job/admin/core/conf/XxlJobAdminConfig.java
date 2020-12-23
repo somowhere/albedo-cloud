@@ -23,14 +23,46 @@ import java.util.Arrays;
 public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
 	private static XxlJobAdminConfig adminConfig = null;
+	private XxlJobScheduler xxlJobScheduler;
+
+	// ---------------------- XxlJobScheduler ----------------------
+	// conf
+	@Value("${xxl.job.i18n}")
+	private String i18n;
+	@Value("${xxl.job.accessToken:}")
+	private String accessToken;
+	@Value("${spring.mail.from:}")
+	private String emailFrom;
+
+	// ---------------------- XxlJobScheduler ----------------------
+	@Value("${xxl.job.triggerpool.fast.max}")
+	private int triggerPoolFastMax;
+	@Value("${xxl.job.triggerpool.slow.max}")
+	private int triggerPoolSlowMax;
+	@Value("${xxl.job.logretentiondays}")
+	private int logretentiondays;
+	@Resource
+	private XxlJobLogDao xxlJobLogDao;
+	@Resource
+	private XxlJobInfoDao xxlJobInfoDao;
+	@Resource
+	private XxlJobRegistryDao xxlJobRegistryDao;
+
+	// dao, service
+	@Resource
+	private XxlJobGroupDao xxlJobGroupDao;
+	@Resource
+	private XxlJobLogReportDao xxlJobLogReportDao;
+	@Resource
+	private JavaMailSender mailSender;
+	@Resource
+	private DataSource dataSource;
+	@Resource
+	private JobAlarmer jobAlarmer;
 
 	public static XxlJobAdminConfig getAdminConfig() {
 		return adminConfig;
 	}
-
-	// ---------------------- XxlJobScheduler ----------------------
-
-	private XxlJobScheduler xxlJobScheduler;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -44,53 +76,6 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 	public void destroy() throws Exception {
 		xxlJobScheduler.destroy();
 	}
-
-	// ---------------------- XxlJobScheduler ----------------------
-
-	// conf
-	@Value("${xxl.job.i18n}")
-	private String i18n;
-
-	@Value("${xxl.job.accessToken:}")
-	private String accessToken;
-
-	@Value("${spring.mail.from:}")
-	private String emailFrom;
-
-	@Value("${xxl.job.triggerpool.fast.max}")
-	private int triggerPoolFastMax;
-
-	@Value("${xxl.job.triggerpool.slow.max}")
-	private int triggerPoolSlowMax;
-
-	@Value("${xxl.job.logretentiondays}")
-	private int logretentiondays;
-
-	// dao, service
-
-	@Resource
-	private XxlJobLogDao xxlJobLogDao;
-
-	@Resource
-	private XxlJobInfoDao xxlJobInfoDao;
-
-	@Resource
-	private XxlJobRegistryDao xxlJobRegistryDao;
-
-	@Resource
-	private XxlJobGroupDao xxlJobGroupDao;
-
-	@Resource
-	private XxlJobLogReportDao xxlJobLogReportDao;
-
-	@Resource
-	private JavaMailSender mailSender;
-
-	@Resource
-	private DataSource dataSource;
-
-	@Resource
-	private JobAlarmer jobAlarmer;
 
 	public String getI18n() {
 		if (!Arrays.asList("zh_CN", "zh_TC", "en").contains(i18n)) {

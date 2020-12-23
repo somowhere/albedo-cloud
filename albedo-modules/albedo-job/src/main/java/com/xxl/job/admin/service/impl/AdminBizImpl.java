@@ -49,8 +49,8 @@ public class AdminBizImpl implements AdminBiz {
 		for (HandleCallbackParam handleCallbackParam : callbackParamList) {
 			ReturnT<String> callbackResult = callback(handleCallbackParam);
 			logger.debug(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
-					(callbackResult.getCode() == IJobHandler.SUCCESS.getCode() ? "success" : "fail"),
-					handleCallbackParam, callbackResult);
+				(callbackResult.getCode() == IJobHandler.SUCCESS.getCode() ? "success" : "fail"),
+				handleCallbackParam, callbackResult);
 		}
 
 		return ReturnT.SUCCESS;
@@ -64,12 +64,12 @@ public class AdminBizImpl implements AdminBiz {
 		}
 		if (log.getHandleCode() > 0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback."); // avoid
-																					// repeat
-																					// callback,
-																					// trigger
-																					// child
-																					// job
-																					// etc
+			// repeat
+			// callback,
+			// trigger
+			// child
+			// job
+			// etc
 		}
 
 		// trigger success, to trigger child job
@@ -77,14 +77,14 @@ public class AdminBizImpl implements AdminBiz {
 		if (IJobHandler.SUCCESS.getCode() == handleCallbackParam.getExecuteResult().getCode()) {
 			XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(log.getJobId());
 			if (xxlJobInfo != null && xxlJobInfo.getChildJobId() != null
-					&& xxlJobInfo.getChildJobId().trim().length() > 0) {
+				&& xxlJobInfo.getChildJobId().trim().length() > 0) {
 				callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>"
-						+ I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>";
+					+ I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>";
 
 				String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
 				for (int i = 0; i < childJobIds.length; i++) {
 					int childJobId = (childJobIds[i] != null && childJobIds[i].trim().length() > 0
-							&& isNumeric(childJobIds[i])) ? Integer.valueOf(childJobIds[i]) : -1;
+						&& isNumeric(childJobIds[i])) ? Integer.valueOf(childJobIds[i]) : -1;
 					if (childJobId > 0) {
 
 						JobTriggerPoolHelper.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null, null);
@@ -92,14 +92,13 @@ public class AdminBizImpl implements AdminBiz {
 
 						// add msg
 						callbackMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg1"), (i + 1),
-								childJobIds.length, childJobIds[i],
-								(triggerChildResult.getCode() == ReturnT.SUCCESS_CODE
-										? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
-								triggerChildResult.getMsg());
-					}
-					else {
+							childJobIds.length, childJobIds[i],
+							(triggerChildResult.getCode() == ReturnT.SUCCESS_CODE
+								? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
+							triggerChildResult.getMsg());
+					} else {
 						callbackMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"), (i + 1),
-								childJobIds.length, childJobIds[i]);
+							childJobIds.length, childJobIds[i]);
 					}
 				}
 
@@ -120,7 +119,7 @@ public class AdminBizImpl implements AdminBiz {
 
 		if (handleMsg.length() > 15000) {
 			handleMsg = new StringBuffer(handleMsg.substring(0, 15000)); // text最大64kb
-																			// 避免长度过长
+			// 避免长度过长
 		}
 
 		// success, save log
@@ -136,8 +135,7 @@ public class AdminBizImpl implements AdminBiz {
 		try {
 			int result = Integer.valueOf(str);
 			return true;
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
@@ -147,16 +145,16 @@ public class AdminBizImpl implements AdminBiz {
 
 		// valid
 		if (!StringUtils.hasText(registryParam.getRegistryGroup())
-				|| !StringUtils.hasText(registryParam.getRegistryKey())
-				|| !StringUtils.hasText(registryParam.getRegistryValue())) {
+			|| !StringUtils.hasText(registryParam.getRegistryKey())
+			|| !StringUtils.hasText(registryParam.getRegistryValue())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
 		}
 
 		int ret = xxlJobRegistryDao.registryUpdate(registryParam.getRegistryGroup(), registryParam.getRegistryKey(),
-				registryParam.getRegistryValue(), new Date());
+			registryParam.getRegistryValue(), new Date());
 		if (ret < 1) {
 			xxlJobRegistryDao.registrySave(registryParam.getRegistryGroup(), registryParam.getRegistryKey(),
-					registryParam.getRegistryValue(), new Date());
+				registryParam.getRegistryValue(), new Date());
 
 			// fresh
 			freshGroupRegistryInfo(registryParam);
@@ -169,13 +167,13 @@ public class AdminBizImpl implements AdminBiz {
 
 		// valid
 		if (!StringUtils.hasText(registryParam.getRegistryGroup())
-				|| !StringUtils.hasText(registryParam.getRegistryKey())
-				|| !StringUtils.hasText(registryParam.getRegistryValue())) {
+			|| !StringUtils.hasText(registryParam.getRegistryKey())
+			|| !StringUtils.hasText(registryParam.getRegistryValue())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
 		}
 
 		int ret = xxlJobRegistryDao.registryDelete(registryParam.getRegistryGroup(), registryParam.getRegistryKey(),
-				registryParam.getRegistryValue());
+			registryParam.getRegistryValue());
 		if (ret > 0) {
 
 			// fresh

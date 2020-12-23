@@ -21,6 +21,7 @@ import com.alibaba.nacos.common.model.RestResult;
 import com.alibaba.nacos.common.utils.JacksonUtils;
 import com.alibaba.nacos.config.server.auth.RoleInfo;
 import com.alibaba.nacos.config.server.model.User;
+import com.alibaba.nacos.core.auth.*;
 import com.alibaba.nacos.security.nacos.NacosAuthConfig;
 import com.alibaba.nacos.security.nacos.NacosAuthManager;
 import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
@@ -28,11 +29,6 @@ import com.alibaba.nacos.security.nacos.users.NacosUser;
 import com.alibaba.nacos.security.nacos.users.NacosUserDetailsServiceImpl;
 import com.alibaba.nacos.utils.JwtTokenUtils;
 import com.alibaba.nacos.utils.PasswordEncoderUtil;
-import com.alibaba.nacos.core.auth.AccessException;
-import com.alibaba.nacos.core.auth.ActionTypes;
-import com.alibaba.nacos.core.auth.AuthConfigs;
-import com.alibaba.nacos.core.auth.AuthSystemTypes;
-import com.alibaba.nacos.core.auth.Secured;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,13 +37,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +50,7 @@ import java.util.List;
  * @author nkorange
  */
 @RestController("user")
-@RequestMapping({ "/v1/auth", "/v1/auth/users" })
+@RequestMapping({"/v1/auth", "/v1/auth/users"})
 public class UserController {
 
 	@Autowired
@@ -83,6 +73,7 @@ public class UserController {
 
 	/**
 	 * Create a new user.
+	 *
 	 * @param username username
 	 * @param password password
 	 * @return ok if create succeed
@@ -103,6 +94,7 @@ public class UserController {
 
 	/**
 	 * Delete an existed user.
+	 *
 	 * @param username username of user
 	 * @return ok if deleted succeed, keep silent if user not exist
 	 * @since 1.2.0
@@ -124,7 +116,8 @@ public class UserController {
 
 	/**
 	 * Update an user.
-	 * @param username username of user
+	 *
+	 * @param username    username of user
 	 * @param newPassword new password of user
 	 * @return ok if update succeed
 	 * @throws IllegalArgumentException if user not exist or oldPassword is incorrect
@@ -146,7 +139,8 @@ public class UserController {
 
 	/**
 	 * Get paged users.
-	 * @param pageNo number index of page
+	 *
+	 * @param pageNo   number index of page
 	 * @param pageSize size of page
 	 * @return A collection of users, empty set if no user is found
 	 * @since 1.2.0
@@ -162,16 +156,17 @@ public class UserController {
 	 *
 	 * <p>
 	 * This methods uses username and password to require a new token.
+	 *
 	 * @param username username of user
 	 * @param password password
 	 * @param response http response
-	 * @param request http request
+	 * @param request  http request
 	 * @return new token of the user
 	 * @throws AccessException if user info is incorrect
 	 */
 	@PostMapping("/login")
 	public Object login(@RequestParam String username, @RequestParam String password, HttpServletResponse response,
-			HttpServletRequest request) throws AccessException {
+						HttpServletRequest request) throws AccessException {
 
 		if (AuthSystemTypes.NACOS.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			NacosUser user = (NacosUser) authManager.login(request);
@@ -188,7 +183,7 @@ public class UserController {
 
 		// 通过用户名和密码创建一个 Authentication 认证对象，实现类为 UsernamePasswordAuthenticationToken
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+			password);
 
 		RestResult<String> rr = new RestResult<String>();
 		try {
@@ -204,8 +199,7 @@ public class UserController {
 			rr.setCode(200);
 			rr.setData("Bearer " + token);
 			return rr;
-		}
-		catch (BadCredentialsException authentication) {
+		} catch (BadCredentialsException authentication) {
 			rr.setCode(401);
 			rr.setMessage("Login failed");
 			return rr;
@@ -214,6 +208,7 @@ public class UserController {
 
 	/**
 	 * Update password.
+	 *
 	 * @param oldPassword old password
 	 * @param newPassword new password
 	 * @return Code 200 if update successfully, Code 401 if old password invalid,
@@ -222,7 +217,7 @@ public class UserController {
 	@PutMapping("/password")
 	@Deprecated
 	public RestResult<String> updatePassword(@RequestParam(value = "oldPassword") String oldPassword,
-			@RequestParam(value = "newPassword") String newPassword) {
+											 @RequestParam(value = "newPassword") String newPassword) {
 
 		RestResult<String> rr = new RestResult<String>();
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -236,13 +231,11 @@ public class UserController {
 				userDetailsService.updateUserPassword(username, PasswordEncoderUtil.encode(newPassword));
 				rr.setCode(200);
 				rr.setMessage("Update password success");
-			}
-			else {
+			} else {
 				rr.setCode(401);
 				rr.setMessage("Old password is invalid");
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			rr.setCode(500);
 			rr.setMessage("Update userpassword failed");
 		}

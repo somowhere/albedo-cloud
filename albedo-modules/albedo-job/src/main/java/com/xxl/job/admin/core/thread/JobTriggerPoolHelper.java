@@ -19,28 +19,52 @@ public class JobTriggerPoolHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobTriggerPoolHelper.class);
 
 	// ---------------------- trigger pool ----------------------
-
+	private static JobTriggerPoolHelper helper = new JobTriggerPoolHelper();
 	// fast/slow thread pool
 	private ThreadPoolExecutor fastTriggerPool = null;
-
 	private ThreadPoolExecutor slowTriggerPool = null;
+	// job timeout count
+	private volatile long minTim = System.currentTimeMillis() / 60000; // ms > min
+	private volatile ConcurrentMap<Integer, AtomicInteger> jobTimeoutCountMap = new ConcurrentHashMap<>();
+
+	public static void toStart() {
+		helper.start();
+	}
+
+	public static void toStop() {
+		helper.stop();
+	}
+
+	// ---------------------- helper ----------------------
+
+	/**
+	 * @param jobId
+	 * @param triggerType
+	 * @param failRetryCount        >=0: use this param <0: use param from job info config
+	 * @param executorShardingParam
+	 * @param executorParam         null: use job param not null: cover job param
+	 */
+	public static void trigger(int jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorShardingParam,
+							   String executorParam, String addressList) {
+		helper.addTrigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam, addressList);
+	}
 
 	public void start() {
 		fastTriggerPool = new ThreadPoolExecutor(10, XxlJobAdminConfig.getAdminConfig().getTriggerPoolFastMax(), 60L,
-				TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1000), new ThreadFactory() {
-					@Override
-					public Thread newThread(Runnable r) {
-						return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-fastTriggerPool-" + r.hashCode());
-					}
-				});
+			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1000), new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-fastTriggerPool-" + r.hashCode());
+			}
+		});
 
 		slowTriggerPool = new ThreadPoolExecutor(10, XxlJobAdminConfig.getAdminConfig().getTriggerPoolSlowMax(), 60L,
-				TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(2000), new ThreadFactory() {
-					@Override
-					public Thread newThread(Runnable r) {
-						return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-slowTriggerPool-" + r.hashCode());
-					}
-				});
+			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(2000), new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "xxl-job, admin JobTriggerPoolHelper-slowTriggerPool-" + r.hashCode());
+			}
+		});
 	}
 
 	public void stop() {
@@ -50,22 +74,17 @@ public class JobTriggerPoolHelper {
 		logger.info(">>>>>>>>> xxl-job trigger thread pool shutdown success.");
 	}
 
-	// job timeout count
-	private volatile long minTim = System.currentTimeMillis() / 60000; // ms > min
-
-	private volatile ConcurrentMap<Integer, AtomicInteger> jobTimeoutCountMap = new ConcurrentHashMap<>();
-
 	/**
 	 * add trigger
 	 */
 	public void addTrigger(final int jobId, final TriggerTypeEnum triggerType, final int failRetryCount,
-			final String executorShardingParam, final String executorParam, final String addressList) {
+						   final String executorShardingParam, final String executorParam, final String addressList) {
 
 		// choose thread pool
 		ThreadPoolExecutor triggerPool_ = fastTriggerPool;
 		AtomicInteger jobTimeoutCount = jobTimeoutCountMap.get(jobId);
 		if (jobTimeoutCount != null && jobTimeoutCount.get() > 10) { // job-timeout 10
-																		// times in 1 min
+			// times in 1 min
 			triggerPool_ = slowTriggerPool;
 		}
 
@@ -79,12 +98,10 @@ public class JobTriggerPoolHelper {
 				try {
 					// do trigger
 					XxlJobTrigger.trigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam,
-							addressList);
-				}
-				catch (Exception e) {
+						addressList);
+				} catch (Exception e) {
 					logger.error(e.getMessage(), e);
-				}
-				finally {
+				} finally {
 
 					// check timeout-count-map
 					long minTim_now = System.currentTimeMillis() / 60000;
@@ -106,30 +123,6 @@ public class JobTriggerPoolHelper {
 
 			}
 		});
-	}
-
-	// ---------------------- helper ----------------------
-
-	private static JobTriggerPoolHelper helper = new JobTriggerPoolHelper();
-
-	public static void toStart() {
-		helper.start();
-	}
-
-	public static void toStop() {
-		helper.stop();
-	}
-
-	/**
-	 * @param jobId
-	 * @param triggerType
-	 * @param failRetryCount >=0: use this param <0: use param from job info config
-	 * @param executorShardingParam
-	 * @param executorParam null: use job param not null: cover job param
-	 */
-	public static void trigger(int jobId, TriggerTypeEnum triggerType, int failRetryCount, String executorShardingParam,
-			String executorParam, String addressList) {
-		helper.addTrigger(jobId, triggerType, failRetryCount, executorShardingParam, executorParam, addressList);
 	}
 
 }

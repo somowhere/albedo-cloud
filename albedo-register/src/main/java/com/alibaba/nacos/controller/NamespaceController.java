@@ -19,20 +19,14 @@ package com.alibaba.nacos.controller;
 import com.alibaba.nacos.common.model.RestResult;
 import com.alibaba.nacos.config.server.model.TenantInfo;
 import com.alibaba.nacos.config.server.service.repository.PersistService;
+import com.alibaba.nacos.core.auth.ActionTypes;
+import com.alibaba.nacos.core.auth.Secured;
 import com.alibaba.nacos.model.Namespace;
 import com.alibaba.nacos.model.NamespaceAllInfo;
 import com.alibaba.nacos.security.nacos.NacosAuthConfig;
-import com.alibaba.nacos.core.auth.ActionTypes;
-import com.alibaba.nacos.core.auth.Secured;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,16 +44,15 @@ import java.util.regex.Pattern;
 @RequestMapping("/v1/console/namespaces")
 public class NamespaceController {
 
+	private static final int NAMESPACE_ID_MAX_LENGTH = 128;
+	private final Pattern namespaceIdCheckPattern = Pattern.compile("^[\\w-]+");
 	@Autowired
 	private PersistService persistService;
 
-	private final Pattern namespaceIdCheckPattern = Pattern.compile("^[\\w-]+");
-
-	private static final int NAMESPACE_ID_MAX_LENGTH = 128;
-
 	/**
 	 * Get namespace list.
-	 * @param request request
+	 *
+	 * @param request  request
 	 * @param response response
 	 * @return namespace list
 	 */
@@ -75,7 +68,7 @@ public class NamespaceController {
 		for (TenantInfo tenantInfo : tenantInfos) {
 			int configCount = persistService.configInfoCount(tenantInfo.getTenantId());
 			Namespace namespaceTmp = new Namespace(tenantInfo.getTenantId(), tenantInfo.getTenantName(), 200,
-					configCount, 2);
+				configCount, 2);
 			namespaces.add(namespaceTmp);
 		}
 		rr.setData(namespaces);
@@ -84,31 +77,32 @@ public class NamespaceController {
 
 	/**
 	 * get namespace all info by namespace id.
-	 * @param request request
-	 * @param response response
+	 *
+	 * @param request     request
+	 * @param response    response
 	 * @param namespaceId namespaceId
 	 * @return namespace all info
 	 */
 	@GetMapping(params = "show=all")
 	public NamespaceAllInfo getNamespace(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("namespaceId") String namespaceId) {
+										 @RequestParam("namespaceId") String namespaceId) {
 		// TODO 获取用kp
 		if (StringUtils.isBlank(namespaceId)) {
 			return new NamespaceAllInfo(namespaceId, "Public", 200, persistService.configInfoCount(""), 0,
-					"Public Namespace");
-		}
-		else {
+				"Public Namespace");
+		} else {
 			TenantInfo tenantInfo = persistService.findTenantByKp("1", namespaceId);
 			int configCount = persistService.configInfoCount(namespaceId);
 			return new NamespaceAllInfo(namespaceId, tenantInfo.getTenantName(), 200, configCount, 2,
-					tenantInfo.getTenantDesc());
+				tenantInfo.getTenantDesc());
 		}
 	}
 
 	/**
 	 * create namespace.
-	 * @param request request
-	 * @param response response
+	 *
+	 * @param request       request
+	 * @param response      response
 	 * @param namespaceName namespace Name
 	 * @param namespaceDesc namespace Desc
 	 * @return whether create ok
@@ -116,13 +110,12 @@ public class NamespaceController {
 	@PostMapping
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "namespaces", action = ActionTypes.WRITE)
 	public Boolean createNamespace(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("customNamespaceId") String namespaceId, @RequestParam("namespaceName") String namespaceName,
-			@RequestParam(value = "namespaceDesc", required = false) String namespaceDesc) {
+								   @RequestParam("customNamespaceId") String namespaceId, @RequestParam("namespaceName") String namespaceName,
+								   @RequestParam(value = "namespaceDesc", required = false) String namespaceDesc) {
 		// TODO 获取用kp
 		if (StringUtils.isBlank(namespaceId)) {
 			namespaceId = UUID.randomUUID().toString();
-		}
-		else {
+		} else {
 			namespaceId = namespaceId.trim();
 			if (!namespaceIdCheckPattern.matcher(namespaceId).matches()) {
 				return false;
@@ -135,12 +128,13 @@ public class NamespaceController {
 			}
 		}
 		persistService.insertTenantInfoAtomic("1", namespaceId, namespaceName, namespaceDesc, "nacos",
-				System.currentTimeMillis());
+			System.currentTimeMillis());
 		return true;
 	}
 
 	/**
 	 * check namespaceId exist.
+	 *
 	 * @param namespaceId namespace id
 	 * @return true if exist, otherwise false
 	 */
@@ -154,16 +148,17 @@ public class NamespaceController {
 
 	/**
 	 * edit namespace.
-	 * @param namespace namespace
+	 *
+	 * @param namespace         namespace
 	 * @param namespaceShowName namespace ShowName
-	 * @param namespaceDesc namespace Desc
+	 * @param namespaceDesc     namespace Desc
 	 * @return whether edit ok
 	 */
 	@PutMapping
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "namespaces", action = ActionTypes.WRITE)
 	public Boolean editNamespace(@RequestParam("namespace") String namespace,
-			@RequestParam("namespaceShowName") String namespaceShowName,
-			@RequestParam(value = "namespaceDesc", required = false) String namespaceDesc) {
+								 @RequestParam("namespaceShowName") String namespaceShowName,
+								 @RequestParam(value = "namespaceDesc", required = false) String namespaceDesc) {
 		// TODO 获取用kp
 		persistService.updateTenantNameAtomic("1", namespace, namespaceShowName, namespaceDesc);
 		return true;
@@ -171,15 +166,16 @@ public class NamespaceController {
 
 	/**
 	 * del namespace by id.
-	 * @param request request
-	 * @param response response
+	 *
+	 * @param request     request
+	 * @param response    response
 	 * @param namespaceId namespace Id
 	 * @return whether del ok
 	 */
 	@DeleteMapping
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "namespaces", action = ActionTypes.WRITE)
 	public Boolean deleteConfig(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("namespaceId") String namespaceId) {
+								@RequestParam("namespaceId") String namespaceId) {
 		persistService.removeTenantInfoAtomic("1", namespaceId);
 		return true;
 	}

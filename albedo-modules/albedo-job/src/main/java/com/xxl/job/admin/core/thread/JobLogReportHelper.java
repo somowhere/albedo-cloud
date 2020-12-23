@@ -21,14 +21,12 @@ public class JobLogReportHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobLogReportHelper.class);
 
 	private static JobLogReportHelper instance = new JobLogReportHelper();
+	private Thread logrThread;
+	private volatile boolean toStop = false;
 
 	public static JobLogReportHelper getInstance() {
 		return instance;
 	}
-
-	private Thread logrThread;
-
-	private volatile boolean toStop = false;
 
 	public void start() {
 		logrThread = new Thread(new Runnable() {
@@ -71,16 +69,16 @@ public class JobLogReportHelper {
 							xxlJobLogReport.setFailCount(0);
 
 							Map<String, Object> triggerCountMap = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
-									.findLogReport(todayFrom, todayTo);
+								.findLogReport(todayFrom, todayTo);
 							if (triggerCountMap != null && triggerCountMap.size() > 0) {
 								int triggerDayCount = triggerCountMap.containsKey("triggerDayCount")
-										? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCount"))) : 0;
+									? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCount"))) : 0;
 								int triggerDayCountRunning = triggerCountMap.containsKey("triggerDayCountRunning")
-										? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountRunning")))
-										: 0;
+									? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountRunning")))
+									: 0;
 								int triggerDayCountSuc = triggerCountMap.containsKey("triggerDayCountSuc")
-										? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountSuc")))
-										: 0;
+									? Integer.valueOf(String.valueOf(triggerCountMap.get("triggerDayCountSuc")))
+									: 0;
 								int triggerDayCountFail = triggerDayCount - triggerDayCountRunning - triggerDayCountSuc;
 
 								xxlJobLogReport.setRunningCount(triggerDayCountRunning);
@@ -90,14 +88,13 @@ public class JobLogReportHelper {
 
 							// do refresh
 							int ret = XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao()
-									.update(xxlJobLogReport);
+								.update(xxlJobLogReport);
 							if (ret < 1) {
 								XxlJobAdminConfig.getAdminConfig().getXxlJobLogReportDao().save(xxlJobLogReport);
 							}
 						}
 
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(">>>>>>>>>>> xxl-job, job log report thread error:{}", e);
 						}
@@ -105,12 +102,12 @@ public class JobLogReportHelper {
 
 					// 2、log-clean: switch open & once each day
 					if (XxlJobAdminConfig.getAdminConfig().getLogretentiondays() > 0
-							&& System.currentTimeMillis() - lastCleanLogTime > 24 * 60 * 60 * 1000) {
+						&& System.currentTimeMillis() - lastCleanLogTime > 24 * 60 * 60 * 1000) {
 
 						// expire-time
 						Calendar expiredDay = Calendar.getInstance();
 						expiredDay.add(Calendar.DAY_OF_MONTH,
-								-1 * XxlJobAdminConfig.getAdminConfig().getLogretentiondays());
+							-1 * XxlJobAdminConfig.getAdminConfig().getLogretentiondays());
 						expiredDay.set(Calendar.HOUR_OF_DAY, 0);
 						expiredDay.set(Calendar.MINUTE, 0);
 						expiredDay.set(Calendar.SECOND, 0);
@@ -121,7 +118,7 @@ public class JobLogReportHelper {
 						List<Long> logIds = null;
 						do {
 							logIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().findClearLogIds(0, 0,
-									clearBeforeTime, 0, 1000);
+								clearBeforeTime, 0, 1000);
 							if (logIds != null && logIds.size() > 0) {
 								XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().clearLog(logIds);
 							}
@@ -134,8 +131,7 @@ public class JobLogReportHelper {
 
 					try {
 						TimeUnit.MINUTES.sleep(1);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(e.getMessage(), e);
 						}
@@ -158,8 +154,7 @@ public class JobLogReportHelper {
 		logrThread.interrupt();
 		try {
 			logrThread.join();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}

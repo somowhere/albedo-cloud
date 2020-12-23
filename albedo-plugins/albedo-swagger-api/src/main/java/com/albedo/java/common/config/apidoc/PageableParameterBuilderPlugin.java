@@ -1,11 +1,8 @@
 package com.albedo.java.common.config.apidoc;
 
 import com.albedo.java.common.core.vo.PageModel;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.classmate.ResolvedType;
 import com.fasterxml.classmate.TypeResolver;
-import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.ModelReference;
 import springfox.documentation.schema.TypeNameExtractor;
@@ -18,7 +15,6 @@ import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.spi.service.contexts.ParameterContext;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.schema.ResolvedTypes.modelRefFactory;

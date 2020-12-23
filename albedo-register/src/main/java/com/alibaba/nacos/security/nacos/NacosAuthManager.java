@@ -18,13 +18,13 @@ package com.alibaba.nacos.security.nacos;
 
 import com.alibaba.nacos.api.common.Constants;
 import com.alibaba.nacos.config.server.auth.RoleInfo;
-import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
-import com.alibaba.nacos.security.nacos.users.NacosUser;
 import com.alibaba.nacos.core.auth.AccessException;
 import com.alibaba.nacos.core.auth.AuthManager;
 import com.alibaba.nacos.core.auth.Permission;
 import com.alibaba.nacos.core.auth.User;
 import com.alibaba.nacos.core.utils.Loggers;
+import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
+import com.alibaba.nacos.security.nacos.users.NacosUser;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,11 +68,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			tokenManager.validateToken(token);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			throw new AccessException("token expired!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new AccessException("token invalid!");
 		}
 
@@ -129,10 +127,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,
-					rawPassword);
+				rawPassword);
 			authenticationManager.authenticate(authenticationToken);
-		}
-		catch (AuthenticationException e) {
+		} catch (AuthenticationException e) {
 			throw new AccessException("unknown user!");
 		}
 

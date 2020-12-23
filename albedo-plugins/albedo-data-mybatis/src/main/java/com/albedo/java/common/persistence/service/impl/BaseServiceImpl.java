@@ -7,9 +7,6 @@ import com.albedo.java.common.persistence.repository.BaseRepository;
 import com.albedo.java.common.persistence.service.BaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 /**
  * Service基类

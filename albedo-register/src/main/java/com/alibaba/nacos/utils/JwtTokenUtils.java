@@ -16,13 +16,7 @@
 
 package com.alibaba.nacos.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,20 +41,16 @@ import java.util.List;
 @Component
 public class JwtTokenUtils {
 
-	private final Logger log = LoggerFactory.getLogger(JwtTokenUtils.class);
-
 	private static final String AUTHORITIES_KEY = "auth";
-
 	/**
 	 * minimum SHA_256 secretKey string length.
 	 */
 	private static final int SHA_256_SECRET_CHAR_SIZE = 256 / 8;
-
 	/**
 	 * default SHA_256 secretKey flag.
 	 */
 	private static final String DEFAULT_SECRET_FLAG = "default";
-
+	private final Logger log = LoggerFactory.getLogger(JwtTokenUtils.class);
 	/**
 	 * custom SHA_256 secretKey from config property.
 	 */
@@ -85,8 +75,7 @@ public class JwtTokenUtils {
 		// use default secretKey for SHA-256
 		if (customSecretKeyStr == null || DEFAULT_SECRET_FLAG.equals(customSecretKeyStr)) {
 			this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-		}
-		else {
+		} else {
 			// use custom secretKey
 			int size = customSecretKeyStr.length();
 			int left = SHA_256_SECRET_CHAR_SIZE - size;
@@ -97,8 +86,7 @@ public class JwtTokenUtils {
 					stringBuilder.append(i % 10);
 				}
 				this.secretKey = Keys.hmacShaKeyFor(stringBuilder.toString().getBytes());
-			}
-			else {
+			} else {
 				this.secretKey = Keys.hmacShaKeyFor(customSecretKeyStr.getBytes());
 			}
 		}
@@ -107,6 +95,7 @@ public class JwtTokenUtils {
 
 	/**
 	 * Create token.
+	 *
 	 * @param authentication auth info
 	 * @return token
 	 */
@@ -117,11 +106,12 @@ public class JwtTokenUtils {
 		Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
 		return Jwts.builder().setSubject(authentication.getName()).claim(AUTHORITIES_KEY, "").setExpiration(validity)
-				.signWith(secretKey, SignatureAlgorithm.HS256).compact();
+			.signWith(secretKey, SignatureAlgorithm.HS256).compact();
 	}
 
 	/**
 	 * Get auth Info.
+	 *
 	 * @param token token
 	 * @return auth info
 	 */
@@ -130,7 +120,7 @@ public class JwtTokenUtils {
 		Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
 		List<GrantedAuthority> authorities = AuthorityUtils
-				.commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
+			.commaSeparatedStringToAuthorityList((String) claims.get(AUTHORITIES_KEY));
 
 		User principal = new User(claims.getSubject(), "", authorities);
 		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
@@ -138,6 +128,7 @@ public class JwtTokenUtils {
 
 	/**
 	 * validate token.
+	 *
 	 * @param token token
 	 * @return whether valid
 	 */
@@ -145,24 +136,19 @@ public class JwtTokenUtils {
 		try {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return true;
-		}
-		catch (SignatureException e) {
+		} catch (SignatureException e) {
 			log.info("Invalid JWT signature.");
 			log.trace("Invalid JWT signature trace: {}", e);
-		}
-		catch (MalformedJwtException e) {
+		} catch (MalformedJwtException e) {
 			log.info("Invalid JWT token.");
 			log.trace("Invalid JWT token trace: {}", e);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT token.");
 			log.trace("Expired JWT token trace: {}", e);
-		}
-		catch (UnsupportedJwtException e) {
+		} catch (UnsupportedJwtException e) {
 			log.info("Unsupported JWT token.");
 			log.trace("Unsupported JWT token trace: {}", e);
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			log.info("JWT token compact of handler are invalid.");
 			log.trace("JWT token compact of handler are invalid trace: {}", e);
 		}

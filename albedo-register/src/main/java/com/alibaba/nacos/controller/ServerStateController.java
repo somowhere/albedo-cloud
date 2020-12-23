@@ -37,13 +37,14 @@ public class ServerStateController {
 
 	/**
 	 * Get server state of current server.
+	 *
 	 * @return state json.
 	 */
 	@GetMapping("/state")
 	public ResponseEntity serverState() {
 		Map<String, String> serverState = new HashMap<>(3);
 		serverState.put("standalone_mode", ApplicationUtils.getStandaloneMode() ? ApplicationUtils.STANDALONE_MODE_ALONE
-				: ApplicationUtils.STANDALONE_MODE_CLUSTER);
+			: ApplicationUtils.STANDALONE_MODE_CLUSTER);
 
 		serverState.put("function_mode", ApplicationUtils.getFunctionMode());
 		serverState.put("version", VersionUtils.version);

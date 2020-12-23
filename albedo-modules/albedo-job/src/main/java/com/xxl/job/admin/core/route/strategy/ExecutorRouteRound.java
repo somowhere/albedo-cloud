@@ -30,8 +30,7 @@ public class ExecutorRouteRound extends ExecutorRouter {
 		if (count == null || count.get() > 1000000) {
 			// 初始化时主动Random一次，缓解首次压力
 			count = new AtomicInteger(new Random().nextInt(100));
-		}
-		else {
+		} else {
 			// count++
 			count.addAndGet(1);
 		}

@@ -20,14 +20,12 @@ public class JobRegistryMonitorHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobRegistryMonitorHelper.class);
 
 	private static JobRegistryMonitorHelper instance = new JobRegistryMonitorHelper();
+	private Thread registryThread;
+	private volatile boolean toStop = false;
 
 	public static JobRegistryMonitorHelper getInstance() {
 		return instance;
 	}
-
-	private Thread registryThread;
-
-	private volatile boolean toStop = false;
 
 	public void start() {
 		registryThread = new Thread(new Runnable() {
@@ -37,12 +35,12 @@ public class JobRegistryMonitorHelper {
 					try {
 						// auto registry group
 						List<XxlJobGroup> groupList = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao()
-								.findByAddressType(0);
+							.findByAddressType(0);
 						if (groupList != null && !groupList.isEmpty()) {
 
 							// remove dead address (admin/executor)
 							List<Integer> ids = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao()
-									.findDead(RegistryConfig.DEAD_TIMEOUT, new Date());
+								.findDead(RegistryConfig.DEAD_TIMEOUT, new Date());
 							if (ids != null && ids.size() > 0) {
 								XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao().removeDead(ids);
 							}
@@ -50,7 +48,7 @@ public class JobRegistryMonitorHelper {
 							// fresh online address (admin/executor)
 							HashMap<String, List<String>> appAddressMap = new HashMap<String, List<String>>();
 							List<XxlJobRegistry> list = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao()
-									.findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
+								.findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
 							if (list != null) {
 								for (XxlJobRegistry item : list) {
 									if (RegistryConfig.RegistType.EXECUTOR.name().equals(item.getRegistryGroup())) {
@@ -85,16 +83,14 @@ public class JobRegistryMonitorHelper {
 								XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().update(group);
 							}
 						}
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(">>>>>>>>>>> xxl-job, job registry monitor thread error:{}", e);
 						}
 					}
 					try {
 						TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
-					}
-					catch (InterruptedException e) {
+					} catch (InterruptedException e) {
 						if (!toStop) {
 							logger.error(">>>>>>>>>>> xxl-job, job registry monitor thread error:{}", e);
 						}
@@ -114,8 +110,7 @@ public class JobRegistryMonitorHelper {
 		registryThread.interrupt();
 		try {
 			registryThread.join();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}

@@ -4,10 +4,8 @@ import com.albedo.java.common.config.ApplicationSwaggerProperties;
 import com.albedo.java.common.core.vo.PageModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
 import org.springframework.core.Ordered;
 import org.springframework.http.ResponseEntity;
-import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -15,7 +13,10 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author somewhere
@@ -24,14 +25,13 @@ import java.util.*;
  */
 public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 	public static final int DEFAULT_ORDER = 0;
-	private final ApplicationSwaggerProperties applicationSwaggerProperties;
-	private int order = 0;
 	/**
 	 * 默认的排除路径，排除Spring Boot默认的错误处理路径和端点
 	 */
 	private static final List<String> DEFAULT_EXCLUDE_PATH = Arrays.asList("/error", "/actuator/**");
-
 	private static final String BASE_PATH = "/**";
+	private final ApplicationSwaggerProperties applicationSwaggerProperties;
+	private int order = 0;
 
 	public AlbedoSwaggerCustomizer(ApplicationSwaggerProperties applicationSwaggerProperties) {
 		this.applicationSwaggerProperties = applicationSwaggerProperties;
@@ -79,6 +79,7 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 
 	/**
 	 * 配置默认的全局鉴权策略的开关，通过正则表达式进行匹配；默认匹配所有URL
+	 *
 	 * @return
 	 */
 	private SecurityContext securityContext(ApplicationSwaggerProperties swaggerProperties) {
@@ -88,6 +89,7 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 
 	/**
 	 * 默认的全局鉴权策略
+	 *
 	 * @return
 	 */
 	private List<SecurityReference> defaultAuth(ApplicationSwaggerProperties swaggerProperties) {

@@ -44,8 +44,8 @@ public class JobGroupController {
 	@RequestMapping("/pageList")
 	@ResponseBody
 	public Map<String, Object> pageList(HttpServletRequest request,
-			@RequestParam(required = false, defaultValue = "0") int start,
-			@RequestParam(required = false, defaultValue = "10") int length, String appname, String title) {
+										@RequestParam(required = false, defaultValue = "0") int start,
+										@RequestParam(required = false, defaultValue = "10") int length, String appname, String title) {
 
 		// page query
 		List<XxlJobGroup> list = xxlJobGroupDao.pageList(start, length, appname, title);
@@ -72,7 +72,7 @@ public class JobGroupController {
 		}
 		if (xxlJobGroup.getTitle() == null || xxlJobGroup.getTitle().trim().length() == 0) {
 			return new ReturnT<String>(500,
-					(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")));
+				(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")));
 		}
 		if (xxlJobGroup.getAddressType() != 0) {
 			if (xxlJobGroup.getAddressList() == null || xxlJobGroup.getAddressList().trim().length() == 0) {
@@ -102,7 +102,7 @@ public class JobGroupController {
 		}
 		if (xxlJobGroup.getTitle() == null || xxlJobGroup.getTitle().trim().length() == 0) {
 			return new ReturnT<String>(500,
-					(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")));
+				(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")));
 		}
 		if (xxlJobGroup.getAddressType() == 0) {
 			// 0=自动注册
@@ -117,8 +117,7 @@ public class JobGroupController {
 				addressListStr = addressListStr.substring(0, addressListStr.length() - 1);
 			}
 			xxlJobGroup.setAddressList(addressListStr);
-		}
-		else {
+		} else {
 			// 1=手动录入
 			if (xxlJobGroup.getAddressList() == null || xxlJobGroup.getAddressList().trim().length() == 0) {
 				return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_addressType_limit"));
@@ -181,7 +180,7 @@ public class JobGroupController {
 	public ReturnT<XxlJobGroup> loadById(int id) {
 		XxlJobGroup jobGroup = xxlJobGroupDao.load(id);
 		return jobGroup != null ? new ReturnT<XxlJobGroup>(jobGroup)
-				: new ReturnT<XxlJobGroup>(ReturnT.FAIL_CODE, null);
+			: new ReturnT<XxlJobGroup>(ReturnT.FAIL_CODE, null);
 	}
 
 }
