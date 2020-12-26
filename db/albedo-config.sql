@@ -13,9 +13,14 @@
 
  Date: 26/12/2020 11:33:22
 */
+DROP DATABASE IF EXISTS `albedo-config`;
+
+CREATE DATABASE  `albedo-config` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+USE `albedo-config`;
 
 -- ----------------------------
 -- Table structure for config_info

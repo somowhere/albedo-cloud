@@ -13,10 +13,14 @@
 
  Date: 26/12/2020 11:33:34
 */
+DROP DATABASE IF EXISTS `albedo-job`;
+
+CREATE DATABASE  `albedo-job` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+USE `albedo-job`;
 -- ----------------------------
 -- Table structure for xxl_job_group
 -- ----------------------------
