@@ -1,26 +1,21 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80021
+ Source Server Version : 80022
  Source Host           : localhost:3306
  Source Schema         : albedo-job
 
  Target Server Type    : MySQL
- Target Server Version : 80021
+ Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 20/09/2020 14:41:49
+ Date: 26/12/2020 11:33:34
 */
-DROP DATABASE IF EXISTS `albedo-job`;
-
-CREATE DATABASE  `albedo-job` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
-use `albedo-job`;
 
 -- ----------------------------
 -- Table structure for xxl_job_group
@@ -138,12 +133,20 @@ CREATE TABLE `xxl_job_log_report` (
   `fail_count` int NOT NULL DEFAULT '0' COMMENT '执行失败-日志数量',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_trigger_day` (`trigger_day`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of xxl_job_log_report
 -- ----------------------------
 BEGIN;
+INSERT INTO `xxl_job_log_report` VALUES (1, '2020-12-20 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (2, '2020-12-19 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (3, '2020-12-18 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (4, '2020-12-24 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (5, '2020-12-23 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (6, '2020-12-22 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (7, '2020-12-25 00:00:00', 0, 0, 0);
+INSERT INTO `xxl_job_log_report` VALUES (8, '2020-12-26 00:00:00', 0, 0, 0);
 COMMIT;
 
 -- ----------------------------

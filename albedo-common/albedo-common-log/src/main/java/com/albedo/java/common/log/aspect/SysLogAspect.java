@@ -23,7 +23,6 @@ import com.albedo.java.common.log.enums.LogType;
 import com.albedo.java.common.log.event.SysLogEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.modules.sys.domain.LogOperate;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -70,7 +69,8 @@ public class SysLogAspect {
 			obj = point.proceed();
 			logOperateVo.setLogType(LogType.INFO.name());
 		} catch (Exception e) {
-			logOperateVo.setException(ExceptionUtil.stacktraceToString(e instanceof HystrixRuntimeException ? e.getCause() : e));
+			logOperateVo.setException(
+				ExceptionUtil.stacktraceToString(e));
 			logOperateVo.setLogType(LogType.ERROR.name());
 			throw e;
 		} finally {

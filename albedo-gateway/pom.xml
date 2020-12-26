@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-gateway</artifactId>
@@ -55,12 +55,6 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 
-		<!--验证码-->
-		<dependency>
-			<groupId>com.github.axet</groupId>
-			<artifactId>kaptcha</artifactId>
-			<version>${kaptcha.version}</version>
-		</dependency>
 		<!--common-core-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
@@ -70,7 +64,7 @@
 		<!--断路器依赖-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-sentinel</artifactId>
+			<artifactId>albedo-common-feign</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>

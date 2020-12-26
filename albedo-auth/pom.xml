@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-auth</artifactId>
@@ -48,7 +48,7 @@
 		<!--断路器依赖-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-sentinel</artifactId>
+			<artifactId>albedo-common-feign</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>
@@ -82,6 +82,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-security</artifactId>
+			<version>${security.version}</version>
 		</dependency>
 		<!--数据库-->
 		<dependency>

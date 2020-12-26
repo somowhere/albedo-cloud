@@ -17,7 +17,7 @@
 package com.albedo.java.modules;
 
 
-import com.albedo.java.common.security.annotation.EnableAlbedoFeignClients;
+import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

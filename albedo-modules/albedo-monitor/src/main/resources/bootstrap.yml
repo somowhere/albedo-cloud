@@ -1,6 +1,14 @@
 server:
   port: 5001
 
+
+logging:
+  level:
+    ROOT: INFO
+    com.albedo.java: DEBUG
+  file:
+    name: logs/${spring.application.name}/${spring.application.name}-info.log
+
 spring:
   application:
     name: @artifactId@
@@ -15,3 +23,5 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @spring.profiles.active@
+  autoconfigure:
+    exclude: com.albedo.java.common.core.config.JacksonConfig

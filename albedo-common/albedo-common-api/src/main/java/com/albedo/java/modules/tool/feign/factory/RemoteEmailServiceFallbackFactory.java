@@ -20,7 +20,7 @@ package com.albedo.java.modules.tool.feign.factory;
 
 import com.albedo.java.modules.tool.feign.RemoteEmailService;
 import com.albedo.java.modules.tool.feign.fallback.RemoteEmailServiceFallbackImpl;
-import feign.hystrix.FallbackFactory;
+import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 /**

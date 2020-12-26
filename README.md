@@ -1,7 +1,7 @@
  <p align="center">
    <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR8-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2.2.3.RELEASE-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.3.5.RELEASE-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.4.1-blue.svg" alt="Downloads">
  </p>  
  
 **albedo-cloud Microservice Architecture**
@@ -36,6 +36,7 @@ AlbedoGenApplication
 AlbedoQuartzApplication
 AlbedoMonitorApplication
 AlbedoSentinelApplication
+AlbedoJobAdminApplication
 AlbedoGatewayApplication
 ```
 3. 启动前端[albedi-ui](https://github.com/somowhere/albedo-ui) 访问[localhost](http://localhost:4000)
@@ -73,12 +74,12 @@ AlbedoGatewayApplication
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.3.5.RELEASE  
-Spring Cloud | Hoxton.SR8 
+Spring Boot |  2.4.1  
+Spring Cloud | 2020.0.0 
 Spring Cloud Alibaba | 2.2.3.RELEASE
 Spring Security OAuth2 | 2.3.6.RELEASE
-Mybatis Plus | 3.4.0
-hutool | 5.4.7
+Mybatis Plus | 3.4.1
+hutool | 5.5.3
    
 
 
@@ -99,7 +100,7 @@ albedo
      ├── albedo-quartz -- 任务调度 [5004]
      ├── albedo-sentinel -- 流量监控模块 [8858]
      ├── albedo-sys -- 通用用户权限管理系统业务处理模块[4000]
-     └── albedo-xxl-job-admin -- 分布式调度模块[5005]
+     └── albedo-job -- 分布式调度模块[5005]
 └── albedo-plugin  -- 插件模块 
      ├── albedo-data-mybatis -- mybatis 基础模块
      └── albedo-swagger-api -- swagger api

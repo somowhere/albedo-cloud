@@ -20,7 +20,7 @@ package com.albedo.java.monitor;
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -32,7 +32,7 @@ import java.net.InetAddress;
  * 监控中心
  */
 @EnableAdminServer
-@SpringBootApplication
+@SpringCloudApplication
 @Slf4j
 public class AlbedoMonitorApplication {
 

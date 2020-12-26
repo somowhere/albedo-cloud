@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.albedo.java.common.feign.AlbedoFeignAutoConfiguration,\
+    com.albedo.java.common.feign.handle.GlobalBizExceptionHandler

@@ -21,10 +21,11 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-modules</artifactId>
-		<version>3.0.2-SNAPSHOT</version>
+		<version>3.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-monitor</artifactId>
+	<packaging>jar</packaging>
 
 
 	<description>albedo 监控模块，基于 spring boot admin</description>
@@ -45,17 +46,16 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
+		<!--断路器依赖-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-feign</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
 		<!--web 模块-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<!--排除tomcat依赖-->
-				<exclusion>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-					<groupId>org.springframework.boot</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!--undertow容器-->
 		<dependency>

@@ -4,8 +4,10 @@ import com.albedo.java.common.config.ApplicationSwaggerProperties;
 import com.albedo.java.common.core.vo.PageModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.core.Ordered;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.AntPathMatcher;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -24,7 +26,6 @@ import java.util.List;
  * @date 2020/5/31 17:06
  */
 public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
-	public static final int DEFAULT_ORDER = 0;
 	/**
 	 * 默认的排除路径，排除Spring Boot默认的错误处理路径和端点
 	 */
@@ -46,12 +47,12 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 		List<Predicate<String>> excludePath = new ArrayList<>();
 		// noinspection unchecked
 		List<Predicate<String>> basePath = new ArrayList();
-		applicationSwaggerProperties.getBasePath().forEach(path -> basePath.add(PathSelectors.ant(path)));
+		applicationSwaggerProperties.getBasePath().forEach(path -> basePath.add(ant(path)));
 		// exclude-path处理
 		if (applicationSwaggerProperties.getExcludePath().isEmpty()) {
 			applicationSwaggerProperties.getExcludePath().addAll(DEFAULT_EXCLUDE_PATH);
 		}
-		applicationSwaggerProperties.getExcludePath().forEach(path -> excludePath.add(PathSelectors.ant(path)));
+		applicationSwaggerProperties.getExcludePath().forEach(path -> excludePath.add(ant(path)));
 		Contact contact = new Contact(applicationSwaggerProperties.getContact().getName(),
 			applicationSwaggerProperties.getContact().getUrl(), applicationSwaggerProperties.getContact().getEmail());
 		ApiInfo apiInfo = new ApiInfo(applicationSwaggerProperties.getTitle(), applicationSwaggerProperties.getDescription(), applicationSwaggerProperties.getVersion(), applicationSwaggerProperties.getTermsOfServiceUrl(), contact, applicationSwaggerProperties.getLicense(), applicationSwaggerProperties.getLicenseUrl(), new ArrayList());
@@ -76,6 +77,21 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 		this.order = order;
 	}
 
+	/**
+	 * Predicate that evaluates the supplied ant pattern
+	 *
+	 * @param antPattern - ant Pattern
+	 * @return predicate that matches a particular ant pattern
+	 */
+	public Predicate<String> ant(final String antPattern) {
+		return new Predicate<String>() {
+			@Override
+			public boolean apply(@Nullable String input) {
+				AntPathMatcher matcher = new AntPathMatcher();
+				return matcher.match(antPattern, input);
+			}
+		};
+	}
 
 	/**
 	 * 配置默认的全局鉴权策略的开关，通过正则表达式进行匹配；默认匹配所有URL

@@ -158,6 +158,12 @@ public interface CommonConstants {
 	 * 默认生成图形验证码过期时间
 	 */
 	int DEFAULT_IMAGE_EXPIRE = 60;
+
+
+	/**
+	 * 验证码有效期,默认 60秒
+	 */
+	long CODE_TIME = 60;
 	/**
 	 * 边框颜色，合法值： r,g,b (and optional alpha) 或者 white,black,blue.
 	 */

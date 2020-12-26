@@ -21,15 +21,16 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.0.2-SNAPSHOT</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.0.2-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.3.6.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+		<project.release.version>3.0.3-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.4.1</spring-boot.version>
+		<spring-cloud.version>2020.0.0</spring-cloud.version>
+		<security.version>2.2.4.RELEASE</security.version>
 		<spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -37,18 +38,18 @@
 		<spring-boot-admin.version>2.3.1</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.5.1</hutool.version>
+		<hutool.version>5.5.3</hutool.version>
 		<mybatis-plus.version>3.4.1</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
 		<knife4j.version>2.0.4</knife4j.version>
-		<kaptcha.version>0.0.9</kaptcha.version>
+		<captcha.version>2.2.0</captcha.version>
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<h2.version>1.4.199</h2.version>
 		<poi.version>4.1.2</poi.version>
-		<springfox.version>2.9.2</springfox.version>
-		<guava.version>20.0</guava.version>
+		<springfox.version>3.0.0</springfox.version>
+		<guava.version>30.1-jre</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
 		<fastjson.version>1.2.74</fastjson.version>
@@ -66,6 +67,11 @@
 	</properties>
 
 	<dependencies>
+		<!--bootstrap 启动器-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
 		<!--配置文件处理器-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

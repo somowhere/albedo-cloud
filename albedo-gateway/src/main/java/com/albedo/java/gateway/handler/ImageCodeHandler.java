@@ -1,12 +1,12 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
+ * Copyright (c) 2020 pig4cloud Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,11 +17,12 @@
 package com.albedo.java.gateway.handler;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.google.code.kaptcha.Producer;
+import com.pig4cloud.captcha.ArithmeticCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -32,45 +33,41 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author somowhere
- * @date 2019/2/1
- * 验证码生成逻辑处理类
+ * @author lengleng
+ * @date 2018/7/5 验证码生成逻辑处理类
  */
 @Slf4j
 @Component
 @AllArgsConstructor
 public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
-	private final Producer producer;
+
+	private static final Integer DEFAULT_IMAGE_WIDTH = 100;
+
+	private static final Integer DEFAULT_IMAGE_HEIGHT = 40;
+
 	private final RedisTemplate redisTemplate;
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		//生成验证码
-		String text = producer.createText();
-		BufferedImage image = producer.createImage(text);
+		ArithmeticCaptcha captcha = new ArithmeticCaptcha(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
-		//保存验证码信息
+		String result = captcha.text();
+
+		// 保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
-		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, text, 60, TimeUnit.SECONDS);
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, result,
+			CommonConstants.DEFAULT_IMAGE_EXPIRE, TimeUnit.SECONDS);
 
 		// 转换流信息写出
 		FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-		try {
-			ImageIO.write(image, "jpeg", os);
-		} catch (IOException e) {
-			log.error("ImageIO write err", e);
-			return Mono.error(e);
-		}
+		captcha.out(os);
 
-		return ServerResponse
-			.status(HttpStatus.OK)
-			.contentType(MediaType.IMAGE_JPEG)
+		return ServerResponse.status(HttpStatus.OK).contentType(MediaType.IMAGE_JPEG)
 			.body(BodyInserters.fromResource(new ByteArrayResource(os.toByteArray())));
 	}
+
 }
