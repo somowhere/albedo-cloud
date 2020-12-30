@@ -108,6 +108,12 @@ albedo
 	 
 ```
 
+#### 特别鸣谢
+
+- 感谢 [JetBrains](https://www.jetbrains.com/) 提供的非商业开源软件开发授权
+- 感谢
+  [jhipster](https://www.jhipster.tech/)  [pig](https://gitee.com/log4j/pig)  [RuoYi](https://gitee.com/y_project/RuoYi)  [eladmin](https://github.com/elunez/eladmin)
+
 #### 提交反馈
 
 1. 欢迎提交 issue，请写清楚遇到问题的原因，开发环境，复显步骤。
