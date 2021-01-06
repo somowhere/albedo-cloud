@@ -7,7 +7,7 @@ services:
     container_name: albedo-mysql
     image: albedo-mysql
     ports:
-      - 3307:3306
+      - 3317:3306
     environment:
       MYSQL_ROOT_PASSWORD: 111111
       TZ: Asia/Shanghai
@@ -21,9 +21,9 @@ services:
       - seccomp:unconfined
 
   albedo-redis:
-    image: redis:5.0
+    image: redis:6.0
     ports:
-      - 6377:6379
+      - 6177:6379
     restart: always
     container_name: albedo-redis
     hostname: albedo-redis
@@ -31,9 +31,11 @@ services:
   albedo-register:
     build:
       context: ./albedo-register
-    #restart: always
+    restart: always
+    volumes:
+      - ./logs/nacos-logs/:/root/nacos/logs
     ports:
-      - 8847:8848
+      - 8844:8848
     container_name: albedo-register
     hostname: albedo-register
     image: albedo-register
@@ -111,9 +113,9 @@ services:
     image: albedo-monitor
 
   albedo-ui:
-    #restart: always
+    restart: always
     container_name: albedo-ui
     hostname: albedo-ui
-    image: albedocloud/albedo-ui:3.0.1
+    image: albedocloud/albedo-ui:3.0.3
     ports:
       - 8087:80
