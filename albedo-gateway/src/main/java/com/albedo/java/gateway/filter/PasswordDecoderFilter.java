@@ -86,7 +86,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 			URI uri = exchange.getRequest().getURI();
 			String queryParam = uri.getRawQuery();
-			Map<String, String> paramMap = HttpUtil.decodeParamMap(queryParam, CharsetUtil.UTF_8);
+			Map<String, String> paramMap = HttpUtil.decodeParamMap(queryParam, CharsetUtil.CHARSET_UTF_8);
 
 			String password = paramMap.get(PASSWORD);
 			if (StrUtil.isNotBlank(password)) {

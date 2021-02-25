@@ -21,24 +21,23 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.0.4-SNAPSHOT</version>
+	<version>3.0.5-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.0.4-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.4.2</spring-boot.version>
+		<project.release.version>3.0.5-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.4.3</spring-boot.version>
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
-		<security.version>2.2.4.RELEASE</security.version>
 		<spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.3.1</spring-boot-admin.version>
+		<spring-boot-admin.version>2.4.0</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.5.7</hutool.version>
+		<hutool.version>5.5.8</hutool.version>
 		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<dynamic-ds.version>3.2.0</dynamic-ds.version>
 		<knife4j.version>3.0.2</knife4j.version>
@@ -53,7 +52,7 @@
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
 		<fastjson.version>1.2.74</fastjson.version>
-		<xxl-job.version>2.2.0</xxl-job.version>
+		<xxl-job.version>2.3.0</xxl-job.version>
 		<swagger.version>1.5.20</swagger.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
 		<docker.host>http://192.168.86.154:2375</docker.host>
@@ -248,6 +247,33 @@
 				<groupId>io.spring.javaformat</groupId>
 				<artifactId>spring-javaformat-maven-plugin</artifactId>
 				<version>${spring.checkstyle.plugin}</version>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker.plugin.version}</version>
+				<configuration>
+					<!-- Docker Remote Api-->
+					<dockerHost>${docker.host}</dockerHost>
+					<!-- Docker 镜像私服-->
+					<registry>${docker.registry}</registry>
+					<!-- 认证信息-->
+					<authConfig>
+						<push>
+							<username>${docker.username}</username>
+							<password>${docker.password}</password>
+						</push>
+					</authConfig>
+					<images>
+						<image>
+							<!-- 镜像名称： 172.17.0.111/library/pig-gateway:2.6.3-->
+							<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
+							<build>
+								<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+							</build>
+						</image>
+					</images>
+				</configuration>
 			</plugin>
 			<!--			<plugin>-->
 			<!--				<groupId>org.apache.maven.plugins</groupId>-->

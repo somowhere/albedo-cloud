@@ -16,7 +16,6 @@ import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.modules.sys.util.DictUtil;
 import com.google.common.collect.Maps;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -449,10 +448,8 @@ public class ExcelUtil<T> {
 	 */
 	public void setCellVo(Object value, ExcelField attr, Cell cell) {
 		if (ColumnType.STRING == attr.cellType()) {
-			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(ObjectUtil.isNull(value) ? attr.defaultValue() : value + attr.suffix());
 		} else if (ColumnType.NUMERIC == attr.cellType()) {
-			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(Integer.parseInt(value + ""));
 		}
 	}
@@ -711,9 +708,9 @@ public class ExcelUtil<T> {
 		try {
 			Cell cell = row.getCell(column);
 			if (cell != null) {
-				if (cell.getCellTypeEnum() == CellType.NUMERIC || cell.getCellTypeEnum() == CellType.FORMULA) {
+				if (cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA) {
 					val = cell.getNumericCellValue();
-					if (HSSFDateUtil.isCellDateFormatted(cell)) {
+					if (DateUtil.isCellDateFormatted(cell)) {
 						// POI Excel 日期格式转换
 						val = DateUtil.getJavaDate((Double) val);
 					} else {
@@ -723,11 +720,11 @@ public class ExcelUtil<T> {
 							val = new DecimalFormat("0").format(val);
 						}
 					}
-				} else if (cell.getCellTypeEnum() == CellType.STRING) {
+				} else if (cell.getCellType() == CellType.STRING) {
 					val = cell.getStringCellValue();
-				} else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
+				} else if (cell.getCellType() == CellType.BOOLEAN) {
 					val = cell.getBooleanCellValue();
-				} else if (cell.getCellTypeEnum() == CellType.ERROR) {
+				} else if (cell.getCellType() == CellType.ERROR) {
 					val = cell.getErrorCellValue();
 				}
 

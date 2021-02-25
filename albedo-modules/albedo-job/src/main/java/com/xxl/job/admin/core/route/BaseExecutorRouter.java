@@ -10,13 +10,12 @@ import java.util.List;
 /**
  * Created by xuxueli on 17/3/10.
  */
-public abstract class ExecutorRouter {
+public abstract class BaseExecutorRouter {
 
-	protected static Logger logger = LoggerFactory.getLogger(ExecutorRouter.class);
+	protected static Logger logger = LoggerFactory.getLogger(BaseExecutorRouter.class);
 
 	/**
 	 * route address
-	 *
 	 * @param addressList
 	 * @return ReturnT.content=address
 	 */

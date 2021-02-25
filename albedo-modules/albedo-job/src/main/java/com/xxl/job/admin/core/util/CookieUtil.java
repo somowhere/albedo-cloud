@@ -19,7 +19,6 @@ public class CookieUtil {
 
 	/**
 	 * 保存
-	 *
 	 * @param response
 	 * @param key
 	 * @param value
@@ -32,14 +31,13 @@ public class CookieUtil {
 
 	/**
 	 * 保存
-	 *
 	 * @param response
 	 * @param key
 	 * @param value
 	 * @param maxAge
 	 */
 	private static void set(HttpServletResponse response, String key, String value, String domain, String path,
-							int maxAge, boolean isHttpOnly) {
+			int maxAge, boolean isHttpOnly) {
 		Cookie cookie = new Cookie(key, value);
 		if (domain != null) {
 			cookie.setDomain(domain);
@@ -52,7 +50,6 @@ public class CookieUtil {
 
 	/**
 	 * 查询value
-	 *
 	 * @param request
 	 * @param key
 	 * @return
@@ -67,7 +64,6 @@ public class CookieUtil {
 
 	/**
 	 * 查询Cookie
-	 *
 	 * @param request
 	 * @param key
 	 */
@@ -85,7 +81,6 @@ public class CookieUtil {
 
 	/**
 	 * 删除Cookie
-	 *
 	 * @param request
 	 * @param response
 	 * @param key

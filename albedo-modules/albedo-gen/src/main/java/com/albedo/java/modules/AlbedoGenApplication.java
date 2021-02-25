@@ -22,7 +22,8 @@ import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -36,7 +37,8 @@ import java.net.InetAddress;
 @EnableDynamicDataSource
 @EnableAlbedoResourceServer
 @EnableAlbedoFeignClients
-@SpringCloudApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 @Slf4j
 public class AlbedoGenApplication {
 	static String SERVER_PORT = "server.port";

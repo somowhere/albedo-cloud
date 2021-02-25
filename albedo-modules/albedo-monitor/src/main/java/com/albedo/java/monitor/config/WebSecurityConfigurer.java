@@ -53,6 +53,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.and().authorizeRequests()
 			.antMatchers(adminContextPath + "/assets/**"
 				, adminContextPath + "/login"
+				, adminContextPath + "/instances/**"
 				, adminContextPath + "/actuator/**"
 			).permitAll()
 			.anyRequest().authenticated()

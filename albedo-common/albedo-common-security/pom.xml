@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-common</artifactId>
-		<version>3.0.4-SNAPSHOT</version>
+		<version>3.0.5-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-common-security</artifactId>
@@ -38,11 +38,6 @@
 			<version>${project.release.version}</version>
 		</dependency>
 		<!--安全模块-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-security</artifactId>
-			<version>${security.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.security.oauth.boot</groupId>
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>

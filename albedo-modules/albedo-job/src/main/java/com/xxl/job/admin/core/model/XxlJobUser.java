@@ -61,7 +61,8 @@ public class XxlJobUser {
 	public boolean validPermission(int jobGroup) {
 		if (this.role == 1) {
 			return true;
-		} else {
+		}
+		else {
 			if (StringUtils.hasText(this.permission)) {
 				for (String permissionItem : this.permission.split(",")) {
 					if (String.valueOf(jobGroup).equals(permissionItem)) {

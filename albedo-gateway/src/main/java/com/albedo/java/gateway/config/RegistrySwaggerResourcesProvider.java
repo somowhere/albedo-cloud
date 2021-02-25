@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * Retrieves all registered microservices Swagger resources.
+ * @author Li Jie
  */
 @Component
 @Primary

@@ -32,52 +32,48 @@ public class JobLosedMonitorHelper {
 	}
 
 	public void start() {
-		monitorThread = new Thread(new Runnable() {
+		monitorThread = new Thread(() -> {
 
-			@Override
-			public void run() {
+			// monitor
+			while (!toStop) {
+				try {
+					// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
+					Date losedTime = DateUtil.addMinutes(new Date(), -10);
+					List<Long> losedJobIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
+						.findLostJobIds(losedTime);
 
-				// monitor
-				while (!toStop) {
-					try {
-						// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
-						Date losedTime = DateUtil.addMinutes(new Date(), -10);
-						List<Long> losedJobIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
-							.findLostJobIds(losedTime);
+					if (losedJobIds != null && losedJobIds.size() > 0) {
+						for (Long logId : losedJobIds) {
 
-						if (losedJobIds != null && losedJobIds.size() > 0) {
-							for (Long logId : losedJobIds) {
+							XxlJobLog jobLog = new XxlJobLog();
+							jobLog.setId(logId);
 
-								XxlJobLog jobLog = new XxlJobLog();
-								jobLog.setId(logId);
+							jobLog.setHandleTime(new Date());
+							jobLog.setHandleCode(ReturnT.FAIL_CODE);
+							jobLog.setHandleMsg(I18nUtil.getString("joblog_lost_fail"));
 
-								jobLog.setHandleTime(new Date());
-								jobLog.setHandleCode(ReturnT.FAIL_CODE);
-								jobLog.setHandleMsg(I18nUtil.getString("joblog_lost_fail"));
-
-								XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().updateHandleInfo(jobLog);
-							}
-
+							XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao().updateHandleInfo(jobLog);
 						}
-					} catch (Exception e) {
-						if (!toStop) {
-							logger.error(">>>>>>>>>>> xxl-job, job fail monitor thread error:{}", e);
-						}
+
 					}
-
-					try {
-						TimeUnit.SECONDS.sleep(60);
-					} catch (Exception e) {
-						if (!toStop) {
-							logger.error(e.getMessage(), e);
-						}
+				} catch (Exception e) {
+					if (!toStop) {
+						logger.error(">>>>>>>>>>> xxl-job, job fail monitor thread error:{}", e);
 					}
-
 				}
 
-				logger.info(">>>>>>>>>>> xxl-job, JobLosedMonitorHelper stop");
+				try {
+					TimeUnit.SECONDS.sleep(60);
+				} catch (Exception e) {
+					if (!toStop) {
+						logger.error(e.getMessage(), e);
+					}
+				}
 
 			}
+
+			logger.info(">>>>>>>>>>> xxl-job, JobLosedMonitorHelper stop");
+
 		});
 		monitorThread.setDaemon(true);
 		monitorThread.setName("xxl-job, admin JobLosedMonitorHelper");

@@ -41,7 +41,7 @@ public class LoginService {
 	}
 
 	public ReturnT<String> login(HttpServletRequest request, HttpServletResponse response, String username,
-								 String password, boolean ifRemember) {
+			String password, boolean ifRemember) {
 
 		// param
 		if (username == null || username.trim().length() == 0 || password == null || password.trim().length() == 0) {
@@ -67,7 +67,6 @@ public class LoginService {
 
 	/**
 	 * logout
-	 *
 	 * @param request
 	 * @param response
 	 */
@@ -78,7 +77,6 @@ public class LoginService {
 
 	/**
 	 * logout
-	 *
 	 * @param request
 	 * @return
 	 */
@@ -88,7 +86,8 @@ public class LoginService {
 			XxlJobUser cookieUser = null;
 			try {
 				cookieUser = parseToken(cookieToken);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				logout(request, response);
 			}
 			if (cookieUser != null) {

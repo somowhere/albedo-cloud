@@ -44,7 +44,7 @@ import java.io.PrintWriter;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
+public class AlbedoAccessDeniedHandler extends OAuth2AccessDeniedHandler {
 	private final ObjectMapper objectMapper;
 
 	/**

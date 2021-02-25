@@ -38,7 +38,6 @@ public class JobAlarmer implements ApplicationContextAware, InitializingBean {
 
 	/**
 	 * job alarm
-	 *
 	 * @param info
 	 * @param jobLog
 	 * @return
@@ -52,7 +51,8 @@ public class JobAlarmer implements ApplicationContextAware, InitializingBean {
 				boolean resultItem = false;
 				try {
 					resultItem = alarm.doAlarm(info, jobLog);
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					logger.error(e.getMessage(), e);
 				}
 				if (!resultItem) {

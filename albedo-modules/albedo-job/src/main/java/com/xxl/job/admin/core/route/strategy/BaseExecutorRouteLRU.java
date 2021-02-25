@@ -1,6 +1,6 @@
 package com.xxl.job.admin.core.route.strategy;
 
-import com.xxl.job.admin.core.route.ExecutorRouter;
+import com.xxl.job.admin.core.route.BaseExecutorRouter;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.biz.model.TriggerParam;
 
@@ -13,10 +13,10 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * 单个JOB对应的每个执行器，最久为使用的优先被选举 a、LFU(Least Frequently Used)：最不经常使用，频率/次数 b(*)、LRU(Least
  * Recently Used)：最近最久未使用，时间
- * <p>
+ *
  * Created by xuxueli on 17/3/10.
  */
-public class ExecutorRouteLRU extends ExecutorRouter {
+public class BaseExecutorRouteLRU extends BaseExecutorRouter {
 
 	private static ConcurrentMap<Integer, LinkedHashMap<String, String>> jobLRUMap = new ConcurrentHashMap<Integer, LinkedHashMap<String, String>>();
 

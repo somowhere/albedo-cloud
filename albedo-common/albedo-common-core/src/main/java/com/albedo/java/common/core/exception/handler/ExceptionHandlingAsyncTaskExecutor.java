@@ -9,6 +9,9 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+/**
+ * @author Li Jie
+ */
 public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor,
 	InitializingBean, DisposableBean {
 

@@ -10,7 +10,6 @@ public interface JobAlarm {
 
 	/**
 	 * job alarm
-	 *
 	 * @param info
 	 * @param jobLog
 	 * @return

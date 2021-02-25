@@ -12,15 +12,16 @@ import java.io.IOException;
 
 /**
  * Jackson util
- * <p>
+ *
  * 1、obj need private and set/get； 2、do not support inner class；
  *
  * @author xuxueli 2015-9-25 18:02:56
  */
 public class JacksonUtil {
 
-	private final static ObjectMapper objectMapper = new ObjectMapper();
 	private static Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
+
+	private final static ObjectMapper objectMapper = new ObjectMapper();
 
 	public static ObjectMapper getInstance() {
 		return objectMapper;
@@ -28,7 +29,6 @@ public class JacksonUtil {
 
 	/**
 	 * bean、array、List、Map --> json
-	 *
 	 * @param obj
 	 * @return json string
 	 * @throws Exception
@@ -36,11 +36,14 @@ public class JacksonUtil {
 	public static String writeValueAsString(Object obj) {
 		try {
 			return getInstance().writeValueAsString(obj);
-		} catch (JsonGenerationException e) {
+		}
+		catch (JsonGenerationException e) {
 			logger.error(e.getMessage(), e);
-		} catch (JsonMappingException e) {
+		}
+		catch (JsonMappingException e) {
 			logger.error(e.getMessage(), e);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return null;
@@ -48,7 +51,6 @@ public class JacksonUtil {
 
 	/**
 	 * string --> bean、Map、List(array)
-	 *
 	 * @param jsonStr
 	 * @param clazz
 	 * @return obj
@@ -57,11 +59,14 @@ public class JacksonUtil {
 	public static <T> T readValue(String jsonStr, Class<T> clazz) {
 		try {
 			return getInstance().readValue(jsonStr, clazz);
-		} catch (JsonParseException e) {
+		}
+		catch (JsonParseException e) {
 			logger.error(e.getMessage(), e);
-		} catch (JsonMappingException e) {
+		}
+		catch (JsonMappingException e) {
 			logger.error(e.getMessage(), e);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return null;
@@ -69,7 +74,6 @@ public class JacksonUtil {
 
 	/**
 	 * string --> List<Bean>...
-	 *
 	 * @param jsonStr
 	 * @param parametrized
 	 * @param parameterClasses
@@ -80,11 +84,14 @@ public class JacksonUtil {
 		try {
 			JavaType javaType = getInstance().getTypeFactory().constructParametricType(parametrized, parameterClasses);
 			return getInstance().readValue(jsonStr, javaType);
-		} catch (JsonParseException e) {
+		}
+		catch (JsonParseException e) {
 			logger.error(e.getMessage(), e);
-		} catch (JsonMappingException e) {
+		}
+		catch (JsonMappingException e) {
 			logger.error(e.getMessage(), e);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return null;

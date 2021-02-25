@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.albedo.java.common.security.service.UserDetailsServiceImpl
+  com.albedo.java.common.security.service.UserDetailsServiceImpl,\
+  com.albedo.java.common.security.component.SecurityInnerAspect

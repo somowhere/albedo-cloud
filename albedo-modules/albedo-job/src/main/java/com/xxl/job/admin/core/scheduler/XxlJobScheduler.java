@@ -19,6 +19,62 @@ import java.util.concurrent.ConcurrentMap;
 public class XxlJobScheduler {
 
 	private static final Logger logger = LoggerFactory.getLogger(XxlJobScheduler.class);
+
+	public void init() throws Exception {
+		// init i18n
+		initI18n();
+
+		// admin trigger pool start
+		JobTriggerPoolHelper.toStart();
+
+		// admin registry monitor run
+		JobRegistryHelper.getInstance().start();
+
+		// admin fail-monitor run
+		JobFailMonitorHelper.getInstance().start();
+
+		// admin lose-monitor run ( depend on JobTriggerPoolHelper )
+		JobCompleteHelper.getInstance().start();
+
+		// admin log report start
+		JobLogReportHelper.getInstance().start();
+
+		// start-schedule ( depend on JobTriggerPoolHelper )
+		JobScheduleHelper.getInstance().start();
+
+		logger.info(">>>>>>>>> init xxl-job admin success.");
+	}
+
+	public void destroy() throws Exception {
+
+		// stop-schedule
+		JobScheduleHelper.getInstance().toStop();
+
+		// admin log report stop
+		JobLogReportHelper.getInstance().toStop();
+
+		// admin lose-monitor stop
+		JobCompleteHelper.getInstance().toStop();
+
+		// admin fail-monitor stop
+		JobFailMonitorHelper.getInstance().toStop();
+
+		// admin registry stop
+		JobRegistryHelper.getInstance().toStop();
+
+		// admin trigger pool stop
+		JobTriggerPoolHelper.toStop();
+
+	}
+
+	// ---------------------- I18n ----------------------
+
+	private void initI18n() {
+		for (ExecutorBlockStrategyEnum item : ExecutorBlockStrategyEnum.values()) {
+			item.setTitle(I18nUtil.getString("jobconf_block_".concat(item.name())));
+		}
+	}
+
 	// ---------------------- executor-client ----------------------
 	private static ConcurrentMap<String, ExecutorBiz> executorBizRepository = new ConcurrentHashMap<String, ExecutorBiz>();
 
@@ -40,61 +96,6 @@ public class XxlJobScheduler {
 
 		executorBizRepository.put(address, executorBiz);
 		return executorBiz;
-	}
-
-	// ---------------------- I18n ----------------------
-
-	public void init() throws Exception {
-		// init i18n
-		initI18n();
-
-		// admin registry monitor run
-		JobRegistryMonitorHelper.getInstance().start();
-
-		// admin fail-monitor run
-		JobFailMonitorHelper.getInstance().start();
-
-		// admin lose-monitor run
-		JobLosedMonitorHelper.getInstance().start();
-
-		// admin trigger pool start
-		JobTriggerPoolHelper.toStart();
-
-		// admin log report start
-		JobLogReportHelper.getInstance().start();
-
-		// start-schedule
-		JobScheduleHelper.getInstance().start();
-
-		logger.info(">>>>>>>>> init xxl-job admin success.");
-	}
-
-	public void destroy() throws Exception {
-
-		// stop-schedule
-		JobScheduleHelper.getInstance().toStop();
-
-		// admin log report stop
-		JobLogReportHelper.getInstance().toStop();
-
-		// admin trigger pool stop
-		JobTriggerPoolHelper.toStop();
-
-		// admin lose-monitor stop
-		JobLosedMonitorHelper.getInstance().toStop();
-
-		// admin fail-monitor stop
-		JobFailMonitorHelper.getInstance().toStop();
-
-		// admin registry stop
-		JobRegistryMonitorHelper.getInstance().toStop();
-
-	}
-
-	private void initI18n() {
-		for (ExecutorBlockStrategyEnum item : ExecutorBlockStrategyEnum.values()) {
-			item.setTitle(I18nUtil.getString("jobconf_block_".concat(item.name())));
-		}
 	}
 
 }
