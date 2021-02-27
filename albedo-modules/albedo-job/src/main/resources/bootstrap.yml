@@ -1,6 +1,6 @@
 # 此配置只适合开发测试环境，详细配置参考： http://t.cn/A64RaHJm
 server:
-  port: 5004
+  port: 5005
   servlet:
     context-path: /xxl-job-admin
 
@@ -14,4 +14,4 @@ spring:
         metadata:
           management.context-path: ${server.servlet.context-path}/actuator
   profiles:
-    active: @profiles.active@
+    active: @spring.profiles.active@
