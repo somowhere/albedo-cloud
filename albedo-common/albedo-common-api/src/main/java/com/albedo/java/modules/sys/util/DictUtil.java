@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * 数据字典工具类 copyright 2014 albedo all right reserved author somewhere created on
  * 2015年1月27日 上午9:52:55
- * @author Li Jie
+ * @author somewhere
  */
 @Slf4j
 public class DictUtil {

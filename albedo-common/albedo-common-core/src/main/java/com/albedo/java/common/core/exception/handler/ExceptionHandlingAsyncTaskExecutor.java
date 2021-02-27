@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
- * @author Li Jie
+ * @author somewhere
  */
 public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor,
 	InitializingBean, DisposableBean {
