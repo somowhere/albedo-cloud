@@ -6,9 +6,9 @@ server:
 db:
   num: 1
   user: ${MYSQL-USER:root}
-  password: ${MYSQL-PWD:root}
+  password: ${MYSQL-PWD:111111}
   url:
-    0: jdbc:mysql://${MYSQL_HOST:pig-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:pig_config}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    0: jdbc:mysql://${MYSQL_HOST:albedo-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:albedo-config}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
 
 
 nacos:
@@ -28,13 +28,13 @@ spring:
   boot:  # 接入 spring boot admin
     admin:
       client:
-        url: http://pig-monitor:5001
-        username: pig
-        password: pig
+        url: http://albedo-monitor:5001
+        username: albedo
+        password: albedo
         instance:
           prefer-ip: true
   application:
-    name: @project.artifactId@
+    name: @artifactId@
 
 useAddressServer: true
 

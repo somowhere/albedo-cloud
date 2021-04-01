@@ -92,9 +92,21 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 				<excludes>
-					<exclude>static/console-fe/.vscode/**</exclude>
+					<exclude>**/*.woff</exclude>
+					<exclude>**/*.woff2</exclude>
+					<exclude>**/*.ttf</exclude>
 				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.woff</include>
+					<include>**/*.woff2</include>
+					<include>**/*.ttf</include>
+				</includes>
 			</resource>
 		</resources>
 	</build>
