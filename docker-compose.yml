@@ -112,10 +112,3 @@ services:
     hostname: albedo-monitor
     image: albedo-monitor
 
-  albedo-ui:
-    restart: always
-    container_name: albedo-ui
-    hostname: albedo-ui
-    image: albedocloud/albedo-ui:3.0.3
-    ports:
-      - 8087:80
