@@ -16,8 +16,10 @@
 
 package com.albedo.java.common.feign.handle;
 
+import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.Result;
 import com.alibaba.csp.sentinel.Tracer;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
@@ -59,6 +61,24 @@ public class GlobalBizExceptionHandler {
 		// 业务异常交由 sentinel 记录
 		Tracer.trace(e);
 		return Result.buildFail(e.getLocalizedMessage());
+	}
+
+	/**
+	 * FeignException.
+	 *
+	 * @param e the e
+	 * @return Result
+	 */
+	@ExceptionHandler(FeignException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Result handleGlobalException(FeignException e) {
+		log.warn("FeignException ex={}", e.getMessage());
+
+		try {
+			return Json.parseObject(e.contentUTF8(),Result.class);
+		}catch (Exception ex) {
+			return Result.buildFail("远程调用失败");
+		}
 	}
 
 	/**

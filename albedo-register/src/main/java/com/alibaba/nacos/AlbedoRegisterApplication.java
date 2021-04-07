@@ -28,13 +28,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @SpringBootApplication
-public class AlbedoNacosApplication {
+public class AlbedoRegisterApplication {
 
 	public static void main(String[] args) {
 		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
 		System.setProperty(ConfigConstants.AUTH_ENABLED, "false");
 		System.setProperty(ConfigConstants.LOG_BASEDIR, "logs");
-		SpringApplication.run(AlbedoNacosApplication.class, args);
+		SpringApplication.run(AlbedoRegisterApplication.class, args);
 	}
 
 }

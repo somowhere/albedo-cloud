@@ -14,6 +14,6 @@ EXPOSE 8878
 
 ADD ./target/albedo-gen.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-gen.jar
+CMD sleep 10;java -Djava.security.egd=file:/dev/./urandom -jar albedo-gen.jar
 
 
