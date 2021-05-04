@@ -84,12 +84,9 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 	 * @return predicate that matches a particular ant pattern
 	 */
 	public Predicate<String> ant(final String antPattern) {
-		return new Predicate<String>() {
-			@Override
-			public boolean apply(@Nullable String input) {
-				AntPathMatcher matcher = new AntPathMatcher();
-				return matcher.match(antPattern, input);
-			}
+		return input -> {
+			AntPathMatcher matcher = new AntPathMatcher();
+			return matcher.match(antPattern, input);
 		};
 	}
 

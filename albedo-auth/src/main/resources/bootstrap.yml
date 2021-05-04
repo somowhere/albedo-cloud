@@ -1,12 +1,6 @@
 server:
   port: 3000
 
-
-#配置日志地址
-logging:
-  file:
-    name: logs/${spring.application.name}/${spring.application.name}-info.log
-
 spring:
   application:
     name: @artifactId@
@@ -22,6 +16,12 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @spring.profiles.active@
+
+
+#配置日志地址
+logging:
+  file:
+    name: logs/${spring.application.name}/${spring.application.name}-info.log
 
 
 
