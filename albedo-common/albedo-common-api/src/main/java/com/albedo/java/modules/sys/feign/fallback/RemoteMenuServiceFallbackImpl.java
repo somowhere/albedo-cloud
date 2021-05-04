@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.feign.RemoteMenuService;
@@ -40,6 +40,6 @@ public class RemoteMenuServiceFallbackImpl implements RemoteMenuService {
 	@Override
 	public Result<Boolean> saveByGenScheme(GenSchemeDto schemeDto, String from) {
 		log.error("feign saveByGenScheme信息失败:{}", schemeDto, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 }

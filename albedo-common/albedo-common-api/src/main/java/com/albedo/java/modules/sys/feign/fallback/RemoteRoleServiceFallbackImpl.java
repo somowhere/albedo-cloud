@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.feign.RemoteRoleService;
 import lombok.Setter;
@@ -46,7 +46,7 @@ public class RemoteRoleServiceFallbackImpl implements RemoteRoleService {
 	@Override
 	public Result<List<String>> findDeptIdsByRoleId(String roleId, String from) {
 		log.error("feign 查询DeptIds信息失败:{}", roleId, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 
 }

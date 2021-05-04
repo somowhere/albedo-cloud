@@ -2,9 +2,9 @@ package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.handler.GlobalExceptionHandler;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.feign.handle.GlobalBizExceptionHandler;
 import com.albedo.java.modules.AlbedoSysApplication;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.sys.domain.Dept;
@@ -76,7 +76,7 @@ public class UserResourceIntTest {
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 	@Autowired
-	private GlobalExceptionHandler globalExceptionHandler;
+	private GlobalBizExceptionHandler globalExceptionHandler;
 	@Autowired
 	private ApplicationProperties applicationProperties;
 	private UserDto user;

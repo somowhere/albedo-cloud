@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import com.albedo.java.modules.sys.feign.RemoteLogOperateService;
@@ -49,7 +49,7 @@ public class RemoteLogOperateServiceFallbackImpl implements RemoteLogOperateServ
 	@Override
 	public Result<Boolean> save(LogOperate logOperate, String from) {
 		log.error("feign 插入日志失败", cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 
 }

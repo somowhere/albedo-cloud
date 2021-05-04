@@ -16,8 +16,11 @@
 
 package com.albedo.java.common.feign.handle;
 
+import com.albedo.java.common.core.exception.FeignBizException;
+import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.Result;
 import com.alibaba.csp.sentinel.Tracer;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
@@ -59,6 +62,36 @@ public class GlobalBizExceptionHandler {
 		// 业务异常交由 sentinel 记录
 		Tracer.trace(e);
 		return Result.buildFail(e.getLocalizedMessage());
+	}
+	/**
+	 * FeignBizException
+	 *
+	 * @param e the e
+	 * @return Result
+	 */
+	@ExceptionHandler(FeignBizException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Result handleFeignBizException(FeignBizException e) {
+		log.warn("FeignBiz异常信息 ex={}", e.getMessage(), e);
+		return Result.buildFail(e.getMessage());
+	}
+
+
+	/**
+	 * FeignException
+	 *
+	 * @param e the e
+	 * @return Result
+	 */
+	@ExceptionHandler(FeignException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Result handleFeignException(FeignException e) {
+		log.warn("Feign异常信息 ex={}",  e.getLocalizedMessage());
+		try {
+			return Json.parseObject(e.contentUTF8(), Result.class);
+		} catch (Exception e1) {
+			return Result.buildFail("远程服务调用失败");
+		}
 	}
 
 	/**

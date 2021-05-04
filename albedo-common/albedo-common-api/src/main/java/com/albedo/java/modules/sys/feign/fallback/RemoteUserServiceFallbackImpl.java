@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.feign.RemoteUserService;
@@ -47,7 +47,7 @@ public class RemoteUserServiceFallbackImpl implements RemoteUserService {
 	@Override
 	public Result<UserInfo> getInfo(String username, String from) {
 		log.error("feign 查询用户信息失败:{}", username, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 
 }

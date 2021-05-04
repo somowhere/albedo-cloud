@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.tool.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.modules.tool.domain.vo.EmailVo;
 import com.albedo.java.modules.tool.feign.RemoteEmailService;
 import lombok.Setter;
@@ -41,6 +41,6 @@ public class RemoteEmailServiceFallbackImpl implements RemoteEmailService {
 	@Override
 	public void send(@Valid EmailVo emailVo, String from) {
 		log.error("feign 邮件发送失败:{}", emailVo, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 }
