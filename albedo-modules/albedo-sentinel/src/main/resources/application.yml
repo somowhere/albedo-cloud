@@ -10,7 +10,8 @@ logging:
       springframework:
         web: info
   file:
-    name: ${user.home}/logs/csp/sentinel-dashboard.log
+#    name: ${user.home}/logs/csp/sentinel-dashboard.log
+      name: logs/albedo-sentinel/sentinel-dashboard.log
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
 
