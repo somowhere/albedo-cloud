@@ -14,6 +14,6 @@ EXPOSE 8878
 
 ADD ./target/albedo-auth.jar ./
 
-CMD sleep 30;java -Djava.security.egd=file:/dev/./urandom -jar albedo-auth.jar
+CMD sleep 10;java -Djava.security.egd=file:/dev/./urandom -jar albedo-auth.jar
 
 
