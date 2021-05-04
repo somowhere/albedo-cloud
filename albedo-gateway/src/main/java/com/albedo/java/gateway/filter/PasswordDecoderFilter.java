@@ -92,7 +92,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 			String password = paramMap.get(PASSWORD);
 			if (StrUtil.isNotBlank(password)) {
 				try {
-					if(password.contains("%")){
+					if (password.contains("%")) {
 						password = URLUtil.decode(password, CharsetUtil.CHARSET_UTF_8);
 					}
 					password = decryptAES(password, encodeKey);

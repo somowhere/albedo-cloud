@@ -66,9 +66,9 @@ public class IndexController {
 	@ResponseBody
 	@PermissionLimit(limit = false)
 	public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName,
-			String password, String ifRemember) {
+								   String password, String ifRemember) {
 		boolean ifRem = (ifRemember != null && ifRemember.trim().length() > 0 && "on".equals(ifRemember)) ? true
-				: false;
+			: false;
 		return loginService.login(request, response, userName, password, ifRem);
 	}
 

@@ -23,12 +23,7 @@ import com.alibaba.nacos.security.nacos.NacosAuthConfig;
 import com.alibaba.nacos.security.nacos.roles.NacosRoleServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,7 +42,8 @@ public class RoleController {
 
 	/**
 	 * Get roles list.
-	 * @param pageNo number index of page
+	 *
+	 * @param pageNo   number index of page
 	 * @param pageSize page size
 	 * @param username optional, username of user
 	 * @return role list
@@ -55,12 +51,13 @@ public class RoleController {
 	@GetMapping
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "roles", action = ActionTypes.READ)
 	public Object getRoles(@RequestParam int pageNo, @RequestParam int pageSize,
-			@RequestParam(name = "username", defaultValue = "") String username) {
+						   @RequestParam(name = "username", defaultValue = "") String username) {
 		return roleService.getRolesFromDatabase(username, pageNo, pageSize);
 	}
 
 	/**
 	 * Fuzzy matching role name .
+	 *
 	 * @param role role id
 	 * @return role list
 	 */
@@ -76,7 +73,8 @@ public class RoleController {
 	 * <p>
 	 * This method is used for 2 functions: 1. create a role and bind it to GLOBAL_ADMIN.
 	 * 2. bind a role to an user.
-	 * @param role role name
+	 *
+	 * @param role     role name
 	 * @param username username
 	 * @return Code 200 and message 'add role ok!'
 	 */
@@ -89,18 +87,18 @@ public class RoleController {
 
 	/**
 	 * Delete a role. If no username is specified, all users under this role are deleted.
-	 * @param role role
+	 *
+	 * @param role     role
 	 * @param username username
 	 * @return ok if succeed
 	 */
 	@DeleteMapping
 	@Secured(resource = NacosAuthConfig.CONSOLE_RESOURCE_NAME_PREFIX + "roles", action = ActionTypes.WRITE)
 	public Object deleteRole(@RequestParam String role,
-			@RequestParam(name = "username", defaultValue = StringUtils.EMPTY) String username) {
+							 @RequestParam(name = "username", defaultValue = StringUtils.EMPTY) String username) {
 		if (StringUtils.isBlank(username)) {
 			roleService.deleteRole(role);
-		}
-		else {
+		} else {
 			roleService.deleteRole(role, username);
 		}
 		return new RestResult<>(200, "delete role of user " + username + " ok!");

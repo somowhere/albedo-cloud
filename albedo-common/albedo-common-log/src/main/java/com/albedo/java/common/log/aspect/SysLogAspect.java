@@ -39,13 +39,13 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Slf4j
 public class SysLogAspect {
 
-	@Around("@annotation(log)")
+	@Around("@annotation(logOperate)")
 	@SneakyThrows
-	public Object around(ProceedingJoinPoint point, com.albedo.java.common.log.annotation.LogOperate log) {
+	public Object around(ProceedingJoinPoint point, com.albedo.java.common.log.annotation.LogOperate logOperate) {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		String strClassName = point.getTarget().getClass().getName();
 		String strMethodName = point.getSignature().getName();
-		SysLogAspect.log.debug("[类名]:{},[方法]:{}", strClassName, strMethodName);
+		log.debug("[类名]:{},[方法]:{}", strClassName, strMethodName);
 		// 方法路径
 		String methodName = point.getTarget().getClass().getName() + StringUtil.DOT + signature.getName() + "()";
 		StringBuilder params = new StringBuilder("{");
@@ -59,10 +59,10 @@ public class SysLogAspect {
 			}
 		}
 		LogOperate logOperateVo = SysLogUtils.getSysLog();
-		logOperateVo.setTitle(log.value());
+		logOperateVo.setTitle(logOperate.value());
 		logOperateVo.setMethod(methodName);
 		logOperateVo.setParams(params.toString() + " }");
-		logOperateVo.setOperatorType(log.operatorType().name());
+		logOperateVo.setOperatorType(logOperate.operatorType().name());
 		Long startTime = System.currentTimeMillis();
 		Object obj;
 		try {
@@ -74,7 +74,7 @@ public class SysLogAspect {
 			logOperateVo.setLogType(LogType.ERROR.name());
 			throw e;
 		} finally {
-			saveLog(startTime, logOperateVo, log);
+			saveLog(startTime, logOperateVo, logOperate);
 		}
 
 		return obj;
@@ -83,14 +83,16 @@ public class SysLogAspect {
 	/**
 	 * @param startTime
 	 * @param logOperateVo
-	 * @param log
+	 * @param logOperate
 	 */
-	public void saveLog(Long startTime, LogOperate logOperateVo, com.albedo.java.common.log.annotation.LogOperate log) {
+	public void saveLog(Long startTime, LogOperate logOperateVo, com.albedo.java.common.log.annotation.LogOperate logOperate) {
 		Long endTime = System.currentTimeMillis();
 		logOperateVo.setTime(endTime - startTime);
-		SysLogAspect.log.debug("[logOperateVo]:{}", logOperateVo);
+		if(log.isTraceEnabled()){
+			log.trace("[logOperateVo]:{}", logOperateVo);
+		}
 		// 是否需要保存request，参数和值
-		if (log.isSaveRequestData()) {
+		if (logOperate.isSaveRequestData()) {
 			// 发送异步日志事件
 			SpringContextHolder.publishEvent(new SysLogEvent(logOperateVo));
 		}

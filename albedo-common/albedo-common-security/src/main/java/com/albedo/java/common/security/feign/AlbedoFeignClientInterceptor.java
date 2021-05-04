@@ -41,8 +41,9 @@ public class AlbedoFeignClientInterceptor extends OAuth2FeignRequestInterceptor 
 	/**
 	 * Default constructor which uses the provided OAuth2ClientContext and Bearer tokens
 	 * within Authorization header
-	 * @param oAuth2ClientContext provided context
-	 * @param resource type of resource to be accessed
+	 *
+	 * @param oAuth2ClientContext     provided context
+	 * @param resource                type of resource to be accessed
 	 * @param accessTokenContextRelay
 	 */
 	public AlbedoFeignClientInterceptor(OAuth2ClientContext oAuth2ClientContext, OAuth2ProtectedResourceDetails resource,
@@ -55,6 +56,7 @@ public class AlbedoFeignClientInterceptor extends OAuth2FeignRequestInterceptor 
 	/**
 	 * Create a template with the header of provided name and extracted extract 1. 如果使用
 	 * 非web 请求，header 区别 2. 根据authentication 还原请求token
+	 *
 	 * @param template
 	 */
 	@Override

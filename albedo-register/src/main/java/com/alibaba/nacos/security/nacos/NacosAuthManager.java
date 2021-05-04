@@ -16,10 +16,6 @@
 
 package com.alibaba.nacos.security.nacos;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.alibaba.nacos.api.common.Constants;
 import com.alibaba.nacos.api.remote.request.Request;
 import com.alibaba.nacos.auth.AuthManager;
@@ -40,6 +36,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Builtin access control entry of Nacos.
@@ -71,11 +70,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			tokenManager.validateToken(token);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			throw new AccessException("token expired!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new AccessException("token invalid!");
 		}
 
@@ -109,11 +106,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			tokenManager.validateToken(token);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			throw new AccessException("token expired!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new AccessException("token invalid!");
 		}
 
@@ -187,10 +182,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,
-					rawPassword);
+				rawPassword);
 			authenticationManager.authenticate(authenticationToken);
-		}
-		catch (AuthenticationException e) {
+		} catch (AuthenticationException e) {
 			throw new AccessException("unknown user!");
 		}
 

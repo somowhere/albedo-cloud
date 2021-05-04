@@ -24,36 +24,33 @@ public class JobCompleteHelper {
 	private static Logger logger = LoggerFactory.getLogger(JobCompleteHelper.class);
 
 	private static JobCompleteHelper instance = new JobCompleteHelper();
+	private ThreadPoolExecutor callbackThreadPool = null;
+
+	// ---------------------- monitor ----------------------
+	private Thread monitorThread;
+	private volatile boolean toStop = false;
 
 	public static JobCompleteHelper getInstance() {
 		return instance;
 	}
 
-	// ---------------------- monitor ----------------------
-
-	private ThreadPoolExecutor callbackThreadPool = null;
-
-	private Thread monitorThread;
-
-	private volatile boolean toStop = false;
-
 	public void start() {
 
 		// for callback
 		callbackThreadPool = new ThreadPoolExecutor(2, 20, 30L, TimeUnit.SECONDS,
-				new LinkedBlockingQueue<Runnable>(3000), new ThreadFactory() {
-					@Override
-					public Thread newThread(Runnable r) {
-						return new Thread(r, "xxl-job, admin JobLosedMonitorHelper-callbackThreadPool-" + r.hashCode());
-					}
-				}, new RejectedExecutionHandler() {
-					@Override
-					public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-						r.run();
-						logger.warn(
-								">>>>>>>>>>> xxl-job, callback too fast, match threadpool rejected handler(run now).");
-					}
-				});
+			new LinkedBlockingQueue<Runnable>(3000), new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "xxl-job, admin JobLosedMonitorHelper-callbackThreadPool-" + r.hashCode());
+			}
+		}, new RejectedExecutionHandler() {
+			@Override
+			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+				r.run();
+				logger.warn(
+					">>>>>>>>>>> xxl-job, callback too fast, match threadpool rejected handler(run now).");
+			}
+		});
 
 		// for monitor
 		monitorThread = new Thread(new Runnable() {
@@ -64,8 +61,7 @@ public class JobCompleteHelper {
 				// wait for JobTriggerPoolHelper-init
 				try {
 					TimeUnit.MILLISECONDS.sleep(50);
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					if (!toStop) {
 						logger.error(e.getMessage(), e);
 					}
@@ -77,7 +73,7 @@ public class JobCompleteHelper {
 						// 任务结果丢失处理：调度记录停留在 "运行中" 状态超过10min，且对应执行器心跳注册失败不在线，则将本地调度主动标记失败；
 						Date losedTime = DateUtil.addMinutes(new Date(), -10);
 						List<Long> losedJobIds = XxlJobAdminConfig.getAdminConfig().getXxlJobLogDao()
-								.findLostJobIds(losedTime);
+							.findLostJobIds(losedTime);
 
 						if (losedJobIds != null && losedJobIds.size() > 0) {
 							for (Long logId : losedJobIds) {
@@ -93,8 +89,7 @@ public class JobCompleteHelper {
 							}
 
 						}
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(">>>>>>>>>>> xxl-job, job fail monitor thread error:{}", e);
 						}
@@ -102,8 +97,7 @@ public class JobCompleteHelper {
 
 					try {
 						TimeUnit.SECONDS.sleep(60);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						if (!toStop) {
 							logger.error(e.getMessage(), e);
 						}
@@ -130,8 +124,7 @@ public class JobCompleteHelper {
 		monitorThread.interrupt();
 		try {
 			monitorThread.join();
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
@@ -146,8 +139,8 @@ public class JobCompleteHelper {
 				for (HandleCallbackParam handleCallbackParam : callbackParamList) {
 					ReturnT<String> callbackResult = callback(handleCallbackParam);
 					logger.debug(">>>>>>>>> JobApiController.callback {}, handleCallbackParam={}, callbackResult={}",
-							(callbackResult.getCode() == ReturnT.SUCCESS_CODE ? "success" : "fail"),
-							handleCallbackParam, callbackResult);
+						(callbackResult.getCode() == ReturnT.SUCCESS_CODE ? "success" : "fail"),
+						handleCallbackParam, callbackResult);
 				}
 			}
 		});
@@ -163,12 +156,12 @@ public class JobCompleteHelper {
 		}
 		if (log.getHandleCode() > 0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback."); // avoid
-																					// repeat
-																					// callback,
-																					// trigger
-																					// child
-																					// job
-																					// etc
+			// repeat
+			// callback,
+			// trigger
+			// child
+			// job
+			// etc
 		}
 
 		// handle msg

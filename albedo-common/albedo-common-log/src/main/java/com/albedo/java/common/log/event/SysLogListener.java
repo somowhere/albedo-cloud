@@ -40,7 +40,9 @@ public class SysLogListener {
 	@Order
 	@EventListener(SysLogEvent.class)
 	public void saveSysLog(SysLogEvent event) {
-		log.debug("{}", event);
+		if(log.isTraceEnabled()){
+			log.trace("{}", event);
+		}
 		LogOperate logOperate = (LogOperate) event.getSource();
 		logOperate.setIpLocation(AddressUtils.getRealAddressByIp(logOperate.getIpAddress()));
 		remoteLogOperateService.save(logOperate, SecurityConstants.FROM_IN);

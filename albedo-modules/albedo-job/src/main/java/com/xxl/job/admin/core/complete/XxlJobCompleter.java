@@ -22,6 +22,7 @@ public class XxlJobCompleter {
 
 	/**
 	 * common fresh handle entrance (limit only once)
+	 *
 	 * @param xxlJobLog
 	 * @return
 	 */
@@ -48,16 +49,16 @@ public class XxlJobCompleter {
 		String triggerChildMsg = null;
 		if (XxlJobContext.HANDLE_COCE_SUCCESS == xxlJobLog.getHandleCode()) {
 			XxlJobInfo xxlJobInfo = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao()
-					.loadById(xxlJobLog.getJobId());
+				.loadById(xxlJobLog.getJobId());
 			if (xxlJobInfo != null && xxlJobInfo.getChildJobId() != null
-					&& xxlJobInfo.getChildJobId().trim().length() > 0) {
+				&& xxlJobInfo.getChildJobId().trim().length() > 0) {
 				triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>"
-						+ I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>";
+					+ I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>";
 
 				String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
 				for (int i = 0; i < childJobIds.length; i++) {
 					int childJobId = (childJobIds[i] != null && childJobIds[i].trim().length() > 0
-							&& isNumeric(childJobIds[i])) ? Integer.valueOf(childJobIds[i]) : -1;
+						&& isNumeric(childJobIds[i])) ? Integer.valueOf(childJobIds[i]) : -1;
 					if (childJobId > 0) {
 
 						JobTriggerPoolHelper.trigger(childJobId, TriggerTypeEnum.PARENT, -1, null, null, null);
@@ -65,14 +66,13 @@ public class XxlJobCompleter {
 
 						// add msg
 						triggerChildMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg1"),
-								(i + 1), childJobIds.length, childJobIds[i],
-								(triggerChildResult.getCode() == ReturnT.SUCCESS_CODE
-										? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
-								triggerChildResult.getMsg());
-					}
-					else {
+							(i + 1), childJobIds.length, childJobIds[i],
+							(triggerChildResult.getCode() == ReturnT.SUCCESS_CODE
+								? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
+							triggerChildResult.getMsg());
+					} else {
 						triggerChildMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"),
-								(i + 1), childJobIds.length, childJobIds[i]);
+							(i + 1), childJobIds.length, childJobIds[i]);
 					}
 				}
 
@@ -92,8 +92,7 @@ public class XxlJobCompleter {
 		try {
 			int result = Integer.valueOf(str);
 			return true;
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
