@@ -14,7 +14,7 @@
 	<name>albedo-register</name>
 	<description>nacos 注册配置中心</description>
 	<properties>
-		<nacos.version>2.0.0.RELEASE</nacos.version>
+		<nacos.version>2.0.1.RELEASE</nacos.version>
 	</properties>
 	<dependencies>
 

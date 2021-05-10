@@ -34,24 +34,24 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.4.0</spring-boot-admin.version>
+		<spring-boot-admin.version>2.4.1</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.6.3</hutool.version>
+		<hutool.version>5.6.4</hutool.version>
 		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<dynamic-ds.version>3.3.2</dynamic-ds.version>
 		<knife4j.version>3.0.2</knife4j.version>
 		<captcha.version>2.2.0</captcha.version>
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>
-		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
+		<security.oauth.version>2.5.1.RELEASE</security.oauth.version>
 		<h2.version>1.4.199</h2.version>
 		<poi.version>4.1.2</poi.version>
 		<springfox.version>3.0.0</springfox.version>
 		<guava.version>30.1-jre</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
 		<alipay.version>4.9.153.ALL</alipay.version>
-		<fastjson.version>1.2.74</fastjson.version>
+		<fastjson.version>1.2.75</fastjson.version>
 		<xxl-job.version>2.3.0</xxl-job.version>
 		<swagger.version>1.5.20</swagger.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
