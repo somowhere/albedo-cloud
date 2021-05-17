@@ -6,7 +6,7 @@ server:
 
 logging:
   level:
-    ROOT: INFO
+    ROOT: @logback.loglevel@
     com.albedo.java: DEBUG
   file:
     name: logs/${spring.application.name}/${spring.application.name}-info.log

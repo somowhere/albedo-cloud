@@ -55,13 +55,13 @@
 		<xxl-job.version>2.3.0</xxl-job.version>
 		<swagger.version>1.5.20</swagger.version>
 		<docker.plugin.version>0.32.0</docker.plugin.version>
-		<docker.host>http://192.168.86.154:2375</docker.host>
-		<docker.registry>192.168.86.154</docker.registry>
+		<docker.host>http://192.168.1.100:8088/</docker.host>
+		<docker.registry>192.168.1.100</docker.registry>
 		<docker.namespace>library</docker.namespace>
 		<docker.username>admin</docker.username>
-		<docker.password>Harbor12345</docker.password>
+		<docker.password>Harbor123</docker.password>
 
-		<profile.dev.log.level>INFO</profile.dev.log.level>
+		<profile.dev.log.level>DEBUG</profile.dev.log.level>
 		<profile.prod.log.level>INFO</profile.prod.log.level>
 	</properties>
 
