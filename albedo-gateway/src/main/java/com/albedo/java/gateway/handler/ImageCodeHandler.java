@@ -55,9 +55,10 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		ArithmeticCaptcha captcha = new ArithmeticCaptcha(DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGHT);
 
 		String result = captcha.text();
-
+		log.info("ImageCodeHandler code:"+result);
 		// 保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
+
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, result,
 			CommonConstants.DEFAULT_IMAGE_EXPIRE, TimeUnit.SECONDS);
