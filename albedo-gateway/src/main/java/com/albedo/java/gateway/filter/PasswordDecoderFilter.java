@@ -19,6 +19,7 @@ package com.albedo.java.gateway.filter;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
@@ -91,6 +92,9 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 			String password = paramMap.get(PASSWORD);
 			if (StrUtil.isNotBlank(password)) {
 				try {
+					if (password.contains("%")) {
+						password = URLUtil.decode(password, CharsetUtil.CHARSET_UTF_8);
+					}
 					password = decryptAES(password, encodeKey);
 				} catch (Exception e) {
 					log.error("密码解密失败:{}", password);

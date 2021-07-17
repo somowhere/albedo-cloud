@@ -4,11 +4,9 @@ import com.albedo.java.common.config.ApplicationSwaggerProperties;
 import com.albedo.java.common.core.vo.PageModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.core.Ordered;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.AntPathMatcher;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -84,12 +82,9 @@ public class AlbedoSwaggerCustomizer implements SwaggerCustomizer, Ordered {
 	 * @return predicate that matches a particular ant pattern
 	 */
 	public Predicate<String> ant(final String antPattern) {
-		return new Predicate<String>() {
-			@Override
-			public boolean apply(@Nullable String input) {
-				AntPathMatcher matcher = new AntPathMatcher();
-				return matcher.match(antPattern, input);
-			}
+		return input -> {
+			AntPathMatcher matcher = new AntPathMatcher();
+			return matcher.match(antPattern, input);
 		};
 	}
 

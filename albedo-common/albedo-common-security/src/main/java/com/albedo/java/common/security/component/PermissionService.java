@@ -37,6 +37,7 @@ public class PermissionService {
 
 	/**
 	 * 判断接口是否有xxx:xxx权限
+	 *
 	 * @param permission 权限
 	 * @return {boolean}
 	 */
@@ -50,7 +51,7 @@ public class PermissionService {
 		}
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		return authorities.stream().map(GrantedAuthority::getAuthority).filter(StringUtils::hasText)
-				.anyMatch(x -> PatternMatchUtils.simpleMatch(permission, x));
+			.anyMatch(x -> PatternMatchUtils.simpleMatch(permission, x));
 	}
 
 }

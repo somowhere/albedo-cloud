@@ -62,6 +62,7 @@ public class UserOnlineResource {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_userOnline_del')")
 	public Result removeByTokens(@RequestBody Set<String> tokens) {
-		return remoteUserOnlineService.removeByTokens(new TokenVo(tokens, SecurityUtil.getUser().getId()), SecurityConstants.FROM_IN);
+		Result result = remoteUserOnlineService.removeByTokens(new TokenVo(tokens, SecurityUtil.getUser().getId()), SecurityConstants.FROM_IN);
+		return result;
 	}
 }

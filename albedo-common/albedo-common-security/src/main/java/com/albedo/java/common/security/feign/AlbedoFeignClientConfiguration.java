@@ -34,7 +34,7 @@ public class AlbedoFeignClientConfiguration {
 
 	@Bean
 	public RequestInterceptor oauth2FeignRequestInterceptor(OAuth2ClientContext oAuth2ClientContext,
-			OAuth2ProtectedResourceDetails resource, AccessTokenContextRelay accessTokenContextRelay) {
+															OAuth2ProtectedResourceDetails resource, AccessTokenContextRelay accessTokenContextRelay) {
 		return new AlbedoFeignClientInterceptor(oAuth2ClientContext, resource, accessTokenContextRelay);
 	}
 

@@ -1,21 +1,19 @@
-FROM openjdk:8-jdk-alpine
+FROM anapsix/alpine-java:8_server-jre_unlimited as builder
+WORKDIR /build
+ARG JAR_FILE=target/albedo-register.jar
+COPY ${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract && rm app.jar
 
-MAINTAINER somewhere0813@gmail.com
+FROM anapsix/alpine-java:8_server-jre_unlimited
+LABEL maintainer="somewhere0813@gmail.com"
+ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
+WORKDIR albedo-register
 
-ENV TZ=Asia/Shanghai
+COPY --from=builder /build/dependencies/ ./
+COPY --from=builder /build/snapshot-dependencies/ ./
+COPY --from=builder /build/spring-boot-loader/ ./
+COPY --from=builder /build/application/ ./
 
-RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apk update && apk add --no-cache libc6-compat
-RUN ln -s /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2
+EXPOSE 8848
 
-RUN mkdir -p /albedo-register
-
-WORKDIR /albedo-register
-
-EXPOSE 8878
-
-ADD ./target/albedo-register.jar ./
-
-CMD sleep 10;java -Djava.security.egd=file:/dev/./urandom -jar albedo-register.jar
-
-
+CMD sleep 5; java $JAVA_OPTS org.springframework.boot.loader.JarLauncher

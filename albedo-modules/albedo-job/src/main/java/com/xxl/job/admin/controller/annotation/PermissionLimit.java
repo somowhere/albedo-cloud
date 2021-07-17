@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 权限限制
+ *
  * @author xuxueli 2015-12-12 18:29:02
  */
 @Target(ElementType.METHOD)
@@ -20,6 +21,7 @@ public @interface PermissionLimit {
 
 	/**
 	 * 要求管理员权限
+	 *
 	 * @return
 	 */
 	boolean adminuser() default false;

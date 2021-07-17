@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.TokenVo;
@@ -41,12 +41,12 @@ public class RemoteUserOnlineServiceFallbackImpl implements RemoteUserOnlineServ
 	@Override
 	public Result findPage(UserOnlineQueryCriteria userOnlineQueryCriteria, String form) {
 		log.warn("feign 查询findPage信息失败:{}", userOnlineQueryCriteria, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 
 	@Override
-	public Result<Boolean> removeByTokens(TokenVo tokenVo, String form) {
+	public Result removeByTokens(TokenVo tokenVo, String form) {
 		log.warn("feign removeByTokens失败:{}", tokenVo, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 }

@@ -1,19 +1,19 @@
-FROM openjdk:8-jdk-alpine
+FROM anapsix/alpine-java:8_server-jre_unlimited as builder
+WORKDIR /build
+ARG JAR_FILE=target/albedo-gateway.jar
+COPY ${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract && rm app.jar
 
-MAINTAINER somewhere0813@gmail.com
+FROM anapsix/alpine-java:8_server-jre_unlimited
+LABEL maintainer="somewhere0813@gmail.com"
+ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
+WORKDIR albedo-gateway
 
-ENV TZ=Asia/Shanghai
+COPY --from=builder /build/dependencies/ ./
+COPY --from=builder /build/snapshot-dependencies/ ./
+COPY --from=builder /build/spring-boot-loader/ ./
+COPY --from=builder /build/application/ ./
 
-RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+EXPOSE 9999
 
-RUN mkdir -p /albedo-gateway
-
-WORKDIR /albedo-gateway
-
-EXPOSE 8878
-
-ADD ./target/albedo-gateway.jar ./
-
-CMD sleep 10;java -Djava.security.egd=file:/dev/./urandom -jar albedo-gateway.jar
-
-
+CMD sleep 5; java $JAVA_OPTS org.springframework.boot.loader.JarLauncher

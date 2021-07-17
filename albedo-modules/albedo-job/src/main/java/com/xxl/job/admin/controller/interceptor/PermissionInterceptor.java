@@ -1,11 +1,5 @@
 package com.xxl.job.admin.controller.interceptor;
 
-import java.util.Arrays;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.xxl.job.admin.controller.annotation.PermissionLimit;
 import com.xxl.job.admin.core.model.XxlJobUser;
 import com.xxl.job.admin.core.util.I18nUtil;
@@ -13,6 +7,11 @@ import com.xxl.job.admin.service.LoginService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * 权限拦截
@@ -25,14 +24,14 @@ public class PermissionInterceptor implements HandlerInterceptor {
 	/**
 	 * 针对 spring boot admin 对外暴露的接口
 	 */
-	private static final String[] ACTUATOR_IGNORE = { "/actuator", "/details", "/health" };
+	private static final String[] ACTUATOR_IGNORE = {"/actuator", "/details", "/health"};
 
 	@Resource
 	private LoginService loginService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+		throws Exception {
 
 		if (!(handler instanceof HandlerMethod)) {
 			return true;

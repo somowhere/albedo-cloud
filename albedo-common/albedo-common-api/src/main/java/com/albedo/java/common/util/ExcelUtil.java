@@ -339,7 +339,7 @@ public class ExcelUtil<T> {
 			out = response.getOutputStream();
 			wb.write(out);
 		} catch (Exception e) {
-			log.error("导出Excel异常{}", e.getMessage());
+			log.error("导出Excel异常{}", e);
 			throw new RuntimeMsgException("导出Excel失败，请联系网站管理员！");
 		} finally {
 			if (wb != null) {

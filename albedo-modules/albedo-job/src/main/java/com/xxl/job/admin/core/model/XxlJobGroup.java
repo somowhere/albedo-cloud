@@ -68,16 +68,16 @@ public class XxlJobGroup {
 		return addressList;
 	}
 
+	public void setAddressList(String addressList) {
+		this.addressList = addressList;
+	}
+
 	public Date getUpdateTime() {
 		return updateTime;
 	}
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	public void setAddressList(String addressList) {
-		this.addressList = addressList;
 	}
 
 }

@@ -23,10 +23,6 @@ public enum MisfireStrategyEnum {
 		this.title = title;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
 	public static MisfireStrategyEnum match(String name, MisfireStrategyEnum defaultItem) {
 		for (MisfireStrategyEnum item : MisfireStrategyEnum.values()) {
 			if (item.name().equals(name)) {
@@ -34,6 +30,10 @@ public enum MisfireStrategyEnum {
 			}
 		}
 		return defaultItem;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 }

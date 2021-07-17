@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.feign.RemoteDeptService;
 import lombok.Setter;
@@ -46,7 +46,7 @@ public class RemoteDeptServiceFallbackImpl implements RemoteDeptService {
 	@Override
 	public Result<List<String>> findDescendantIdList(String deptId, String from) {
 		log.error("feign 查询descendantId信息失败:{}", deptId, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 
 }

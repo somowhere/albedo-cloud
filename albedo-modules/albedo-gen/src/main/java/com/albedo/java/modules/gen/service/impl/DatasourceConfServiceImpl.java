@@ -42,7 +42,7 @@ public class DatasourceConfServiceImpl extends DataServiceImpl<DatasourceConfRep
 
 	private final StringEncryptor stringEncryptor;
 
-	private final DataSourceCreator dataSourceCreator;
+	private final DataSourceCreator hikariDataSourceCreator;
 
 	public Boolean exitDatasourceConfByName(DatasourceConfDto datasourceConfDto) {
 		return getOne(Wrappers.<DatasourceConf>lambdaUpdate()
@@ -94,7 +94,8 @@ public class DatasourceConfServiceImpl extends DataServiceImpl<DatasourceConfRep
 		dataSourceProperty.setUsername(conf.getUsername());
 		dataSourceProperty.setPassword(conf.getPassword());
 		dataSourceProperty.setDriverClassName(DataSourceConstants.DS_DRIVER);
-		DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+		dataSourceProperty.setLazy(true);
+		DataSource dataSource = hikariDataSourceCreator.createDataSource(dataSourceProperty);
 		SpringContextHolder.getBean(DynamicRoutingDataSource.class).addDataSource(dataSourceProperty.getPoolName(),
 			dataSource);
 	}

@@ -61,7 +61,7 @@ public class JobCodeController {
 		// valid
 		if (glueRemark == null) {
 			return new ReturnT<String>(500,
-					(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_glue_remark")));
+				(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_glue_remark")));
 		}
 		if (glueRemark.length() < 4 || glueRemark.length() > 100) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_remark_limit"));

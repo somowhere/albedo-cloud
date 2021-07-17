@@ -29,8 +29,9 @@ public class XxlJobAutoConfiguration {
 
 	/**
 	 * 配置xxl-job 执行器，提供自动发现 xxl-job-admin 能力
+	 *
 	 * @param xxlJobProperties xxl 配置
-	 * @param discoveryClient 注册发现客户端
+	 * @param discoveryClient  注册发现客户端
 	 * @return
 	 */
 	@Bean
@@ -52,8 +53,7 @@ public class XxlJobAutoConfiguration {
 					.format("http://%s:%s/%s", instance.getHost(), instance.getPort(), XXL_JOB_ADMIN))
 				.collect(Collectors.joining(","));
 			xxlJobSpringExecutor.setAdminAddresses(serverList);
-		}
-		else {
+		} else {
 			xxlJobSpringExecutor.setAdminAddresses(xxlJobProperties.getAdmin().getAddresses());
 		}
 

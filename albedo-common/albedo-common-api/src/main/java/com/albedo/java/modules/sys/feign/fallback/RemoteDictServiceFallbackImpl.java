@@ -18,7 +18,7 @@
 
 package com.albedo.java.modules.sys.feign.fallback;
 
-import com.albedo.java.common.core.exception.FeignException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.modules.sys.feign.RemoteDictService;
 import lombok.Setter;
@@ -45,6 +45,6 @@ public class RemoteDictServiceFallbackImpl implements RemoteDictService {
 	@Override
 	public Result<String> findAllOrderBySort(String from) {
 		log.error("feign findAllOrderBySort失败:{}", from, cause);
-		throw new FeignException(cause);
+		throw new FeignBizException(cause);
 	}
 }
