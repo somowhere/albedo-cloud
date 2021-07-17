@@ -3,37 +3,32 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80022
+ Source Server Version : 80023
  Source Host           : localhost:3306
  Source Schema         : albedo-quartz
 
  Target Server Type    : MySQL
- Target Server Version : 80022
+ Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 26/12/2020 11:39:07
+ Date: 17/07/2021 09:01:42
 */
-DROP DATABASE IF EXISTS `albedo-quartz`;
-
-CREATE DATABASE  `albedo-quartz` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
-USE `albedo-quartz`;
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
 CREATE TABLE `qrtz_blob_triggers` (
-                                      `sched_name` varchar(120) NOT NULL,
-                                      `trigger_name` varchar(200) NOT NULL,
-                                      `trigger_group` varchar(200) NOT NULL,
-                                      `blob_data` blob,
-                                      PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-                                      CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `blob_data` blob,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_blob_triggers
@@ -46,11 +41,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
 CREATE TABLE `qrtz_calendars` (
-                                  `sched_name` varchar(120) NOT NULL,
-                                  `calendar_name` varchar(200) NOT NULL,
-                                  `calendar` blob NOT NULL,
-                                  PRIMARY KEY (`sched_name`,`calendar_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `calendar_name` varchar(200) NOT NULL,
+  `calendar` blob NOT NULL,
+  PRIMARY KEY (`sched_name`,`calendar_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_calendars
@@ -63,14 +58,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_cron_triggers`;
 CREATE TABLE `qrtz_cron_triggers` (
-                                      `sched_name` varchar(120) NOT NULL,
-                                      `trigger_name` varchar(200) NOT NULL,
-                                      `trigger_group` varchar(200) NOT NULL,
-                                      `cron_expression` varchar(200) NOT NULL,
-                                      `time_zone_id` varchar(80) DEFAULT NULL,
-                                      PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-                                      CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `cron_expression` varchar(200) NOT NULL,
+  `time_zone_id` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
@@ -86,21 +81,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_fired_triggers`;
 CREATE TABLE `qrtz_fired_triggers` (
-                                       `sched_name` varchar(120) NOT NULL,
-                                       `entry_id` varchar(95) NOT NULL,
-                                       `trigger_name` varchar(200) NOT NULL,
-                                       `trigger_group` varchar(200) NOT NULL,
-                                       `instance_name` varchar(200) NOT NULL,
-                                       `fired_time` bigint NOT NULL,
-                                       `sched_time` bigint NOT NULL,
-                                       `priority` int NOT NULL,
-                                       `state` varchar(16) NOT NULL,
-                                       `job_name` varchar(200) DEFAULT NULL,
-                                       `job_group` varchar(200) DEFAULT NULL,
-                                       `is_nonconcurrent` varchar(1) DEFAULT NULL,
-                                       `requests_recovery` varchar(1) DEFAULT NULL,
-                                       PRIMARY KEY (`sched_name`,`entry_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `entry_id` varchar(95) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `instance_name` varchar(200) NOT NULL,
+  `fired_time` bigint NOT NULL,
+  `sched_time` bigint NOT NULL,
+  `priority` int NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `job_name` varchar(200) DEFAULT NULL,
+  `job_group` varchar(200) DEFAULT NULL,
+  `is_nonconcurrent` varchar(1) DEFAULT NULL,
+  `requests_recovery` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`entry_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_fired_triggers
@@ -113,18 +108,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
 CREATE TABLE `qrtz_job_details` (
-                                    `sched_name` varchar(120) NOT NULL,
-                                    `job_name` varchar(200) NOT NULL,
-                                    `job_group` varchar(200) NOT NULL,
-                                    `description` varchar(250) DEFAULT NULL,
-                                    `job_class_name` varchar(250) NOT NULL,
-                                    `is_durable` varchar(1) NOT NULL,
-                                    `is_nonconcurrent` varchar(1) NOT NULL,
-                                    `is_update_data` varchar(1) NOT NULL,
-                                    `requests_recovery` varchar(1) NOT NULL,
-                                    `job_data` blob,
-                                    PRIMARY KEY (`sched_name`,`job_name`,`job_group`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `job_name` varchar(200) NOT NULL,
+  `job_group` varchar(200) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `job_class_name` varchar(250) NOT NULL,
+  `is_durable` varchar(1) NOT NULL,
+  `is_nonconcurrent` varchar(1) NOT NULL,
+  `is_update_data` varchar(1) NOT NULL,
+  `requests_recovery` varchar(1) NOT NULL,
+  `job_data` blob,
+  PRIMARY KEY (`sched_name`,`job_name`,`job_group`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_job_details
@@ -140,10 +135,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
 CREATE TABLE `qrtz_locks` (
-                              `sched_name` varchar(120) NOT NULL,
-                              `lock_name` varchar(40) NOT NULL,
-                              PRIMARY KEY (`sched_name`,`lock_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `lock_name` varchar(40) NOT NULL,
+  PRIMARY KEY (`sched_name`,`lock_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_locks
@@ -158,10 +153,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
 CREATE TABLE `qrtz_paused_trigger_grps` (
-                                            `sched_name` varchar(120) NOT NULL,
-                                            `trigger_group` varchar(200) NOT NULL,
-                                            PRIMARY KEY (`sched_name`,`trigger_group`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_group`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_paused_trigger_grps
@@ -174,18 +169,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state` (
-                                        `sched_name` varchar(120) NOT NULL,
-                                        `instance_name` varchar(200) NOT NULL,
-                                        `last_checkin_time` bigint NOT NULL,
-                                        `checkin_interval` bigint NOT NULL,
-                                        PRIMARY KEY (`sched_name`,`instance_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `instance_name` varchar(200) NOT NULL,
+  `last_checkin_time` bigint NOT NULL,
+  `checkin_interval` bigint NOT NULL,
+  PRIMARY KEY (`sched_name`,`instance_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
 BEGIN;
-INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'somewheredembp.lan1608949793289', 1608953947234, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('AlbedoScheduler', 'somewheredembp.lan1626483175089', 1626483695708, 15000);
 COMMIT;
 
 -- ----------------------------
@@ -193,15 +188,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simple_triggers`;
 CREATE TABLE `qrtz_simple_triggers` (
-                                        `sched_name` varchar(120) NOT NULL,
-                                        `trigger_name` varchar(200) NOT NULL,
-                                        `trigger_group` varchar(200) NOT NULL,
-                                        `repeat_count` bigint NOT NULL,
-                                        `repeat_interval` bigint NOT NULL,
-                                        `times_triggered` bigint NOT NULL,
-                                        PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-                                        CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `repeat_count` bigint NOT NULL,
+  `repeat_interval` bigint NOT NULL,
+  `times_triggered` bigint NOT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_simple_triggers
@@ -214,23 +209,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
 CREATE TABLE `qrtz_simprop_triggers` (
-                                         `sched_name` varchar(120) NOT NULL,
-                                         `trigger_name` varchar(200) NOT NULL,
-                                         `trigger_group` varchar(200) NOT NULL,
-                                         `str_prop_1` varchar(512) DEFAULT NULL,
-                                         `str_prop_2` varchar(512) DEFAULT NULL,
-                                         `str_prop_3` varchar(512) DEFAULT NULL,
-                                         `int_prop_1` int DEFAULT NULL,
-                                         `int_prop_2` int DEFAULT NULL,
-                                         `long_prop_1` bigint DEFAULT NULL,
-                                         `long_prop_2` bigint DEFAULT NULL,
-                                         `dec_prop_1` decimal(13,4) DEFAULT NULL,
-                                         `dec_prop_2` decimal(13,4) DEFAULT NULL,
-                                         `bool_prop_1` varchar(1) DEFAULT NULL,
-                                         `bool_prop_2` varchar(1) DEFAULT NULL,
-                                         PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-                                         CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `str_prop_1` varchar(512) DEFAULT NULL,
+  `str_prop_2` varchar(512) DEFAULT NULL,
+  `str_prop_3` varchar(512) DEFAULT NULL,
+  `int_prop_1` int DEFAULT NULL,
+  `int_prop_2` int DEFAULT NULL,
+  `long_prop_1` bigint DEFAULT NULL,
+  `long_prop_2` bigint DEFAULT NULL,
+  `dec_prop_1` decimal(13,4) DEFAULT NULL,
+  `dec_prop_2` decimal(13,4) DEFAULT NULL,
+  `bool_prop_1` varchar(1) DEFAULT NULL,
+  `bool_prop_2` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
+  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_simprop_triggers
@@ -243,34 +238,34 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_triggers`;
 CREATE TABLE `qrtz_triggers` (
-                                 `sched_name` varchar(120) NOT NULL,
-                                 `trigger_name` varchar(200) NOT NULL,
-                                 `trigger_group` varchar(200) NOT NULL,
-                                 `job_name` varchar(200) NOT NULL,
-                                 `job_group` varchar(200) NOT NULL,
-                                 `description` varchar(250) DEFAULT NULL,
-                                 `next_fire_time` bigint DEFAULT NULL,
-                                 `prev_fire_time` bigint DEFAULT NULL,
-                                 `priority` int DEFAULT NULL,
-                                 `trigger_state` varchar(16) NOT NULL,
-                                 `trigger_type` varchar(8) NOT NULL,
-                                 `start_time` bigint NOT NULL,
-                                 `end_time` bigint DEFAULT NULL,
-                                 `calendar_name` varchar(200) DEFAULT NULL,
-                                 `misfire_instr` smallint DEFAULT NULL,
-                                 `job_data` blob,
-                                 PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
-                                 KEY `sched_name` (`sched_name`,`job_name`,`job_group`) USING BTREE,
-                                 CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+  `sched_name` varchar(120) NOT NULL,
+  `trigger_name` varchar(200) NOT NULL,
+  `trigger_group` varchar(200) NOT NULL,
+  `job_name` varchar(200) NOT NULL,
+  `job_group` varchar(200) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `next_fire_time` bigint DEFAULT NULL,
+  `prev_fire_time` bigint DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `trigger_state` varchar(16) NOT NULL,
+  `trigger_type` varchar(8) NOT NULL,
+  `start_time` bigint NOT NULL,
+  `end_time` bigint DEFAULT NULL,
+  `calendar_name` varchar(200) DEFAULT NULL,
+  `misfire_instr` smallint DEFAULT NULL,
+  `job_data` blob,
+  PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`) USING BTREE,
+  KEY `sched_name` (`sched_name`,`job_name`,`job_group`) USING BTREE,
+  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
 BEGIN;
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1608950690000, -1, 5, 'PAUSED', 'CRON', 1608950684000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1608949800000, -1, 5, 'PAUSED', 'CRON', 1608949794000, 0, NULL, 2, '');
-INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1608949800000, -1, 5, 'PAUSED', 'CRON', 1608949794000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1626483180000, -1, 5, 'PAUSED', 'CRON', 1626483175000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', NULL, 1626483180000, -1, 5, 'PAUSED', 'CRON', 1626483175000, 0, NULL, 2, '');
+INSERT INTO `qrtz_triggers` VALUES ('AlbedoScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', NULL, 1626483180000, -1, 5, 'PAUSED', 'CRON', 1626483176000, 0, NULL, 2, '');
 COMMIT;
 
 -- ----------------------------
@@ -278,25 +273,25 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
-                           `id` int NOT NULL AUTO_INCREMENT COMMENT '任务ID',
-                           `name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
-                           `group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
-                           `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
-                           `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
-                           `misfire_policy` varchar(20) DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
-                           `concurrent` char(1) DEFAULT '1' COMMENT '是否并发执行（1允许 0禁止）',
-                           `sub_task` varchar(100) DEFAULT NULL COMMENT '子任务id 多个用逗号隔开',
-                           `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '报警邮箱',
-                           `status` char(1) DEFAULT '0' COMMENT '状态(1-运行中，0-暂停)',
-                           `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-                           `created_date` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-                           `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-                           `last_modified_date` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3),
-                           `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
-                           `version` int NOT NULL,
-                           `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
-                           PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度表';
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) DEFAULT '1' COMMENT '是否并发执行（1允许 0禁止）',
+  `sub_task` varchar(100) DEFAULT NULL COMMENT '子任务id 多个用逗号隔开',
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '报警邮箱',
+  `status` char(1) DEFAULT '0' COMMENT '状态(1-运行中，0-暂停)',
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_date` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `last_modified_date` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3),
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度表';
 
 -- ----------------------------
 -- Records of sys_job
@@ -313,25 +308,29 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log` (
-                               `id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
-                               `job_name` varchar(64) NOT NULL COMMENT '任务名称',
-                               `job_group` varchar(64) NOT NULL COMMENT '任务组名',
-                               `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
-                               `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
-                               `job_message` varchar(500) DEFAULT NULL COMMENT '日志信息',
-                               `status` char(1) DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
-                               `start_time` datetime(3) DEFAULT NULL COMMENT '开始时间',
-                               `end_time` datetime(3) DEFAULT NULL COMMENT '结束时间',
-                               `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
-                               `exception_info` varchar(3000) DEFAULT '' COMMENT '异常信息',
-                               `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
-                               PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_name` varchar(64) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) NOT NULL COMMENT '任务组名',
+  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `start_time` datetime(3) DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime(3) DEFAULT NULL COMMENT '结束时间',
+  `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+  `exception_info` varchar(3000) DEFAULT '' COMMENT '异常信息',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
 
 -- ----------------------------
 -- Records of sys_job_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_job_log` VALUES (2, '系统默认（有参）', 'DEFAULT', '0/15 * * * * ?', 'simpleTask.doParams(\'albedo\')', '系统默认（有参） 总共耗时：3毫秒', '1', '2021-02-06 14:35:50.456', '2021-02-06 14:35:50.459', '2021-02-06 14:35:50.460', '', NULL);
+INSERT INTO `sys_job_log` VALUES (3, '系统默认（无参）', 'DEFAULT', '0/10 * * * * ?', 'simpleTask.doNoParams', '系统默认（无参） 总共耗时：0毫秒', '1', '2021-02-06 14:35:50.488', '2021-02-06 14:35:50.488', '2021-02-06 14:35:50.488', '', NULL);
+INSERT INTO `sys_job_log` VALUES (4, '系统默认（有参）', 'DEFAULT', '0/15 * * * * ?', 'simpleTask.doParams(\'albedo\')', '系统默认（有参） 总共耗时：0毫秒', '1', '2021-02-06 14:35:52.744', '2021-02-06 14:35:52.744', '2021-02-06 14:35:52.744', '', NULL);
+INSERT INTO `sys_job_log` VALUES (5, '系统默认（多参）', 'DEFAULT', '0/20 * * * * ?', 'simpleTask.doMultipleParams(\'albedo\', true, 2000L, 316.50D, 100)', '系统默认（多参） 总共耗时：4毫秒', '1', '2021-02-06 14:35:52.759', '2021-02-06 14:35:52.763', '2021-02-06 14:35:52.763', '', NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
