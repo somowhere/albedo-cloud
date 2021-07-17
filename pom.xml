@@ -21,26 +21,26 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.0.7-SNAPSHOT</version>
+	<version>3.0.9-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.0.7-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.4.5</spring-boot.version>
-		<spring-cloud.version>2020.0.2</spring-cloud.version>
+		<project.release.version>3.0.9-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.5.2</spring-boot.version>
+		<spring-cloud.version>2020.0.3</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.4.1</spring-boot-admin.version>
+		<spring-boot-admin.version>2.4.3</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.6.4</hutool.version>
-		<mybatis-plus.version>3.4.2</mybatis-plus.version>
-		<dynamic-ds.version>3.3.2</dynamic-ds.version>
-		<knife4j.version>3.0.2</knife4j.version>
+		<hutool.version>5.7.3</hutool.version>
+		<mybatis-plus.version>3.4.3</mybatis-plus.version>
+		<dynamic-ds.version>3.4.0</dynamic-ds.version>
+		<knife4j.version>3.0.3</knife4j.version>
 		<captcha.version>2.2.0</captcha.version>
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>

@@ -1,7 +1,23 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.config;
 
+import cn.hutool.core.map.MapUtil;
 import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.SelectVo;
@@ -27,43 +43,38 @@ import java.util.Set;
 @Log4j2
 public class ExtraFieldSerializer extends BeanSerializerBase {
 
-
 	Map<String, List<SelectVo>> codeItemData = Maps.newHashMap();
-
 
 	public ExtraFieldSerializer(BeanSerializerBase source) {
 		super(source);
 	}
 
-	public ExtraFieldSerializer(ExtraFieldSerializer source,
-								ObjectIdWriter objectIdWriter) {
+	public ExtraFieldSerializer(ExtraFieldSerializer source, ObjectIdWriter objectIdWriter) {
 		super(source, objectIdWriter);
 	}
 
-	public ExtraFieldSerializer(ExtraFieldSerializer source,
-								Set<String> toIgnore) {
-		super(source, toIgnore);
+	public ExtraFieldSerializer(ExtraFieldSerializer source, Set<String> toIgnore, Set<String> var2) {
+		super(source, toIgnore, var2);
 	}
 
-	public ExtraFieldSerializer(ExtraFieldSerializer source,
-								ObjectIdWriter objectIdWriter, Object filterId) {
+	public ExtraFieldSerializer(ExtraFieldSerializer source, ObjectIdWriter objectIdWriter, Object filterId) {
 		super(source, objectIdWriter, filterId);
 	}
 
 	@Override
-	public BeanSerializerBase withObjectIdWriter(
-		ObjectIdWriter objectIdWriter) {
+	public BeanSerializerBase withObjectIdWriter(ObjectIdWriter objectIdWriter) {
 		return new ExtraFieldSerializer(this, objectIdWriter);
 	}
 
 	@Override
-	protected BeanSerializerBase withIgnorals(Set<String> toIgnore) {
-		return new ExtraFieldSerializer(this, toIgnore);
+	protected BeanSerializerBase withByNameInclusion(Set<String> toIgnore, Set<String> set1) {
+		return new ExtraFieldSerializer(this, toIgnore, set1);
 	}
 
 	@Override
 	protected BeanSerializerBase asArraySerializer() {
-		return (this._objectIdWriter == null && this._anyGetterWriter == null && this._propertyFilterId == null ? new BeanAsArraySerializer(this) : this);
+		return (this._objectIdWriter == null && this._anyGetterWriter == null && this._propertyFilterId == null
+			? new BeanAsArraySerializer(this) : this);
 	}
 
 	@Override
@@ -71,6 +82,11 @@ public class ExtraFieldSerializer extends BeanSerializerBase {
 		return new ExtraFieldSerializer(this, this._objectIdWriter, filterId);
 	}
 
+	@Override
+	protected BeanSerializerBase withProperties(BeanPropertyWriter[] beanPropertyWriters,
+												BeanPropertyWriter[] beanPropertyWriters1) {
+		return null;
+	}
 
 	@Override
 	protected void serializeFields(Object bean, JsonGenerator gen, SerializerProvider provider) throws IOException {
@@ -119,7 +135,7 @@ public class ExtraFieldSerializer extends BeanSerializerBase {
 		List<SelectVo> jobj = codeItemData.get(code);
 		if (jobj == null) {
 			Map<String, List<SelectVo>> selectResultListByCodes = DictUtil.getSelectResultListByCodes(code);
-			if (CollUtil.isNotEmpty(selectResultListByCodes)) {
+			if (MapUtil.isNotEmpty(selectResultListByCodes)) {
 				codeItemData.putAll(selectResultListByCodes);
 			} else {
 				log.warn("can not find code {} dict data ", code);
@@ -164,10 +180,8 @@ public class ExtraFieldSerializer extends BeanSerializerBase {
 		return null;
 	}
 
-
 	@Override
-	public void serialize(Object bean, JsonGenerator jgen,
-						  SerializerProvider provider) throws IOException {
+	public void serialize(Object bean, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 		jgen.writeStartObject();
 		serializeFields(bean, jgen, provider);
 		jgen.writeEndObject();

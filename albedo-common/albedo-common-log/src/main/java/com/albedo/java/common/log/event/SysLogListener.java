@@ -40,7 +40,7 @@ public class SysLogListener {
 	@Order
 	@EventListener(SysLogEvent.class)
 	public void saveSysLog(SysLogEvent event) {
-		if(log.isTraceEnabled()){
+		if (log.isTraceEnabled()) {
 			log.trace("{}", event);
 		}
 		LogOperate logOperate = (LogOperate) event.getSource();

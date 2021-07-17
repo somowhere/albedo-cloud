@@ -88,7 +88,7 @@ public class SysLogAspect {
 	public void saveLog(Long startTime, LogOperate logOperateVo, com.albedo.java.common.log.annotation.LogOperate logOperate) {
 		Long endTime = System.currentTimeMillis();
 		logOperateVo.setTime(endTime - startTime);
-		if(log.isTraceEnabled()){
+		if (log.isTraceEnabled()) {
 			log.trace("[logOperateVo]:{}", logOperateVo);
 		}
 		// 是否需要保存request，参数和值

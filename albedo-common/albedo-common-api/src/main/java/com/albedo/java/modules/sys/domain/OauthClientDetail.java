@@ -95,7 +95,7 @@ public class OauthClientDetail extends GeneralEntity<OauthClientDetail> {
 	private String autoapprove;
 
 	@Override
-	protected Serializable pkVal() {
+	public Serializable pkVal() {
 		return this.clientId;
 	}
 

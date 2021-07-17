@@ -1,7 +1,7 @@
 package com.albedo.java.modules;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
@@ -78,7 +78,7 @@ public final class TestUtil {
 	}
 
 	public static String toParams(Map<String, ?> paramMap) {
-		if (CollectionUtil.isEmpty(paramMap)) {
+		if (MapUtil.isEmpty(paramMap)) {
 			return StrUtil.EMPTY;
 		}
 		Charset charset = CharsetUtil.CHARSET_UTF_8;

@@ -3,15 +3,17 @@
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.1-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Boot-2.4.5-blue.svg" alt="Downloads">
  </p>  
- 
+
 **albedo-cloud Microservice Architecture**
+
 - 全网最新spring-cloud-alibaba微服务架构
 - 前端<a href="https://github.com/somowhere/albedo-ui" target="_blank">albedo-ui </a>
-- 基于<a href="https://gitee.com/log4j/pig" target="_blank">pix</a>开源版本（保持更新）二次开发(同时借鉴<a href="https://www.jhipster.tech/" target="_blank">jhipster</a>)
-- 基于 Spring Cloud 、Spring Security OAuth2 的RBAC权限管理系统  
-- 基于数据驱动视图的理念封装 Element-ui，即使没有 vue 的使用经验也能快速上手  
-- 提供对常见容器化支持 Docker、Kubernetes、Rancher2 支持  
-- 提供 lambda 、stream api 、webflux 的生产实践   
+- 基于<a href="https://gitee.com/log4j/pig" target="_blank">pix</a>开源版本（保持更新）二次开发(
+  同时借鉴<a href="https://www.jhipster.tech/" target="_blank">jhipster</a>)
+- 基于 Spring Cloud 、Spring Security OAuth2 的RBAC权限管理系统
+- 基于数据驱动视图的理念封装 Element-ui，即使没有 vue 的使用经验也能快速上手
+- 提供对常见容器化支持 Docker、Kubernetes、Rancher2 支持
+- 提供 lambda 、stream api 、webflux 的生产实践
 
 #### 快速开始
 
@@ -39,6 +41,7 @@ AlbedoSentinelApplication
 AlbedoJobAdminApplication
 AlbedoGatewayApplication
 ```
+
 3. 启动前端[albedi-ui](https://github.com/somowhere/albedo-ui) 访问[localhost](http://localhost:4000)
 
 #### 系统预览
@@ -71,19 +74,17 @@ AlbedoGatewayApplication
 </table>
 #### 核心依赖 
 
-
 依赖 | 版本
 ---|---
-Spring Boot |  2.4.5  
-Spring Cloud | 2020.0.2
+Spring Boot |  2.5.2
+Spring Cloud | 2020.0.3
 Spring Cloud Alibaba | 2021.1
 Spring Security OAuth2 | 2.3.6.RELEASE
-Mybatis Plus | 3.4.2
-hutool | 5.6.3
-   
-
+Mybatis Plus | 3.4.3
+hutool | 5.7.3
 
 #### 模块说明
+
 ```
 albedo
 ├── albedo-auth -- 授权服务提供[3000]
@@ -118,16 +119,15 @@ albedo
 
 1. 欢迎提交 issue，请写清楚遇到问题的原因，开发环境，复显步骤。
 
-2. 不接受`功能请求`的 issue，功能请求可能会被直接关闭。  
+2. 不接受`功能请求`的 issue，功能请求可能会被直接关闭。
 
-3. <a href="mailto:somewhere0813@gmail.com">somewhere0813@gmail.com</a>    
+3. <a href="mailto:somewhere0813@gmail.com">somewhere0813@gmail.com</a>
 
-4. QQ群: 685728393 
-
+4. QQ群: 685728393
 
 #### 项目捐赠
 
-项目的发展离不开您的支持，请作者喝杯咖啡吧☕  
+项目的发展离不开您的支持，请作者喝杯咖啡吧☕
 
 <table>
     <tr>

@@ -17,7 +17,6 @@
 package com.albedo.java.common.feign.handle;
 
 import com.albedo.java.common.core.exception.BadRequestException;
-import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.Result;
@@ -90,8 +89,8 @@ public class GlobalBizExceptionHandler {
 	public Result handleGlobalException(FeignException e) {
 		log.warn("FeignException ex={}", e.getMessage());
 		try {
-			return Json.parseObject(e.contentUTF8(),Result.class);
-		}catch (Exception ex) {
+			return Json.parseObject(e.contentUTF8(), Result.class);
+		} catch (Exception ex) {
 			return Result.buildFail("远程调用失败");
 		}
 	}
