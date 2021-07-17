@@ -1,5 +1,6 @@
 package com.albedo.java.common.log.aspect;
 
+import cn.hutool.core.map.MapUtil;
 import com.albedo.java.common.core.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -109,8 +110,9 @@ public class RequestLogAspect {
 		parseParams(point, paramMap);
 
 		// 请求参数
-		if (!paramMap.isEmpty()) {
+		if (MapUtil.isNotEmpty(paramMap)) {
 			beforeReqLog.append(" Parameters: {}");
+			beforeReqArgs.add(paramMap);
 		}
 		log.info(beforeReqLog.toString(), beforeReqArgs.toArray());
 		// aop 执行后的日志
