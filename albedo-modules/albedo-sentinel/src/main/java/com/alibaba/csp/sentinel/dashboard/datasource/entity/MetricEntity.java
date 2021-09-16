@@ -71,7 +71,6 @@ public class MetricEntity {
 		entity.setExceptionQps(oldEntity.getExceptionQps());
 		entity.setRt(oldEntity.getRt());
 		entity.setCount(oldEntity.getCount());
-		entity.setResource(oldEntity.getResource());
 		return entity;
 	}
 
@@ -98,8 +97,7 @@ public class MetricEntity {
 
 	/**
 	 * {@link #rt} = {@code avgRt * successQps}
-	 *
-	 * @param avgRt      average rt of {@code successQps}
+	 * @param avgRt average rt of {@code successQps}
 	 * @param successQps
 	 */
 	public synchronized void setRtAndSuccessQps(double avgRt, Long successQps) {
@@ -211,9 +209,9 @@ public class MetricEntity {
 	@Override
 	public String toString() {
 		return "MetricEntity{" + "id=" + id + ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified + ", app='"
-			+ app + '\'' + ", timestamp=" + timestamp + ", resource='" + resource + '\'' + ", passQps=" + passQps
-			+ ", blockQps=" + blockQps + ", successQps=" + successQps + ", exceptionQps=" + exceptionQps + ", rt="
-			+ rt + ", count=" + count + ", resourceCode=" + resourceCode + '}';
+				+ app + '\'' + ", timestamp=" + timestamp + ", resource='" + resource + '\'' + ", passQps=" + passQps
+				+ ", blockQps=" + blockQps + ", successQps=" + successQps + ", exceptionQps=" + exceptionQps + ", rt="
+				+ rt + ", count=" + count + ", resourceCode=" + resourceCode + '}';
 	}
 
 }

@@ -28,7 +28,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Save one.
-	 *
 	 * @param entity
 	 * @return
 	 */
@@ -36,7 +35,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Save all.
-	 *
 	 * @param rules
 	 * @return rules saved.
 	 */
@@ -44,7 +42,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Delete by id
-	 *
 	 * @param id
 	 * @return entity deleted
 	 */
@@ -52,7 +49,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Find by id.
-	 *
 	 * @param id
 	 * @return
 	 */
@@ -60,7 +56,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Find all by machine.
-	 *
 	 * @param machineInfo
 	 * @return
 	 */
@@ -68,7 +63,6 @@ public interface RuleRepository<T, ID> {
 
 	/**
 	 * Find all by application.
-	 *
 	 * @param appName valid app name
 	 * @return all rules of the application
 	 * @since 1.4.0

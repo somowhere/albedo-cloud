@@ -1,12 +1,12 @@
 server:
   port: 8848
   tomcat:
-    basedir: logs/@artifactId@
+    basedir: logs
 
 db:
   num: 1
-  user: ${MYSQL-USER:root}
-  password: ${MYSQL-PWD:111111}
+  user: ${MYSQL_USER:root}
+  password: ${MYSQL_PWD:111111}
   url:
     0: jdbc:mysql://${MYSQL_HOST:albedo-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:albedo-config}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
 
@@ -22,19 +22,19 @@ nacos:
 
 spring:
   datasource:
-    platform: mysql
+    platform: mysql  #这个过期属性不能修改，nacos 代码对此有硬编码
   security:
     enabled: true
   boot:  # 接入 spring boot admin
     admin:
       client:
-        url: http://albedo-monitor:5001
-        username: albedo
-        password: albedo
+        url: http://pig-monitor:5001
+        username: pig
+        password: pig
         instance:
           prefer-ip: true
   application:
-    name: @artifactId@
+    name: @project.artifactId@
 
 useAddressServer: true
 

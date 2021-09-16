@@ -66,7 +66,6 @@ public class MetricVo implements Comparable<MetricVo> {
 
 	/**
 	 * 保留资源名为identity的结果。
-	 *
 	 * @param entities 通过hashCode查找到的MetricEntities
 	 * @param identity 真正需要查找的资源名
 	 * @return
@@ -96,7 +95,8 @@ public class MetricVo implements Comparable<MetricVo> {
 		vo.exceptionQps = entity.getExceptionQps();
 		if (entity.getSuccessQps() != 0) {
 			vo.rt = entity.getRt() / entity.getSuccessQps();
-		} else {
+		}
+		else {
 			vo.rt = 0D;
 		}
 		vo.count = entity.getCount();

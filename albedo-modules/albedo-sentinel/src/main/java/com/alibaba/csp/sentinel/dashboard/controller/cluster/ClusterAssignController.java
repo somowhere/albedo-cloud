@@ -44,18 +44,19 @@ public class ClusterAssignController {
 
 	@PostMapping("/all_server/{app}")
 	public Result<ClusterAppAssignResultVO> apiAssignAllClusterServersOfApp(@PathVariable String app,
-																			@RequestBody ClusterAppFullAssignRequest assignRequest) {
+			@RequestBody ClusterAppFullAssignRequest assignRequest) {
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app cannot be null or empty");
 		}
 		if (assignRequest == null || assignRequest.getClusterMap() == null
-			|| assignRequest.getRemainingList() == null) {
+				|| assignRequest.getRemainingList() == null) {
 			return Result.ofFail(-1, "bad request body");
 		}
 		try {
 			return Result.ofSuccess(clusterAssignService.applyAssignToApp(app, assignRequest.getClusterMap(),
-				assignRequest.getRemainingList()));
-		} catch (Throwable throwable) {
+					assignRequest.getRemainingList()));
+		}
+		catch (Throwable throwable) {
 			logger.error("Error when assigning full cluster servers for app: " + app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -63,7 +64,7 @@ public class ClusterAssignController {
 
 	@PostMapping("/single_server/{app}")
 	public Result<ClusterAppAssignResultVO> apiAssignSingleClusterServersOfApp(@PathVariable String app,
-																			   @RequestBody ClusterAppSingleServerAssignRequest assignRequest) {
+			@RequestBody ClusterAppSingleServerAssignRequest assignRequest) {
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app cannot be null or empty");
 		}
@@ -72,8 +73,9 @@ public class ClusterAssignController {
 		}
 		try {
 			return Result.ofSuccess(clusterAssignService.applyAssignToApp(app,
-				Collections.singletonList(assignRequest.getClusterMap()), assignRequest.getRemainingList()));
-		} catch (Throwable throwable) {
+					Collections.singletonList(assignRequest.getClusterMap()), assignRequest.getRemainingList()));
+		}
+		catch (Throwable throwable) {
 			logger.error("Error when assigning single cluster servers for app: " + app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}
@@ -81,7 +83,7 @@ public class ClusterAssignController {
 
 	@PostMapping("/unbind_server/{app}")
 	public Result<ClusterAppAssignResultVO> apiUnbindClusterServersOfApp(@PathVariable String app,
-																		 @RequestBody Set<String> machineIds) {
+			@RequestBody Set<String> machineIds) {
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app cannot be null or empty");
 		}
@@ -90,7 +92,8 @@ public class ClusterAssignController {
 		}
 		try {
 			return Result.ofSuccess(clusterAssignService.unbindClusterServers(app, machineIds));
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("Error when unbinding cluster server {} for app <{}>", machineIds, app, throwable);
 			return Result.ofFail(-1, throwable.getMessage());
 		}

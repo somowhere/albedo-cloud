@@ -50,17 +50,8 @@ public class ApiDefinitionEntity implements RuleEntity {
 
 	private Set<ApiPredicateItemEntity> predicateItems;
 
-	public ApiDefinitionEntity() {
-
-	}
-
-	public ApiDefinitionEntity(String apiName, Set<ApiPredicateItemEntity> predicateItems) {
-		this.apiName = apiName;
-		this.predicateItems = predicateItems;
-	}
-
 	public static ApiDefinitionEntity fromApiDefinition(String app, String ip, Integer port,
-														ApiDefinition apiDefinition) {
+			ApiDefinition apiDefinition) {
 		ApiDefinitionEntity entity = new ApiDefinitionEntity();
 		entity.setApp(app);
 		entity.setIp(ip);
@@ -101,6 +92,15 @@ public class ApiDefinitionEntity implements RuleEntity {
 		}
 
 		return apiDefinition;
+	}
+
+	public ApiDefinitionEntity() {
+
+	}
+
+	public ApiDefinitionEntity(String apiName, Set<ApiPredicateItemEntity> predicateItems) {
+		this.apiName = apiName;
+		this.predicateItems = predicateItems;
 	}
 
 	public String getApiName() {
@@ -188,9 +188,9 @@ public class ApiDefinitionEntity implements RuleEntity {
 		}
 		ApiDefinitionEntity entity = (ApiDefinitionEntity) o;
 		return Objects.equals(id, entity.id) && Objects.equals(app, entity.app) && Objects.equals(ip, entity.ip)
-			&& Objects.equals(port, entity.port) && Objects.equals(gmtCreate, entity.gmtCreate)
-			&& Objects.equals(gmtModified, entity.gmtModified) && Objects.equals(apiName, entity.apiName)
-			&& Objects.equals(predicateItems, entity.predicateItems);
+				&& Objects.equals(port, entity.port) && Objects.equals(gmtCreate, entity.gmtCreate)
+				&& Objects.equals(gmtModified, entity.gmtModified) && Objects.equals(apiName, entity.apiName)
+				&& Objects.equals(predicateItems, entity.predicateItems);
 	}
 
 	@Override
@@ -201,8 +201,8 @@ public class ApiDefinitionEntity implements RuleEntity {
 	@Override
 	public String toString() {
 		return "ApiDefinitionEntity{" + "id=" + id + ", app='" + app + '\'' + ", ip='" + ip + '\'' + ", port=" + port
-			+ ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified + ", apiName='" + apiName + '\''
-			+ ", predicateItems=" + predicateItems + '}';
+				+ ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified + ", apiName='" + apiName + '\''
+				+ ", predicateItems=" + predicateItems + '}';
 	}
 
 }

@@ -1,7 +1,7 @@
  <p align="center">
-   <img src="https://img.shields.io/badge/Spring%20Cloud-2020.0.2-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud-2020.0.3-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.1-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.4.5-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.5.4-blue.svg" alt="Downloads">
  </p>  
 
 **albedo-cloud Microservice Architecture**
@@ -38,7 +38,7 @@ AlbedoGenApplication
 AlbedoQuartzApplication
 AlbedoMonitorApplication
 AlbedoSentinelApplication
-AlbedoJobAdminApplication
+AlbedoJobApplication
 AlbedoGatewayApplication
 ```
 
@@ -76,12 +76,12 @@ AlbedoGatewayApplication
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.5.2
+Spring Boot |  2.5.4
 Spring Cloud | 2020.0.3
 Spring Cloud Alibaba | 2021.1
 Spring Security OAuth2 | 2.3.6.RELEASE
-Mybatis Plus | 3.4.3
-hutool | 5.7.3
+Mybatis Plus | 3.4.3.3
+hutool | 5.7.12
 
 #### 模块说明
 

@@ -29,11 +29,8 @@ import java.util.*;
  */
 public final class ClusterEntityUtils {
 
-	private ClusterEntityUtils() {
-	}
-
 	public static List<AppClusterServerStateWrapVO> wrapToAppClusterServerState(
-		List<ClusterUniversalStatePairVO> list) {
+			List<ClusterUniversalStatePairVO> list) {
 		if (list == null || list.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -48,10 +45,10 @@ public final class ClusterEntityUtils {
 				String serverId = ip + '@' + stateVO.getCommandPort();
 				ClusterServerStateVO serverStateVO = stateVO.getState().getServer();
 				map.computeIfAbsent(serverId,
-					v -> new AppClusterServerStateWrapVO().setId(serverId).setIp(ip)
-						.setPort(serverStateVO.getPort()).setState(serverStateVO).setBelongToApp(true)
-						.setConnectedCount(serverStateVO.getConnection().stream()
-							.mapToInt(ConnectionGroupVO::getConnectedCount).sum()));
+						v -> new AppClusterServerStateWrapVO().setId(serverId).setIp(ip)
+								.setPort(serverStateVO.getPort()).setState(serverStateVO).setBelongToApp(true)
+								.setConnectedCount(serverStateVO.getConnection().stream()
+										.mapToInt(ConnectionGroupVO::getConnectedCount).sum()));
 				tokenServerSet.add(ip + ":" + serverStateVO.getPort());
 			}
 		}
@@ -73,14 +70,14 @@ public final class ClusterEntityUtils {
 				// directly.
 				String serverId = String.format("%s:%d", serverIp, serverPort);
 				map.computeIfAbsent(serverId, v -> new AppClusterServerStateWrapVO().setId(serverId).setIp(serverIp)
-					.setPort(serverPort).setBelongToApp(false));
+						.setPort(serverPort).setBelongToApp(false));
 			}
 		}
 		return new ArrayList<>(map.values());
 	}
 
 	public static List<AppClusterClientStateWrapVO> wrapToAppClusterClientState(
-		List<ClusterUniversalStatePairVO> list) {
+			List<ClusterUniversalStatePairVO> list) {
 		if (list == null || list.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -93,7 +90,7 @@ public final class ClusterEntityUtils {
 				String clientId = ip + '@' + stateVO.getCommandPort();
 				ClusterClientStateVO clientStateVO = stateVO.getState().getClient();
 				map.computeIfAbsent(clientId, v -> new AppClusterClientStateWrapVO().setId(clientId).setIp(ip)
-					.setState(clientStateVO).setCommandPort(stateVO.getCommandPort()));
+						.setState(clientStateVO).setCommandPort(stateVO.getCommandPort()));
 			}
 		}
 		return new ArrayList<>(map.values());
@@ -111,7 +108,7 @@ public final class ClusterEntityUtils {
 				String serverAddress = getIp(ip);
 				int port = stateVO.getState().getServer().getPort();
 				map.computeIfAbsent(serverAddress, v -> new ClusterGroupEntity().setBelongToApp(true)
-					.setMachineId(ip + '@' + stateVO.getCommandPort()).setIp(ip).setPort(port));
+						.setMachineId(ip + '@' + stateVO.getCommandPort()).setIp(ip).setPort(port));
 			}
 		}
 		for (ClusterUniversalStatePairVO stateVO : list) {
@@ -125,7 +122,7 @@ public final class ClusterEntityUtils {
 				}
 
 				ClusterGroupEntity group = map.computeIfAbsent(targetServer, v -> new ClusterGroupEntity()
-					.setBelongToApp(true).setMachineId(targetServer).setIp(targetServer).setPort(targetPort));
+						.setBelongToApp(true).setMachineId(targetServer).setIp(targetServer).setPort(targetPort));
 				group.getClientSet().add(ip + '@' + stateVO.getCommandPort());
 			}
 		}
@@ -137,6 +134,9 @@ public final class ClusterEntityUtils {
 			return str.split(":")[0];
 		}
 		return str;
+	}
+
+	private ClusterEntityUtils() {
 	}
 
 }

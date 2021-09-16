@@ -110,7 +110,8 @@ public class DashboardConfig {
 		int val = NumberUtils.toInt(getConfig(name));
 		if (val == 0) {
 			val = defaultVal;
-		} else if (val < minVal) {
+		}
+		else if (val < minVal) {
 			val = minVal;
 		}
 		cacheMap.put(name, val);

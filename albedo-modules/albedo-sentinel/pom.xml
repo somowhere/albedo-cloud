@@ -6,13 +6,19 @@
 	<parent>
 		<artifactId>albedo-modules</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.0.9-SNAPSHOT</version>
+		<version>3.1.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-sentinel</artifactId>
 	<packaging>jar</packaging>
 
+
 	<dependencies>
+		<!--注册中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-core</artifactId>
@@ -41,16 +47,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-undertow</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-logging</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
 		</dependency>
 
 		<dependency>
@@ -82,12 +78,12 @@
 	</dependencies>
 
 	<build>
-		<finalName>albedo-sentinel</finalName>
+		<finalName>pig-sentinel-dashboard</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 			</resource>
-
 			<resource>
 				<directory>src/main/webapp/</directory>
 				<excludes>

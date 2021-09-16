@@ -77,7 +77,7 @@ public class GatewayParamFlowItemEntity {
 		}
 		GatewayParamFlowItemEntity that = (GatewayParamFlowItemEntity) o;
 		return Objects.equals(parseStrategy, that.parseStrategy) && Objects.equals(fieldName, that.fieldName)
-			&& Objects.equals(pattern, that.pattern) && Objects.equals(matchStrategy, that.matchStrategy);
+				&& Objects.equals(pattern, that.pattern) && Objects.equals(matchStrategy, that.matchStrategy);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class GatewayParamFlowItemEntity {
 	@Override
 	public String toString() {
 		return "GatewayParamFlowItemEntity{" + "parseStrategy=" + parseStrategy + ", fieldName='" + fieldName + '\''
-			+ ", pattern='" + pattern + '\'' + ", matchStrategy=" + matchStrategy + '}';
+				+ ", pattern='" + pattern + '\'' + ", matchStrategy=" + matchStrategy + '}';
 	}
 
 }

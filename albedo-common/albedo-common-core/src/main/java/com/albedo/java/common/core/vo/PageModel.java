@@ -30,7 +30,7 @@ public class PageModel<T> extends Page<T> {
 	public void setSorts(String sorts) {
 		String[] split = sorts.split(StringUtil.SPLIT_DEFAULT);
 		if (split.length == SORT_STR_LENGTH) {
-			getOrders().add(F_DESC.equals(split[1]) ? OrderItem.desc(split[0]) : OrderItem.asc(split[0]));
+			orders().add(F_DESC.equals(split[1]) ? OrderItem.desc(split[0]) : OrderItem.asc(split[0]));
 		}
 	}
 

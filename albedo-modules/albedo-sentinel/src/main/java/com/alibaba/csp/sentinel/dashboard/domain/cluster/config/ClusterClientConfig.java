@@ -68,7 +68,7 @@ public class ClusterClientConfig {
 	@Override
 	public String toString() {
 		return "ClusterClientConfig{" + "serverHost='" + serverHost + '\'' + ", serverPort=" + serverPort
-			+ ", requestTimeout=" + requestTimeout + ", connectTimeout=" + connectTimeout + '}';
+				+ ", requestTimeout=" + requestTimeout + ", connectTimeout=" + connectTimeout + '}';
 	}
 
 }

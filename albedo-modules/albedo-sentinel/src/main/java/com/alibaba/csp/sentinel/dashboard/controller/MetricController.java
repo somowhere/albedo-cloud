@@ -38,15 +38,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping(value = "/metric", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MetricController {
 
-	private static final long maxQueryIntervalMs = 1000 * 60 * 60;
 	private static Logger logger = LoggerFactory.getLogger(MetricController.class);
+
+	private static final long maxQueryIntervalMs = 1000 * 60 * 60;
+
 	@Autowired
 	private MetricsRepository<MetricEntity> metricStore;
 
 	@ResponseBody
 	@RequestMapping("/queryTopResourceMetric.json")
 	public Result<?> queryTopResourceMetric(final String app, Integer pageIndex, Integer pageSize, Boolean desc,
-											Long startTime, Long endTime, String searchKey) {
+			Long startTime, Long endTime, String searchKey) {
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app can't be null or empty");
 		}
@@ -93,7 +95,7 @@ public class MetricController {
 		List<String> topResource = new ArrayList<>();
 		if (pageIndex <= totalPage) {
 			topResource = resources.subList((pageIndex - 1) * pageSize,
-				Math.min(pageIndex * pageSize, resources.size()));
+					Math.min(pageIndex * pageSize, resources.size()));
 		}
 		final Map<String, Iterable<MetricVo>> map = new ConcurrentHashMap<>();
 		logger.debug("topResource={}", topResource);

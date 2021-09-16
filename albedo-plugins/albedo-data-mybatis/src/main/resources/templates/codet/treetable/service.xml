@@ -5,7 +5,7 @@
 	<fileName>${ClassName}Service.java</fileName>
 	<content><![CDATA[
 /**
- * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
+ * Copyright &copy; 2021 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
  */
 package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>;
 

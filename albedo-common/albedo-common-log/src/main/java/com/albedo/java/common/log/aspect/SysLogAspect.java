@@ -17,12 +17,16 @@
 package com.albedo.java.common.log.aspect;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.http.HttpStatus;
+import com.albedo.java.common.core.exception.BadRequestException;
+import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.log.enums.LogType;
 import com.albedo.java.common.log.event.SysLogEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.modules.sys.domain.LogOperate;
+import feign.FeignException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -61,7 +65,7 @@ public class SysLogAspect {
 		LogOperate logOperateVo = SysLogUtils.getSysLog();
 		logOperateVo.setTitle(logOperate.value());
 		logOperateVo.setMethod(methodName);
-		logOperateVo.setParams(params.toString() + " }");
+		logOperateVo.setParams(params+ " }");
 		logOperateVo.setOperatorType(logOperate.operatorType().name());
 		Long startTime = System.currentTimeMillis();
 		Object obj;
@@ -69,9 +73,12 @@ public class SysLogAspect {
 			obj = point.proceed();
 			logOperateVo.setLogType(LogType.INFO.name());
 		} catch (Exception e) {
-			logOperateVo.setException(
-				ExceptionUtil.stacktraceToString(e));
-			logOperateVo.setLogType(LogType.ERROR.name());
+			logOperateVo.setException(ExceptionUtil.stacktraceToString(e));
+			if(e instanceof FeignException && ((FeignException)e).status() != HttpStatus.HTTP_INTERNAL_ERROR){
+				logOperateVo.setLogType(LogType.WARN.name());
+			}else{
+				logOperateVo.setLogType(LogType.ERROR.name());
+			}
 			throw e;
 		} finally {
 			saveLog(startTime, logOperateVo, logOperate);

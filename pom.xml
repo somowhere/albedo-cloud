@@ -21,36 +21,36 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.0.9-SNAPSHOT</version>
+	<version>3.1.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.0.9-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.5.2</spring-boot.version>
+		<project.release.version>3.1.1-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.5.4</spring-boot.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.4.3</spring-boot-admin.version>
+		<spring-boot-admin.version>2.5.1</spring-boot-admin.version>
 		<git.commit.plugin>2.2.5</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.23</spring.checkstyle.plugin>
-		<hutool.version>5.7.3</hutool.version>
-		<mybatis-plus.version>3.4.3</mybatis-plus.version>
-		<dynamic-ds.version>3.4.0</dynamic-ds.version>
+		<hutool.version>5.7.12</hutool.version>
+		<mybatis-plus.version>3.4.3.3</mybatis-plus.version>
+		<dynamic-ds.version>3.4.1</dynamic-ds.version>
 		<knife4j.version>3.0.3</knife4j.version>
 		<captcha.version>2.2.0</captcha.version>
 		<velocity.version>1.7</velocity.version>
 		<jasypt.version>2.1.0</jasypt.version>
-		<security.oauth.version>2.5.1.RELEASE</security.oauth.version>
+		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
 		<h2.version>1.4.199</h2.version>
 		<poi.version>4.1.2</poi.version>
 		<springfox.version>3.0.0</springfox.version>
 		<guava.version>30.1-jre</guava.version>
 		<mail.version>1.5.0-b01</mail.version>
-		<alipay.version>4.9.153.ALL</alipay.version>
+		<alipay.version>4.16.38.ALL</alipay.version>
 		<fastjson.version>1.2.75</fastjson.version>
 		<xxl-job.version>2.3.0</xxl-job.version>
 		<swagger.version>1.5.20</swagger.version>
@@ -229,6 +229,7 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
@@ -314,46 +315,46 @@
 		</plugins>
 	</build>
 
-	<!--	<repositories>-->
-	<!--		&lt;!&ndash;阿里云主仓库，代理了maven central和jcenter仓库&ndash;&gt;-->
-	<!--		<repository>-->
-	<!--			<id>aliyun</id>-->
-	<!--			<name>aliyun</name>-->
-	<!--			<url>https://maven.aliyun.com/repository/public</url>-->
-	<!--			<releases>-->
-	<!--				<enabled>true</enabled>-->
-	<!--			</releases>-->
-	<!--			<snapshots>-->
-	<!--				<enabled>false</enabled>-->
-	<!--			</snapshots>-->
-	<!--		</repository>-->
-	<!--		&lt;!&ndash;阿里云代理Spring 官方仓库&ndash;&gt;-->
-	<!--		<repository>-->
-	<!--			<id>spring-milestones</id>-->
-	<!--			<name>Spring Milestones</name>-->
-	<!--			<url>https://maven.aliyun.com/repository/spring</url>-->
-	<!--			<releases>-->
-	<!--				<enabled>true</enabled>-->
-	<!--			</releases>-->
-	<!--			<snapshots>-->
-	<!--				<enabled>false</enabled>-->
-	<!--			</snapshots>-->
-	<!--		</repository>-->
-	<!--	</repositories>-->
-	<!--	<pluginRepositories>-->
-	<!--		&lt;!&ndash;阿里云代理Spring 插件仓库&ndash;&gt;-->
-	<!--		<pluginRepository>-->
-	<!--			<id>spring-plugin</id>-->
-	<!--			<name>spring-plugin</name>-->
-	<!--			<url>https://maven.aliyun.com/repository/spring-plugin</url>-->
-	<!--			<releases>-->
-	<!--				<enabled>true</enabled>-->
-	<!--			</releases>-->
-	<!--			<snapshots>-->
-	<!--				<enabled>false</enabled>-->
-	<!--			</snapshots>-->
-	<!--		</pluginRepository>-->
-	<!--	</pluginRepositories>-->
+		<repositories>
+			<!--阿里云主仓库，代理了maven central和jcenter仓库-->
+			<repository>
+				<id>aliyun</id>
+				<name>aliyun</name>
+				<url>https://maven.aliyun.com/repository/public</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</repository>
+			<!--阿里云代理Spring 官方仓库-->
+			<repository>
+				<id>spring-milestones</id>
+				<name>Spring Milestones</name>
+				<url>https://maven.aliyun.com/repository/spring</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</repository>
+		</repositories>
+		<pluginRepositories>
+			<!--阿里云代理Spring 插件仓库-->
+			<pluginRepository>
+				<id>spring-plugin</id>
+				<name>spring-plugin</name>
+				<url>https://maven.aliyun.com/repository/spring-plugin</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</pluginRepository>
+		</pluginRepositories>
 	<profiles>
 		<profile>
 			<id>dev</id>

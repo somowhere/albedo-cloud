@@ -16,6 +16,7 @@
 package com.alibaba.csp.sentinel.dashboard.controller.v2;
 
 import com.alibaba.csp.sentinel.dashboard.auth.AuthAction;
+import com.alibaba.csp.sentinel.dashboard.auth.AuthService;
 import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
@@ -74,7 +75,8 @@ public class FlowControllerV2 {
 			}
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("Error when querying flow rules", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -125,7 +127,7 @@ public class FlowControllerV2 {
 	}
 
 	@PostMapping("/rule")
-	@AuthAction(value = PrivilegeType.WRITE_RULE)
+	@AuthAction(value = AuthService.PrivilegeType.WRITE_RULE)
 	public Result<FlowRuleEntity> apiAddFlowRule(@RequestBody FlowRuleEntity entity) {
 
 		Result<FlowRuleEntity> checkResult = checkEntityInternal(entity);
@@ -141,7 +143,8 @@ public class FlowControllerV2 {
 		try {
 			entity = repository.save(entity);
 			publishRules(entity.getApp());
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("Failed to add flow rule", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -149,7 +152,7 @@ public class FlowControllerV2 {
 	}
 
 	@PutMapping("/rule/{id}")
-	@AuthAction(PrivilegeType.WRITE_RULE)
+	@AuthAction(AuthService.PrivilegeType.WRITE_RULE)
 
 	public Result<FlowRuleEntity> apiUpdateFlowRule(@PathVariable("id") Long id, @RequestBody FlowRuleEntity entity) {
 		if (id == null || id <= 0) {
@@ -181,7 +184,8 @@ public class FlowControllerV2 {
 				return Result.ofFail(-1, "save entity fail");
 			}
 			publishRules(oldEntity.getApp());
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("Failed to update flow rule", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -202,7 +206,8 @@ public class FlowControllerV2 {
 		try {
 			repository.delete(id);
 			publishRules(oldEntity.getApp());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return Result.ofFail(-1, e.getMessage());
 		}
 		return Result.ofSuccess(id);

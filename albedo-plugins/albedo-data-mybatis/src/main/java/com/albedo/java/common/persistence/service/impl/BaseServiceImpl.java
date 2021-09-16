@@ -11,22 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Service基类
  *
- * @author ThinkGem
+ * @author somewhere
  * @version 2014-05-16
  */
 public abstract class BaseServiceImpl<Repository extends BaseRepository<T>, T> extends ServiceImpl<Repository, T> implements BaseService<T> {
 	public final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(getClass());
 	@Autowired
 	public Repository repository;
-
-	@Override
-	protected Class<T> currentMapperClass() {
-		return (Class<T>) this.getResolvableType().as(ServiceImpl.class).getGeneric(0).resolve();
-	}
-
-	@Override
-	protected Class<T> currentModelClass() {
-		return (Class<T>) this.getResolvableType().as(ServiceImpl.class).getGeneric(1).resolve();
-	}
 
 }

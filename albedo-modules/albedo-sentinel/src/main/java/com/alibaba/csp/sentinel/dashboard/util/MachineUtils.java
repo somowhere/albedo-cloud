@@ -25,9 +25,6 @@ import java.util.Optional;
  */
 public final class MachineUtils {
 
-	private MachineUtils() {
-	}
-
 	public static Optional<Integer> parseCommandPort(String machineIp) {
 		try {
 			if (!machineIp.contains("@")) {
@@ -38,7 +35,8 @@ public final class MachineUtils {
 				return Optional.empty();
 			}
 			return Optional.of(Integer.parseInt(str[1]));
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			return Optional.empty();
 		}
 	}
@@ -53,9 +51,13 @@ public final class MachineUtils {
 				return Optional.empty();
 			}
 			return Optional.of(Tuple2.of(str[0], Integer.parseInt(str[1])));
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			return Optional.empty();
 		}
+	}
+
+	private MachineUtils() {
 	}
 
 }

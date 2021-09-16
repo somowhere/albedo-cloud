@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ import java.util.List;
  * <li>machine registry: {@code /registry/machine}</li>
  * <li>static resources</li>
  * </ul>
- * <p>
+ *
  * The excluded urls and urlSuffixes could be configured in {@code application.properties}
  * file.
  *
@@ -52,6 +53,8 @@ import java.util.List;
 public class LoginAuthenticationFilter implements Filter {
 
 	private static final String URL_SUFFIX_DOT = ".";
+
+	private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
 	/**
 	 * Some urls which needn't auth, such as /auth/login, /registry/machine and so on.
@@ -78,12 +81,16 @@ public class LoginAuthenticationFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-		throws IOException, ServletException {
+			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 		String servletPath = httpRequest.getServletPath();
 
 		// Exclude the urls which needn't auth
+		if (authFilterExcludeUrls.stream().anyMatch(s -> PATH_MATCHER.match(s, servletPath))) {
+			chain.doFilter(request, response);
+			return;
+		}
 		if (authFilterExcludeUrls.contains(servletPath)) {
 			chain.doFilter(request, response);
 			return;
@@ -112,7 +119,8 @@ public class LoginAuthenticationFilter implements Filter {
 		if (authUser == null) {
 			// If auth fail, set response status code to 401
 			httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-		} else {
+		}
+		else {
 			chain.doFilter(request, response);
 		}
 	}

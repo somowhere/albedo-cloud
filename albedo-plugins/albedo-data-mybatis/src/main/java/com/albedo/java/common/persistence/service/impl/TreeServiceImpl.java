@@ -89,7 +89,7 @@ public class TreeServiceImpl<Repository extends TreeRepository<T>,
 
 
 	@Override
-	public Integer countByParentId(String parentId) {
+	public Long countByParentId(String parentId) {
 		return repository.selectCount(
 			Wrappers.<T>query().eq(TreeEntity.F_SQL_PARENTID, parentId)
 		);
@@ -119,7 +119,7 @@ public class TreeServiceImpl<Repository extends TreeRepository<T>,
 		}
 
 		if (ObjectUtil.isNotEmpty(entityDto.getId())) {
-			Integer count = countByParentId(entityDto.getId());
+			Long count = countByParentId(entityDto.getId());
 			entityDto.setLeaf(count == null || count == 0);
 		} else {
 			entityDto.setLeaf(true);

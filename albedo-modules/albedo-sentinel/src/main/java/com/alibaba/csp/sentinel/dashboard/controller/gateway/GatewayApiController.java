@@ -74,7 +74,8 @@ public class GatewayApiController {
 			List<ApiDefinitionEntity> apis = sentinelApiClient.fetchApis(app, ip, port).get();
 			repository.saveAll(apis);
 			return Result.ofSuccess(apis);
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("queryApis error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -124,7 +125,7 @@ public class GatewayApiController {
 			// 匹配模式
 			Integer matchStrategy = predicateItem.getMatchStrategy();
 			if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX)
-				.contains(matchStrategy)) {
+					.contains(matchStrategy)) {
 				return Result.ofFail(-1, "invalid matchStrategy: " + matchStrategy);
 			}
 			predicateItemEntity.setMatchStrategy(matchStrategy);
@@ -152,7 +153,8 @@ public class GatewayApiController {
 
 		try {
 			entity = repository.save(entity);
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("add gateway api error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -195,7 +197,7 @@ public class GatewayApiController {
 			// 匹配模式
 			int matchStrategy = predicateItem.getMatchStrategy();
 			if (!Arrays.asList(URL_MATCH_STRATEGY_EXACT, URL_MATCH_STRATEGY_PREFIX, URL_MATCH_STRATEGY_REGEX)
-				.contains(matchStrategy)) {
+					.contains(matchStrategy)) {
 				return Result.ofFail(-1, "Invalid matchStrategy: " + matchStrategy);
 			}
 			predicateItemEntity.setMatchStrategy(matchStrategy);
@@ -216,7 +218,8 @@ public class GatewayApiController {
 
 		try {
 			entity = repository.save(entity);
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("update gateway api error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -243,7 +246,8 @@ public class GatewayApiController {
 
 		try {
 			repository.delete(id);
-		} catch (Throwable throwable) {
+		}
+		catch (Throwable throwable) {
 			logger.error("delete gateway api error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}

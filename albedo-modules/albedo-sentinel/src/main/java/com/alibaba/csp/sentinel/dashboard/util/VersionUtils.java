@@ -28,12 +28,8 @@ import java.util.Optional;
  */
 public final class VersionUtils {
 
-	private VersionUtils() {
-	}
-
 	/**
 	 * Parse version of Sentinel from raw string.
-	 *
 	 * @param versionFull version string
 	 * @return parsed {@link SentinelVersion} if the version is valid; empty if there is
 	 * something wrong with the format
@@ -54,7 +50,8 @@ public final class VersionUtils {
 			}
 			if (index == versionFull.length() - 1) {
 				// End with "-"
-			} else if (index > 0) {
+			}
+			else if (index > 0) {
 				version.setPostfix(versionFull.substring(index + 1));
 			}
 
@@ -81,13 +78,18 @@ public final class VersionUtils {
 			if (ver[0] < 1) {
 				// Wrong format, return empty.
 				return Optional.empty();
-			} else {
+			}
+			else {
 				return Optional.of(version.setMajorVersion(ver[0]).setMinorVersion(ver[1]).setFixVersion(ver[2]));
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			// Parse fail, return empty.
 			return Optional.empty();
 		}
+	}
+
+	private VersionUtils() {
 	}
 
 }

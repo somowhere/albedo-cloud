@@ -29,13 +29,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class InMemoryRuleRepositoryAdapter<T extends RuleEntity> implements RuleRepository<T, Long> {
 
-	private static final int MAX_RULES_SIZE = 10000;
 	/**
 	 * {@code <machine, <id, rule>>}
 	 */
 	private Map<MachineInfo, Map<Long, T>> machineRules = new ConcurrentHashMap<>(16);
+
 	private Map<Long, T> allRules = new ConcurrentHashMap<>(16);
+
 	private Map<String, Map<Long, T>> appRules = new ConcurrentHashMap<>(16);
+
+	private static final int MAX_RULES_SIZE = 10000;
 
 	@Override
 	public T save(T entity) {
@@ -46,11 +49,11 @@ public abstract class InMemoryRuleRepositoryAdapter<T extends RuleEntity> implem
 		if (processedEntity != null) {
 			allRules.put(processedEntity.getId(), processedEntity);
 			machineRules
-				.computeIfAbsent(MachineInfo.of(processedEntity.getApp(), processedEntity.getIp(),
-					processedEntity.getPort()), e -> new ConcurrentHashMap<>(32))
-				.put(processedEntity.getId(), processedEntity);
+					.computeIfAbsent(MachineInfo.of(processedEntity.getApp(), processedEntity.getIp(),
+							processedEntity.getPort()), e -> new ConcurrentHashMap<>(32))
+					.put(processedEntity.getId(), processedEntity);
 			appRules.computeIfAbsent(processedEntity.getApp(), v -> new ConcurrentHashMap<>(32))
-				.put(processedEntity.getId(), processedEntity);
+					.put(processedEntity.getId(), processedEntity);
 		}
 
 		return processedEntity;
@@ -121,7 +124,6 @@ public abstract class InMemoryRuleRepositoryAdapter<T extends RuleEntity> implem
 
 	/**
 	 * Get next unused id.
-	 *
 	 * @return next unused id
 	 */
 	abstract protected long nextId();

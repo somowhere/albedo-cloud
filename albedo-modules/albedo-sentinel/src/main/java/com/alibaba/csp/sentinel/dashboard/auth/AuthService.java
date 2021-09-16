@@ -25,7 +25,6 @@ public interface AuthService<R> {
 
 	/**
 	 * Get the authentication user.
-	 *
 	 * @param request the request contains the user information
 	 * @return the auth user represent the current user, when the user is illegal, a null
 	 * value will return.
@@ -77,8 +76,7 @@ public interface AuthService<R> {
 		 * privileges to the target, but to throw a RuntimeException to represent no auth
 		 * is also a good way.
 		 * </p>
-		 *
-		 * @param target        the target to check
+		 * @param target the target to check
 		 * @param privilegeType the privilege type to check
 		 * @return if current user has the specific privileges to the target, return true,
 		 * otherwise return false.
@@ -87,28 +85,24 @@ public interface AuthService<R> {
 
 		/**
 		 * Check whether current user is a super-user.
-		 *
 		 * @return if current user is super user return true, else return false.
 		 */
 		boolean isSuperUser();
 
 		/**
 		 * Get current user's nick name.
-		 *
 		 * @return current user's nick name.
 		 */
 		String getNickName();
 
 		/**
 		 * Get current user's login name.
-		 *
 		 * @return current user's login name.
 		 */
 		String getLoginName();
 
 		/**
 		 * Get current user's ID.
-		 *
 		 * @return ID of current user
 		 */
 		String getId();

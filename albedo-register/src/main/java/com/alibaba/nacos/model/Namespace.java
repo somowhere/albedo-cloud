@@ -32,25 +32,9 @@ public class Namespace {
 	private int configCount;
 
 	/**
-	 * 0 : Global configuration， 1 : Default private namespace ，2 : Custom namespace.
+	 * see {@link com.alibaba.nacos.console.enums.NamespaceTypeEnum}.
 	 */
 	private int type;
-
-	public Namespace() {
-	}
-
-	public Namespace(String namespace, String namespaceShowName) {
-		this.namespace = namespace;
-		this.namespaceShowName = namespaceShowName;
-	}
-
-	public Namespace(String namespace, String namespaceShowName, int quota, int configCount, int type) {
-		this.namespace = namespace;
-		this.namespaceShowName = namespaceShowName;
-		this.quota = quota;
-		this.configCount = configCount;
-		this.type = type;
-	}
 
 	public String getNamespaceShowName() {
 		return namespaceShowName;
@@ -66,6 +50,22 @@ public class Namespace {
 
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
+	}
+
+	public Namespace() {
+	}
+
+	public Namespace(String namespace, String namespaceShowName) {
+		this.namespace = namespace;
+		this.namespaceShowName = namespaceShowName;
+	}
+
+	public Namespace(String namespace, String namespaceShowName, int quota, int configCount, int type) {
+		this.namespace = namespace;
+		this.namespaceShowName = namespaceShowName;
+		this.quota = quota;
+		this.configCount = configCount;
+		this.type = type;
 	}
 
 	public int getQuota() {
