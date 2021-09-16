@@ -59,7 +59,7 @@ import java.util.Objects;
  * @author nkorange
  */
 @RestController("user")
-@RequestMapping({ "/v1/auth", "/v1/auth/users" })
+@RequestMapping({"/v1/auth", "/v1/auth/users"})
 public class UserController {
 
 	@Autowired
@@ -82,6 +82,7 @@ public class UserController {
 
 	/**
 	 * Create a new user.
+	 *
 	 * @param username username
 	 * @param password password
 	 * @return ok if create succeed
@@ -102,6 +103,7 @@ public class UserController {
 
 	/**
 	 * Delete an existed user.
+	 *
 	 * @param username username of user
 	 * @return ok if deleted succeed, keep silent if user not exist
 	 * @since 1.2.0
@@ -123,10 +125,11 @@ public class UserController {
 
 	/**
 	 * Update an user.
-	 * @param username username of user
+	 *
+	 * @param username    username of user
 	 * @param newPassword new password of user
-	 * @param response http response
-	 * @param request http request
+	 * @param response    http response
+	 * @param request     http request
 	 * @return ok if update succeed
 	 * @throws IllegalArgumentException if user not exist or oldPassword is incorrect
 	 * @since 1.2.0
@@ -134,7 +137,7 @@ public class UserController {
 	@PutMapping
 	@Secured(resource = NacosAuthConfig.UPDATE_PASSWORD_ENTRY_POINT, action = ActionTypes.WRITE)
 	public Object updateUser(@RequestParam String username, @RequestParam String newPassword,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
+							 HttpServletResponse response, HttpServletRequest request) throws IOException {
 		// admin or same user
 		if (!hasPermission(username, request)) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, "authorization failed!");
@@ -169,7 +172,8 @@ public class UserController {
 
 	/**
 	 * Get paged users.
-	 * @param pageNo number index of page
+	 *
+	 * @param pageNo   number index of page
 	 * @param pageSize size of page
 	 * @return A collection of users, empty set if no user is found
 	 * @since 1.2.0
@@ -185,19 +189,20 @@ public class UserController {
 	 *
 	 * <p>
 	 * This methods uses username and password to require a new token.
+	 *
 	 * @param username username of user
 	 * @param password password
 	 * @param response http response
-	 * @param request http request
+	 * @param request  http request
 	 * @return new token of the user
 	 * @throws AccessException if user info is incorrect
 	 */
 	@PostMapping("/login")
 	public Object login(@RequestParam String username, @RequestParam String password, HttpServletResponse response,
-			HttpServletRequest request) throws AccessException {
+						HttpServletRequest request) throws AccessException {
 
 		if (AuthSystemTypes.NACOS.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())
-				|| AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
+			|| AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			NacosUser user = (NacosUser) authManager.login(request);
 
 			response.addHeader(NacosAuthConfig.AUTHORIZATION_HEADER, NacosAuthConfig.TOKEN_PREFIX + user.getToken());
@@ -213,7 +218,7 @@ public class UserController {
 		// create Authentication class through username and password, the implement class
 		// is UsernamePasswordAuthenticationToken
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+			password);
 
 		try {
 			// use the method authenticate of AuthenticationManager(default implement is
@@ -226,14 +231,14 @@ public class UserController {
 			// write Token to Http header
 			response.addHeader(NacosAuthConfig.AUTHORIZATION_HEADER, "Bearer " + token);
 			return RestResultUtils.success("Bearer " + token);
-		}
-		catch (BadCredentialsException authentication) {
+		} catch (BadCredentialsException authentication) {
 			return RestResultUtils.failed(HttpStatus.UNAUTHORIZED.value(), null, "Login failed");
 		}
 	}
 
 	/**
 	 * Update password.
+	 *
 	 * @param oldPassword old password
 	 * @param newPassword new password
 	 * @return Code 200 if update successfully, Code 401 if old password invalid,
@@ -242,7 +247,7 @@ public class UserController {
 	@PutMapping("/password")
 	@Deprecated
 	public RestResult<String> updatePassword(@RequestParam(value = "oldPassword") String oldPassword,
-			@RequestParam(value = "newPassword") String newPassword) {
+											 @RequestParam(value = "newPassword") String newPassword) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = ((UserDetails) principal).getUsername();
 		User user = userDetailsService.getUserFromDatabase(username);
@@ -255,14 +260,14 @@ public class UserController {
 				return RestResultUtils.success("Update password success");
 			}
 			return RestResultUtils.failed(HttpStatus.UNAUTHORIZED.value(), "Old password is invalid");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return RestResultUtils.failed(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Update userpassword failed");
 		}
 	}
 
 	/**
 	 * Fuzzy matching username.
+	 *
 	 * @param username username
 	 * @return Matched username
 	 */

@@ -72,7 +72,7 @@ public class NacosRoleServiceImpl {
 	private void reload() {
 		try {
 			Page<RoleInfo> roleInfoPage = rolePersistService.getRolesByUserName(StringUtils.EMPTY, DEFAULT_PAGE_NO,
-					Integer.MAX_VALUE);
+				Integer.MAX_VALUE);
 			if (roleInfoPage == null) {
 				return;
 			}
@@ -89,15 +89,14 @@ public class NacosRoleServiceImpl {
 			Map<String, List<PermissionInfo>> tmpPermissionInfoMap = new ConcurrentHashMap<>(16);
 			for (String role : tmpRoleSet) {
 				Page<PermissionInfo> permissionInfoPage = permissionPersistService.getPermissions(role, DEFAULT_PAGE_NO,
-						Integer.MAX_VALUE);
+					Integer.MAX_VALUE);
 				tmpPermissionInfoMap.put(role, permissionInfoPage.getPageItems());
 			}
 
 			roleSet = tmpRoleSet;
 			roleInfoMap = tmpRoleInfoMap;
 			permissionInfoMap = tmpPermissionInfoMap;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Loggers.AUTH.warn("[LOAD-ROLES] load failed", e);
 		}
 	}
@@ -108,7 +107,8 @@ public class NacosRoleServiceImpl {
 	 * <p>
 	 * Note if the user has many roles, this method returns true if any one role of the
 	 * user has the desired permission.
-	 * @param username user info
+	 *
+	 * @param username   user info
 	 * @param permission permission to auth
 	 * @return true if granted, false otherwise
 	 */
@@ -145,7 +145,7 @@ public class NacosRoleServiceImpl {
 				String permissionResource = permissionInfo.getResource().replaceAll("\\*", ".*");
 				String permissionAction = permissionInfo.getAction();
 				if (permissionAction.contains(permission.getAction())
-						&& Pattern.matches(permissionResource, permission.getResource())) {
+					&& Pattern.matches(permissionResource, permission.getResource())) {
 					return true;
 				}
 			}
@@ -176,7 +176,7 @@ public class NacosRoleServiceImpl {
 		List<PermissionInfo> permissionInfoList = permissionInfoMap.get(role);
 		if (!authConfigs.isCachingEnabled() || permissionInfoList == null) {
 			Page<PermissionInfo> permissionInfoPage = getPermissionsFromDatabase(role, DEFAULT_PAGE_NO,
-					Integer.MAX_VALUE);
+				Integer.MAX_VALUE);
 			if (permissionInfoPage != null) {
 				permissionInfoList = permissionInfoPage.getPageItems();
 			}
@@ -190,7 +190,8 @@ public class NacosRoleServiceImpl {
 
 	/**
 	 * Add role.
-	 * @param role role name
+	 *
+	 * @param role     role name
 	 * @param username user name
 	 */
 	public void addRole(String role, String username) {
@@ -223,9 +224,10 @@ public class NacosRoleServiceImpl {
 
 	/**
 	 * Add permission.
-	 * @param role role name
+	 *
+	 * @param role     role name
 	 * @param resource resource
-	 * @param action action
+	 * @param action   action
 	 */
 	public void addPermission(String role, String resource, String action) {
 		if (!roleSet.contains(role)) {

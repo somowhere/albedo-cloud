@@ -55,7 +55,7 @@ public class FlowControllerV1 {
 	@GetMapping("/rules")
 	@AuthAction(PrivilegeType.READ_RULE)
 	public Result<List<FlowRuleEntity>> apiQueryMachineRules(@RequestParam String app, @RequestParam String ip,
-			@RequestParam Integer port) {
+															 @RequestParam Integer port) {
 
 		if (StringUtil.isEmpty(app)) {
 			return Result.ofFail(-1, "app can't be null or empty");
@@ -70,8 +70,7 @@ public class FlowControllerV1 {
 			List<FlowRuleEntity> rules = sentinelApiClient.fetchFlowRuleOfMachine(app, ip, port);
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when querying flow rules", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -142,8 +141,7 @@ public class FlowControllerV1 {
 
 			publishRules(entity.getApp(), entity.getIp(), entity.getPort()).get(5000, TimeUnit.MILLISECONDS);
 			return Result.ofSuccess(entity);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			Throwable e = t instanceof ExecutionException ? t.getCause() : t;
 			logger.error("Failed to add new flow rule, app={}, ip={}", entity.getApp(), entity.getIp(), e);
 			return Result.ofFail(-1, e.getMessage());
@@ -153,8 +151,8 @@ public class FlowControllerV1 {
 	@PutMapping("/save.json")
 	@AuthAction(PrivilegeType.WRITE_RULE)
 	public Result<FlowRuleEntity> apiUpdateFlowRule(Long id, String app, String limitApp, String resource,
-			Integer grade, Double count, Integer strategy, String refResource, Integer controlBehavior,
-			Integer warmUpPeriodSec, Integer maxQueueingTimeMs) {
+													Integer grade, Double count, Integer strategy, String refResource, Integer controlBehavior,
+													Integer warmUpPeriodSec, Integer maxQueueingTimeMs) {
 		if (id == null) {
 			return Result.ofFail(-1, "id can't be null");
 		}
@@ -220,11 +218,10 @@ public class FlowControllerV1 {
 
 			publishRules(entity.getApp(), entity.getIp(), entity.getPort()).get(5000, TimeUnit.MILLISECONDS);
 			return Result.ofSuccess(entity);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			Throwable e = t instanceof ExecutionException ? t.getCause() : t;
 			logger.error("Error when updating flow rules, app={}, ip={}, ruleId={}", entity.getApp(), entity.getIp(),
-					id, e);
+				id, e);
 			return Result.ofFail(-1, e.getMessage());
 		}
 	}
@@ -243,18 +240,16 @@ public class FlowControllerV1 {
 
 		try {
 			repository.delete(id);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return Result.ofFail(-1, e.getMessage());
 		}
 		try {
 			publishRules(oldEntity.getApp(), oldEntity.getIp(), oldEntity.getPort()).get(5000, TimeUnit.MILLISECONDS);
 			return Result.ofSuccess(id);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			Throwable e = t instanceof ExecutionException ? t.getCause() : t;
 			logger.error("Error when deleting flow rules, app={}, ip={}, id={}", oldEntity.getApp(), oldEntity.getIp(),
-					id, e);
+				id, e);
 			return Result.ofFail(-1, e.getMessage());
 		}
 	}

@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 public @interface AuthAction {
 
 	/**

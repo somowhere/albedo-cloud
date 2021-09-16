@@ -41,8 +41,7 @@ public class VersionController {
 				res = sentinelDashboardVersion.substring(0, sentinelDashboardVersion.indexOf(VERSION_PATTERN));
 			}
 			return Result.ofSuccess(res);
-		}
-		else {
+		} else {
 			return Result.ofFail(1, "getVersion failed: empty version");
 		}
 	}

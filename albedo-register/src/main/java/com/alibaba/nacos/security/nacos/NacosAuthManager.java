@@ -74,11 +74,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			tokenManager.validateToken(token);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			throw new AccessException("token expired!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new AccessException("token invalid!");
 		}
 
@@ -112,11 +110,9 @@ public class NacosAuthManager implements AuthManager {
 
 		try {
 			tokenManager.validateToken(token);
-		}
-		catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			throw new AccessException("token expired!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new AccessException("token invalid!");
 		}
 
@@ -191,17 +187,15 @@ public class NacosAuthManager implements AuthManager {
 		Authentication authenticate;
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName,
-					rawPassword);
+				rawPassword);
 			authenticate = authenticationManager.authenticate(authenticationToken);
-		}
-		catch (AuthenticationException e) {
+		} catch (AuthenticationException e) {
 			throw new AccessException("unknown user!");
 		}
 
 		if (null == authenticate || StringUtils.isBlank(authenticate.getName())) {
 			finalName = userName;
-		}
-		else {
+		} else {
 			finalName = authenticate.getName();
 		}
 

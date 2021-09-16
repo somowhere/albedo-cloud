@@ -73,7 +73,7 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
 		tableDto.setColumnList(tableColumnService.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID,
-			tableDto.getId()))
+				tableDto.getId()))
 			.stream().map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList())
 		);
 		Collections.sort(tableDto.getColumnList());
@@ -169,7 +169,7 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
 		tableDto.setColumnList(tableColumnService.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID,
-			tableDto.getId()))
+				tableDto.getId()))
 			.stream().map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList())
 		);
 		Collections.sort(tableDto.getColumnList());

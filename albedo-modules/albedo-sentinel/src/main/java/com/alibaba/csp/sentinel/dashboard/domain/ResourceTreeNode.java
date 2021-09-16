@@ -71,11 +71,9 @@ public class ResourceTreeNode {
 			// real root
 			if (node.parentId == null || node.parentId.isEmpty()) {
 				root = node;
-			}
-			else if (map.containsKey(node.parentId)) {
+			} else if (map.containsKey(node.parentId)) {
 				map.get(node.parentId).children.add(node);
-			}
-			else {
+			} else {
 				// impossible
 			}
 		}
@@ -113,8 +111,7 @@ public class ResourceTreeNode {
 		// empty matches all
 		if (searchKey == null || searchKey.isEmpty() || node.resource.toLowerCase().contains(searchKey.toLowerCase())) {
 			node.visible = true;
-		}
-		else {
+		} else {
 			node.visible = false;
 		}
 

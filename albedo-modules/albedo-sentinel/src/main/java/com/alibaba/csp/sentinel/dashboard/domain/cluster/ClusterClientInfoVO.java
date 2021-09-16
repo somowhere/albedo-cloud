@@ -68,7 +68,7 @@ public class ClusterClientInfoVO {
 	@Override
 	public String toString() {
 		return "ClusterClientInfoVO{" + "serverHost='" + serverHost + '\'' + ", serverPort=" + serverPort
-				+ ", clientState=" + clientState + ", requestTimeout=" + requestTimeout + '}';
+			+ ", clientState=" + clientState + ", requestTimeout=" + requestTimeout + '}';
 	}
 
 }

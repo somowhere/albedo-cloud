@@ -106,11 +106,11 @@ public class DatasourceConfResourceIntTest {
 	 */
 	public static DatasourceConfDto createEntity() {
 		DatasourceConfDto datasourceConfDto = ClassUtil.createObj(DatasourceConfDto.class, Lists.newArrayList(
-			DatasourceConfDto.F_NAME
-			, DatasourceConfDto.F_URL
-			, DatasourceConfDto.F_USERNAME
-			, DatasourceConfDto.F_PASSWORD
-			, DatasourceConfDto.F_DESCRIPTION
+				DatasourceConfDto.F_NAME
+				, DatasourceConfDto.F_URL
+				, DatasourceConfDto.F_USERNAME
+				, DatasourceConfDto.F_PASSWORD
+				, DatasourceConfDto.F_DESCRIPTION
 			),
 
 			DEFAULT_NAME
@@ -152,9 +152,9 @@ public class DatasourceConfResourceIntTest {
 		int databaseSizeBeforeCreate = datasourceConfService.list().size();
 		// Create the DatasourceConf
 		restDatasourceConfMockMvc.perform(post(DEFAULT_API_URL)
-			.param(PageModel.F_DESC, DatasourceConf.F_SQL_CREATEDDATE)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
+				.param(PageModel.F_DESC, DatasourceConf.F_SQL_CREATEDDATE)
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
 			.andExpect(status().isOk());
 		;
 		// Validate the DatasourceConf in the database
@@ -182,8 +182,8 @@ public class DatasourceConfResourceIntTest {
 		// Create the DatasourceConf, which fails.
 
 		restDatasourceConfMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
 			.andExpect(status().isBadRequest());
 
 		List<DatasourceConf> datasourceConfList = datasourceConfService.list();
@@ -200,8 +200,8 @@ public class DatasourceConfResourceIntTest {
 		// Create the DatasourceConf, which fails.
 
 		restDatasourceConfMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
 			.andExpect(status().isBadRequest());
 
 		List<DatasourceConf> datasourceConfList = datasourceConfService.list();
@@ -307,11 +307,11 @@ public class DatasourceConfResourceIntTest {
 		DatasourceConf updatedDatasourceConf = datasourceConfService.getById(datasourceConfDto.getId());
 		// Disconnect from session so that the updates on updatedDatasourceConf are not directly saved in db
 		ClassUtil.updateObj(updatedDatasourceConf, Lists.newArrayList(
-			DatasourceConf.F_NAME
-			, DatasourceConf.F_URL
-			, DatasourceConf.F_USERNAME
-			, DatasourceConf.F_PASSWORD
-			, DatasourceConf.F_DESCRIPTION
+				DatasourceConf.F_NAME
+				, DatasourceConf.F_URL
+				, DatasourceConf.F_USERNAME
+				, DatasourceConf.F_PASSWORD
+				, DatasourceConf.F_DESCRIPTION
 			),
 
 			UPDATED_NAME
@@ -330,8 +330,8 @@ public class DatasourceConfResourceIntTest {
 
 		DatasourceConfDto datasourceConfVo = datasourceConfService.copyBeanToDto(updatedDatasourceConf);
 		restDatasourceConfMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(datasourceConfVo)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(datasourceConfVo)))
 			.andExpect(status().isOk());
 
 		// Validate the DatasourceConf in the database
@@ -356,9 +356,9 @@ public class DatasourceConfResourceIntTest {
 
 		// Get the datasourceConf
 		restDatasourceConfMockMvc.perform(delete(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(datasourceConfDto.getId())))
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(datasourceConfDto.getId())))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty

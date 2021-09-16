@@ -58,6 +58,7 @@ public class AppInfo {
 
 	/**
 	 * Get the current machines.
+	 *
 	 * @return a new copy of the current machines.
 	 */
 	public Set<MachineInfo> getMachines() {
@@ -99,7 +100,7 @@ public class AppInfo {
 			if (healthyCount == 0) {
 				// No healthy machines.
 				return machines.stream().max(Comparator.comparingLong(MachineInfo::getLastHeartbeat))
-						.map(e -> System.currentTimeMillis() - e.getLastHeartbeat() < threshold).orElse(false);
+					.map(e -> System.currentTimeMillis() - e.getLastHeartbeat() < threshold).orElse(false);
 			}
 		}
 		return true;
@@ -108,6 +109,7 @@ public class AppInfo {
 	/**
 	 * Check whether current application has no healthy machines and should not be
 	 * displayed.
+	 *
 	 * @return true if the application should be displayed in the sidebar, otherwise false
 	 */
 	public boolean isShown() {
@@ -116,6 +118,7 @@ public class AppInfo {
 
 	/**
 	 * Check whether current application has no healthy machines and should be removed.
+	 *
 	 * @return true if the application is dead and should be removed, otherwise false
 	 */
 	public boolean isDead() {

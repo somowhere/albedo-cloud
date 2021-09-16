@@ -41,8 +41,8 @@ public class MachineRegistryController {
 	@ResponseBody
 	@RequestMapping("/machine")
 	public Result<?> receiveHeartBeat(String app,
-			@RequestParam(value = "app_type", required = false, defaultValue = "0") Integer appType, Long version,
-			String v, String hostname, String ip, Integer port) {
+									  @RequestParam(value = "app_type", required = false, defaultValue = "0") Integer appType, Long version,
+									  String v, String hostname, String ip, Integer port) {
 		if (app == null) {
 			app = MachineDiscovery.UNKNOWN_APP_NAME;
 		}
@@ -70,8 +70,7 @@ public class MachineRegistryController {
 			machineInfo.setVersion(sentinelVersion);
 			appManagement.addMachine(machineInfo);
 			return Result.ofSuccessMsg("success");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("Receive heartbeat error", e);
 			return Result.ofFail(-1, e.getMessage());
 		}

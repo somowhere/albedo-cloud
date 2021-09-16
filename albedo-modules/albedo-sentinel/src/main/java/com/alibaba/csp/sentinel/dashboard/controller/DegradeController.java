@@ -67,8 +67,7 @@ public class DegradeController {
 			List<DegradeRuleEntity> rules = sentinelApiClient.fetchDegradeRuleOfMachine(app, ip, port);
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("queryApps error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -86,8 +85,7 @@ public class DegradeController {
 		entity.setGmtModified(date);
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			logger.error("Failed to add new degrade rule, app={}, ip={}", entity.getApp(), entity.getIp(), t);
 			return Result.ofThrowable(-1, t);
 		}
@@ -120,8 +118,7 @@ public class DegradeController {
 		entity.setGmtModified(new Date());
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			logger.error("Failed to save degrade rule, id={}, rule={}", id, entity, t);
 			return Result.ofThrowable(-1, t);
 		}
@@ -145,8 +142,7 @@ public class DegradeController {
 
 		try {
 			repository.delete(id);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Failed to delete degrade rule, id={}", id, throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -190,7 +186,7 @@ public class DegradeController {
 			return Result.ofFail(-1, "circuit breaker strategy cannot be null");
 		}
 		if (strategy < CircuitBreakerStrategy.SLOW_REQUEST_RATIO.getType()
-				|| strategy > RuleConstant.DEGRADE_GRADE_EXCEPTION_COUNT) {
+			|| strategy > RuleConstant.DEGRADE_GRADE_EXCEPTION_COUNT) {
 			return Result.ofFail(-1, "Invalid circuit breaker strategy: " + strategy);
 		}
 		if (entity.getMinRequestAmount() == null || entity.getMinRequestAmount() <= 0) {
@@ -203,12 +199,10 @@ public class DegradeController {
 			Double slowRatio = entity.getSlowRatioThreshold();
 			if (slowRatio == null) {
 				return Result.ofFail(-1, "SlowRatioThreshold is required for slow request ratio strategy");
-			}
-			else if (slowRatio < 0 || slowRatio > 1) {
+			} else if (slowRatio < 0 || slowRatio > 1) {
 				return Result.ofFail(-1, "SlowRatioThreshold should be in range: [0.0, 1.0]");
 			}
-		}
-		else if (strategy == RuleConstant.DEGRADE_GRADE_EXCEPTION_RATIO) {
+		} else if (strategy == RuleConstant.DEGRADE_GRADE_EXCEPTION_RATIO) {
 			if (threshold > 1) {
 				return Result.ofFail(-1, "Ratio threshold should be in range: [0.0, 1.0]");
 			}

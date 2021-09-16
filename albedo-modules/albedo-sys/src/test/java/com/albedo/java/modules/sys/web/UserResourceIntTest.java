@@ -137,8 +137,8 @@ public class UserResourceIntTest {
 
 		// Create the User
 		restUserMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(user)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(user)))
 			.andExpect(status().isOk());
 
 		// Validate the User in the database
@@ -164,8 +164,8 @@ public class UserResourceIntTest {
 		managedUserVM.setEmail(DEFAULT_ANOTHER_EMAIL);
 		// Create the User
 		restUserMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -182,8 +182,8 @@ public class UserResourceIntTest {
 		userService.saveOrUpdate(user);
 		// Get all the users
 		restUserMockMvc.perform(get(DEFAULT_API_URL)
-			.param(PageModel.F_DESC, User.F_SQL_CREATEDDATE)
-			.accept(MediaType.APPLICATION_JSON))
+				.param(PageModel.F_DESC, User.F_SQL_CREATEDDATE)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.data.records.[*].username").value(hasItem(DEFAULT_USERNAME)))
@@ -255,8 +255,8 @@ public class UserResourceIntTest {
 
 		managedUserVM.setId(updatedUser.getId());
 		restUserMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.SUCCESS));
 
@@ -284,8 +284,8 @@ public class UserResourceIntTest {
 		managedUserVM.setEmail(DEFAULT_ANOTHER_EMAIL);
 		managedUserVM.setId(updatedUser.getId());
 		restUserMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -307,8 +307,8 @@ public class UserResourceIntTest {
 		managedUserVM.setUsername(DEFAULT_ANOTHER_USERNAME);
 		managedUserVM.setId(updatedUser.getId());
 		restUserMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -325,9 +325,9 @@ public class UserResourceIntTest {
 
 		// Delete the user
 		restUserMockMvc.perform(delete(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty
@@ -343,9 +343,9 @@ public class UserResourceIntTest {
 
 		// lockOrUnLock the user
 		restUserMockMvc.perform(put(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty
@@ -353,9 +353,9 @@ public class UserResourceIntTest {
 		assertThat(CommonConstants.STR_YES.equals(tempUser.getAvailable()));
 		// lockOrUnLock the user
 		restUserMockMvc.perform(put(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(Lists.newArrayList(user.getId())))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty

@@ -115,10 +115,8 @@ public class DemoController {
 						TimeUnit.MILLISECONDS.sleep(3000);
 					}
 
-				}
-				catch (Exception e) {
-				}
-				finally {
+				} catch (Exception e) {
+				} finally {
 					if (e1 != null) {
 						e1.exit();
 					}
@@ -126,8 +124,7 @@ public class DemoController {
 				Random random2 = new Random();
 				try {
 					TimeUnit.MILLISECONDS.sleep(random2.nextInt(200));
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

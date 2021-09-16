@@ -90,8 +90,7 @@ public class NacosAuthConfig extends WebSecurityConfigurerAdapter {
 		String ignoreUrls = null;
 		if (AuthSystemTypes.NACOS.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			ignoreUrls = DEFAULT_ALL_PATH_PATTERN;
-		}
-		else if (AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
+		} else if (AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			ignoreUrls = DEFAULT_ALL_PATH_PATTERN;
 		}
 		if (StringUtils.isBlank(authConfigs.getNacosAuthSystemType())) {
@@ -108,8 +107,7 @@ public class NacosAuthConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		if (AuthSystemTypes.NACOS.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-		}
-		else if (AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
+		} else if (AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
 			auth.authenticationProvider(ldapAuthenticationProvider);
 		}
 	}
@@ -119,16 +117,16 @@ public class NacosAuthConfig extends WebSecurityConfigurerAdapter {
 
 		if (StringUtils.isBlank(authConfigs.getNacosAuthSystemType())) {
 			http.csrf().disable().cors()// We don't need CSRF for JWT based authentication
-					.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-					.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-					.antMatchers(LOGIN_ENTRY_POINT).permitAll().and().authorizeRequests()
-					.antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).authenticated().and().exceptionHandling()
-					.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+				.antMatchers(LOGIN_ENTRY_POINT).permitAll().and().authorizeRequests()
+				.antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT).authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
 			// disable cache
 			http.headers().cacheControl();
 
 			http.addFilterBefore(new JwtAuthenticationTokenFilter(tokenProvider),
-					UsernamePasswordAuthenticationFilter.class);
+				UsernamePasswordAuthenticationFilter.class);
 		}
 	}
 

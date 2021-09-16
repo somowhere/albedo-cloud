@@ -148,8 +148,8 @@ public class MenuResourceIntTest {
 
 		// Create the Menu
 		restMenuMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(menu)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(menu)))
 			.andExpect(status().isOk());
 
 		// Validate the Menu in the database
@@ -186,8 +186,8 @@ public class MenuResourceIntTest {
 
 		// Create the Menu
 		restMenuMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -204,8 +204,8 @@ public class MenuResourceIntTest {
 		menuService.saveOrUpdate(menu);
 		// Get all the menus
 		restMenuMockMvc.perform(get(DEFAULT_API_URL)
-			.param(PageModel.F_DESC, "menu." + Menu.F_SQL_CREATEDDATE)
-			.accept(MediaType.APPLICATION_JSON))
+				.param(PageModel.F_DESC, "menu." + Menu.F_SQL_CREATEDDATE)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.data.records.[*].name").value(hasItem(DEFAULT_NAME)))
@@ -280,8 +280,8 @@ public class MenuResourceIntTest {
 
 		managedMenuVM.setId(updatedMenu.getId());
 		restMenuMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.SUCCESS));
 
@@ -330,8 +330,8 @@ public class MenuResourceIntTest {
 		managedMenuVM.setDescription(DEFAULT_DESCRIPTION);
 		managedMenuVM.setId(updatedMenu.getId());
 		restMenuMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedMenuVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -351,7 +351,7 @@ public class MenuResourceIntTest {
 
 		// Delete the menu
 		restMenuMockMvc.perform(delete(DEFAULT_API_URL + "{id}", menu.getId())
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty

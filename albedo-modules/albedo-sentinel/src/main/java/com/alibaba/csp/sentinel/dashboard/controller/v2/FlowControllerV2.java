@@ -75,8 +75,7 @@ public class FlowControllerV2 {
 			}
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Error when querying flow rules", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -143,8 +142,7 @@ public class FlowControllerV2 {
 		try {
 			entity = repository.save(entity);
 			publishRules(entity.getApp());
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Failed to add flow rule", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -184,8 +182,7 @@ public class FlowControllerV2 {
 				return Result.ofFail(-1, "save entity fail");
 			}
 			publishRules(oldEntity.getApp());
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Failed to update flow rule", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -206,8 +203,7 @@ public class FlowControllerV2 {
 		try {
 			repository.delete(id);
 			publishRules(oldEntity.getApp());
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return Result.ofFail(-1, e.getMessage());
 		}
 		return Result.ofSuccess(id);

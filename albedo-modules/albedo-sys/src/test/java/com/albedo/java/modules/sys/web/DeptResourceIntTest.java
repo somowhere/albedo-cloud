@@ -111,8 +111,8 @@ public class DeptResourceIntTest {
 
 		// Create the Dept
 		restDeptMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(dept)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(dept)))
 			.andExpect(status().isOk());
 
 		// Validate the Dept in the database
@@ -170,8 +170,8 @@ public class DeptResourceIntTest {
 
 		managedDeptVM.setId(updatedDept.getId());
 		restDeptMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedDeptVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedDeptVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.SUCCESS));
 
@@ -198,7 +198,7 @@ public class DeptResourceIntTest {
 
 		// Delete the dept
 		restDeptMockMvc.perform(delete(DEFAULT_API_URL + "{id}", dept.getId())
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty

@@ -93,7 +93,7 @@ public class AppClusterServerStateWrapVO {
 	@Override
 	public String toString() {
 		return "AppClusterServerStateWrapVO{" + "id='" + id + '\'' + ", ip='" + ip + '\'' + ", port='" + port + '\''
-				+ ", belongToApp=" + belongToApp + ", state=" + state + '}';
+			+ ", belongToApp=" + belongToApp + ", state=" + state + '}';
 	}
 
 }

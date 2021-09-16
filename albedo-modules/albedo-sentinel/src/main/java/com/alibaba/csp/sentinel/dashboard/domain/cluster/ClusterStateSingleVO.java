@@ -57,7 +57,7 @@ public class ClusterStateSingleVO {
 	@Override
 	public String toString() {
 		return "ClusterStateSingleVO{" + "address='" + address + '\'' + ", mode=" + mode + ", target='" + target + '\''
-				+ '}';
+			+ '}';
 	}
 
 }

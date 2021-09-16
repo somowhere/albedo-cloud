@@ -65,7 +65,7 @@ public class SysLogAspect {
 		LogOperate logOperateVo = SysLogUtils.getSysLog();
 		logOperateVo.setTitle(logOperate.value());
 		logOperateVo.setMethod(methodName);
-		logOperateVo.setParams(params+ " }");
+		logOperateVo.setParams(params + " }");
 		logOperateVo.setOperatorType(logOperate.operatorType().name());
 		Long startTime = System.currentTimeMillis();
 		Object obj;
@@ -74,9 +74,9 @@ public class SysLogAspect {
 			logOperateVo.setLogType(LogType.INFO.name());
 		} catch (Exception e) {
 			logOperateVo.setException(ExceptionUtil.stacktraceToString(e));
-			if(e instanceof FeignException && ((FeignException)e).status() != HttpStatus.HTTP_INTERNAL_ERROR){
+			if (e instanceof FeignException && ((FeignException) e).status() != HttpStatus.HTTP_INTERNAL_ERROR) {
 				logOperateVo.setLogType(LogType.WARN.name());
-			}else{
+			} else {
 				logOperateVo.setLogType(LogType.ERROR.name());
 			}
 			throw e;

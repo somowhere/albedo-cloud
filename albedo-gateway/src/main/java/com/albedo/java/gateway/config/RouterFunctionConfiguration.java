@@ -44,8 +44,8 @@ public class RouterFunctionConfiguration {
 	@Bean
 	public RouterFunction routerFunction() {
 		return RouterFunctions.route(
-			RequestPredicates.path("/code")
-				.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
+				RequestPredicates.path("/code")
+					.and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), imageCodeHandler)
 			.andRoute(RequestPredicates.GET("/swagger-resources")
 				.and(RequestPredicates.accept(MediaType.ALL)), swaggerResourceHandler)
 			.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")

@@ -45,13 +45,12 @@ public class FlowRuleApiProvider implements DynamicRuleProvider<List<FlowRuleEnt
 			return new ArrayList<>();
 		}
 		List<MachineInfo> list = appManagement.getDetailApp(appName).getMachines().stream()
-				.filter(MachineInfo::isHealthy)
-				.sorted((e1, e2) -> Long.compare(e2.getLastHeartbeat(), e1.getLastHeartbeat()))
-				.collect(Collectors.toList());
+			.filter(MachineInfo::isHealthy)
+			.sorted((e1, e2) -> Long.compare(e2.getLastHeartbeat(), e1.getLastHeartbeat()))
+			.collect(Collectors.toList());
 		if (list.isEmpty()) {
 			return new ArrayList<>();
-		}
-		else {
+		} else {
 			MachineInfo machine = list.get(0);
 			return sentinelApiClient.fetchFlowRuleOfMachine(machine.getApp(), machine.getIp(), machine.getPort());
 		}

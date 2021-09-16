@@ -36,13 +36,11 @@ import java.util.stream.Collectors;
 public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity> {
 
 	private static final long MAX_METRIC_LIVE_TIME_MS = 1000 * 60 * 5;
-
+	private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	/**
 	 * {@code app -> resource -> timestamp -> metric}
 	 */
 	private Map<String, Map<String, LinkedHashMap<Long, MetricEntity>>> allMetrics = new ConcurrentHashMap<>();
-
-	private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
 	@Override
 	public void save(MetricEntity entity) {
@@ -52,16 +50,15 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 		readWriteLock.writeLock().lock();
 		try {
 			allMetrics.computeIfAbsent(entity.getApp(), e -> new HashMap<>(16))
-					.computeIfAbsent(entity.getResource(), e -> new LinkedHashMap<Long, MetricEntity>() {
-						@Override
-						protected boolean removeEldestEntry(Entry<Long, MetricEntity> eldest) {
-							// Metric older than {@link #MAX_METRIC_LIVE_TIME_MS} will be
-							// removed.
-							return eldest.getKey() < TimeUtil.currentTimeMillis() - MAX_METRIC_LIVE_TIME_MS;
-						}
-					}).put(entity.getTimestamp().getTime(), entity);
-		}
-		finally {
+				.computeIfAbsent(entity.getResource(), e -> new LinkedHashMap<Long, MetricEntity>() {
+					@Override
+					protected boolean removeEldestEntry(Entry<Long, MetricEntity> eldest) {
+						// Metric older than {@link #MAX_METRIC_LIVE_TIME_MS} will be
+						// removed.
+						return eldest.getKey() < TimeUtil.currentTimeMillis() - MAX_METRIC_LIVE_TIME_MS;
+					}
+				}).put(entity.getTimestamp().getTime(), entity);
+		} finally {
 			readWriteLock.writeLock().unlock();
 		}
 
@@ -75,8 +72,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 		readWriteLock.writeLock().lock();
 		try {
 			metrics.forEach(this::save);
-		}
-		finally {
+		} finally {
 			readWriteLock.writeLock().unlock();
 		}
 	}
@@ -103,8 +99,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 				}
 			}
 			return results;
-		}
-		finally {
+		} finally {
 			readWriteLock.readLock().unlock();
 		}
 	}
@@ -138,8 +133,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 						oldEntity.addBlockQps(newEntity.getBlockQps());
 						oldEntity.addExceptionQps(newEntity.getExceptionQps());
 						oldEntity.addCount(1);
-					}
-					else {
+					} else {
 						resourceCount.put(resourceMetrics.getKey(), MetricEntity.copyOf(newEntity));
 					}
 				}
@@ -154,8 +148,7 @@ public class InMemoryMetricsRepository implements MetricsRepository<MetricEntity
 				}
 				return e2.getPassQps().compareTo(e1.getPassQps());
 			}).map(Entry::getKey).collect(Collectors.toList());
-		}
-		finally {
+		} finally {
 			readWriteLock.readLock().unlock();
 		}
 	}

@@ -102,12 +102,12 @@ public class MachineInfoVo {
 		this.lastHeartbeat = lastHeartbeat;
 	}
 
-	public void setHeartbeatVersion(long heartbeatVersion) {
-		this.heartbeatVersion = heartbeatVersion;
-	}
-
 	public long getHeartbeatVersion() {
 		return heartbeatVersion;
+	}
+
+	public void setHeartbeatVersion(long heartbeatVersion) {
+		this.heartbeatVersion = heartbeatVersion;
 	}
 
 	public String getVersion() {

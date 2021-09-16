@@ -129,8 +129,8 @@ public class DictResourceIntTest {
 
 		// Create the Dict
 		restDictMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(dict)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(dict)))
 			.andExpect(status().isOk());
 
 		// Validate the Dict in the database
@@ -161,8 +161,8 @@ public class DictResourceIntTest {
 
 		// Create the Dict
 		restDictMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -179,8 +179,8 @@ public class DictResourceIntTest {
 		dictService.saveOrUpdate(dict);
 		// Get all the dicts
 		restDictMockMvc.perform(get(DEFAULT_API_URL)
-			.param(PageModel.F_DESC, "parent.created_date")
-			.accept(MediaType.APPLICATION_JSON))
+				.param(PageModel.F_DESC, "parent.created_date")
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.data.records.[*].name").value(hasItem(DEFAULT_NAME)))
@@ -242,8 +242,8 @@ public class DictResourceIntTest {
 
 		managedDictVM.setId(updatedDict.getId());
 		restDictMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.SUCCESS));
 
@@ -281,8 +281,8 @@ public class DictResourceIntTest {
 		managedDictVM.setDescription(DEFAULT_DESCRIPTION);
 		managedDictVM.setId(updatedDict.getId());
 		restDictMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedDictVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.FAIL))
 			.andExpect(jsonPath("$.message").isNotEmpty());
@@ -302,7 +302,7 @@ public class DictResourceIntTest {
 
 		// Delete the dict
 		restDictMockMvc.perform(delete(DEFAULT_API_URL + "{id}", dict.getId())
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty

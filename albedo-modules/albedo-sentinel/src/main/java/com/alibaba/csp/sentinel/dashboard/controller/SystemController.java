@@ -75,8 +75,7 @@ public class SystemController {
 			List<SystemRuleEntity> rules = sentinelApiClient.fetchSystemRuleOfMachine(app, ip, port);
 			rules = repository.saveAll(rules);
 			return Result.ofSuccess(rules);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Query machine system rules error", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -95,7 +94,7 @@ public class SystemController {
 	@RequestMapping("/new.json")
 	@AuthAction(PrivilegeType.WRITE_RULE)
 	public Result<SystemRuleEntity> apiAdd(String app, String ip, Integer port, Double highestSystemLoad,
-			Double highestCpuUsage, Long avgRt, Long maxThread, Double qps) {
+										   Double highestCpuUsage, Long avgRt, Long maxThread, Double qps) {
 
 		Result<SystemRuleEntity> checkResult = checkBasicParams(app, ip, port);
 		if (checkResult != null) {
@@ -105,7 +104,7 @@ public class SystemController {
 		int notNullCount = countNotNullAndNotNegative(highestSystemLoad, avgRt, maxThread, qps, highestCpuUsage);
 		if (notNullCount != 1) {
 			return Result.ofFail(-1, "only one of [highestSystemLoad, avgRt, maxThread, qps,highestCpuUsage] "
-					+ "value must be set > 0, but " + notNullCount + " values get");
+				+ "value must be set > 0, but " + notNullCount + " values get");
 		}
 		if (null != highestCpuUsage && highestCpuUsage > 1) {
 			return Result.ofFail(-1, "highestCpuUsage must between [0.0, 1.0]");
@@ -117,34 +116,29 @@ public class SystemController {
 		// -1 is a fake value
 		if (null != highestSystemLoad) {
 			entity.setHighestSystemLoad(highestSystemLoad);
-		}
-		else {
+		} else {
 			entity.setHighestSystemLoad(-1D);
 		}
 
 		if (null != highestCpuUsage) {
 			entity.setHighestCpuUsage(highestCpuUsage);
-		}
-		else {
+		} else {
 			entity.setHighestCpuUsage(-1D);
 		}
 
 		if (avgRt != null) {
 			entity.setAvgRt(avgRt);
-		}
-		else {
+		} else {
 			entity.setAvgRt(-1L);
 		}
 		if (maxThread != null) {
 			entity.setMaxThread(maxThread);
-		}
-		else {
+		} else {
 			entity.setMaxThread(-1L);
 		}
 		if (qps != null) {
 			entity.setQps(qps);
-		}
-		else {
+		} else {
 			entity.setQps(-1D);
 		}
 		Date date = new Date();
@@ -152,8 +146,7 @@ public class SystemController {
 		entity.setGmtModified(date);
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("Add SystemRule error", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -166,7 +159,7 @@ public class SystemController {
 	@GetMapping("/save.json")
 	@AuthAction(PrivilegeType.WRITE_RULE)
 	public Result<SystemRuleEntity> apiUpdateIfNotNull(Long id, String app, Double highestSystemLoad,
-			Double highestCpuUsage, Long avgRt, Long maxThread, Double qps) {
+													   Double highestCpuUsage, Long avgRt, Long maxThread, Double qps) {
 		if (id == null) {
 			return Result.ofFail(-1, "id can't be null");
 		}
@@ -215,8 +208,7 @@ public class SystemController {
 		entity.setGmtModified(date);
 		try {
 			entity = repository.save(entity);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("save error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}
@@ -238,8 +230,7 @@ public class SystemController {
 		}
 		try {
 			repository.delete(id);
-		}
-		catch (Throwable throwable) {
+		} catch (Throwable throwable) {
 			logger.error("delete error:", throwable);
 			return Result.ofThrowable(-1, throwable);
 		}

@@ -133,8 +133,8 @@ public class RoleResourceIntTest {
 
 		// Create the Role
 		restRoleMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(roleDto)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(roleDto)))
 			.andExpect(status().isOk());
 
 		// Validate the Role in the database
@@ -155,8 +155,8 @@ public class RoleResourceIntTest {
 		roleService.saveOrUpdate(roleDto);
 		// Get all the roles
 		restRoleMockMvc.perform(get(DEFAULT_API_URL)
-			.param(PageModel.F_DESC, Role.F_SQL_CREATEDDATE)
-			.accept(MediaType.APPLICATION_JSON))
+				.param(PageModel.F_DESC, Role.F_SQL_CREATEDDATE)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 			.andExpect(jsonPath("$.data.records.[*].name").value(hasItem(DEFAULT_NAME)))
@@ -209,8 +209,8 @@ public class RoleResourceIntTest {
 		managedRoleVM.setDeptIdList(Lists.newArrayList(anotherRole.getDeptIdList().get(0)));
 		managedRoleVM.setId(updatedRole.getId());
 		restRoleMockMvc.perform(post(DEFAULT_API_URL)
-			.contentType(TestUtil.APPLICATION_JSON_UTF8)
-			.content(TestUtil.convertObjectToJsonBytes(managedRoleVM)))
+				.contentType(TestUtil.APPLICATION_JSON_UTF8)
+				.content(TestUtil.convertObjectToJsonBytes(managedRoleVM)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value(CommonConstants.SUCCESS));
 
@@ -242,7 +242,7 @@ public class RoleResourceIntTest {
 
 		// Delete the role
 		restRoleMockMvc.perform(delete(DEFAULT_API_URL + "{id}", roleDto.getId())
-			.accept(TestUtil.APPLICATION_JSON_UTF8))
+				.accept(TestUtil.APPLICATION_JSON_UTF8))
 			.andExpect(status().isOk());
 
 		// Validate the database is empty
