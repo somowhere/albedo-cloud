@@ -18,8 +18,8 @@ package com.albedo.java.common.security.component;
 
 import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.albedo.java.common.security.service.UserDetail;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

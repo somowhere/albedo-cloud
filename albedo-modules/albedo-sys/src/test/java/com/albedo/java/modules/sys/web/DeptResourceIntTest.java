@@ -41,9 +41,9 @@ public class DeptResourceIntTest {
 	private static final String DEFAULT_ANOTHER_NAME = "ANOTHER_NAME";
 	private static final String DEFAULT_NAME = "NAME1";
 	private static final String UPDATED_NAME = "NAME2";
-	private static final String DEFAULT_ANOTHER_PARENTID = "ANOTHER_PARENTID";
+	private static final Long DEFAULT_ANOTHER_PARENTID = 22L;
 	//    private static final String DEFAULT_PARENTID = "PARENTID1";
-	private static final String UPDATED_PARENTID = "PARENTID2";
+	private static final Long UPDATED_PARENTID = 33L;
 	private static final Integer DEFAULT_SORT = 10;
 	private static final Integer UPDATED_SORT = 20;
 	private static final String DEFAULT_DESCRIPTION = "DESCRIPTION1";
@@ -123,7 +123,7 @@ public class DeptResourceIntTest {
 		assertThat(testDept.getName()).isEqualTo(DEFAULT_NAME);
 		assertThat(testDept.getSort()).isEqualTo(DEFAULT_SORT);
 		assertThat(testDept.getParentId()).isEqualTo(anotherDept.getId());
-		assertThat(testDept.getParentIds()).contains(anotherDept.getId());
+		assertThat(testDept.getParentIds()).contains(anotherDept.getId().toString());
 		assertThat(testDept.isLeaf()).isEqualTo(true);
 		assertThat(testDept.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 		assertThat(testDept.getDelFlag()).isEqualTo(Dept.FLAG_NORMAL);
@@ -206,22 +206,5 @@ public class DeptResourceIntTest {
 		assertThat(databaseSizeAfterDelete == databaseSizeBeforeDelete - 1);
 	}
 
-	@Test
-	@Transactional(rollbackFor = Exception.class)
-	public void testDeptEquals() throws Exception {
-		TestUtil.equalsVerifier(Dept.class);
-		Dept dept1 = new Dept();
-		dept1.setId("1");
-		dept1.setName("Dept1");
-		Dept dept2 = new Dept();
-		dept2.setId(dept1.getId());
-		dept2.setName(dept1.getName());
-		assertThat(dept1).isEqualTo(dept2);
-		dept2.setId("2");
-		dept2.setName("Dept2");
-		assertThat(dept1).isNotEqualTo(dept2);
-		dept1.setId(null);
-		assertThat(dept1).isNotEqualTo(dept2);
-	}
 
 }

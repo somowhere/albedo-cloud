@@ -55,9 +55,9 @@ public class MenuResourceIntTest {
 	private static final String DEFAULT_ANOTHER_ICON = "ANOTHER_ICON";
 	private static final String DEFAULT_ICON = "ICON1";
 	private static final String UPDATED_ICON = "ICON2";
-	private static final String DEFAULT_ANOTHER_PARENTID = "ANOTHER_PARENTID";
+	private static final Long DEFAULT_ANOTHER_PARENTID = 22L;
 	//    private static final String DEFAULT_PARENTID = "PARENTID1";
-	private static final String UPDATED_PARENTID = "PARENTID2";
+	private static final Long UPDATED_PARENTID = 33l;
 	private static final Integer DEFAULT_SORT = 10;
 	private static final Integer UPDATED_SORT = 20;
 	private static final String DEFAULT_COMPONENT = "COMPONENT1";
@@ -162,7 +162,7 @@ public class MenuResourceIntTest {
 		assertThat(testMenu.getIcon()).isEqualTo(DEFAULT_ICON);
 		assertThat(testMenu.getSort()).isEqualTo(DEFAULT_SORT);
 		assertThat(testMenu.getParentId()).isEqualTo(anotherMenu.getId());
-		assertThat(testMenu.getParentIds()).contains(anotherMenu.getId());
+		assertThat(testMenu.getParentIds()).contains(String.valueOf(anotherMenu.getId()));
 		assertThat(testMenu.getComponent()).isEqualTo(DEFAULT_COMPONENT);
 		assertThat(testMenu.getHidden()).isEqualTo(DEFAULT_HIDDEN);
 		assertThat(testMenu.getCache()).isEqualTo(DEFAULT_CACHE);
@@ -204,7 +204,7 @@ public class MenuResourceIntTest {
 		menuService.saveOrUpdate(menu);
 		// Get all the menus
 		restMenuMockMvc.perform(get(DEFAULT_API_URL)
-				.param(PageModel.F_DESC, "menu." + Menu.F_SQL_CREATEDDATE)
+				.param(PageModel.F_DESC, "menu." + Menu.F_SQL_CREATED_DATE)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -357,24 +357,6 @@ public class MenuResourceIntTest {
 		// Validate the database is empty
 		long databaseSizeAfterDelete = menuService.count();
 		assertThat(databaseSizeAfterDelete == databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional(rollbackFor = Exception.class)
-	public void testMenuEquals() throws Exception {
-		TestUtil.equalsVerifier(Menu.class);
-		Menu menu1 = new Menu();
-		menu1.setId("1");
-		menu1.setName("Menu1");
-		Menu menu2 = new Menu();
-		menu2.setId(menu1.getId());
-		menu2.setName(menu1.getName());
-		assertThat(menu1).isEqualTo(menu2);
-		menu2.setId("2");
-		menu2.setName("Menu2");
-		assertThat(menu1).isNotEqualTo(menu2);
-		menu1.setId(null);
-		assertThat(menu1).isNotEqualTo(menu2);
 	}
 
 }

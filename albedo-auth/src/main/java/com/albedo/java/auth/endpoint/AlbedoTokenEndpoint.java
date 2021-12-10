@@ -20,6 +20,7 @@ import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.BeanUtil;
+import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.security.annotation.Inner;
@@ -144,7 +145,7 @@ public class AlbedoTokenEndpoint {
 	@Inner
 	@DeleteMapping
 	public Result<Boolean> removeByTokens(@RequestBody TokenVo tokenVo) throws BadRequestException {
-		if (tokenVo == null || StringUtil.isEmpty(tokenVo.getUserId())) {
+		if (tokenVo == null || ObjectUtil.isNull(tokenVo.getUserId())) {
 			throw new BadRequestException("当前登陆用户为空，无法操作");
 		}
 		tokenVo.getTokens().forEach(token -> {

@@ -1,8 +1,9 @@
 package com.albedo.java.common;
 
 
-import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.modules.sys.domain.LogOperate;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
@@ -64,9 +65,9 @@ public class UtilTest {
 		;
 
 		DataScope dataScope = new DataScope();
-		dataScope.setUserId("1");
+		dataScope.setUserId(1L);
 		dataScope.setDeptIds(Sets.newLinkedHashSet());
-		System.out.println(Json.toJsonString(dataScope));
+		System.out.println(JSONUtil.toJsonStr(dataScope));
 
 		ObjectMapper objectMapper = new ObjectMapper();
 //		objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);

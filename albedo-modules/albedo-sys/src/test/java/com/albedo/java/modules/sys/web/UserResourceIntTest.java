@@ -182,7 +182,7 @@ public class UserResourceIntTest {
 		userService.saveOrUpdate(user);
 		// Get all the users
 		restUserMockMvc.perform(get(DEFAULT_API_URL)
-				.param(PageModel.F_DESC, User.F_SQL_CREATEDDATE)
+				.param(PageModel.F_DESC, User.F_SQL_CREATED_DATE)
 				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -361,24 +361,6 @@ public class UserResourceIntTest {
 		// Validate the database is empty
 		User tempUser1 = userService.getById(user.getId());
 		assertThat(CommonConstants.STR_NO.equals(tempUser1.getAvailable()));
-	}
-
-	@Test
-	@Transactional(rollbackFor = Exception.class)
-	public void testUserEquals() throws Exception {
-		TestUtil.equalsVerifier(User.class);
-		User user1 = new User();
-		user1.setId("1");
-		user1.setUsername("User1");
-		User user2 = new User();
-		user2.setId(user1.getId());
-		user2.setUsername(user1.getUsername());
-		assertThat(user1).isEqualTo(user2);
-		user2.setId("2");
-		user2.setUsername("User2");
-		assertThat(user1).isNotEqualTo(user2);
-		user1.setId(null);
-		assertThat(user1).isNotEqualTo(user2);
 	}
 
 }

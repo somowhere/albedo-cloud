@@ -51,9 +51,9 @@ public class DictResourceIntTest {
 	private static final String DEFAULT_ANOTHER_VAL = "ANOTHER_VAL";
 	private static final String DEFAULT_VAL = "VAL1";
 	private static final String UPDATED_VAL = "VAL2";
-	private static final String DEFAULT_ANOTHER_PARENTID = "ANOTHER_PARENTID";
+	private static final Long DEFAULT_ANOTHER_PARENTID = 22L;
 	//    private static final String DEFAULT_PARENTID = "PARENTID1";
-	private static final String UPDATED_PARENTID = "PARENTID2";
+	private static final Long UPDATED_PARENTID = 33L;
 	private static final Integer DEFAULT_SORT = 10;
 	private static final Integer UPDATED_SORT = 20;
 	private static final String DEFAULT_REMARK = "REMARK1";
@@ -143,7 +143,7 @@ public class DictResourceIntTest {
 		assertThat(testDict.getVal()).isEqualTo(DEFAULT_VAL);
 		assertThat(testDict.getSort()).isEqualTo(DEFAULT_SORT);
 		assertThat(testDict.getParentId()).isEqualTo(anotherDict.getId());
-		assertThat(testDict.getParentIds()).contains(anotherDict.getId());
+		assertThat(testDict.getParentIds()).contains(anotherDict.getId().toString());
 		assertThat(testDict.isLeaf()).isEqualTo(true);
 		assertThat(testDict.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 		assertThat(testDict.getDelFlag()).isEqualTo(Dict.FLAG_NORMAL);
@@ -308,24 +308,6 @@ public class DictResourceIntTest {
 		// Validate the database is empty
 		long databaseSizeAfterDelete = dictService.count();
 		assertThat(databaseSizeAfterDelete == databaseSizeBeforeDelete - 1);
-	}
-
-	@Test
-	@Transactional(rollbackFor = Exception.class)
-	public void testDictEquals() throws Exception {
-		TestUtil.equalsVerifier(Dict.class);
-		Dict dict1 = new Dict();
-		dict1.setId("1");
-		dict1.setName("Dict1");
-		Dict dict2 = new Dict();
-		dict2.setId(dict1.getId());
-		dict2.setName(dict1.getName());
-		assertThat(dict1).isEqualTo(dict2);
-		dict2.setId("2");
-		dict2.setName("Dict2");
-		assertThat(dict1).isNotEqualTo(dict2);
-		dict1.setId(null);
-		assertThat(dict1).isNotEqualTo(dict2);
 	}
 
 }
