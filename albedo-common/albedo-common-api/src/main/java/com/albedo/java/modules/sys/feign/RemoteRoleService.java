@@ -28,6 +28,6 @@ public interface RemoteRoleService {
 	 * @updateTime 2020/6/1 11:09
 	 */
 	@GetMapping("/role/dept-ids/{roleId}")
-	Result<List<String>> findDeptIdsByRoleId(@PathVariable("roleId") String roleId, @RequestHeader(SecurityConstants.FROM) String from);
+	Result<List<Long>> findDeptIdsByRoleId(@PathVariable("roleId") Long roleId, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

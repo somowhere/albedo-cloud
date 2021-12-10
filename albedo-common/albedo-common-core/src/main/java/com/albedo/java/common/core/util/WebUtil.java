@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,8 +33,11 @@
 package com.albedo.java.common.core.util;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.CheckedException;
+import com.albedo.java.common.core.exception.BizException;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +59,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
-
 /**
  * Miscellaneous utilities for web applications.
  *
- * @author L.cm
+ * @author somewhere
  */
 @Slf4j
 @UtilityClass
@@ -67,8 +85,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	}
 
 	/**
-	 * 判断是否ajax请求
-	 * spring ajax 返回含有 ResponseBody 或者 RestController注解
+	 * 判断是否ajax请求 spring ajax 返回含有 ResponseBody 或者 RestController注解
 	 *
 	 * @param handlerMethod HandlerMethod
 	 * @return 是否ajax请求
@@ -167,7 +184,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		response.setCharacterEncoding(CommonConstants.UTF8);
 		response.setContentType(contentType);
 		try (PrintWriter out = response.getWriter()) {
-			String str = Json.toJSONString(result);
+			String str = JSONUtil.toJsonStr(result);
 			log.debug("renderJson {}", str);
 			out.append(str);
 		} catch (IOException e) {
@@ -224,15 +241,14 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
 		if (header == null || !header.startsWith(CommonConstants.BASIC_)) {
-			throw new CheckedException("请求头中client信息为空");
+			throw new BizException("请求头中client信息为空");
 		}
 		byte[] base64Token = header.substring(6).getBytes(StandardCharsets.UTF_8);
 		byte[] decoded;
 		try {
 			decoded = Base64.decode(base64Token);
 		} catch (IllegalArgumentException e) {
-			throw new CheckedException(
-				"Failed to decode basic authentication token");
+			throw new BizException("Failed to decode basic authentication token");
 		}
 
 		String token = new String(decoded, StandardCharsets.UTF_8);
@@ -240,9 +256,18 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		int delim = token.indexOf(":");
 
 		if (delim == -1) {
-			throw new CheckedException("Invalid basic authentication token");
+			throw new BizException("Invalid basic authentication token");
 		}
 		return new String[]{token.substring(0, delim), token.substring(delim + 1)};
 	}
-}
 
+
+	public static String getHeader(HttpServletRequest request, String name) {
+		String value = request.getHeader(name);
+		if (StrUtil.isEmpty(value)) {
+			return StrPool.EMPTY;
+		}
+		return URLUtil.decode(value);
+	}
+
+}

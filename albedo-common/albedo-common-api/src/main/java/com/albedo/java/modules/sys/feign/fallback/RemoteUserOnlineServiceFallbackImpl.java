@@ -49,4 +49,11 @@ public class RemoteUserOnlineServiceFallbackImpl implements RemoteUserOnlineServ
 		log.warn("feign removeByTokens失败:{}", tokenVo, cause);
 		throw new FeignBizException(cause);
 	}
+
+	@Override
+	public void reset() {
+		log.warn("feign reset失败:{}", cause);
+		throw new FeignBizException(cause);
+
+	}
 }

@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,13 +32,14 @@
 
 package com.albedo.java.modules.sys.service.impl;
 
-import com.albedo.java.common.core.constant.CacheNameConstants;
+import com.albedo.java.common.core.cache.model.CacheKey;
+import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.exception.BadRequestException;
+import com.albedo.java.common.core.exception.BizException;
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.security.util.SecurityUtil;
+import com.albedo.java.modules.sys.cache.RoleCacheKeyBuilder;
 import com.albedo.java.modules.sys.domain.Role;
 import com.albedo.java.modules.sys.domain.RoleDept;
 import com.albedo.java.modules.sys.domain.RoleMenu;
@@ -34,14 +51,13 @@ import com.albedo.java.modules.sys.service.RoleDeptService;
 import com.albedo.java.modules.sys.service.RoleMenuService;
 import com.albedo.java.modules.sys.service.RoleService;
 import com.albedo.java.modules.sys.util.SysCacheUtil;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -57,30 +73,28 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-@CacheConfig(cacheNames = CacheNameConstants.ROLE_DETAILS)
-@Transactional(rollbackFor = Exception.class)
-public class RoleServiceImpl extends
-	DataServiceImpl<RoleRepository, Role, RoleDto, String> implements RoleService {
+public class RoleServiceImpl extends DataCacheServiceImpl<RoleRepository, Role, RoleDto> implements RoleService {
+
 	private UserRepository userRepository;
+
 	private RoleMenuService roleMenuService;
+
 	private RoleDeptService roleDeptService;
 
 	@Override
-	public RoleDto getOneDto(String id) {
+	public RoleDto getOneDto(Serializable id) {
 		RoleDto oneVo = super.getOneDto(id);
-		oneVo.setMenuIdList(roleMenuService.list(Wrappers
-			.<RoleMenu>query().lambda()
-			.eq(RoleMenu::getRoleId, id)).stream().map(RoleMenu::getMenuId).collect(Collectors.toList()));
+		oneVo.setMenuIdList(roleMenuService.list(Wrappers.<RoleMenu>query().lambda().eq(RoleMenu::getRoleId, id))
+			.stream().map(RoleMenu::getMenuId).collect(Collectors.toList()));
 		oneVo.setDeptIdList(findDeptIdsByRoleId(id));
 		return oneVo;
 	}
 
 	@Override
-	@Cacheable(key = "'findDeptIdsByRoleId:' + #p0")
-	public List<String> findDeptIdsByRoleId(String roleId) {
-		return roleDeptService.list(Wrappers
-			.<RoleDept>query().lambda()
-			.eq(RoleDept::getRoleId, roleId)).stream().map(RoleDept::getDeptId).collect(Collectors.toList());
+	public List<Long> findDeptIdsByRoleId(Serializable roleId) {
+		CacheKey cacheKey = new RoleCacheKeyBuilder().key("findDeptIdsByRoleId", roleId);
+		return cacheOps.get(cacheKey, (k) -> roleDeptService.list(Wrappers.<RoleDept>query().lambda().eq(RoleDept::getRoleId, roleId)).stream()
+			.map(RoleDept::getDeptId).collect(Collectors.toList()));
 	}
 
 	/**
@@ -91,19 +105,9 @@ public class RoleServiceImpl extends
 	 */
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
-	@Cacheable(key = "'findListByUserId:' + #p0")
-	public List<Role> findListByUserId(String userId) {
-		return repository.findListByUserId(userId);
-	}
-
-	@Override
-	public List<Role> findListByDeptId(String userId) {
-		return repository.findListByDeptId(userId);
-	}
-
-	@Override
-	public List<Role> findListByMenuId(String userId) {
-		return repository.findListByMenuId(userId);
+	public List<Role> findListByUserId(Long userId) {
+		CacheKey cacheKey = new RoleCacheKeyBuilder().key("findListByUserId", userId);
+		return cacheOps.get(cacheKey, (k) -> repository.findListByUserId(userId));
 	}
 
 	/**
@@ -114,34 +118,30 @@ public class RoleServiceImpl extends
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Boolean removeRoleByIds(Set<String> ids) {
+	public Boolean removeRoleByIds(Set<Long> ids) {
 		verification(ids);
 		ids.forEach(id -> {
 			SysCacheUtil.delRoleCaches(id);
-			roleMenuService.remove(Wrappers
-				.<RoleMenu>update().lambda()
-				.eq(RoleMenu::getRoleId, id));
+			roleMenuService.remove(Wrappers.<RoleMenu>update().lambda().eq(RoleMenu::getRoleId, id));
 			this.removeById(id);
 		});
 		return Boolean.TRUE;
 	}
 
-	public void verification(Set<String> ids) {
+	public void verification(Set<Long> ids) {
 		List<User> userList = userRepository.findListByRoleIds(ids);
 		if (CollUtil.isNotEmpty(userList)) {
-			throw new BadRequestException("所选角色存在用户关联，请解除关联再试！");
+			throw new BizException("所选角色存在用户关联，请解除关联再试！");
 		}
 	}
-
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveOrUpdate(RoleDto roleDto) {
-		boolean add = StringUtil.isEmpty(roleDto.getId());
+		boolean add = ObjectUtil.isEmpty(roleDto.getId());
 		super.saveOrUpdate(roleDto);
 		if (CollUtil.isNotEmpty(roleDto.getMenuIdList())) {
-			roleMenuService.remove(Wrappers.<RoleMenu>query().lambda()
-				.eq(RoleMenu::getRoleId, roleDto.getId()));
+			roleMenuService.remove(Wrappers.<RoleMenu>query().lambda().eq(RoleMenu::getRoleId, roleDto.getId()));
 
 			List<RoleMenu> roleMenuList = roleDto.getMenuIdList().stream().map(menuId -> {
 				RoleMenu roleMenu = new RoleMenu();
@@ -153,8 +153,7 @@ public class RoleServiceImpl extends
 			roleMenuService.saveBatch(roleMenuList);
 		}
 		if (CollUtil.isNotEmpty(roleDto.getDeptIdList())) {
-			roleDeptService.remove(Wrappers.<RoleDept>query().lambda()
-				.eq(RoleDept::getRoleId, roleDto.getId()));
+			roleDeptService.remove(Wrappers.<RoleDept>query().lambda().eq(RoleDept::getRoleId, roleDto.getId()));
 			List<RoleDept> roleDeptList = roleDto.getDeptIdList().stream().map(deptId -> {
 				RoleDept roleDept = new RoleDept();
 				roleDept.setRoleId(roleDto.getId());
@@ -163,34 +162,36 @@ public class RoleServiceImpl extends
 			}).collect(Collectors.toList());
 			roleDeptService.saveBatch(roleDeptList);
 		}
-		//清空userinfo
+		// 清空userinfo
 		if (!add) {
 			SysCacheUtil.delRoleCaches(roleDto.getId());
 		}
 	}
 
 	@Override
-	@CacheEvict(allEntries = true)
-	public void lockOrUnLock(Set<String> idList) {
+	public void lockOrUnLock(Set<Long> idList) {
 		idList.forEach(id -> {
 			SysCacheUtil.delRoleCaches(id);
 			Role role = repository.selectById(id);
-			role.setAvailable(CommonConstants.YES.equals(role.getAvailable()) ?
-				CommonConstants.NO : CommonConstants.YES);
+			role.setAvailable(
+				CommonConstants.YES.equals(role.getAvailable()) ? CommonConstants.NO : CommonConstants.YES);
 			repository.updateById(role);
 		});
 	}
 
 	@Override
-	public Integer findLevelByUserId(String userId) {
-		List<Integer> levels = this.findListByUserId(SecurityUtil.getUser().getId()).stream()
-			.map(Role::getLevel).collect(Collectors.toList());
+	public Integer findLevelByUserId(Long userId) {
+		List<Integer> levels = this.findListByUserId(SecurityUtil.getUser().getId()).stream().map(Role::getLevel)
+			.collect(Collectors.toList());
 		if (CollUtil.isEmpty(levels)) {
-			throw new BadRequestException("权限不足，找不到可用的角色信息");
+			throw new BizException("权限不足，找不到可用的角色信息");
 		}
 		int min = Collections.min(levels);
 		return min;
 	}
 
-
+	@Override
+	protected CacheKeyBuilder cacheKeyBuilder() {
+		return new RoleCacheKeyBuilder();
+	}
 }

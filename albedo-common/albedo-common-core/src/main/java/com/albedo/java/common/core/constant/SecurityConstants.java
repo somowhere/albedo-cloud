@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,14 +37,17 @@ package com.albedo.java.common.core.constant;
  * @date 2019/2/1
  */
 public interface SecurityConstants {
+
 	/**
 	 * 角色前缀
 	 */
 	String ROLE = "ROLE_";
+
 	/**
 	 * 前缀
 	 */
 	String PROJECT_PREFIX = "albedo_";
+
 	/**
 	 * oauth 相关前缀
 	 */
@@ -49,11 +68,6 @@ public interface SecurityConstants {
 	 * 标志
 	 */
 	String FROM = "from";
-
-	/**
-	 * 手机号登录URL
-	 */
-	String MOBILE_TOKEN_URL = "/mobile/token";
 
 	/**
 	 * 默认登录URL
@@ -77,6 +91,7 @@ public interface SecurityConstants {
 	 * {bcrypt} 加密的特征码
 	 */
 	String BCRYPT = "{bcrypt}";
+
 	/**
 	 * sys_oauth_client_detail 表的字段，不包括client_id、client_secret
 	 */
@@ -87,8 +102,7 @@ public interface SecurityConstants {
 	/**
 	 * JdbcClientDetailsService 查询语句
 	 */
-	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS
-		+ " from sys_oauth_client_detail";
+	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS + " from sys_oauth_client_detail";
 
 	/**
 	 * 默认的查询语句
@@ -104,7 +118,6 @@ public interface SecurityConstants {
 	 * 资源服务器默认bean名称
 	 */
 	String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
-
 
 	/**
 	 * 默认生成图形验证码宽度
@@ -125,6 +138,7 @@ public interface SecurityConstants {
 	 * 默认生成图形验证码过期时间
 	 */
 	int DEFAULT_IMAGE_EXPIRE = 60;
+
 	/**
 	 * 边框颜色，合法值： r,g,b (and optional alpha) 或者 white,black,blue.
 	 */
@@ -134,6 +148,7 @@ public interface SecurityConstants {
 	 * 图片边框
 	 */
 	String DEFAULT_IMAGE_BORDER = "no";
+
 	/**
 	 * 默认图片间隔
 	 */
@@ -143,43 +158,28 @@ public interface SecurityConstants {
 	 * 默认保存code的前缀
 	 */
 	String DEFAULT_CODE_KEY = "default_code_key";
+
 	/**
 	 * 默认保存登录的前缀
 	 */
 	String DEFAULT_LOGIN_KEY = "default_login_key";
+
 	/**
 	 * 默认保存登录的前缀
 	 */
 	String DEFAULT_LOGIN_JWT_KEY = "default_login_jwt_key_";
+
 	String DEFAULT_LOGIN_JWT_MAP_KEY = "default_login_jwt_map_key";
+
 	/**
 	 * 默认保存24小时后登录的前缀
 	 */
 	String DEFAULT_LOGIN_AFTER_24_KEY = "default_login_after_24_key";
+
 	/**
 	 * 验证码文字大小
 	 */
 	String DEFAULT_IMAGE_FONT_SIZE = "30";
-	/**
-	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
-	 */
-	String ROLE_DATA_SCOPE_ALL = "1";
-	/**
-	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
-	 */
-	String ROLE_DATA_SCOPE_DEPT_ALL = "2";
-	/**
-	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
-	 */
-	String ROLE_DATA_SCOPE_DEPT = "3";
-	/**
-	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
-	 */
-	String ROLE_DATA_SCOPE_SELF = "4";
-	/**
-	 * 数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置
-	 */
-	String ROLE_DATA_SCOPE_CUSTOM = "5";
 
 
 	String USER_ID = "user_id";

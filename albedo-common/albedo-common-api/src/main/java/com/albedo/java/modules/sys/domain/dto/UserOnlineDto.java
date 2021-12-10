@@ -18,7 +18,7 @@ public class UserOnlineDto extends GeneralDto {
 	/**
 	 * 部门ID
 	 */
-	private String deptId;
+	private Long deptId;
 
 	/**
 	 * 部门名称
@@ -28,7 +28,7 @@ public class UserOnlineDto extends GeneralDto {
 	/**
 	 * 登录ID
 	 */
-	private String userId;
+	private Long userId;
 
 	/**
 	 * 登录名称

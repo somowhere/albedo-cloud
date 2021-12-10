@@ -1,8 +1,24 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.core.util;
 
 import cn.hutool.core.io.FileUtil;
 import com.albedo.java.common.core.config.ApplicationConfig;
-import com.albedo.java.common.core.exception.RuntimeMsgException;
+import com.albedo.java.common.core.exception.BizException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,6 +30,7 @@ import java.io.IOException;
  * @author somewhere
  */
 public class FileUploadUtil {
+
 	/**
 	 * 默认大小 50M
 	 */
@@ -79,10 +96,11 @@ public class FileUploadUtil {
 	 * @return 返回上传成功的文件名
 	 * @throws IOException 比如读写文件出错时
 	 */
-	public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension) throws IOException {
+	public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension)
+		throws IOException {
 		int fileNamelength = file.getOriginalFilename().length();
 		if (fileNamelength > FileUploadUtil.DEFAULT_FILE_NAME_LENGTH) {
-			throw new RuntimeMsgException("最大文件名长度：" + FileUploadUtil.DEFAULT_FILE_NAME_LENGTH);
+			throw new BizException("最大文件名长度：" + FileUploadUtil.DEFAULT_FILE_NAME_LENGTH);
 		}
 
 		assertAllowed(file, allowedExtension);
@@ -139,14 +157,15 @@ public class FileUploadUtil {
 	public static final void assertAllowed(MultipartFile file, String[] allowedExtension) {
 		long size = file.getSize();
 		if (DEFAULT_MAX_SIZE != -1 && size > DEFAULT_MAX_SIZE) {
-			throw new RuntimeMsgException("最大上传文件大小：" + (DEFAULT_MAX_SIZE / 1024 / 1024));
+			throw new BizException("最大上传文件大小：" + (DEFAULT_MAX_SIZE / 1024 / 1024));
 		}
 
 		String fileName = file.getOriginalFilename();
 		String extension = getExtension(file);
 		if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
-			throw new RuntimeMsgException(String.format("InvalidExtensionException : allowedExtension-{} extension-{} fileName-{}", allowedExtension, extension,
-				fileName));
+			throw new BizException(
+				String.format("InvalidExtensionException : allowedExtension-{} extension-{} fileName-{}",
+					allowedExtension, extension, fileName));
 		}
 
 	}
@@ -180,4 +199,5 @@ public class FileUploadUtil {
 		}
 		return extension;
 	}
+
 }

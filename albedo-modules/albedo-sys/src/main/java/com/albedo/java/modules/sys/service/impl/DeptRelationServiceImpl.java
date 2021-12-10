@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,11 +33,11 @@
 package com.albedo.java.modules.sys.service.impl;
 
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.persistence.service.impl.BaseServiceImpl;
 import com.albedo.java.modules.sys.domain.DeptRelation;
 import com.albedo.java.modules.sys.domain.dto.DeptDto;
 import com.albedo.java.modules.sys.repository.DeptRelationRepository;
 import com.albedo.java.modules.sys.service.DeptRelationService;
+import com.albedo.java.plugins.database.mybatis.service.impl.BaseServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,8 +56,9 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-@Transactional(rollbackFor = Exception.class)
-public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationRepository, DeptRelation> implements DeptRelationService {
+public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationRepository, DeptRelation>
+	implements DeptRelationService {
+
 	private final DeptRelationRepository deptRelationRepository;
 
 	/**
@@ -52,12 +69,12 @@ public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationReposit
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveDeptRelation(DeptDto deptDto) {
-		//增加部门关系表
+		// 增加部门关系表
 		DeptRelation condition = new DeptRelation();
 		condition.setDescendant(deptDto.getParentId());
 		List<DeptRelation> relationList = deptRelationRepository
-			.selectList(Wrappers.<DeptRelation>query().lambda()
-				.eq(DeptRelation::getDescendant, deptDto.getParentId()))
+			.selectList(
+				Wrappers.<DeptRelation>query().lambda().eq(DeptRelation::getDescendant, deptDto.getParentId()))
 			.stream().map(relation -> {
 				relation.setDescendant(deptDto.getId());
 				return relation;
@@ -66,7 +83,7 @@ public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationReposit
 			this.saveBatch(relationList);
 		}
 
-		//自己也要维护到关系表中
+		// 自己也要维护到关系表中
 		DeptRelation own = new DeptRelation();
 		own.setDescendant(deptDto.getId());
 		own.setAncestor(deptDto.getId());
@@ -79,7 +96,7 @@ public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationReposit
 	 * @param id
 	 */
 	@Override
-	public void removeDeptRelationById(String id) {
+	public void removeDeptRelationById(Long id) {
 		repository.deleteDeptRelationsById(id);
 	}
 
@@ -90,7 +107,9 @@ public class DeptRelationServiceImpl extends BaseServiceImpl<DeptRelationReposit
 	 */
 	@Override
 	public void updateDeptRelation(DeptRelation relation) {
-		repository.updateDeptRelations(relation);
+		repository.deleteDeptRelations(relation);
+		List<DeptRelation> listDeptRelation = repository.findListByDeptDto(relation);
+		saveBatch(listDeptRelation);
 	}
 
 }

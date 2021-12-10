@@ -44,7 +44,7 @@ public class RemoteRoleServiceFallbackImpl implements RemoteRoleService {
 	 * @return R
 	 */
 	@Override
-	public Result<List<String>> findDeptIdsByRoleId(String roleId, String from) {
+	public Result<List<Long>> findDeptIdsByRoleId(Long roleId, String from) {
 		log.error("feign 查询DeptIds信息失败:{}", roleId, cause);
 		throw new FeignBizException(cause);
 	}

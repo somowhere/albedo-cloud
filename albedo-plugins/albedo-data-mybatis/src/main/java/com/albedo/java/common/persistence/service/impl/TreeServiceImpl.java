@@ -1,4 +1,4 @@
-package com.albedo.java.common.persistence.service.impl;
+package com.albedo.java.plugins.database.mybatis.service.impl;
 
 import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.CollUtil;
@@ -10,7 +10,7 @@ import com.albedo.java.common.core.vo.TreeNode;
 import com.albedo.java.common.data.util.QueryWrapperUtil;
 import com.albedo.java.common.persistence.domain.TreeEntity;
 import com.albedo.java.common.persistence.repository.TreeRepository;
-import com.albedo.java.common.persistence.service.TreeService;
+import com.albedo.java.plugins.database.mybatis.service.TreeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.Data;

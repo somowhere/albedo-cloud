@@ -607,20 +607,6 @@ public class ExcelUtil<T> {
 	}
 
 	/**
-	 * 获取下载路径
-	 *
-	 * @param filename 文件名称
-	 */
-	public String getAbsoluteFile(String filename) {
-		String downloadPath = ApplicationConfig.getDownloadPath() + filename;
-		File desc = new File(downloadPath);
-		if (!desc.getParentFile().exists()) {
-			desc.getParentFile().mkdirs();
-		}
-		return downloadPath;
-	}
-
-	/**
 	 * 获取bean中的属性值
 	 *
 	 * @param vo         实体对象

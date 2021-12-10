@@ -19,7 +19,7 @@ package com.albedo.java.common.security.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.albedo.java.common.security.service.UserDetail;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;

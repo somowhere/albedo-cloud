@@ -1,7 +1,27 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.log.aspect;
 
 import cn.hutool.core.map.MapUtil;
-import com.albedo.java.common.core.util.*;
+import cn.hutool.json.JSONUtil;
+import com.albedo.java.common.core.util.BeanUtil;
+import com.albedo.java.common.core.util.ClassUtil;
+import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.util.WebUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -37,9 +57,9 @@ public class RequestLogAspect {
 	}
 
 	private void parseParams(ProceedingJoinPoint point, Map<String, Object> paramMap) {
-		//参数值
+		// 参数值
 		Object[] argValues = point.getArgs();
-		//参数名称
+		// 参数名称
 		MethodSignature ms = (MethodSignature) point.getSignature();
 		Method method = ms.getMethod();
 		if (argValues != null) {
@@ -94,7 +114,7 @@ public class RequestLogAspect {
 	@Around("execution(!static com.albedo.java.common.core.util.Result *(..)) && (@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController))")
 	public Object around(ProceedingJoinPoint point) {
 		HttpServletRequest request = WebUtil.getRequest();
-		String requestURI = Objects.requireNonNull(request).getRequestURI();
+		String requestUri = Objects.requireNonNull(request).getRequestURI();
 		String requestMethod = request.getMethod();
 		// 构建成一条长 日志，避免并发下日志错乱
 		StringBuilder beforeReqLog = new StringBuilder(300);
@@ -103,7 +123,7 @@ public class RequestLogAspect {
 		// 打印路由
 		beforeReqLog.append("Request===> {}: {}");
 		beforeReqArgs.add(requestMethod);
-		beforeReqArgs.add(requestURI);
+		beforeReqArgs.add(requestUri);
 		// 请求参数处理
 		final Map<String, Object> paramMap = new HashMap<>(16);
 
@@ -125,21 +145,20 @@ public class RequestLogAspect {
 			result = point.proceed();
 			beforeReqLog.append("Request===> {}: {}");
 			beforeReqArgs.add(requestMethod);
-			beforeReqArgs.add(requestURI);
+			beforeReqArgs.add(requestUri);
 			// 打印返回结构体
 			afterReqLog.append("Response===> {}: {}");
 			afterReqArgs.add(requestMethod);
-			afterReqArgs.add(requestURI);
+			afterReqArgs.add(requestUri);
 		} finally {
 			long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 			afterReqLog.append(" time ({} ms) Result:{}");
 			afterReqArgs.add(tookMs);
-			afterReqArgs.add(Json.toJsonString(result));
+			afterReqArgs.add(JSONUtil.toJsonStr(result));
 			log.info(afterReqLog.toString(), afterReqArgs.toArray());
 		}
 
 		return result;
 	}
-
 
 }

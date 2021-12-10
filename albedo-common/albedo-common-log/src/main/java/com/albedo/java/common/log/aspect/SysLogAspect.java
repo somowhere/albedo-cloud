@@ -18,12 +18,10 @@ package com.albedo.java.common.log.aspect;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.http.HttpStatus;
-import com.albedo.java.common.core.exception.BadRequestException;
-import com.albedo.java.common.core.exception.FeignBizException;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.log.enums.LogType;
-import com.albedo.java.common.log.event.SysLogEvent;
+import com.albedo.java.common.log.event.SysLogOperateEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import feign.FeignException;
@@ -62,7 +60,7 @@ public class SysLogAspect {
 				params.append(" ").append(argNames[i]).append(": ").append(argValues[i]);
 			}
 		}
-		LogOperate logOperateVo = SysLogUtils.getSysLog();
+		LogOperate logOperateVo = SysLogUtils.getSysLogOperate();
 		logOperateVo.setTitle(logOperate.value());
 		logOperateVo.setMethod(methodName);
 		logOperateVo.setParams(params + " }");
@@ -101,7 +99,7 @@ public class SysLogAspect {
 		// 是否需要保存request，参数和值
 		if (logOperate.isSaveRequestData()) {
 			// 发送异步日志事件
-			SpringContextHolder.publishEvent(new SysLogEvent(logOperateVo));
+			SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperateVo));
 		}
 	}
 

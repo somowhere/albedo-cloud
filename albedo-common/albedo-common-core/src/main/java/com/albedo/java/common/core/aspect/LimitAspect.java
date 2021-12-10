@@ -1,22 +1,23 @@
 /*
- *  Copyright 2019-2020 somewhere
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.albedo.java.common.core.aspect;
 
 import com.albedo.java.common.core.annotation.Limit;
-import com.albedo.java.common.core.exception.BadRequestException;
+import com.albedo.java.common.core.exception.ArgumentException;
 import com.albedo.java.common.core.util.RequestHolder;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.util.WebUtil;
@@ -44,6 +45,7 @@ import java.lang.reflect.Method;
 public class LimitAspect {
 
 	private static final Logger logger = LoggerFactory.getLogger(LimitAspect.class);
+
 	private final RedisTemplate<Object, Object> redisTemplate;
 
 	public LimitAspect(RedisTemplate<Object, Object> redisTemplate) {
@@ -70,7 +72,8 @@ public class LimitAspect {
 			}
 		}
 
-		ImmutableList<Object> keys = ImmutableList.of(StringUtil.join(limit.prefix(), "_", key, "_", request.getRequestURI().replaceAll(StringUtil.SLASH, "_")));
+		ImmutableList<Object> keys = ImmutableList.of(StringUtil.join(limit.prefix(), "_", key, "_",
+			request.getRequestURI().replaceAll(StringUtil.SLASH, "_")));
 
 		String luaScript = buildLuaScript();
 		RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
@@ -79,7 +82,7 @@ public class LimitAspect {
 			logger.info("第{}次访问key为 {}，描述为 [{}] 的接口", count, keys, limit.name());
 			return joinPoint.proceed();
 		} else {
-			throw new BadRequestException("访问次数受限制");
+			throw new ArgumentException("访问次数受限制");
 		}
 	}
 
@@ -87,15 +90,9 @@ public class LimitAspect {
 	 * 限流脚本
 	 */
 	private String buildLuaScript() {
-		return "local c" +
-			"\nc = redis.call('get',KEYS[1])" +
-			"\nif c and tonumber(c) > tonumber(ARGV[1]) then" +
-			"\nreturn c;" +
-			"\nend" +
-			"\nc = redis.call('incr',KEYS[1])" +
-			"\nif tonumber(c) == 1 then" +
-			"\nredis.call('expire',KEYS[1],ARGV[2])" +
-			"\nend" +
-			"\nreturn c;";
+		return "local c" + "\nc = redis.call('get',KEYS[1])" + "\nif c and tonumber(c) > tonumber(ARGV[1]) then"
+			+ "\nreturn c;" + "\nend" + "\nc = redis.call('incr',KEYS[1])" + "\nif tonumber(c) == 1 then"
+			+ "\nredis.call('expire',KEYS[1],ARGV[2])" + "\nend" + "\nreturn c;";
 	}
+
 }

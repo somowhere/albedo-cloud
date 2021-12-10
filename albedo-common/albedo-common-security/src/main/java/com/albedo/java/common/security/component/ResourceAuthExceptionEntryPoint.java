@@ -55,9 +55,9 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		if (authException != null) {
 			if (authException.getCause() instanceof ClientAuthenticationException) {
 				ClientAuthenticationException clientAuthenticationException = (ClientAuthenticationException) authException.getCause();
-				result.addMessage(clientAuthenticationException.getOAuth2ErrorCode() + " " + authException.getMessage());
+				result.setMessage(clientAuthenticationException.getOAuth2ErrorCode() + " " + authException.getMessage());
 			} else {
-				result.addMessage(authException.getMessage());
+				result.setMessage(authException.getMessage());
 			}
 		}
 		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);

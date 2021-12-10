@@ -1,13 +1,30 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.gen.service.impl;
 
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
+import com.albedo.java.modules.gen.cache.TableColumnCacheKeyBuilder;
 import com.albedo.java.modules.gen.domain.TableColumn;
 import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
 import com.albedo.java.modules.gen.repository.TableColumnRepository;
 import com.albedo.java.modules.gen.service.TableColumnService;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -19,24 +36,24 @@ import java.util.stream.Collectors;
  * @author somewhere
  */
 @Service
-public class TableColumnServiceImpl extends
-	DataServiceImpl<TableColumnRepository, TableColumn, TableColumnDto, String> implements TableColumnService {
-
-	@Transactional(readOnly = true)
-	List<TableColumn> findAllByGenTableIdOrderBySort(String id) {
-		return list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, id)
-			.orderByAsc(TableColumn.F_SORT));
-	}
-
+public class TableColumnServiceImpl extends DataCacheServiceImpl<TableColumnRepository, TableColumn, TableColumnDto>
+	implements TableColumnService {
 
 	@Override
-	@Transactional(rollbackFor = Exception.class)
+	protected CacheKeyBuilder cacheKeyBuilder() {
+		return new TableColumnCacheKeyBuilder();
+	}
+
+	List<TableColumn> findAllByGenTableIdOrderBySort(String id) {
+		return list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, id).orderByAsc(TableColumn.F_SORT));
+	}
+
+	@Override
 	public void deleteByTableId(String id) {
 		List<TableColumn> tableColumnList = findAllByGenTableIdOrderBySort(id);
 		Assert.notNull(tableColumnList, "id " + id + " tableColumn 不能为空");
 		super.removeByIds(tableColumnList.stream().map(item -> item.getId()).collect(Collectors.toList()));
 
 	}
-
 
 }

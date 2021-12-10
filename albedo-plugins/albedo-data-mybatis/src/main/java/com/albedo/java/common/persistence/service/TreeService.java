@@ -1,4 +1,4 @@
-package com.albedo.java.common.persistence.service;
+package com.albedo.java.plugins.database.mybatis.service;
 
 import com.albedo.java.common.core.vo.TreeDto;
 import com.albedo.java.common.core.vo.TreeNode;

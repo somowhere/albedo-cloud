@@ -1,10 +1,26 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.gen.domain;
 
+import com.albedo.java.common.core.basic.domain.IdEntity;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.persistence.domain.IdEntity;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,33 +41,41 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-public class Table extends IdEntity<Table> {
+public class Table extends IdEntity<Table, String> {
 
 	public static final String F_NAME = "name";
+
 	public static final String F_NAMESANDTITLE = "nameAndTitle";
+
 	private static final long serialVersionUID = 1L;
+
 	@TableField("name")
 	@Size(min = 1, max = 200)
 	@NotBlank
 	private String name;
+
 	@TableField("comments")
 	private String comments;
+
 	@TableField("class_name")
 	@NotBlank
 	private String className;
+
 	@TableField("parent_table")
 	private String parentTable;
+
 	@TableField("ds_name")
 	@NotBlank
 	private String dsName;
+
 	@TableField("parent_table_fk")
 	private String parentTableFk;
 
 	@TableField(exist = false)
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableColumn> columnList;
 
-	@JSONField(serialize = false)
+	@JsonIgnore
 	@TableField(exist = false)
 	private Table parent;
 
@@ -60,18 +84,23 @@ public class Table extends IdEntity<Table> {
 
 	@TableField(exist = false)
 	private String nameAndTitle;
+
 	@TableField(exist = false)
 	private String nameLike;
+
 	@TableField(exist = false)
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<String> pkList;
+
 	@TableField(exist = false)
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableColumn> pkColumnList;
+
 	@TableField(exist = false)
 	private String category;
+
 	@TableField(exist = false)
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableColumn> columnFormList;
 
 	public Table(String id) {
@@ -83,7 +112,6 @@ public class Table extends IdEntity<Table> {
 		this.name = name;
 		this.comments = comments;
 	}
-
 
 	public String getName() {
 		return StringUtil.lowerCase(name);
@@ -162,4 +190,5 @@ public class Table extends IdEntity<Table> {
 	public int hashCode() {
 		return super.hashCode();
 	}
+
 }

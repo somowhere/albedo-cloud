@@ -20,13 +20,14 @@ import cn.hutool.core.util.ArrayUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.AccessDeniedException;
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.persistence.datascope.DataScope;
 import com.albedo.java.modules.sys.domain.Role;
+import com.albedo.java.modules.sys.domain.enums.DataScopeType;
 import com.albedo.java.modules.sys.domain.vo.UserInfo;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.albedo.java.modules.sys.feign.RemoteDeptService;
 import com.albedo.java.modules.sys.feign.RemoteRoleService;
 import com.albedo.java.modules.sys.feign.RemoteUserService;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -97,16 +98,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		dataScope.setUserId(userVo.getId());
 		if (CollUtil.isNotEmpty(userVo.getRoleList())) {
 			for (Role role : userVo.getRoleList()) {
-				if (SecurityConstants.ROLE_DATA_SCOPE_ALL.equals(role.getDataScope())) {
+				if (DataScopeType.ALL.eq(role.getDataScope())) {
 					dataScope.setAll(true);
 					break;
-				} else if (SecurityConstants.ROLE_DATA_SCOPE_DEPT_ALL.equals(role.getDataScope())) {
+				} else if (DataScopeType.THIS_LEVEL_CHILDREN.eq(role.getDataScope())) {
 					dataScope.getDeptIds().addAll(remoteDeptService.findDescendantIdList(userVo.getDeptId(), SecurityConstants.FROM_IN).getData());
-				} else if (SecurityConstants.ROLE_DATA_SCOPE_DEPT.equals(role.getDataScope())) {
+				} else if (DataScopeType.THIS_LEVEL.eq(role.getDataScope())) {
 					dataScope.getDeptIds().add(userVo.getDeptId());
-				} else if (SecurityConstants.ROLE_DATA_SCOPE_SELF.equals(role.getDataScope())) {
+				} else if (DataScopeType.SELF.eq(role.getDataScope())) {
 					dataScope.setSelf(true);
-				} else if (SecurityConstants.ROLE_DATA_SCOPE_CUSTOM.equals(role.getDataScope())) {
+					dataScope.setUserId(userVo.getId());
+				} else if (DataScopeType.CUSTOMIZE.eq(role.getDataScope())) {
 					dataScope.getDeptIds().addAll(remoteRoleService.findDeptIdsByRoleId(role.getId(), SecurityConstants.FROM_IN).getData());
 				}
 			}

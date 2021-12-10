@@ -15,5 +15,5 @@ import java.util.Set;
 @NoArgsConstructor
 public class TokenVo implements Serializable {
 	private Set<String> tokens;
-	private String userId;
+	private Long userId;
 }

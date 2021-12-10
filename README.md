@@ -1,5 +1,5 @@
  <p align="center">
-   <img src="https://img.shields.io/badge/Spring%20Cloud-2020.0.3-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud-2021.0.0-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.1-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Boot-2.5.4-blue.svg" alt="Downloads">
  </p>  
@@ -103,7 +103,7 @@ albedo
      ├── albedo-sys -- 通用用户权限管理系统业务处理模块[4000]
      └── albedo-job -- 分布式调度模块[5005]
 └── albedo-plugin  -- 插件模块 
-     ├── albedo-data-mybatis -- mybatis 基础模块
+     ├── albedo-database -- mybatis 基础模块
      └── albedo-swagger-api -- swagger api
 └── albedo-register  -- Nacos 注册中心
 	 

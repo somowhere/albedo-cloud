@@ -17,8 +17,8 @@
 package com.albedo.java.modules.sys.web;
 
 
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.util.Json;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.common.log.annotation.LogOperate;
@@ -137,7 +137,7 @@ public class DictResource extends BaseResource {
 	@PutMapping
 	@LogOperate(value = "字典管理锁定/解锁")
 	@PreAuthorize("@pms.hasPermission('sys_dept_lock')")
-	public Result lockOrUnLock(@RequestBody Set<String> ids) {
+	public Result lockOrUnLock(@RequestBody Set<Long> ids) {
 		dictService.lockOrUnLock(ids);
 		return Result.buildOk("操作成功");
 	}
@@ -151,7 +151,7 @@ public class DictResource extends BaseResource {
 	@GetMapping("/all")
 	public Result<String> findAllOrderBySort() {
 		List<Dict> list = dictService.findAllOrderBySort();
-		return Result.buildOkData(Json.toJsonString(list));
+		return Result.buildOkData(JSONUtil.toJsonStr(list));
 	}
 
 }

@@ -16,11 +16,11 @@
 
 package com.albedo.java.auth.config;
 
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.security.component.WebResponseExceptionExtendTranslator;
 import com.albedo.java.common.security.service.ClientDetailsService;
 import com.albedo.java.common.security.service.UserDetail;
-import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
@@ -102,7 +102,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			additionalInfo.put(SecurityConstants.USER_ID, userDetail.getId());
 			additionalInfo.put(SecurityConstants.DEPT_ID, userDetail.getDeptId());
 			additionalInfo.put(SecurityConstants.DEPT_NAME, userDetail.getDeptName());
-			additionalInfo.put(SecurityConstants.DATA_SCOPE, JSON.toJSONString(userDetail.getDataScope()));
+			additionalInfo.put(SecurityConstants.DATA_SCOPE, JSONUtil.toJsonStr(userDetail.getDataScope()));
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 			return accessToken;
 		};

@@ -16,19 +16,19 @@
 
 package com.albedo.java.auth.handler;
 
-import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.http.HttpUtil;
 import com.albedo.java.common.core.util.SpringContextHolder;
-import com.albedo.java.common.log.enums.LogType;
-import com.albedo.java.common.log.enums.OperatorType;
-import com.albedo.java.common.log.event.SysLogEvent;
+import com.albedo.java.common.log.event.SysLogLoginEvent;
+import com.albedo.java.common.log.event.SysLogOperateEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.common.security.handler.AbstractAuthenticationFailureEvenHandler;
-import com.albedo.java.modules.sys.domain.LogOperate;
+import com.albedo.java.common.security.service.UserDetail;
+import com.albedo.java.modules.sys.domain.LogLogin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -43,6 +43,12 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class AuthenticationFailureEvenHandler extends AbstractAuthenticationFailureEvenHandler {
+
+	private final UserDetailsService userDetailsService;
+
+	public AuthenticationFailureEvenHandler(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
 
 	/**
 	 * 处理登录失败方法
@@ -63,15 +69,19 @@ public class AuthenticationFailureEvenHandler extends AbstractAuthenticationFail
 
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-		LogOperate logOperate = SysLogUtils.getSysLog();
-		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
-		logOperate.setUsername(useruame);
-		logOperate.setLogType(LogType.WARN.name());
-		logOperate.setTitle("用户登录失败");
-		logOperate.setDescription(message);
-		logOperate.setException(ExceptionUtil.stacktraceToString(exception));
-		logOperate.setOperatorType(OperatorType.MANAGE.name());
+		LogLogin logLogin = SysLogUtils.getSysLogLogin();
+		logLogin.setParams(HttpUtil.toParams(request.getParameterMap()));
+		logLogin.setUsername(useruame);
+		try {
+			UserDetail userDetails = (UserDetail) userDetailsService.loadUserByUsername(useruame);
+			if (userDetails != null) {
+				logLogin.setCreatedBy(userDetails.getId());
+			}
+		} catch (Exception e) {
+		}
+		logLogin.setTitle("用户登录失败");
+		logLogin.setDescription(message);
 		// 发送异步日志事件
-		SpringContextHolder.publishEvent(new SysLogEvent(logOperate));
+		SpringContextHolder.publishEvent(new SysLogLoginEvent(logLogin));
 	}
 }

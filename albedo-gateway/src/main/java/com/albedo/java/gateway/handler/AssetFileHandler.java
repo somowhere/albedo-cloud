@@ -41,10 +41,10 @@ public class AssetFileHandler implements HandlerFunction<ServerResponse> {
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		String pathUtl = ApplicationConfig.getUploadPath().replace("\\", "/");
+		String pathUtl = ApplicationConfig.getStaticFileDirectory().replace("\\", "/");
 		return ServerResponse
 			.status(HttpStatus.OK)
 			.contentType(MediaType.MULTIPART_FORM_DATA)
-			.body(BodyInserters.fromResource(new FileSystemResource(pathUtl + serverRequest.uri().getPath().replace("/asset-file/upload", ""))));
+			.body(BodyInserters.fromResource(new FileSystemResource(pathUtl + serverRequest.uri().getPath().replace("/file", ""))));
 	}
 }

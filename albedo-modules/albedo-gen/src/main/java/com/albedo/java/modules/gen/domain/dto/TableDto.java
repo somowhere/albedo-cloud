@@ -1,10 +1,26 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.gen.domain.dto;
 
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.DataDto;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.ToString;
@@ -24,48 +40,63 @@ import java.util.List;
 public class TableDto extends DataDto<String> {
 
 	public static final String F_NAME = "name";
+
 	public static final String F_NAMESANDCOMMENTS = "nameAndTitle";
+
 	public static final String CATEGORY_TREETABLE = "treeTable";
 
-
 	private static final long serialVersionUID = 1L;
+
 	// 名称
 	/*** 编码 */
 	@NotBlank
 	private String name;
+
 	/*** 描述 */
 	private String comments;
+
 	/*** 实体类名称 */
 	@NotBlank
 	private String className;
+
 	/*** 数据源 */
 	@NotBlank
 	private String dsName;
+
 	/*** 关联父表 */
 	private String parentTable;
+
 	/*** 关联父表外键 */
 	private String parentTableFk;
+
 	/*** 父表对象 */
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private TableDto parent;
+
 	/*** 子表列表 */
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableDto> childList;
+
 	private String nameAndTitle;
+
 	/*** 按名称模糊查询 */
 	private String nameLike;
+
 	/*** 当前表主键列表 */
 	private List<String> pkList;
 
 	private String category;
+
 	/**
 	 * 当前表主键列表
 	 */
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableColumnDto> pkColumnList;
+
 	/*** 列 - 列表 */
-	@JSONField(serialize = false)
+	@JsonIgnore
 	private List<TableColumnDto> columnList;
+
 	/*** 表单提交列 - 列表 */
 	@NotNull
 	private List<TableColumnDto> columnFormList;
@@ -103,13 +134,13 @@ public class TableDto extends DataDto<String> {
 		this.pkColumnList = pkColumnList;
 	}
 
-	@JSONField(serialize = false)
+	@JsonIgnore
 	public boolean isCompositeId() {
 		List<String> pkList = getPkList();
 		return CollUtil.isNotEmpty(pkList) && pkList.size() > 1;
 	}
 
-	@JSONField(serialize = false, deserialize = false)
+	@JsonIgnore
 	public boolean isNotCompositeId() {
 		return !isCompositeId();
 	}
@@ -177,21 +208,21 @@ public class TableDto extends DataDto<String> {
 	 *
 	 * @return
 	 */
-	@JSONField(serialize = false)
+	@JsonIgnore
 	public List<String> getImportList() {
 		// 引用列表
-		List<String> importList = Lists.newArrayList(
-			"com.baomidou.mybatisplus.annotation.*");
+		List<String> importList = Lists.newArrayList("com.baomidou.mybatisplus.annotation.*");
 		if (CATEGORY_TREETABLE.equalsIgnoreCase(getCategory())) {
-			importList.add("com.albedo.java.common.persistence.domain.TreeEntity");
+			importList.add("com.albedo.java.common.core.basic.domain.TreeEntity");
 			initImport(importList);
 			// 如果有子表，则需要导入List相关引用
 			if (getChildList() != null && getChildList().size() > 0) {
-				addNoRepeatList(importList, "java.util.List", "com.google.common.collect.Lists", "org.hibernate.annotations.FetchMode", "org.hibernate.annotations.Fetch",
+				addNoRepeatList(importList, "java.util.List", "com.google.common.collect.Lists",
+					"org.hibernate.annotations.FetchMode", "org.hibernate.annotations.Fetch",
 					"org.hibernate.annotations.Where");
 			}
 		} else {
-			importList.add("com.albedo.java.common.persistence.domain.IdEntity");
+			importList.add("com.albedo.java.common.core.basic.domain.IdEntity");
 			initImport(importList);
 			// 如果有子表，则需要导入List相关引用
 			if (getChildList() != null && getChildList().size() > 0) {
@@ -204,9 +235,9 @@ public class TableDto extends DataDto<String> {
 
 	private void initImport(List<String> importList) {
 		for (TableColumnDto column : getColumnList()) {
-			boolean isImport = column.getIsNotBaseField() || column.isQuery() && "between".equals(column.getQueryType()) &&
-				(DataDto.F_CREATEDDATE.equals(column.getSimpleJavaField()) ||
-					DataDto.F_LASTMODIFIEDDATE.equals(column.getSimpleJavaField()));
+			boolean isImport = column.getIsNotBaseField() || column.isQuery() && "between".equals(column.getQueryType())
+				&& (DataDto.F_CREATED_DATE.equals(column.getSimpleJavaField())
+				|| DataDto.F_LAST_MODIFIED_DATE.equals(column.getSimpleJavaField()));
 			if (isImport) {
 				// 导入类型依赖包， 如果类型中包含“.”，则需要导入引用。
 				if (StringUtil.indexOf(column.getJavaType(), StringUtil.C_DOT) != -1) {
@@ -219,8 +250,7 @@ public class TableDto extends DataDto<String> {
 					addNoRepeatList(importList, ann.substring(0, ann.indexOf(StringUtil.BRACKETS_START)));
 				}
 			}
-			if (!column.isPk() && !column.isNull()
-				&& column.getJavaType().endsWith(CommonConstants.TYPE_STRING)) {
+			if (!column.isPk() && !column.isNull() && column.getJavaType().endsWith(CommonConstants.TYPE_STRING)) {
 				addNoRepeatList(importList, "javax.validation.constraints.NotBlank");
 			}
 			if (StringUtil.isNotEmpty(column.getDictType())) {
@@ -232,7 +262,6 @@ public class TableDto extends DataDto<String> {
 
 		}
 	}
-
 
 	private void addNoRepeatList(List<String> list, String... val) {
 		if (CollUtil.isNotEmpty(list)) {
@@ -253,7 +282,7 @@ public class TableDto extends DataDto<String> {
 		return parent != null && StringUtil.isNotBlank(parentTable) && StringUtil.isNotBlank(parentTableFk);
 	}
 
-	@JSONField(serialize = false)
+	@JsonIgnore
 	public List<TableDto> getChildList() {
 		return childList != null ? childList : Lists.newArrayList();
 	}
@@ -385,4 +414,5 @@ public class TableDto extends DataDto<String> {
 		}
 		return null;
 	}
+
 }

@@ -1,6 +1,24 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.core.util;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.enums.SqlLike;
+import com.baomidou.mybatisplus.core.toolkit.sql.SqlUtils;
 import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +42,15 @@ import java.util.regex.Pattern;
 @UtilityClass
 @Slf4j
 public class StringUtil extends StrUtil {
+
 	public static final String SPLIT_DEFAULT = ",";
+
 	public static final String BRACKETS_START = "(";
+
 	public static final String BRACKETS_END = ")";
+
 	public static final String DOT_JAVA = ".java";
+
 	private static final char SEPARATOR = '_';
 
 	/**
@@ -39,7 +62,6 @@ public class StringUtil extends StrUtil {
 	public static String toString(byte[] bytes) {
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
-
 
 	/**
 	 * 替换掉HTML标签方法
@@ -111,7 +133,6 @@ public class StringUtil extends StrUtil {
 		return "";
 	}
 
-
 	/**
 	 * 转换为Double类型
 	 */
@@ -150,12 +171,13 @@ public class StringUtil extends StrUtil {
 	/**
 	 * 驼峰命名法工具
 	 *
-	 * @return toCamelCase(" hello_world ") == "helloWorld" toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld") = "hello_world"
+	 * @return toCamelCase(" hello_world ") == "helloWorld"
+	 * toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld")
+	 * = "hello_world"
 	 */
 	public static String toCamelCase(String s) {
 		return toCamelCase(s, SEPARATOR);
 	}
-
 
 	public static String toCamelCase(String s, Character... splits) {
 		if (s == null) {
@@ -199,7 +221,9 @@ public class StringUtil extends StrUtil {
 	/**
 	 * 驼峰命名法工具
 	 *
-	 * @return toCamelCase(" hello_world ") == "helloWorld" toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld") = "hello_world"
+	 * @return toCamelCase(" hello_world ") == "helloWorld"
+	 * toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld")
+	 * = "hello_world"
 	 */
 	public static String toCapitalizeCamelCase(String s) {
 		if (s == null) {
@@ -212,7 +236,9 @@ public class StringUtil extends StrUtil {
 	/**
 	 * 驼峰命名法工具
 	 *
-	 * @return toCamelCase(" hello_world ") == "helloWorld" toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld") = "hello_world"
+	 * @return toCamelCase(" hello_world ") == "helloWorld"
+	 * toCapitalizeCamelCase("hello_world") == "HelloWorld" toUnderScoreCase("helloWorld")
+	 * = "hello_world"
 	 */
 	public static String toUnderScoreCase(String s) {
 		if (s == null) {
@@ -295,7 +321,8 @@ public class StringUtil extends StrUtil {
 	/**
 	 * 转换为JS获取对象值，生成三目运算返回结果
 	 *
-	 * @param objectString 对象串 例如：row.user.id 返回：!row?'':!row.user?'':!row.user.id?'':row.user.id
+	 * @param objectString 对象串 例如：row.user.id
+	 *                     返回：!row?'':!row.user?'':!row.user.id?'':row.user.id
 	 */
 	public static String jsGetVal(String objectString) {
 		StringBuilder result = new StringBuilder();
@@ -329,12 +356,11 @@ public class StringUtil extends StrUtil {
 	/**
 	 * 拼接字符串
 	 *
-	 * @param strs
 	 * @return
 	 */
-	public static String toAppendStr(Object... strs) {
+	public static String toAppendStr(Object... strings) {
 		StringBuffer sb = new StringBuffer();
-		for (Object str : strs) {
+		for (Object str : strings) {
 			if (str != null) {
 				sb.append(str);
 			}
@@ -365,18 +391,18 @@ public class StringUtil extends StrUtil {
 	 * @return
 	 */
 	public static int getFromIndex(String str, String modelStr, Integer count) {
-		//对子字符串进行匹配
+		// 对子字符串进行匹配
 		Matcher slashMatcher = Pattern.compile(modelStr).matcher(str);
 		int index = 0;
-		//matcher.find();尝试查找与该模式匹配的输入序列的下一个子序列
+		// matcher.find();尝试查找与该模式匹配的输入序列的下一个子序列
 		while (slashMatcher.find()) {
 			index++;
-			//当modelStr字符第count次出现的位置
+			// 当modelStr字符第count次出现的位置
 			if (index == count) {
 				break;
 			}
 		}
-		//matcher.start();返回以前匹配的初始索引。
+		// matcher.start();返回以前匹配的初始索引。
 		return slashMatcher.start();
 	}
 
@@ -393,4 +419,36 @@ public class StringUtil extends StrUtil {
 		}
 		return "[" + msg.toString() + "]";
 	}
+
+	/**
+	 * mybatis plus like查询转换
+	 */
+	public static String keywordConvert(String value) {
+		if (StrUtil.isBlank(value)) {
+			return StrPool.EMPTY;
+		}
+		value = value.replaceAll(StrPool.PERCENT, "\\\\%");
+		value = value.replaceAll(StrPool.UNDERSCORE, "\\\\_");
+		return value;
+	}
+
+	public static Object keywordConvert(Object value) {
+		if (value instanceof String) {
+			return keywordConvert(String.valueOf(value));
+		}
+		return value;
+	}
+
+
+	/**
+	 * 拼接like条件
+	 *
+	 * @param value   值
+	 * @param sqlType 拼接类型
+	 * @return 拼接后的值
+	 */
+	public static String like(Object value, SqlLike sqlType) {
+		return SqlUtils.concatLike(keywordConvert(String.valueOf(value)), sqlType);
+	}
+
 }

@@ -1,10 +1,24 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.core.vo;
 
 import com.albedo.java.common.core.constant.ScheduleConstants;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.albedo.java.common.core.context.ContextUtil;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -17,49 +31,51 @@ import java.io.Serializable;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ScheduleVo implements Serializable {
 
 	private ScheduleConstants.MessageType messageType;
-	private Integer jobId;
+
+	private Long jobId;
+
 	private String jobGroup;
+
 	private String data;
 
-	public ScheduleVo(ScheduleConstants.MessageType messageType, Integer jobId, String jobGroup) {
-		this.messageType = messageType;
-		this.jobId = jobId;
-		this.jobGroup = jobGroup;
+	private String tenantCode;
+
+
+	public static ScheduleVo create(ScheduleConstants.MessageType messageType, Long jobId, String jobGroup) {
+		return ScheduleVo.builder().messageType(messageType).jobId(jobId).jobGroup(jobGroup).tenantCode(ContextUtil.getTenant()).build();
 	}
 
-	public ScheduleVo(ScheduleConstants.MessageType messageType, Integer jobId) {
-		this.messageType = messageType;
-		this.jobId = jobId;
-	}
-
-	public static ScheduleVo create(ScheduleConstants.MessageType messageType, Integer jobId, String jobGroup) {
-		return new ScheduleVo(messageType, jobId, jobGroup);
-	}
-
-	public static ScheduleVo create(ScheduleConstants.MessageType messageType, Integer jobId) {
-		return new ScheduleVo(messageType, jobId);
+	public static ScheduleVo create(ScheduleConstants.MessageType messageType, Long jobId) {
+		return ScheduleVo.builder().messageType(messageType).jobId(jobId).tenantCode(ContextUtil.getTenant()).build();
 	}
 
 	public static ScheduleVo createData(ScheduleConstants.MessageType messageType, String data) {
-		return new ScheduleVo(messageType, null, null, data);
+		return ScheduleVo.builder().messageType(messageType).data(data).tenantCode(ContextUtil.getTenant()).build();
 	}
 
-	public static ScheduleVo createPause(Integer jobId, String jobGroup) {
+	public static Object createDataUpdate(String data, String jobGroup) {
+		return ScheduleVo.builder().messageType(ScheduleConstants.MessageType.UPDATE)
+			.jobGroup(jobGroup).data(data).tenantCode(ContextUtil.getTenant()).build();
+
+	}
+
+	public static ScheduleVo createPause(Long jobId, String jobGroup) {
 		return create(ScheduleConstants.MessageType.PAUSE, jobId, jobGroup);
 	}
 
-	public static Object createResume(Integer jobId, String jobGroup) {
+	public static Object createResume(Long jobId, String jobGroup) {
 		return create(ScheduleConstants.MessageType.RESUME, jobId, jobGroup);
 	}
 
-	public static Object createDelete(Integer jobId, String jobGroup) {
+	public static Object createDelete(Long jobId, String jobGroup) {
 		return create(ScheduleConstants.MessageType.DELETE, jobId, jobGroup);
 	}
 
-	public static Object createRun(Integer jobId, String jobGroup) {
+	public static Object createRun(Long jobId, String jobGroup) {
 		return create(ScheduleConstants.MessageType.RUN, jobId, jobGroup);
 	}
 
@@ -67,7 +83,5 @@ public class ScheduleVo implements Serializable {
 		return createData(ScheduleConstants.MessageType.ADD, data);
 	}
 
-	public static Object createDataUpdate(String data, String jobGroup) {
-		return new ScheduleVo(ScheduleConstants.MessageType.UPDATE, null, jobGroup, data);
-	}
+
 }

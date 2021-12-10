@@ -1,17 +1,32 @@
-/**
- * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.albedo.java.modules.gen.service.impl;
 
+import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
 import com.albedo.java.common.core.exception.EntityExistException;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.datasource.support.DataSourceConstants;
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.modules.gen.cache.DatasourceConfCacheKeyBuilder;
 import com.albedo.java.modules.gen.domain.DatasourceConf;
 import com.albedo.java.modules.gen.domain.dto.DatasourceConfDto;
 import com.albedo.java.modules.gen.repository.DatasourceConfRepository;
 import com.albedo.java.modules.gen.service.DatasourceConfService;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
+import com.albedo.java.plugins.dynamic.datasource.support.DataSourceConstants;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
@@ -37,12 +52,18 @@ import java.util.Collection;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
-public class DatasourceConfServiceImpl extends DataServiceImpl<DatasourceConfRepository, DatasourceConf, DatasourceConfDto, String> implements DatasourceConfService {
-
+public class DatasourceConfServiceImpl
+	extends DataCacheServiceImpl<DatasourceConfRepository, DatasourceConf, DatasourceConfDto>
+	implements DatasourceConfService {
 
 	private final StringEncryptor stringEncryptor;
 
 	private final DataSourceCreator hikariDataSourceCreator;
+
+	@Override
+	protected CacheKeyBuilder cacheKeyBuilder() {
+		return new DatasourceConfCacheKeyBuilder();
+	}
 
 	public Boolean exitDatasourceConfByName(DatasourceConfDto datasourceConfDto) {
 		return getOne(Wrappers.<DatasourceConf>lambdaUpdate()

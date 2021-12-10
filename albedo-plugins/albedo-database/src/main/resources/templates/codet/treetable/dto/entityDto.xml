@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>entityForm</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/domain/dto/${subModuleName}</filePath>
+	<fileName>${ClassName}Dto.java</fileName>
+	<content><![CDATA[
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>;
+
+import com.albedo.java.common.core.vo.TreeDto;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+
+import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+/**
+ * ${functionName}Dto ${functionNameSimple}
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${ClassName}Dto extends TreeDto {
+
+	private static final long serialVersionUID = 1L;
+	<#list table.columnList as column>
+		<#if !column.pk && column.isNotBaseField && column.isNotBaseTreeField>
+	/** F_${column.constantJavaField} ${column.nameAndTitle} */
+	public static final String F_${column.constantJavaField} = "${column.simpleJavaField}";
+		</#if>
+	</#list>
+
+	<@generateFields/>
+}
+<#macro generateFields>
+
+	<#list table.columnList as column>
+		<#if !column.pk && column.isNotBaseField && column.isNotBaseTreeField>
+	/** ${column.simpleJavaField} ${column.title} */
+	        <#if table.parentExists && table.parentTableFk == column.name>
+	private ${table.parent.className} ${column.simpleJavaField};
+	        <#elseif column.showType == "userselect" || column.showType == "orgselect" || column.showType == "areaselect">
+	private String ${column.simpleJavaField}Id;
+	private ${column.simpleJavaType} ${column.simpleJavaField};
+	        <#else> ${column.hibernateValidatorExprssion}
+	private ${column.simpleJavaType} ${column.simpleJavaField};
+			</#if>
+		</#if>
+	</#list>
+
+</#macro>
+
+]]>
+	</content>
+</template>

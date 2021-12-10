@@ -1,3 +1,19 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.core.util;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +36,26 @@ import java.util.UUID;
 @Slf4j
 public class FileUtil extends cn.hutool.core.io.FileUtil {
 
-
 	/**
 	 * 定义GB的计算常量
 	 */
 	private static final int GB = 1024 * 1024 * 1024;
+
 	/**
 	 * 定义MB的计算常量
 	 */
 	private static final int MB = 1024 * 1024;
+
 	/**
 	 * 定义KB的计算常量
 	 */
 	private static final int KB = 1024;
+
 	/**
 	 * 格式化小数
 	 */
 	private static final DecimalFormat DF = new DecimalFormat("0.00");
+
 	public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
 
 	/**
@@ -403,7 +422,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 			dirPaths = dirPaths + File.separator;
 		}
 		String filePath = file.getAbsolutePath();
-		// 对于目录，必须在entry名字后面加上StringUtils.SLASH，表示它将以目录项存储
+		// 对于目录，必须在entry名字后面加上StringUtil.SLASH，表示它将以目录项存储
 		if (file.isDirectory()) {
 			filePath += StringUtil.SLASH;
 		}
@@ -465,7 +484,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 		}
 		return fileNewName;
 	}
-
 
 	/**
 	 * 文件名称验证
@@ -554,13 +572,13 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 	public static String getSize(long size) {
 		String resultSize;
 		if (size / GB >= 1) {
-			//如果当前Byte的值大于等于1GB
+			// 如果当前Byte的值大于等于1GB
 			resultSize = DF.format(size / (float) GB) + "GB   ";
 		} else if (size / MB >= 1) {
-			//如果当前Byte的值大于等于1MB
+			// 如果当前Byte的值大于等于1MB
 			resultSize = DF.format(size / (float) MB) + "MB   ";
 		} else if (size / KB >= 1) {
-			//如果当前Byte的值大于等于1KB
+			// 如果当前Byte的值大于等于1KB
 			resultSize = DF.format(size / (float) KB) + "KB   ";
 		} else {
 			resultSize = size + "B   ";
@@ -568,4 +586,44 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 		return resultSize;
 	}
 
+	public static boolean copyInputStreamToFile(InputStream ins, File descFile) {
+		// 准备复制文件
+		if (ins == null) {
+			return false;
+		}
+		// 读取的位数
+		int readByte = 0;
+		OutputStream outs = null;
+		try {
+			// 打开目标文件的输出流
+			outs = new FileOutputStream(descFile);
+			byte[] buf = new byte[1024];
+			// 一次读取1024个字节，当readByte为-1时表示文件已经读取完毕
+			while ((readByte = ins.read(buf)) != -1) {
+				// 将读取的字节流写入到输出流
+				outs.write(buf, 0, readByte);
+			}
+			return true;
+		} catch (Exception e) {
+			log.debug("复制文件失败：" + e.getMessage());
+			return false;
+		} finally {
+			// 关闭输入输出流，首先关闭输出流，然后再关闭输入流
+			if (outs != null) {
+				try {
+					outs.close();
+				} catch (IOException oute) {
+					oute.printStackTrace();
+				}
+			}
+			if (ins != null) {
+				try {
+					ins.close();
+				} catch (IOException ine) {
+					ine.printStackTrace();
+				}
+			}
+		}
+
+	}
 }

@@ -1,9 +1,26 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.gen.service.impl;
 
+import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.modules.gen.cache.TableCacheKeyBuilder;
 import com.albedo.java.modules.gen.domain.DatasourceConf;
 import com.albedo.java.modules.gen.domain.Table;
 import com.albedo.java.modules.gen.domain.TableColumn;
@@ -16,8 +33,10 @@ import com.albedo.java.modules.gen.domain.xml.GenConfig;
 import com.albedo.java.modules.gen.repository.TableRepository;
 import com.albedo.java.modules.gen.service.DatasourceConfService;
 import com.albedo.java.modules.gen.service.TableColumnService;
+import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
@@ -36,14 +55,19 @@ import java.util.stream.Collectors;
  * @author somewhere
  */
 @Service
-public class TableServiceImpl extends
-	DataServiceImpl<TableRepository, Table, TableDto, String> implements com.albedo.java.modules.gen.service.TableService {
+public class TableServiceImpl extends DataCacheServiceImpl<TableRepository, Table, TableDto>
+	implements TableService {
 
 	@Resource
 	private TableColumnService tableColumnService;
+
 	@Resource
 	private DatasourceConfService datasourceConfService;
 
+	@Override
+	protected CacheKeyBuilder cacheKeyBuilder() {
+		return new TableCacheKeyBuilder();
+	}
 
 	@Override
 	public void saveOrUpdate(TableDto tableDto) {
@@ -54,8 +78,8 @@ public class TableServiceImpl extends
 		for (TableColumn item : table.getColumnFormList()) {
 			item.setTableId(table.getId());
 		}
-		List<TableColumn> tableColumnEntities = tableColumnService.list(
-			Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, table.getId()));
+		List<TableColumn> tableColumnEntities = tableColumnService
+			.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, table.getId()));
 		for (TableColumn item : table.getColumnFormList()) {
 			for (TableColumn tableColumn : tableColumnEntities) {
 				if (tableColumn.getId().equals(item.getId())) {
@@ -73,13 +97,17 @@ public class TableServiceImpl extends
 	public void copyDtoToBean(TableDto form, Table table) {
 		super.copyDtoToBean(form, table);
 		if (table != null) {
+			if (ObjectUtil.isNotEmpty(form.getPkColumnList())) {
+				table.setPkColumnList(form.getPkColumnList().stream().map(item -> tableColumnService.copyDtoToBean(item))
+					.collect(Collectors.toList()));
+			}
 			if (ObjectUtil.isNotEmpty(form.getColumnFormList())) {
 				table.setColumnFormList(form.getColumnFormList().stream()
 					.map(item -> tableColumnService.copyDtoToBean(item)).collect(Collectors.toList()));
 			}
 			if (ObjectUtil.isNotEmpty(form.getColumnList())) {
-				table.setColumnList(form.getColumnList().stream()
-					.map(item -> tableColumnService.copyDtoToBean(item)).collect(Collectors.toList()));
+				table.setColumnList(form.getColumnList().stream().map(item -> tableColumnService.copyDtoToBean(item))
+					.collect(Collectors.toList()));
 			}
 		}
 	}
@@ -93,12 +121,11 @@ public class TableServiceImpl extends
 					.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 			}
 			if (ObjectUtil.isNotEmpty(table.getColumnList())) {
-				result.setColumnList(table.getColumnList().stream()
-					.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
+				result.setColumnList(table.getColumnList().stream().map(item -> tableColumnService.copyBeanToDto(item))
+					.collect(Collectors.toList()));
 			}
 		}
 	}
-
 
 	@Override
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -206,33 +233,39 @@ public class TableServiceImpl extends
 	@Override
 	public TableFormDataVo findFormData(TableFromDto tableFromDto) {
 		// 验证参数缺失
-		Assert.isTrue(tableFromDto == null || StringUtil.isNotEmpty(tableFromDto.getId()) || StringUtil.isNotEmpty(tableFromDto.getTableName()
-			) || StringUtil.isNotEmpty(tableFromDto.getDsName()),
-			"参数缺失！");
+		Assert.isTrue(tableFromDto == null || StringUtil.isNotEmpty(tableFromDto.getId())
+			|| StringUtil.isNotEmpty(tableFromDto.getTableName())
+			|| StringUtil.isNotEmpty(tableFromDto.getDsName()), "参数缺失！");
 		TableFormDataVo tableFormDataVo = new TableFormDataVo();
 		TableDto tableDto = new TableDto(tableFromDto);
-		tableFormDataVo.setTableList(CollUtil.convertSelectVoList(findTableListFormDb(tableDto), Table.F_NAME, Table.F_NAMESANDTITLE));
+		tableFormDataVo.setTableList(
+			CollUtil.convertSelectVoList(findTableListFormDb(tableDto), Table.F_NAME, Table.F_NAMESANDTITLE));
 		// 验证表是否存在
-		Assert.isTrue(
-			StringUtil.isNotEmpty(tableFromDto.getId()) || checkTableName(tableFromDto.getTableName()),
+		Assert.isTrue(StringUtil.isNotEmpty(tableFromDto.getId()) || checkTableName(tableFromDto.getTableName()),
 			StringUtil.toAppendStr("下一步失败！", tableFromDto.getTableName(), " 表已经添加！"));
 		if (ObjectUtil.isNotEmpty(tableFromDto.getId())) {
 			tableDto = getOneDto(tableFromDto.getId());
-			tableDto.setColumnList(tableColumnService.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableFromDto.getId()))
-				.stream().map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList())
-			);
+			tableDto.setColumnList(tableColumnService
+				.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableFromDto.getId())).stream()
+				.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 		}
 		// 获取物理表字段
 		tableDto = getTableFormDb(tableDto);
-		tableFormDataVo.setColumnList(CollUtil.convertSelectVoList(tableDto.getColumnList(), Table.F_NAME, Table.F_NAMESANDTITLE));
+		tableFormDataVo.setColumnList(
+			CollUtil.convertSelectVoList(tableDto.getColumnList(), Table.F_NAME, Table.F_NAMESANDTITLE));
 		tableFormDataVo.setTableVo(tableDto);
 		GenConfig config = GenUtil.getConfig();
 		tableFormDataVo.setConfig(config);
-		tableFormDataVo.setDsNameList(CollUtil.convertSelectVoList(datasourceConfService.list(), DatasourceConf.F_NAME, DatasourceConf.F_NAME));
-		tableFormDataVo.setQueryTypeList(CollUtil.convertSelectVoList(config.getQueryTypeList(), Dict.F_VAL, Dict.F_NAME));
-		tableFormDataVo.setQueryTypeList(CollUtil.convertSelectVoList(config.getQueryTypeList(), Dict.F_VAL, Dict.F_NAME));
-		tableFormDataVo.setShowTypeList(CollUtil.convertSelectVoList(config.getShowTypeList(), Dict.F_VAL, Dict.F_NAME));
-		tableFormDataVo.setJavaTypeList(CollUtil.convertSelectVoList(config.getJavaTypeList(), Dict.F_VAL, Dict.F_NAME));
+		tableFormDataVo.setDsNameList(CollUtil.convertSelectVoList(datasourceConfService.list(), DatasourceConf.F_NAME,
+			DatasourceConf.F_NAME));
+		tableFormDataVo
+			.setQueryTypeList(CollUtil.convertSelectVoList(config.getQueryTypeList(), Dict.F_VAL, Dict.F_NAME));
+		tableFormDataVo
+			.setQueryTypeList(CollUtil.convertSelectVoList(config.getQueryTypeList(), Dict.F_VAL, Dict.F_NAME));
+		tableFormDataVo
+			.setShowTypeList(CollUtil.convertSelectVoList(config.getShowTypeList(), Dict.F_VAL, Dict.F_NAME));
+		tableFormDataVo
+			.setJavaTypeList(CollUtil.convertSelectVoList(config.getJavaTypeList(), Dict.F_VAL, Dict.F_NAME));
 		if (ObjectUtil.isNotEmpty(tableDto.getId())) {
 			Collections.sort(tableDto.getColumnList());
 		}
@@ -265,4 +298,5 @@ public class TableServiceImpl extends
 		}
 		tableColumnService.saveOrUpdateBatch(table.getColumnList());
 	}
+
 }

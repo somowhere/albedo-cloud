@@ -16,9 +16,9 @@
 
 package com.albedo.java.common.security.component;
 
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.core.util.Json;
-import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.albedo.java.common.security.service.UserDetail;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -68,10 +68,10 @@ public class UserAuthenticationExtendConverter implements UserAuthenticationConv
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
 
 			String username = (String) map.get(USERNAME);
-			String id = (String) map.get(SecurityConstants.USER_ID);
-			String deptId = (String) map.get(SecurityConstants.DEPT_ID);
+			Long id = (Long) map.get(SecurityConstants.USER_ID);
+			Long deptId = (Long) map.get(SecurityConstants.DEPT_ID);
 			String deptName = (String) map.get(SecurityConstants.DEPT_NAME);
-			DataScope dataScope = Json.parseObject((String) map.get(SecurityConstants.DATA_SCOPE), DataScope.class);
+			DataScope dataScope = JSONUtil.toBean((String) map.get(SecurityConstants.DATA_SCOPE), DataScope.class);
 			UserDetail user = new UserDetail(id, deptId, deptName, username, N_A, true
 				, true, true, true, authorities, dataScope);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);

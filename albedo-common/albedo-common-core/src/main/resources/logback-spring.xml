@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+  ~  Copyright (c) 2019-2021, somewhere (somewhere0813@gmail.com).
   ~  <p>
   ~  Licensed under the GNU Lesser General Public License 3.0 (the "License");
   ~  you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
   -->
 
 <configuration debug="false" scan="false">
-	<springProperty scope="context" name="application.logPath" source="application.logPath" defaultValue="logs"/>
-	<springProperty scope="context" name="spring.application.name" source="spring.application.name" defaultValue="tmp"/>
+	<springProperty scope="context" name="application.logPath" source="application.logPath"
+					defaultValue="logs"/>
+	<springProperty scope="context" name="spring.application.name" source="spring.application.name" defaultValue=""/>
 	<property name="log.path" value="${application.logPath}/${spring.application.name}"/>
 	<!-- 彩色日志格式 -->
 	<property name="CONSOLE_LOG_PATTERN"
@@ -28,7 +29,7 @@
 					converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
 	<conversionRule conversionWord="wEx"
 					converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
-	<!-- Console logOperate output -->
+	<!-- Console log output -->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
@@ -78,13 +79,10 @@
 		</filter>
 	</appender>
 
-	<!--nacos 心跳 INFO 屏蔽-->
-	<logger name="com.alibaba.nacos" level="OFF">
-		<appender-ref ref="error"/>
-	</logger>
 	<logger name="org.springframework.web" level="INFO"/>
 	<logger name="org.springframework.security" level="INFO"/>
 	<logger name="org.springframework" level="INFO"/>
+	<logger name="com.albedo.java" level="DEBUG"/>
 	<!-- Level: FATAL 0  ERROR 3  WARN 4  INFO 6  DEBUG 7 -->
 	<root level="INFO">
 		<appender-ref ref="console"/>

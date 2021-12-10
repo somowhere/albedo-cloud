@@ -1,21 +1,33 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.gen.service.impl;
 
-import cn.hutool.core.util.CharUtil;
-import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.FreeMarkers;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.data.util.QueryWrapperUtil;
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.modules.gen.cache.SchemeCacheKeyBuilder;
 import com.albedo.java.modules.gen.domain.Scheme;
 import com.albedo.java.modules.gen.domain.Table;
 import com.albedo.java.modules.gen.domain.TableColumn;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
-import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
 import com.albedo.java.modules.gen.domain.dto.TableDto;
-import com.albedo.java.modules.gen.domain.vo.SchemeFormDataVo;
 import com.albedo.java.modules.gen.domain.vo.SchemeVo;
 import com.albedo.java.modules.gen.domain.vo.TemplateVo;
 import com.albedo.java.modules.gen.domain.xml.GenConfig;
@@ -26,17 +38,16 @@ import com.albedo.java.modules.gen.service.TableColumnService;
 import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
-import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
-import com.albedo.java.modules.sys.feign.RemoteMenuService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
+import com.albedo.java.plugins.database.mybatis.util.QueryWrapperUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,33 +60,35 @@ import java.util.stream.Collectors;
  * @author somewhere
  */
 @Service
-@RequiredArgsConstructor
-public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme, SchemeDto, String> implements SchemeService {
+@AllArgsConstructor
+public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Scheme, SchemeDto>
+	implements SchemeService {
 
 	private final TableRepository tableRepository;
-	private final TableService tableService;
-	private final TableColumnService tableColumnService;
-	private final RemoteMenuService remoteMenuService;
 
+	private final TableService tableService;
+
+	private final TableColumnService tableColumnService;
 
 	@Override
-	@Transactional(readOnly = true)
+	protected CacheKeyBuilder cacheKeyBuilder() {
+		return new SchemeCacheKeyBuilder();
+	}
+
+	@Override
 	public List<Scheme> findAllListIdNot(String id) {
 		return super.list(Wrappers.<Scheme>query().ne(Table.F_ID, id == null ? "-1" : id));
 	}
 
-
 	@Override
-	@Transactional(readOnly = true)
 	public String generateCode(SchemeDto schemeDto) {
 		StringBuilder result = new StringBuilder();
 
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
-		tableDto.setColumnList(tableColumnService.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID,
-				tableDto.getId()))
-			.stream().map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList())
-		);
+		tableDto.setColumnList(tableColumnService
+			.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableDto.getId())).stream()
+			.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 		Collections.sort(tableDto.getColumnList());
 
 		// 获取所有代码模板
@@ -87,8 +100,9 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 
 		// 如果有子表模板，则需要获取子表列表
 		if (childTableTemplateList.size() > 0) {
-			tableDto.setChildList(tableRepository.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId()))
-				.stream().map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
+			tableDto.setChildList(tableRepository
+				.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId())).stream()
+				.map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
 		}
 
 		// 生成子表模板代码
@@ -115,9 +129,8 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public SchemeFormDataVo findFormData(SchemeDto schemeDto, String loginId) {
-		SchemeFormDataVo schemeFormDataVo = new SchemeFormDataVo();
+	public Map<String, Object> findFormData(SchemeDto schemeDto, String loginId) {
+		Map<String, Object> map = Maps.newHashMap();
 
 		if (StringUtil.isNotEmpty(schemeDto.getId())) {
 			schemeDto = super.getOneDto(schemeDto.getId());
@@ -128,12 +141,12 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 		if (StringUtil.isBlank(schemeDto.getFunctionAuthor())) {
 			schemeDto.setFunctionAuthor(loginId);
 		}
-		schemeFormDataVo.setSchemeVo(schemeDto);
+		map.put("schemeVo", schemeDto);
 		GenConfig config = GenUtil.getConfig();
-		schemeFormDataVo.setConfig(config);
+		map.put("config", config);
 
-		schemeFormDataVo.setCategoryList(CollUtil.convertSelectVoList(config.getCategoryList(), Dict.F_VAL, Dict.F_NAME));
-		schemeFormDataVo.setViewTypeList(CollUtil.convertSelectVoList(config.getViewTypeList(), Dict.F_VAL, Dict.F_NAME));
+		map.put("categoryList", CollUtil.convertComboDataList(config.getCategoryList(), Dict.F_VAL, Dict.F_NAME));
+		map.put("viewTypeList", CollUtil.convertComboDataList(config.getViewTypeList(), Dict.F_VAL, Dict.F_NAME));
 
 		List<Table> tableList = tableService.list(), list = Lists.newArrayList();
 		List<String> tableIds = Lists.newArrayList();
@@ -146,32 +159,27 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 				list.add(table);
 			}
 		}
-		schemeFormDataVo.setTableList(CollUtil.convertSelectVoList(list, Table.F_ID, Table.F_NAMESANDTITLE));
-		return schemeFormDataVo;
+		map.put("tableList", CollUtil.convertComboDataList(list, Table.F_ID, Table.F_NAMESANDTITLE));
+		return map;
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public IPage getSchemeVoPage(PageModel pm, SchemeQueryCriteria schemeQueryCriteria) {
-		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, schemeQueryCriteria);
-		wrapper.eq("a.del_flag", Scheme.FLAG_NORMAL);
-		pm.addOrder(OrderItem.desc("a." + Scheme.F_SQL_CREATEDDATE));
-		IPage<List<SchemeVo>> userVosPage = repository.getSchemeVoPage(pm, wrapper);
+	public IPage getSchemeVoPage(PageModel pageModel, SchemeQueryCriteria schemeQueryCriteria) {
+		Wrapper wrapper = QueryWrapperUtil.getWrapper(pageModel, schemeQueryCriteria);
+		pageModel.addOrder(OrderItem.desc("a." + Scheme.F_SQL_CREATED_DATE));
+		IPage<List<SchemeVo>> userVosPage = repository.getSchemeVoPage(pageModel, wrapper);
 		return userVosPage;
 	}
 
-
 	@Override
-	@Transactional(readOnly = true)
 	public Map<String, Object> previewCode(String id, String username) {
 		Map<String, Object> result = Maps.newHashMap();
 		SchemeDto schemeDto = super.getOneDto(id);
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
-		tableDto.setColumnList(tableColumnService.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID,
-				tableDto.getId()))
-			.stream().map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList())
-		);
+		tableDto.setColumnList(tableColumnService
+			.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableDto.getId())).stream()
+			.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 		Collections.sort(tableDto.getColumnList());
 
 		// 获取所有代码模板
@@ -183,8 +191,9 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 
 		// 如果有子表模板，则需要获取子表列表
 		if (childTableTemplateList.size() > 0) {
-			tableDto.setChildList(tableRepository.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId()))
-				.stream().map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
+			tableDto.setChildList(tableRepository
+				.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId())).stream()
+				.map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
 		}
 
 		// 生成子表模板代码
@@ -211,21 +220,6 @@ public class SchemeServiceImpl extends DataServiceImpl<SchemeRepository, Scheme,
 		}
 		return result;
 
-
-	}
-
-	@Override
-	public SchemeDto genMenu(SchemeGenDto schemeGenDataVo) {
-		SchemeDto SchemeDto = super.getOneDto(schemeGenDataVo.getId());
-		TableDto tableDataVo = SchemeDto.getTableDto();
-		if (tableDataVo == null) {
-			tableDataVo = tableService.getOneDto(SchemeDto.getTableId());
-		}
-		String url = StringUtil.toAppendStr("/", StringUtil.lowerCase(SchemeDto.getModuleName()), (StringUtil.isNotBlank(SchemeDto.getSubModuleName()) ? "/" + StringUtil.lowerCase(SchemeDto.getSubModuleName()) : ""), "/",
-			StringUtil.toRevertCamelCase(StringUtil.lowerFirst(tableDataVo.getClassName()), CharUtil.DASHED), "/");
-		remoteMenuService.saveByGenScheme(new GenSchemeDto(SchemeDto.getName(),
-			schemeGenDataVo.getParentMenuId(), url, tableDataVo.getClassName()), SecurityConstants.FROM_IN);
-		return SchemeDto;
 	}
 
 }

@@ -16,8 +16,8 @@
 
 package com.albedo.java.gateway.handler;
 
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.alibaba.fastjson.JSON;
 import com.pig4cloud.captcha.ArithmeticCaptcha;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +68,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		captcha.out(os);
 		Mono<ServerResponse> body = ServerResponse.status(HttpStatus.OK).contentType(MediaType.IMAGE_JPEG)
 			.body(BodyInserters.fromResource(new ByteArrayResource(os.toByteArray())));
-		log.info("body {}", JSON.toJSON(body));
+		log.info("body {}", JSONUtil.toJsonStr(body));
 		return body;
 	}
 

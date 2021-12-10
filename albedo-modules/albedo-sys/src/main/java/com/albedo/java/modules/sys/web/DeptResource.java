@@ -18,7 +18,7 @@ package com.albedo.java.modules.sys.web;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.log.annotation.LogOperate;
-import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.albedo.java.common.security.annotation.Inner;
 import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
@@ -113,7 +113,7 @@ public class DeptResource extends BaseResource {
 	@PutMapping
 	@LogOperate(value = "用户管理锁定/解锁")
 	@PreAuthorize("@pms.hasPermission('sys_dept_lock')")
-	public Result lockOrUnLock(@RequestBody Set<String> ids) {
+	public Result lockOrUnLock(@RequestBody Set<Long> ids) {
 		deptService.lockOrUnLock(ids);
 		return Result.buildOk("操作成功");
 	}
@@ -127,7 +127,7 @@ public class DeptResource extends BaseResource {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_dept_del')")
 	@LogOperate(value = "部门管理删除")
-	public Result removeById(@RequestBody Set<String> ids) {
+	public Result removeById(@RequestBody Set<Long> ids) {
 		return Result.buildByFlag(deptService.removeByIds(ids));
 	}
 
@@ -140,7 +140,7 @@ public class DeptResource extends BaseResource {
 	 */
 	@Inner
 	@GetMapping("/descendant-ids/{deptId}")
-	public Result<List<String>> findDescendantIdList(@PathVariable("deptId") String deptId) {
+	public Result<List<String>> findDescendantIdList(@PathVariable("deptId") Long deptId) {
 		return Result.buildOkData(deptService.findDescendantIdList(deptId));
 	}
 }

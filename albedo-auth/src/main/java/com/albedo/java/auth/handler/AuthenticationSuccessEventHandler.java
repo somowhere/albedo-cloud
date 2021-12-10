@@ -20,12 +20,12 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
-import com.albedo.java.common.core.util.AddressUtils;
+import com.albedo.java.common.core.util.AddressUtil;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.WebUtil;
 import com.albedo.java.common.log.enums.LogType;
 import com.albedo.java.common.log.enums.OperatorType;
-import com.albedo.java.common.log.event.SysLogEvent;
+import com.albedo.java.common.log.event.SysLogOperateEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.common.security.handler.AbstractAuthenticationSuccessEventHandler;
 import com.albedo.java.common.security.service.UserDetail;
@@ -71,7 +71,7 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		log.info("用户：{} 登录成功", authentication.getPrincipal());
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-		LogOperate logOperate = SysLogUtils.getSysLog();
+		LogOperate logOperate = SysLogUtils.getSysLogOperate();
 		if (authentication.getPrincipal() instanceof String) {
 			logOperate.setUsername((String) authentication.getPrincipal());
 		} else if (authentication.getPrincipal() instanceof UserDetail) {
@@ -89,7 +89,7 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		logOperate.setTitle("用户登录成功");
 		logOperate.setOperatorType(OperatorType.MANAGE.name());
 		// 发送异步日志事件
-		SpringContextHolder.publishEvent(new SysLogEvent(logOperate));
+		SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperate));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 	public void saveUserOnline(UserDetail userDetail, String ip, String userAgentStr) {
 		UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
 		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
-			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtils.getRealAddressByIp(ip),
+			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtil.getRegion(ip),
 			userAgentStr, userAgent.getBrowser().getName(), userAgent.getOs().getName(), new Date());
 		RedisUtil.setCacheObject(SecurityConstants.PROJECT_OAUTH_ONLINE + userOnlineDto.getUserId(), userOnlineDto);
 	}

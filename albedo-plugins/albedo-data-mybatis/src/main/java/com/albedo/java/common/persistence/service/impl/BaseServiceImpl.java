@@ -1,10 +1,10 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.albedo.java.common.persistence.service.impl;
+package com.albedo.java.plugins.database.mybatis.service.impl;
 
 import com.albedo.java.common.persistence.repository.BaseRepository;
-import com.albedo.java.common.persistence.service.BaseService;
+import com.albedo.java.plugins.database.mybatis.service.BaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -28,5 +28,5 @@ public interface RemoteDeptService {
 	 * @updateTime 2020/6/1 11:09
 	 */
 	@GetMapping("/dept/descendant-ids/{deptId}")
-	Result<List<String>> findDescendantIdList(@PathVariable("deptId") String deptId, @RequestHeader(SecurityConstants.FROM) String from);
+	Result<List<Long>> findDescendantIdList(@PathVariable("deptId") Long deptId, @RequestHeader(SecurityConstants.FROM) String from);
 }

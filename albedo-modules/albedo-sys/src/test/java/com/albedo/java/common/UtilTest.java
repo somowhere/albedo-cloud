@@ -1,8 +1,7 @@
 package com.albedo.java.common;
 
 
-import com.albedo.java.common.core.util.Json;
-import com.albedo.java.common.persistence.datascope.DataScope;
+import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

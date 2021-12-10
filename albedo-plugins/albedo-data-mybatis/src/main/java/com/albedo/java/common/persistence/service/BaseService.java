@@ -1,4 +1,4 @@
-package com.albedo.java.common.persistence.service;
+package com.albedo.java.plugins.database.mybatis.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 

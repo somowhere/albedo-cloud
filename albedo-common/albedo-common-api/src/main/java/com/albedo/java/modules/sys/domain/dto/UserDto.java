@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,11 +33,13 @@
 package com.albedo.java.modules.sys.domain.dto;
 
 import com.albedo.java.common.core.vo.DataDto;
+import com.albedo.java.modules.sys.domain.enums.Sex;
 import com.albedo.java.modules.sys.domain.vo.UserVo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import javax.validation.constraints.*;
 import java.util.List;
@@ -33,14 +51,18 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class UserDto extends DataDto<String> {
+public class UserDto extends DataDto<Long> {
 
 	public static final int PASSWORD_MIN_LENGTH = 4;
 
 	public static final int PASSWORD_MAX_LENGTH = 64;
+
 	public static final String USERNAME_REGEX = "^[_',.@A-Za-z0-9-]*$";
+
 	public static final String F_USERNAME = "username";
+
 	public static final String F_EMAIL = "email";
+
 	public static final String F_PHONE = "phone";
 
 	/**
@@ -51,6 +73,7 @@ public class UserDto extends DataDto<String> {
 	private String username;
 
 	private String nickname;
+	private Sex sex;
 
 	@Size(max = PASSWORD_MAX_LENGTH)
 	@JsonIgnore
@@ -61,10 +84,12 @@ public class UserDto extends DataDto<String> {
 	 */
 	@Email
 	private String email;
+
 	/**
 	 * 电话
 	 */
 	private String phone;
+
 	/**
 	 * 头像
 	 */
@@ -73,7 +98,7 @@ public class UserDto extends DataDto<String> {
 	/**
 	 * 部门ID
 	 */
-	private String deptId;
+	private Long deptId;
 
 	/**
 	 * 微信openId
@@ -89,11 +114,12 @@ public class UserDto extends DataDto<String> {
 	 * 角色ID
 	 */
 	@NotNull
-	private List<String> roleIdList;
-
+	private List<Long> roleIdList;
 
 	public UserDto(UserVo userVo) {
+		Assert.isTrue(userVo != null, "用户不存在");
 		this.setId(userVo.getId());
+		this.sex = userVo.getSex();
 		this.username = userVo.getUsername();
 		this.password = userVo.getPassword();
 		this.deptId = userVo.getDeptId();
@@ -105,4 +131,5 @@ public class UserDto extends DataDto<String> {
 		this.roleIdList = userVo.getRoleIdList();
 		this.setDescription(userVo.getDescription());
 	}
+
 }

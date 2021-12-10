@@ -57,7 +57,7 @@ public class MenuResource extends BaseResource {
 	 * @return
 	 */
 	@GetMapping(CommonConstants.URL_ID_REGEX)
-	public Result get(@PathVariable String id) {
+	public Result get(@PathVariable Long id) {
 		log.debug("REST request to get Entity : {}", id);
 		return Result.buildOkData(menuService.getOneDto(id));
 	}
@@ -90,7 +90,7 @@ public class MenuResource extends BaseResource {
 	 * @return 属性集合
 	 */
 	@GetMapping("/role/{roleId}")
-	public Result findByRoleId(@PathVariable String roleId) {
+	public Result findByRoleId(@PathVariable Long roleId) {
 		return Result.buildOkData(menuService.findListByRoleId(roleId)
 			.stream()
 			.map(MenuVo::getId)

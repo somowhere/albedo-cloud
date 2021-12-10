@@ -44,7 +44,7 @@ public class RemoteDeptServiceFallbackImpl implements RemoteDeptService {
 	 * @return R
 	 */
 	@Override
-	public Result<List<String>> findDescendantIdList(String deptId, String from) {
+	public Result<List<Long>> findDescendantIdList(Long deptId, String from) {
 		log.error("feign 查询descendantId信息失败:{}", deptId, cause);
 		throw new FeignBizException(cause);
 	}

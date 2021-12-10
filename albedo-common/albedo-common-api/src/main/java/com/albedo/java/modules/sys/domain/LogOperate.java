@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,14 +34,20 @@ package com.albedo.java.modules.sys.domain;
 
 import com.albedo.java.common.core.annotation.DictType;
 import com.albedo.java.common.core.annotation.ExcelField;
+import com.albedo.java.common.core.basic.domain.BaseEntity;
 import com.albedo.java.common.core.constant.DictNameConstants;
-import com.albedo.java.common.persistence.domain.BaseEntity;
+import com.albedo.java.common.core.util.StringUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -38,11 +60,15 @@ import java.time.LocalDateTime;
  * @since 2019/2/1
  */
 @Data
+@Builder
+@Accessors(chain = true)
 @TableName("sys_log_operate")
+@NoArgsConstructor
+@AllArgsConstructor
 public class LogOperate extends BaseEntity<LogOperate> {
 
 	private static final long serialVersionUID = 1L;
-	protected String createdBy;
+	protected Long createdBy;
 	/**
 	 * 创建时间
 	 */
@@ -50,11 +76,12 @@ public class LogOperate extends BaseEntity<LogOperate> {
 	protected LocalDateTime createdDate;
 	/*** 备注 */
 	@ExcelField(title = "描述")
+	@Size(max = 500)
 	protected String description;
 	/**
 	 * 编号
 	 */
-	@TableId(value = "id", type = IdType.AUTO)
+	@TableId(value = "id", type = IdType.INPUT)
 	private Long id;
 	/**
 	 * 用户ID
@@ -109,6 +136,8 @@ public class LogOperate extends BaseEntity<LogOperate> {
 	 */
 	@ExcelField(title = "请求URI")
 	private String requestUri;
+
+	/** 异常详细 */
 	/**
 	 * 操作方式
 	 */
@@ -124,7 +153,6 @@ public class LogOperate extends BaseEntity<LogOperate> {
 	 */
 	@ExcelField(title = "执行时间")
 	private Long time;
-	/** 异常详细  */
 	/**
 	 * 异常信息
 	 */
@@ -140,4 +168,10 @@ public class LogOperate extends BaseEntity<LogOperate> {
 		return id;
 	}
 
+	public void setDescription(String description) {
+		if (description != null) {
+			this.description = description.length() > 500 ? StringUtil.subPre(description, 500) : description;
+
+		}
+	}
 }

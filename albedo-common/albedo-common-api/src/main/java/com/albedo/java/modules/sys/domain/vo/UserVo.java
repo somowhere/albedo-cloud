@@ -1,5 +1,21 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +41,7 @@ import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.vo.DataVo;
 import com.albedo.java.modules.sys.domain.Role;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.albedo.java.modules.sys.domain.enums.Sex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,16 +53,20 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserVo extends DataVo<String> {
+public class UserVo extends DataVo<Long> {
 
 	public static final String F_USERNAME = "username";
+
 	public static final String F_EMAIL = "email";
+
 	public static final String F_PHONE = "phone";
+
 	/**
 	 * 用户名
 	 */
 	@ExcelField(title = "用户名")
 	private String username;
+
 	@ExcelField(title = "昵称")
 	private String nickname;
 
@@ -60,15 +80,22 @@ public class UserVo extends DataVo<String> {
 	private Integer available;
 
 	/**
+	 * 性别
+	 */
+	@ExcelField(title = "性别")
+	private Sex sex;
+	/**
 	 * 邮箱
 	 */
 	@ExcelField(title = "邮箱")
 	private String email;
+
 	/**
 	 * 电话
 	 */
 	@ExcelField(title = "电话")
 	private String phone;
+
 	/**
 	 * 头像
 	 */
@@ -77,7 +104,8 @@ public class UserVo extends DataVo<String> {
 	/**
 	 * 部门ID
 	 */
-	private String deptId;
+	private Long deptId;
+
 	/**
 	 * 部门名称
 	 */
@@ -96,15 +124,15 @@ public class UserVo extends DataVo<String> {
 
 	@ExcelField(title = "角色名称")
 	private String roleNames;
+
 	/**
 	 * 角色ID
 	 */
 	private List<Role> roleList;
 
-	@JsonIgnore
-	private List<String> roleIdList;
+	private List<Long> roleIdList;
 
-	public List<String> getRoleIdList() {
+	public List<Long> getRoleIdList() {
 		if (CollUtil.isEmpty(roleIdList) && CollUtil.isNotEmpty(roleList)) {
 			roleIdList = CollUtil.extractToList(roleList, Role.F_ID);
 		}
@@ -121,4 +149,5 @@ public class UserVo extends DataVo<String> {
 	public boolean isAvailable() {
 		return CommonConstants.YES.equals(available);
 	}
+
 }

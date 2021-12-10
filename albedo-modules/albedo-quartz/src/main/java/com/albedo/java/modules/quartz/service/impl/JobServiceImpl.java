@@ -8,7 +8,7 @@ import com.albedo.java.common.core.constant.ScheduleConstants;
 import com.albedo.java.common.core.exception.RuntimeMsgException;
 import com.albedo.java.common.core.exception.TaskException;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.persistence.service.impl.DataServiceImpl;
+import com.albedo.java.plugins.database.mybatis.service.impl.DataServiceImpl;
 import com.albedo.java.modules.quartz.domain.Job;
 import com.albedo.java.modules.quartz.domain.dto.JobDto;
 import com.albedo.java.modules.quartz.repository.JobRepository;

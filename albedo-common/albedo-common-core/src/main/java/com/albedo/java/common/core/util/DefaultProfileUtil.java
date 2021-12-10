@@ -1,3 +1,19 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.common.core.util;
 
 import com.albedo.java.common.core.constant.CommonConstants;
@@ -9,15 +25,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class to load a Spring profile to be used as default
- * when there is no <code>spring.profiles.active</code> set in the environment or as command line argument.
- * If the value is not available in <code>application.yml</code> then <code>dev</code> profile will be used as default.
+ * Utility class to load a Spring profile to be used as default when there is no
+ * <code>spring.profiles.active</code> set in the environment or as command line argument.
+ * If the value is not available in <code>application.yml</code> then <code>dev</code>
+ * profile will be used as default.
  *
  * @author somewhere
  */
 public final class DefaultProfileUtil {
 
 	public static final String SPRING_PROFILE_DEFAULT = "spring.profiles.default";
+
 	public static final String SPRING_WEB_ROOT_PREFIX = "spring.web.root.prefix";
 
 	private DefaultProfileUtil() {
@@ -46,12 +64,11 @@ public final class DefaultProfileUtil {
 
 		Map<String, Object> defProperties = new HashMap<>(100);
 		/*
-		 * The default profile to use when no other profiles are defined
-		 * This cannot be set in the <code>application.yml</code> file.
-		 * See https://github.com/spring-projects/spring-boot/issues/1219
+		 * The default profile to use when no other profiles are defined This cannot be
+		 * set in the <code>application.yml</code> file. See
+		 * https://github.com/spring-projects/spring-boot/issues/1219
 		 */
 		defProperties.put(SPRING_PROFILE_DEFAULT, CommonConstants.SPRING_PROFILE_DEVELOPMENT);
-
 
 		if (!app.getSources().isEmpty()) {
 			defProperties.put(SPRING_WEB_ROOT_PREFIX,
@@ -72,4 +89,5 @@ public final class DefaultProfileUtil {
 		}
 		return profiles;
 	}
+
 }
