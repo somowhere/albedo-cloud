@@ -152,7 +152,7 @@ public class DatasourceConfResourceIntTest {
 		int databaseSizeBeforeCreate = datasourceConfService.list().size();
 		// Create the DatasourceConf
 		restDatasourceConfMockMvc.perform(post(DEFAULT_API_URL)
-				.param(PageModel.F_DESC, DatasourceConf.F_SQL_CREATEDDATE)
+				.param(PageModel.F_DESC, DatasourceConf.F_SQL_CREATED_DATE)
 				.contentType(TestUtil.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(datasourceConfDto)))
 			.andExpect(status().isOk());

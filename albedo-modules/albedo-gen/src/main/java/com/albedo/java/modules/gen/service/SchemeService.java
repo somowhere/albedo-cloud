@@ -19,7 +19,9 @@ package com.albedo.java.modules.gen.service;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.modules.gen.domain.Scheme;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
+import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
+import com.albedo.java.modules.gen.domain.vo.SchemeFormDataVo;
 import com.albedo.java.plugins.database.mybatis.service.DataCacheService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -62,7 +64,7 @@ public interface SchemeService extends DataCacheService<Scheme, SchemeDto> {
 	 * @author somewhere
 	 * @updateTime 2020/5/31 17:34
 	 */
-	Map<String, Object> findFormData(SchemeDto schemeDto, String loginId);
+	SchemeFormDataVo findFormData(SchemeDto schemeDto, String loginId);
 
 	/**
 	 * getSchemeVoPage 分页查询用户信息（含有角色信息）
@@ -86,4 +88,5 @@ public interface SchemeService extends DataCacheService<Scheme, SchemeDto> {
 	 */
 	Map<String, Object> previewCode(String id, String username);
 
+	SchemeDto genMenu(SchemeGenDto schemeGenDto);
 }

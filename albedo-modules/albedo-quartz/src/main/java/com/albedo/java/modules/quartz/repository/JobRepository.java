@@ -4,8 +4,8 @@
 package com.albedo.java.modules.quartz.repository;
 
 
-import com.albedo.java.common.persistence.repository.BaseRepository;
 import com.albedo.java.modules.quartz.domain.Job;
+import com.albedo.java.plugins.database.mybatis.repository.BaseRepository;
 
 /**
  * 任务调度Repository 任务调度

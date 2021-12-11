@@ -16,7 +16,9 @@
 
 package com.albedo.java.modules.gen.service.impl;
 
+import cn.hutool.core.util.CharUtil;
 import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
+import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.FreeMarkers;
 import com.albedo.java.common.core.util.StringUtil;
@@ -26,8 +28,10 @@ import com.albedo.java.modules.gen.domain.Scheme;
 import com.albedo.java.modules.gen.domain.Table;
 import com.albedo.java.modules.gen.domain.TableColumn;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
+import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
 import com.albedo.java.modules.gen.domain.dto.TableDto;
+import com.albedo.java.modules.gen.domain.vo.SchemeFormDataVo;
 import com.albedo.java.modules.gen.domain.vo.SchemeVo;
 import com.albedo.java.modules.gen.domain.vo.TemplateVo;
 import com.albedo.java.modules.gen.domain.xml.GenConfig;
@@ -38,6 +42,8 @@ import com.albedo.java.modules.gen.service.TableColumnService;
 import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
+import com.albedo.java.modules.sys.feign.RemoteMenuService;
 import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
 import com.albedo.java.plugins.database.mybatis.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -48,6 +54,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +76,8 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 	private final TableService tableService;
 
 	private final TableColumnService tableColumnService;
+
+	private final RemoteMenuService remoteMenuService;
 
 	@Override
 	protected CacheKeyBuilder cacheKeyBuilder() {
@@ -127,10 +136,10 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		}
 		return result.toString();
 	}
-
 	@Override
-	public Map<String, Object> findFormData(SchemeDto schemeDto, String loginId) {
-		Map<String, Object> map = Maps.newHashMap();
+	@Transactional(readOnly = true)
+	public SchemeFormDataVo findFormData(SchemeDto schemeDto, String loginId) {
+		SchemeFormDataVo schemeFormDataVo = new SchemeFormDataVo();
 
 		if (StringUtil.isNotEmpty(schemeDto.getId())) {
 			schemeDto = super.getOneDto(schemeDto.getId());
@@ -141,12 +150,12 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		if (StringUtil.isBlank(schemeDto.getFunctionAuthor())) {
 			schemeDto.setFunctionAuthor(loginId);
 		}
-		map.put("schemeVo", schemeDto);
+		schemeFormDataVo.setSchemeVo(schemeDto);
 		GenConfig config = GenUtil.getConfig();
-		map.put("config", config);
+		schemeFormDataVo.setConfig(config);
 
-		map.put("categoryList", CollUtil.convertComboDataList(config.getCategoryList(), Dict.F_VAL, Dict.F_NAME));
-		map.put("viewTypeList", CollUtil.convertComboDataList(config.getViewTypeList(), Dict.F_VAL, Dict.F_NAME));
+		schemeFormDataVo.setCategoryList(CollUtil.convertSelectVoList(config.getCategoryList(), Dict.F_VAL, Dict.F_NAME));
+		schemeFormDataVo.setViewTypeList(CollUtil.convertSelectVoList(config.getViewTypeList(), Dict.F_VAL, Dict.F_NAME));
 
 		List<Table> tableList = tableService.list(), list = Lists.newArrayList();
 		List<String> tableIds = Lists.newArrayList();
@@ -159,9 +168,10 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 				list.add(table);
 			}
 		}
-		map.put("tableList", CollUtil.convertComboDataList(list, Table.F_ID, Table.F_NAMESANDTITLE));
-		return map;
+		schemeFormDataVo.setTableList(CollUtil.convertSelectVoList(list, Table.F_ID, Table.F_NAMESANDTITLE));
+		return schemeFormDataVo;
 	}
+
 
 	@Override
 	public IPage getSchemeVoPage(PageModel pageModel, SchemeQueryCriteria schemeQueryCriteria) {
@@ -220,6 +230,20 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		}
 		return result;
 
+	}
+
+	@Override
+	public SchemeDto genMenu(SchemeGenDto schemeGenDataVo) {
+		SchemeDto SchemeDto = super.getOneDto(schemeGenDataVo.getId());
+		TableDto tableDataVo = SchemeDto.getTableDto();
+		if (tableDataVo == null) {
+			tableDataVo = tableService.getOneDto(SchemeDto.getTableId());
+		}
+		String url = StringUtil.toAppendStr("/", StringUtil.lowerCase(SchemeDto.getModuleName()), (StringUtil.isNotBlank(SchemeDto.getSubModuleName()) ? "/" + StringUtil.lowerCase(SchemeDto.getSubModuleName()) : ""), "/",
+			StringUtil.toRevertCamelCase(StringUtil.lowerFirst(tableDataVo.getClassName()), CharUtil.DASHED), "/");
+		remoteMenuService.saveByGenScheme(new GenSchemeDto(SchemeDto.getName(),
+			schemeGenDataVo.getParentMenuId(), url, tableDataVo.getClassName()), SecurityConstants.FROM_IN);
+		return SchemeDto;
 	}
 
 }

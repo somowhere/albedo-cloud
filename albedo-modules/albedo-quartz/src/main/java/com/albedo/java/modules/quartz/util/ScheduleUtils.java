@@ -1,8 +1,26 @@
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.albedo.java.modules.quartz.util;
 
 import com.albedo.java.common.core.constant.ScheduleConstants;
+import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.exception.TaskException;
 import com.albedo.java.modules.quartz.domain.Job;
+import com.albedo.java.modules.quartz.domain.enums.JobStatus;
 import org.quartz.*;
 
 /**
@@ -11,6 +29,7 @@ import org.quartz.*;
  * @author somewhere
  */
 public class ScheduleUtils {
+
 	/**
 	 * 得到quartz任务类
 	 *
@@ -25,15 +44,15 @@ public class ScheduleUtils {
 	/**
 	 * 构建任务触发对象
 	 */
-	public static TriggerKey getTriggerKey(Integer jobId, String jobGroup) {
-		return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+	public static TriggerKey getTriggerKey(Long jobId, String jobGroup) {
+		return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup + ContextUtil.getTenant());
 	}
 
 	/**
 	 * 构建任务键对象
 	 */
-	public static JobKey getJobKey(Integer jobId, String jobGroup) {
-		return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
+	public static JobKey getJobKey(Long jobId, String jobGroup) {
+		return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup + ContextUtil.getTenant());
 	}
 
 	/**
@@ -42,7 +61,7 @@ public class ScheduleUtils {
 	public static void createScheduleJob(Scheduler scheduler, Job job) throws SchedulerException, TaskException {
 		Class<? extends org.quartz.Job> jobClass = getQuartzJobClass(job);
 		// 构建job信息
-		Integer jobId = job.getId();
+		Long jobId = job.getId();
 		String jobGroup = job.getGroup();
 		JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 
@@ -66,7 +85,7 @@ public class ScheduleUtils {
 		scheduler.scheduleJob(jobDetail, trigger);
 
 		// 暂停任务
-		if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
+		if (JobStatus.PAUSE.equals(job.getStatus())) {
 			scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
 		}
 	}
@@ -77,17 +96,19 @@ public class ScheduleUtils {
 	public static CronScheduleBuilder handleCronScheduleMisfirePolicy(Job job, CronScheduleBuilder cb)
 		throws TaskException {
 		switch (job.getMisfirePolicy()) {
-			case ScheduleConstants.MISFIRE_DEFAULT:
+			case EXECUTE_DEFAULT:
 				return cb;
-			case ScheduleConstants.MISFIRE_IGNORE_MISFIRES:
+			case IGNORE_MISFIRES:
 				return cb.withMisfireHandlingInstructionIgnoreMisfires();
-			case ScheduleConstants.MISFIRE_FIRE_AND_PROCEED:
+			case FIRE_PROCEED:
 				return cb.withMisfireHandlingInstructionFireAndProceed();
-			case ScheduleConstants.MISFIRE_DO_NOTHING:
+			case EXECUTE_STOP:
 				return cb.withMisfireHandlingInstructionDoNothing();
 			default:
-				throw new TaskException("The task misfire policy '" + job.getMisfirePolicy()
-					+ "' cannot be used in cron schedule tasks", TaskException.Code.CONFIG_ERROR);
+				throw new TaskException(
+					"The task misfire policy '" + job.getMisfirePolicy() + "' cannot be used in cron schedule tasks",
+					TaskException.Code.CONFIG_ERROR);
 		}
 	}
+
 }

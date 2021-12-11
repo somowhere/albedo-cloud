@@ -1,33 +1,37 @@
-/**
- * Copyright &copy; 2020 <a href="https://github.com/somowhere/albedo">albedo</a> All rights reserved.
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.albedo.java.modules.quartz.service.impl;
 
-import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.constant.ScheduleConstants;
-import com.albedo.java.common.core.exception.RuntimeMsgException;
-import com.albedo.java.common.core.exception.TaskException;
-import com.albedo.java.common.core.util.StringUtil;
+import cn.hutool.json.JSONUtil;
+import com.albedo.java.common.core.exception.BizException;
+import com.albedo.java.common.core.vo.ScheduleVo;
+import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.quartz.domain.Job;
 import com.albedo.java.modules.quartz.domain.dto.JobDto;
+import com.albedo.java.modules.quartz.domain.enums.JobConcurrent;
+import com.albedo.java.modules.quartz.domain.enums.JobStatus;
 import com.albedo.java.modules.quartz.repository.JobRepository;
 import com.albedo.java.modules.quartz.service.JobService;
 import com.albedo.java.modules.quartz.util.CronUtils;
-import com.albedo.java.modules.quartz.util.ScheduleUtils;
 import com.albedo.java.plugins.database.mybatis.service.impl.DataServiceImpl;
-import com.google.common.collect.Lists;
-import lombok.SneakyThrows;
-import org.quartz.JobDataMap;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,22 +42,7 @@ import java.util.Set;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, String> implements JobService {
-
-	@Resource
-	private Scheduler scheduler;
-
-	/**
-	 * 项目启动时，初始化定时器
-	 * 主要是防止手动修改数据库导致未同步到定时任务处理（注：不能手动修改数据库ID和任务组名，否则会导致脏数据）
-	 */
-	@PostConstruct
-	public void init() throws SchedulerException, TaskException {
-		List<Job> jobList = repository.selectList(null);
-		for (Job job : jobList) {
-			updateSchedulerJob(job, job.getGroup());
-		}
-	}
+public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto> implements JobService {
 
 	/**
 	 * 暂停任务
@@ -62,14 +51,13 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@SneakyThrows
 	public int pauseJob(Job job) {
-		Integer jobId = job.getId();
+		Long jobId = job.getId();
 		String jobGroup = job.getGroup();
-		job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
+		job.setStatus(JobStatus.PAUSE);
 		int rows = repository.updateById(job);
 		if (rows > 0) {
-			scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+			RedisUtil.sendScheduleChannelMessage(ScheduleVo.createPause(jobId, jobGroup));
 		}
 		return rows;
 	}
@@ -81,14 +69,13 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@SneakyThrows
 	public int resumeJob(Job job) {
-		Integer jobId = job.getId();
+		Long jobId = job.getId();
 		String jobGroup = job.getGroup();
-		job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
+		job.setStatus(JobStatus.RUNNING);
 		int rows = repository.updateById(job);
 		if (rows > 0) {
-			scheduler.resumeJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+			RedisUtil.sendScheduleChannelMessage(ScheduleVo.createResume(jobId, jobGroup));
 		}
 		return rows;
 	}
@@ -100,13 +87,12 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@SneakyThrows
 	public int deleteJob(Job job) {
-		Integer jobId = job.getId();
+		Long jobId = job.getId();
 		String jobGroup = job.getGroup();
 		int rows = repository.deleteById(jobId);
 		if (rows > 0) {
-			scheduler.deleteJob(ScheduleUtils.getJobKey(jobId, jobGroup));
+			RedisUtil.sendScheduleChannelMessage(ScheduleVo.createDelete(jobId, jobGroup));
 		}
 		return rows;
 	}
@@ -135,10 +121,9 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	@Transactional(rollbackFor = Exception.class)
 	public int changeStatus(Job job) {
 		int rows = 0;
-		String status = job.getStatus();
-		if (ScheduleConstants.Status.PAUSE.getValue().equals(status)) {
+		if (JobStatus.PAUSE.eq(job.getStatus())) {
 			rows = resumeJob(job);
-		} else if (ScheduleConstants.Status.NORMAL.getValue().equals(status)) {
+		} else if (JobStatus.RUNNING.eq(job.getStatus())) {
 			rows = pauseJob(job);
 		}
 		return rows;
@@ -151,15 +136,10 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@SneakyThrows
 	public void run(Job job) {
-		Integer jobId = job.getId();
+		Long jobId = job.getId();
 		String jobGroup = job.getGroup();
-		Job properties = repository.selectById(job.getId());
-		// 参数
-		JobDataMap dataMap = new JobDataMap();
-		dataMap.put(ScheduleConstants.TASK_PROPERTIES, properties);
-		scheduler.triggerJob(ScheduleUtils.getJobKey(jobId, jobGroup), dataMap);
+		RedisUtil.sendScheduleChannelMessage(ScheduleVo.createRun(jobId, jobGroup));
 	}
 
 	/**
@@ -171,19 +151,12 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	@Transactional(rollbackFor = Exception.class)
 	public boolean saveOrUpdate(Job job) {
 		Assert.isTrue(checkCronExpressionIsValid(job.getCronExpression()), "cronExpression 不合法");
-
-		if (StringUtil.isNotEmpty(job.getSubTask())) {
-			String[] tasks = job.getSubTask().split("[,，]");
-			List<Job> jobs = repository.selectBatchIds(Lists.newArrayList(tasks));
-			Assert.isTrue(jobs != null && jobs.size() == tasks.length, "子任务数据ID不完整");
-		}
 		try {
 			if (job.getId() == null) {
-				job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
+				job.setStatus(JobStatus.PAUSE);
 				int rows = repository.insert(job);
 				if (rows > 0) {
-					ScheduleUtils.createScheduleJob(scheduler, job);
-
+					RedisUtil.sendScheduleChannelMessage(ScheduleVo.createDataAdd(JSONUtil.toJsonStr(job)));
 				}
 			} else {
 				Job temp = repository.selectById(job.getId());
@@ -194,25 +167,18 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 			}
 			return true;
 		} catch (Exception e) {
-			throw new RuntimeMsgException(e);
+			throw new BizException(e);
 		}
 	}
 
 	/**
 	 * 更新任务
 	 *
-	 * @param job      任务对象
-	 * @param jobGroup 任务组名
+	 * @param job         任务对象
+	 * @param jobOldGroup 任务组名
 	 */
-	public void updateSchedulerJob(Job job, String jobGroup) throws SchedulerException, TaskException {
-		Integer jobId = job.getId();
-		// 判断是否存在
-		JobKey jobKey = ScheduleUtils.getJobKey(jobId, jobGroup);
-		if (scheduler.checkExists(jobKey)) {
-			// 防止创建时存在数据问题 先移除，然后在执行创建操作
-			scheduler.deleteJob(jobKey);
-		}
-		ScheduleUtils.createScheduleJob(scheduler, job);
+	public void updateSchedulerJob(Job job, String jobOldGroup) {
+		RedisUtil.sendScheduleChannelMessage(ScheduleVo.createDataUpdate(JSONUtil.toJsonStr(job), jobOldGroup));
 	}
 
 	/**
@@ -238,8 +204,8 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 	public void concurrent(Set<String> ids) {
 		ids.forEach(id -> {
 			Job job = repository.selectById(id);
-			job.setConcurrent(CommonConstants.STR_YES.equals(job.getConcurrent()) ?
-				CommonConstants.STR_NO : CommonConstants.STR_YES);
+			job.setConcurrent(JobConcurrent.YES.eq(job.getConcurrent()) ? JobConcurrent.NO
+				: JobConcurrent.YES);
 			repository.updateById(job);
 		});
 	}
@@ -254,4 +220,16 @@ public class JobServiceImpl extends DataServiceImpl<JobRepository, Job, JobDto, 
 			}
 		});
 	}
+
+	@Override
+	public void runBySubIds(Set<String> ids) {
+
+		ids.forEach(id -> {
+			Job job = repository.selectById(id);
+			if (job != null) {
+				run(job);
+			}
+		});
+	}
+
 }
