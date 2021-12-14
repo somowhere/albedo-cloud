@@ -2,7 +2,7 @@ package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.feign.handle.GlobalBizExceptionHandler;
+import com.albedo.java.common.feign.handle.GlobalExceptionHandler;
 import com.albedo.java.modules.AlbedoSysApplication;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.sys.domain.Dept;
@@ -56,7 +56,7 @@ public class DeptResourceIntTest {
 	@Resource
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 	@Resource
-	private GlobalBizExceptionHandler globalExceptionHandler;
+	private GlobalExceptionHandler globalExceptionHandler;
 	@Resource
 	private ApplicationProperties applicationProperties;
 

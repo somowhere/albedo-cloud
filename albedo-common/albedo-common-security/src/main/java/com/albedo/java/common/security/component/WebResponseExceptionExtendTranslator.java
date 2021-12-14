@@ -26,10 +26,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.DefaultThrowableAnalyzer;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException;
-import org.springframework.security.oauth2.common.exceptions.InsufficientScopeException;
-import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.common.exceptions.*;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -41,38 +38,38 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
  */
 @Slf4j
 public class WebResponseExceptionExtendTranslator implements WebResponseExceptionTranslator {
-
 	private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
 	@Override
 	@SneakyThrows
 	public ResponseEntity<OAuth2Exception> translate(Exception e) {
-		log.warn("{}", e.getMessage());
+
 		// Try to extract a SpringSecurityException from the stacktrace
 		Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 
-//		for (Throwable cause : causeChain){
-//			if(cause instanceof RpcException){
-//				return handleOAuth2Exception(new ServerErrorException("服务调用失败"));
-//			}
-//		}
-
-		Exception ase = (AuthenticationException) throwableAnalyzer.getFirstThrowableOfType(AuthenticationException.class,
-			causeChain);
+		Exception ase = (AuthenticationException) throwableAnalyzer
+			.getFirstThrowableOfType(AuthenticationException.class, causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new UnauthorizedException(e.getMessage(), e));
 		}
 
-		ase = (AccessDeniedException) throwableAnalyzer
-			.getFirstThrowableOfType(AccessDeniedException.class, causeChain);
+		ase = (AccessDeniedException) throwableAnalyzer.getFirstThrowableOfType(AccessDeniedException.class,
+			causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new ForbiddenException(ase.getMessage(), ase));
 		}
 
-		ase = (InvalidGrantException) throwableAnalyzer
-			.getFirstThrowableOfType(InvalidGrantException.class, causeChain);
+		ase = (InvalidGrantException) throwableAnalyzer.getFirstThrowableOfType(InvalidGrantException.class,
+			causeChain);
 		if (ase != null) {
 			return handleOAuth2Exception(new InvalidException(ase.getMessage(), ase));
+		}
+
+		// token 过期 特殊处理 返回 424 不是 401
+		ase = (InvalidTokenException) throwableAnalyzer.getFirstThrowableOfType(InvalidTokenException.class,
+			causeChain);
+		if (ase != null) {
+			return handleOAuth2Exception(new TokenInvalidException(ase.getMessage(), ase));
 		}
 
 		ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer
@@ -81,8 +78,7 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 			return handleOAuth2Exception(new MethodNotAllowed(ase.getMessage(), ase));
 		}
 
-		ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(
-			OAuth2Exception.class, causeChain);
+		ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
 
 		if (ase != null) {
 			return handleOAuth2Exception((OAuth2Exception) ase);
@@ -92,7 +88,6 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 
 	}
 
-
 	private ResponseEntity<OAuth2Exception> handleOAuth2Exception(OAuth2Exception e) {
 
 		int status = e.getHttpErrorCode();
@@ -100,13 +95,13 @@ public class WebResponseExceptionExtendTranslator implements WebResponseExceptio
 		headers.set(HttpHeaders.CACHE_CONTROL, "no-store");
 		headers.set(HttpHeaders.PRAGMA, "no-cache");
 		if (status == HttpStatus.UNAUTHORIZED.value() || (e instanceof InsufficientScopeException)) {
-			headers.set(HttpHeaders.WWW_AUTHENTICATE, String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, e.getSummary()));
+			headers.set(HttpHeaders.WWW_AUTHENTICATE,
+				String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, e.getSummary()));
 		}
 
 		// 客户端异常直接返回客户端,不然无法解析
 		if (e instanceof ClientAuthenticationException) {
-			return new ResponseEntity<>(e, headers,
-				HttpStatus.valueOf(status));
+			return new ResponseEntity<>(e, headers, HttpStatus.valueOf(status));
 		}
 		return new ResponseEntity<>(new Auth2Exception(e.getMessage(), e.getOAuth2ErrorCode()), headers,
 			HttpStatus.valueOf(status));

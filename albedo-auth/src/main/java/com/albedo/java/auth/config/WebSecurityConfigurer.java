@@ -16,27 +16,24 @@
 
 package com.albedo.java.auth.config;
 
+import com.albedo.java.common.security.grant.CustomAppAuthenticationProvider;
 import com.albedo.java.common.security.handler.FormAuthenticationFailureHandler;
-import com.albedo.java.common.security.handler.MobileLoginSuccessHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.albedo.java.common.security.handler.SsoLogoutSuccessHandler;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import javax.annotation.Resource;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * @author somowhere
@@ -46,32 +43,32 @@ import javax.annotation.Resource;
 @Primary
 @Order(90)
 @Configuration
+@AllArgsConstructor
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-	@Resource
-	private ObjectMapper objectMapper;
-	@Resource
-	private ClientDetailsService clientDetailsService;
-	@Lazy
-	@Resource
-	private AuthorizationServerTokenServices defaultAuthorizationServerTokenServices;
-
-	@Override
-	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/css/**")
-			.antMatchers("/*.{js,html}")
-			.antMatchers("/webjars/**");
-	}
+	private final UserDetailsService userDetailsService;
 
 	@Override
 	@SneakyThrows
 	protected void configure(HttpSecurity http) {
-		http.formLogin().loginPage("/token/login").loginProcessingUrl("/token/form")
-			.failureHandler(authenticationFailureHandler()).and().authorizeRequests()
-			.antMatchers("/actuator/**",
-				"/token/**",
-				"/v2/**",
-				"/swagger-resources/**").permitAll().anyRequest().authenticated().and()
-			.csrf().disable();
+		http.authenticationProvider(phoneAuthenticationProvider()).formLogin().loginPage("/token/login")
+			.loginProcessingUrl("/token/form").failureHandler(authenticationFailureHandler()).and().logout()
+			.logoutSuccessHandler(logoutSuccessHandler()).deleteCookies("JSESSIONID").invalidateHttpSession(true)
+			.and().authorizeRequests().antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll()
+			.anyRequest().authenticated().and().csrf().disable();
+	}
+
+	/**
+	 * 不要直接使用@Bean注入 会导致默认的提供者无法注入（DaoAuthenticationProvider）
+	 */
+	private CustomAppAuthenticationProvider phoneAuthenticationProvider() {
+		CustomAppAuthenticationProvider phoneAuthenticationProvider = new CustomAppAuthenticationProvider();
+		phoneAuthenticationProvider.setUserDetailsService(userDetailsService);
+		return phoneAuthenticationProvider;
+	}
+
+	@Override
+	public void configure(WebSecurity web) {
+		web.ignoring().antMatchers("/static/css/css/**");
 	}
 
 	@Bean
@@ -82,23 +79,22 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
-		return MobileLoginSuccessHandler.builder()
-			.objectMapper(objectMapper)
-			.clientDetailsService(clientDetailsService)
-			.passwordEncoder(passwordEncoder())
-			.defaultAuthorizationServerTokenServices(defaultAuthorizationServerTokenServices).build();
-	}
-
-	@Bean
 	public AuthenticationFailureHandler authenticationFailureHandler() {
 		return new FormAuthenticationFailureHandler();
 	}
 
 	/**
+	 * 支持SSO 退出
+	 * @return LogoutSuccessHandler
+	 */
+	@Bean
+	public LogoutSuccessHandler logoutSuccessHandler() {
+		return new SsoLogoutSuccessHandler();
+	}
+
+	/**
 	 * https://spring.io/blog/2017/11/01/spring-security-5-0-0-rc1-released#password-storage-updated
 	 * Encoded password does not look like BCrypt
-	 *
 	 * @return PasswordEncoder
 	 */
 	@Bean

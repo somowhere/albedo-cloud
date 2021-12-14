@@ -45,8 +45,21 @@ public class RemoteUserServiceFallbackImpl implements RemoteUserService {
 	 * @return R
 	 */
 	@Override
-	public Result<UserInfo> getInfo(String username, String from) {
+	public Result<UserInfo> getInfoByUsername(String username, String from) {
 		log.error("feign 查询用户信息失败:{}", username, cause);
+		throw new FeignBizException(cause);
+	}
+
+	/**
+	 * 通过电话查询用户、角色信息
+	 *
+	 * @param phone 用户名
+	 * @param from     内外标志
+	 * @return R
+	 */
+	@Override
+	public Result<UserInfo> getInfoByPhone(String phone, String from) {
+		log.error("feign 查询用户信息失败:{}", phone, cause);
 		throw new FeignBizException(cause);
 	}
 

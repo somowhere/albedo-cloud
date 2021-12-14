@@ -11,7 +11,7 @@ package ${packageName}.${moduleName}.web<#if subModuleName != "">.${subModuleNam
 
 import cn.hutool.core.date.DateField;
 import com.albedo.java.common.core.config.ApplicationProperties;
-import com.albedo.java.common.core.exception.handler.GlobalExceptionHandler;
+import com.albedo.java.common.feign.sentinel.handle.GlobalExceptionHandler;
 import com.albedo.java.common.core.util.ClassUtil;
 import com.albedo.java.common.core.util.DateUtil;
 import com.albedo.java.common.core.vo.PageModel;

@@ -17,6 +17,7 @@
 package com.albedo.java.gateway;
 
 
+import com.albedo.java.common.config.annotation.EnableAlbedoSwagger2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,6 +33,7 @@ import java.net.InetAddress;
  * <p>
  * 网关应用
  */
+@EnableAlbedoSwagger2
 @SpringBootApplication
 @EnableDiscoveryClient
 @Slf4j
@@ -42,6 +44,7 @@ public class AlbedoGatewayApplication {
 
 
 	public static void main(String[] args) throws Exception {
+
 		SpringApplication app = new SpringApplication(AlbedoGatewayApplication.class);
 		final ApplicationContext applicationContext = app.run(args);
 		Environment env = applicationContext.getEnvironment();

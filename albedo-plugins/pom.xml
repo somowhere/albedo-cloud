@@ -18,7 +18,6 @@
 		<module>albedo-cache-starter</module>
 		<module>albedo-database</module>
 		<module>albedo-dynamic-datasource</module>
-		<module>albedo-swagger-api</module>
 		<module>albedo-uid</module>
 	</modules>
 </project>

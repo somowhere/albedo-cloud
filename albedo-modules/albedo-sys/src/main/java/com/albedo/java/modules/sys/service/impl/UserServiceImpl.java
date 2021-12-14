@@ -35,6 +35,7 @@ package com.albedo.java.modules.sys.service.impl;
 import cn.hutool.core.util.ArrayUtil;
 import com.albedo.java.common.core.cache.model.CacheKey;
 import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
+import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.BizException;
@@ -124,7 +125,7 @@ public class UserServiceImpl extends DataCacheServiceImpl<UserRepository, User, 
 
 	@Override
 	public UserVo findVoByUsername(String username) {
-		CacheKey cacheKey = new UserCacheKeyBuilder().key("findVoByUsername", username);
+		CacheKey cacheKey = new UserCacheKeyBuilder().key(CacheNameConstants.SYS_USER_FIND_VO_BY_USERNAME, username);
 		return cacheOps.get(cacheKey, (k) -> repository.findVoByUsername(username));
 	}
 

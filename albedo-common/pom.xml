@@ -23,5 +23,6 @@
 		<module>albedo-common-datasource</module>
 		<module>albedo-common-job</module>
 		<module>albedo-common-feign</module>
+		<module>albedo-common-swagger</module>
 	</modules>
 </project>

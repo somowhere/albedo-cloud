@@ -120,6 +120,11 @@ public interface SecurityConstants {
 	String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
 
 	/**
+	 * 用户信息
+	 */
+	String DETAILS_USER = "user_info";
+
+	/**
 	 * 默认生成图形验证码宽度
 	 */
 	String DEFAULT_IMAGE_WIDTH = "100";
@@ -181,6 +186,31 @@ public interface SecurityConstants {
 	 */
 	String DEFAULT_IMAGE_FONT_SIZE = "30";
 
+	/**
+	 * 协议字段
+	 */
+	String DETAILS_LICENSE = "license";
+
+	/**
+	 * 客户端模式
+	 */
+	String CLIENT_CREDENTIALS = "client_credentials";
+
+	/**
+	 * 客户端ID
+	 */
+	String CLIENT_ID = "clientId";
+
+
+	/**
+	 * 验证码有效期,默认 60秒
+	 */
+	long CODE_TIME = 60;
+
+	/**
+	 * 验证码长度
+	 */
+	String CODE_SIZE = "6";
 
 	String USER_ID = "user_id";
 	String DEPT_ID = "dept_id";

@@ -57,7 +57,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private final RemoteUserService remoteUserService;
 	private final RemoteRoleService remoteRoleService;
 	private final RemoteDeptService remoteDeptService;
-	private final CacheManager cacheManager;
 
 	/**
 	 * 用户密码登录
@@ -68,7 +67,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-		UserDetails userDetails = getUserDetails(remoteUserService.getInfo(username, SecurityConstants.FROM_IN).getData());
+		UserDetails userDetails = getUserDetails(remoteUserService.getInfoByUsername(username, SecurityConstants.FROM_IN).getData());
+		return userDetails;
+	}
+
+
+	/**
+	 * 手机号码登录
+	 * @param phone 手机号码
+	 * @return 用户信息
+	 */
+	public UserDetails loadUserByPhone(String phone) {
+		UserDetails userDetails = getUserDetails(remoteUserService.getInfoByPhone(phone, SecurityConstants.FROM_IN).getData());
 		return userDetails;
 	}
 

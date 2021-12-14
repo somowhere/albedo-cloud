@@ -40,7 +40,7 @@
 		<!--swagger-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-swagger-api</artifactId>
+			<artifactId>albedo-common-swagger</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 

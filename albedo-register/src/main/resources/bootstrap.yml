@@ -28,9 +28,9 @@ spring:
   boot:  # 接入 spring boot admin
     admin:
       client:
-        url: http://pig-monitor:5001
-        username: pig
-        password: pig
+        url: http://albedo-monitor:5001
+        username: albedo
+        password: albedo
         instance:
           prefer-ip: true
   application:

@@ -41,7 +41,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/7/5 验证码生成逻辑处理类
  */
 @Slf4j
-@Component
 @AllArgsConstructor
 public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 

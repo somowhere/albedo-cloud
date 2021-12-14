@@ -35,7 +35,6 @@ import reactor.core.publisher.Mono;
  * 验证码生成逻辑处理类
  */
 @Slf4j
-@Component
 @AllArgsConstructor
 public class AssetFileHandler implements HandlerFunction<ServerResponse> {
 

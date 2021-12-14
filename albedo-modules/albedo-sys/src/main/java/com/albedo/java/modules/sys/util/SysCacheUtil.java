@@ -17,6 +17,7 @@
 package com.albedo.java.modules.sys.util;
 
 import com.albedo.java.common.core.cache.model.CacheKey;
+import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.modules.sys.cache.DeptCacheKeyBuilder;
 import com.albedo.java.modules.sys.cache.MenuCacheKeyBuilder;
@@ -51,7 +52,7 @@ public class SysCacheUtil {
 	 * @param username /
 	 */
 	public static void delBaseUserCaches(Long userId, String username) {
-		cacheOps.del(new UserCacheKeyBuilder().key("findVoByUsername", username));
+		cacheOps.del(new UserCacheKeyBuilder().key(CacheNameConstants.SYS_USER_FIND_VO_BY_USERNAME, username));
 		cacheOps.del(new UserCacheKeyBuilder().key("findUserVoById", userId));
 		cacheOps.del(new UserCacheKeyBuilder().key("findDtoById", userId));
 	}

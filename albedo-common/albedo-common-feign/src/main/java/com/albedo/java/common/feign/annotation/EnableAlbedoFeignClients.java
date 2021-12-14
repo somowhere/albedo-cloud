@@ -17,7 +17,10 @@
 package com.albedo.java.common.feign.annotation;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.openfeign.AlbedoFeignClientsRegistrar;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClientsConfiguration;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
@@ -29,14 +32,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @EnableFeignClients
-@EnableAutoConfiguration(excludeName = "org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration")
+@Import(AlbedoFeignClientsRegistrar.class)
 public @interface EnableAlbedoFeignClients {
 
 	/**
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation
 	 * declarations e.g.: {@code @ComponentScan("org.my.pkg")} instead of
 	 * {@code @ComponentScan(basePackages="org.my.pkg")}.
-	 *
 	 * @return the array of 'basePackages'.
 	 */
 	String[] value() default {};
@@ -48,10 +50,9 @@ public @interface EnableAlbedoFeignClients {
 	 * <p>
 	 * Use {@link #basePackageClasses()} for a type-safe alternative to String-based
 	 * package names.
-	 *
 	 * @return the array of 'basePackages'.
 	 */
-	String[] basePackages() default {"com.albedo.java"};
+	String[] basePackages() default { "com.albedo.java" };
 
 	/**
 	 * Type-safe alternative to {@link #basePackages()} for specifying the packages to
@@ -59,7 +60,6 @@ public @interface EnableAlbedoFeignClients {
 	 * <p>
 	 * Consider creating a special no-op marker class or interface in each package that
 	 * serves no purpose other than being referenced by this attribute.
-	 *
 	 * @return the array of 'basePackageClasses'.
 	 */
 	Class<?>[] basePackageClasses() default {};
@@ -76,7 +76,6 @@ public @interface EnableAlbedoFeignClients {
 	/**
 	 * List of classes annotated with @FeignClient. If not empty, disables classpath
 	 * scanning.
-	 *
 	 * @return
 	 */
 	Class<?>[] clients() default {};

@@ -38,20 +38,14 @@ package com.albedo.java.common.core.constant;
  */
 public interface CacheNameConstants {
 
+
+	/**
+	 * oauth 缓存前缀
+	 */
+	String OAUTH_ACCESS = "access";
 	String DICT_ALL = "dict_all";
 
-	String DICT_DETAILS = "dict_details";
 
-	String USER_DETAILS = "user_details";
-
-	String ROLE_DETAILS = "role_details";
-
-	String MENU_DETAILS = "menu_details";
-
-	String DEPT_DETAILS = "dept_details";
-
-	String EMAIL_DETAILS = "email_details";
-
-	String ALIPAY_DETAILS = "alipay_details";
+	String SYS_USER_FIND_VO_BY_USERNAME="findVoByUsername";
 
 }

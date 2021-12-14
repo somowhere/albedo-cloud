@@ -2,9 +2,9 @@ package com.albedo.java.modules.sys.web;
 
 import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.feign.handle.GlobalExceptionHandler;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.feign.handle.GlobalBizExceptionHandler;
 import com.albedo.java.modules.AlbedoSysApplication;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.sys.domain.*;
@@ -75,7 +75,7 @@ public class RoleResourceIntTest {
 	@Resource
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 	@Resource
-	private GlobalBizExceptionHandler globalExceptionHandler;
+	private GlobalExceptionHandler globalExceptionHandler;
 	@Resource
 	private ApplicationProperties applicationProperties;
 

@@ -250,4 +250,15 @@ public interface CommonConstants {
 	String ANONYMOUS_USER = "anonymoususer";
 
 	public static final String DATA_TYPE_MULTIPART_FILE = "MultipartFile";
+
+
+	/**
+	 * 当前页
+	 */
+	String CURRENT = "current";
+
+	/**
+	 * size
+	 */
+	String SIZE = "size";
 }

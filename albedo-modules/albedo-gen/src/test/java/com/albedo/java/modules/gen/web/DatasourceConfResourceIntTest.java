@@ -4,9 +4,9 @@
 package com.albedo.java.modules.gen.web;
 
 import com.albedo.java.common.core.config.ApplicationProperties;
+import com.albedo.java.common.feign.handle.GlobalExceptionHandler;
 import com.albedo.java.common.core.util.ClassUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.feign.handle.GlobalBizExceptionHandler;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.gen.domain.DatasourceConf;
 import com.albedo.java.modules.gen.domain.dto.DatasourceConfDto;
@@ -90,7 +90,7 @@ public class DatasourceConfResourceIntTest {
 	@Autowired
 	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 	@Autowired
-	private GlobalBizExceptionHandler globalExceptionHandler;
+	private GlobalExceptionHandler globalExceptionHandler;
 	@Autowired
 	private ApplicationProperties applicationProperties;
 

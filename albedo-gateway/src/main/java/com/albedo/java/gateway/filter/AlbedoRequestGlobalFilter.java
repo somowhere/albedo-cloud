@@ -41,7 +41,6 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.a
  * <p>
  * 支持swagger添加X-Forwarded-Prefix header  （F SR2 已经支持，不需要自己维护）
  */
-@Component
 @AllArgsConstructor
 public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 
