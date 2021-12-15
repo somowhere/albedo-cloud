@@ -35,5 +35,6 @@
 		<module>albedo-quartz</module>
 		<module>albedo-sentinel</module>
 		<module>albedo-job</module>
+		<module>albedo-file</module>
 	</modules>
 </project>

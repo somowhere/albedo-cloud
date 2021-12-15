@@ -19,6 +19,7 @@ package com.albedo.java.modules.sys.repository;
 
 import com.albedo.java.modules.sys.domain.OauthClientDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -28,6 +29,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author somowhere
  * @since 2019/2/1
  */
+@Repository
 public interface OauthClientDetailRepository extends BaseMapper<OauthClientDetail> {
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Data
 @RefreshScope
-@ConfigurationProperties("gateway")
+@ConfigurationProperties("application.gateway")
 public class GatewayConfigProperties {
 
 	/**

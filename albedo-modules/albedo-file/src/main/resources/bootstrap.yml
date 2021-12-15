@@ -1,0 +1,34 @@
+server:
+  port: 4010
+
+logging:
+  level:
+    ROOT: INFO
+    com.albedo.java: @logback.loglevel@
+  file:
+    name: logs/${spring.application.name}/${spring.application.name}-info.log
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS-HOST:albedo-register}:${NACOS-PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @spring.profiles.active@
+
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

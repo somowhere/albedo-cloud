@@ -53,7 +53,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		http.authenticationProvider(phoneAuthenticationProvider()).formLogin().loginPage("/token/login")
 			.loginProcessingUrl("/token/form").failureHandler(authenticationFailureHandler()).and().logout()
 			.logoutSuccessHandler(logoutSuccessHandler()).deleteCookies("JSESSIONID").invalidateHttpSession(true)
-			.and().authorizeRequests().antMatchers("/token/**", "/actuator/**", "/mobile/**").permitAll()
+			.and().authorizeRequests().antMatchers("/token/**", "/actuator/**", "/mobile/**", "/v2/api-docs").permitAll()
 			.anyRequest().authenticated().and().csrf().disable();
 	}
 

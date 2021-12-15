@@ -50,10 +50,4 @@ public class RemoteUserOnlineServiceFallbackImpl implements RemoteUserOnlineServ
 		throw new FeignBizException(cause);
 	}
 
-	@Override
-	public void reset() {
-		log.warn("feign reset失败:{}", cause);
-		throw new FeignBizException(cause);
-
-	}
 }

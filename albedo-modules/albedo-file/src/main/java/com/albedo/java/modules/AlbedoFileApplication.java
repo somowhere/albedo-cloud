@@ -32,7 +32,7 @@ import java.net.InetAddress;
 /**
  * @author somowhere
  * @date 2018年06月21日
- * 调度任务系统
+ * 文件系统
  */
 @EnableAlbedoSwagger2
 @EnableAlbedoResourceServer
@@ -40,16 +40,14 @@ import java.net.InetAddress;
 @EnableDiscoveryClient
 @SpringBootApplication
 @Slf4j
-public class AlbedoQuartzApplication {
+public class AlbedoFileApplication {
 	static String SERVER_PORT = "server.port";
 	static String SPRING_APPLICATION_NAME = "spring.application.name";
 
-
 	public static void main(String[] args) throws Exception {
-		SpringApplication app = new SpringApplication(AlbedoQuartzApplication.class);
+		SpringApplication app = new SpringApplication(AlbedoFileApplication.class);
 		final ApplicationContext applicationContext = app.run(args);
 		Environment env = applicationContext.getEnvironment();
-
 		log.info("\n----------------------------------------------------------\n\t" +
 				"Application '{}' is running! Access URLs:\n\t" +
 				"Local: \t\thttp://localhost:{}\n\t" +

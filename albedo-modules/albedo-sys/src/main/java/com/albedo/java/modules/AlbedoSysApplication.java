@@ -17,6 +17,7 @@
 package com.albedo.java.modules;
 
 
+import com.albedo.java.common.config.annotation.EnableAlbedoSwagger2;
 import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import java.net.InetAddress;
  * @date 2018年06月21日
  * 用户统一管理系统
  */
+@EnableAlbedoSwagger2
 @EnableAlbedoResourceServer
 @EnableAlbedoFeignClients
 @EnableDiscoveryClient

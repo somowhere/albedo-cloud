@@ -19,6 +19,7 @@ package com.albedo.java.common.config.support;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
  * @date 2018/7/25 14:00
  */
 @Data
+@RefreshScope
 @ConfigurationProperties("application.swagger")
 public class ApplicationSwaggerProperties {
 

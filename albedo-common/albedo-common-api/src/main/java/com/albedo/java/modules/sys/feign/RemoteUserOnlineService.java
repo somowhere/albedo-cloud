@@ -55,5 +55,4 @@ public interface RemoteUserOnlineService {
 	@DeleteMapping("/token")
 	Result removeByTokens(@RequestBody TokenVo tokenVo, @RequestHeader(SecurityConstants.FROM) String form);
 
-	void reset();
 }
