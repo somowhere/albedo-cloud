@@ -131,7 +131,6 @@
 		<module>albedo-common</module>
 		<module>albedo-plugins</module>
 		<module>albedo-register</module>
-        <module>albedo-modules/albedo-file</module>
     </modules>
 
 	<dependencyManagement>
