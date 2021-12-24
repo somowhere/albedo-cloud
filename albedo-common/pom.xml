@@ -19,10 +19,10 @@
 		<module>albedo-common-log</module>
 		<module>albedo-common-security</module>
 		<module>albedo-common-module</module>
-		<module>albedo-common-api</module>
 		<module>albedo-common-datasource</module>
 		<module>albedo-common-job</module>
 		<module>albedo-common-feign</module>
 		<module>albedo-common-swagger</module>
+		<module>albedo-appendix</module>
 	</modules>
 </project>

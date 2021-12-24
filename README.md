@@ -89,7 +89,7 @@ hutool | 5.7.12
 albedo
 ├── albedo-auth -- 授权服务提供[3000]
 └── albedo-common -- 系统公共模块 
-     ├── albedo-common-api --  服务基础api
+     ├── albedo-sys-api --  服务基础api
      ├── albedo-common-core -- 公共工具类核心包
      ├── albedo-common-log -- 日志服务
      ├── albedo-common-module -- 模块基础包

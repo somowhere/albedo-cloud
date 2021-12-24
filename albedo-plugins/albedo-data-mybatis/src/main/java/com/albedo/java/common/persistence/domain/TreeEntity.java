@@ -1,4 +1,4 @@
-package com.albedo.java.common.persistence.domain;
+package com.albedo.java.common.core.basic.domain;
 
 import com.albedo.java.common.core.util.StringUtil;
 import com.baomidou.mybatisplus.annotation.TableField;

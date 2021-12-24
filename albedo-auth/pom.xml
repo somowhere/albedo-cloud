@@ -39,10 +39,9 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
-		<!--upms api、model 模块-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-api</artifactId>
+			<artifactId>albedo-common-module</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 		<!--断路器依赖-->
@@ -85,6 +84,11 @@
 	</dependencies>
 
 	<build>
+
+		<filters>
+			<filter>../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -96,18 +100,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!--  logOperate configuration -->
-				<logback.loglevel>${profile.dev.log.level}</logback.loglevel>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>dev</spring.profiles.active>
-			</properties>
-		</profile>
-	</profiles>
 </project>

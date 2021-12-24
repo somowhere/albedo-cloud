@@ -1,6 +1,6 @@
 package com.albedo.java.common.persistence.handler;
 
-import com.albedo.java.common.persistence.domain.BaseDataEntity;
+import com.albedo.java.common.core.basic.domain.BaseDataEntity;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.data.domain.AuditorAware;

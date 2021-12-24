@@ -16,7 +16,7 @@
 
 package com.albedo.java.common.persistence.datascope;
 
-import com.albedo.java.common.persistence.domain.BaseEntity;
+import com.albedo.java.common.core.basic.domain.BaseEntity;
 import com.google.common.collect.Sets;
 import lombok.Data;
 

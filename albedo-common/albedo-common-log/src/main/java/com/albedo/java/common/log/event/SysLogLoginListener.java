@@ -54,6 +54,7 @@ public class SysLogLoginListener {
 	@Order
 	@EventListener(SysLogLoginEvent.class)
 	public void saveSysLog(SysLogLoginEvent event) {
+
 		LogLogin logLogin = (LogLogin) event.getSource();
 		remoteLogLoginService.save(logLogin, SecurityConstants.FROM_IN);
 	}

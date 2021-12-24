@@ -40,7 +40,7 @@
 		<!--UPMS接口模块-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-api</artifactId>
+			<artifactId>albedo-sys-api</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
 		<!--安全依赖获取上下文信息-->

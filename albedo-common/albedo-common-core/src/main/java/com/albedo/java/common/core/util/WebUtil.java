@@ -269,5 +269,11 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		}
 		return URLUtil.decode(value);
 	}
-
+	public static String getHeader(ServerHttpRequest request, String name) {
+		String value = request.getHeaders().getFirst(name);
+		if (StrUtil.isEmpty(value)) {
+			return StrPool.EMPTY;
+		}
+		return URLUtil.decode(value);
+	}
 }

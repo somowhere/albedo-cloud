@@ -71,6 +71,10 @@
 	</dependencies>
 
 	<build>
+
+		<filters>
+			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

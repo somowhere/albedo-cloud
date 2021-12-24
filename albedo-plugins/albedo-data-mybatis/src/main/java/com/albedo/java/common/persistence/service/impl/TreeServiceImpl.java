@@ -8,7 +8,7 @@ import com.albedo.java.common.core.util.tree.TreeUtil;
 import com.albedo.java.common.core.vo.TreeDto;
 import com.albedo.java.common.core.vo.TreeNode;
 import com.albedo.java.plugins.database.mybatis.util.QueryWrapperUtil;
-import com.albedo.java.common.persistence.domain.TreeEntity;
+import com.albedo.java.common.core.basic.domain.TreeEntity;
 import com.albedo.java.common.persistence.repository.TreeRepository;
 import com.albedo.java.plugins.database.mybatis.service.TreeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

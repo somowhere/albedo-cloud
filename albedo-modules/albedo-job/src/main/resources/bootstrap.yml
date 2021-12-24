@@ -4,12 +4,19 @@ server:
   servlet:
     context-path: /xxl-job-admin
 
+nacos:
+  ip: @nacos.ip@
+  port: @nacos.port@
+  namespace: @nacos.namespace@
+  username: @nacos.username@
+  password: @nacos.password@
+
 logging:
   level:
     ROOT: INFO
     com.albedo.java: @logback.loglevel@
   file:
-    name: logs/${spring.application.name}/${spring.application.name}-info.log
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 
 spring:
   application:
@@ -17,7 +24,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_HOST:albedo-register}:${NACOS_PORT:8848}
+        server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
         metadata:
           management.context-path: ${server.servlet.context-path}/actuator
   profiles:

@@ -1,17 +1,25 @@
 server:
   port: 3000
 
+nacos:
+  ip: @nacos.ip@
+  port: @nacos.port@
+  namespace: @nacos.namespace@
+  username: @nacos.username@
+  password: @nacos.password@
+
 spring:
   application:
     name: @artifactId@
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS-HOST:albedo-register}:${NACOS-PORT:8848}
+        server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
         ip: @artifactId@
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yml
+        namespace: ${nacos.namespace}
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
@@ -21,7 +29,7 @@ spring:
 #配置日志地址
 logging:
   file:
-    name: logs/${spring.application.name}/${spring.application.name}-info.log
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 
 
 

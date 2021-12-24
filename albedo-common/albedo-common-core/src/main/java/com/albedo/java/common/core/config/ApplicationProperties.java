@@ -45,8 +45,6 @@ public class ApplicationProperties {
 
 	private String defaultView;
 
-	private Boolean addressEnabled = true;
-
 	private int dbSyncSessionPeriod = 1;
 
 	private String name = "albedo";

@@ -3,7 +3,7 @@
  */
 package com.albedo.java.common.persistence.repository;
 
-import com.albedo.java.common.persistence.domain.BaseEntity;
+import com.albedo.java.common.core.basic.domain.BaseEntity;
 
 /**
  * TreeRepository

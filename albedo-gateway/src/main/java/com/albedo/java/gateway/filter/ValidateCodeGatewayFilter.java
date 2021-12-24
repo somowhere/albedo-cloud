@@ -20,6 +20,7 @@ package com.albedo.java.gateway.filter;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.ValidateCodeException;
 import com.albedo.java.common.core.util.Result;
@@ -119,15 +120,16 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 			randomStr = request.getQueryParams().getFirst("mobile");
 		}
 
-		String key = SecurityConstants.DEFAULT_CODE_KEY + randomStr;
+		String key = CommonConstants.DEFAULT_CODE_KEY + randomStr;
 
 		Object codeObj = redisTemplate.opsForValue().get(key);
 
-		redisTemplate.delete(key);
 
 		if (ObjectUtil.isEmpty(codeObj) || !code.equals(codeObj)) {
 			throw new ValidateCodeException("验证码不合法");
 		}
+
+		redisTemplate.delete(key);
 	}
 
 }

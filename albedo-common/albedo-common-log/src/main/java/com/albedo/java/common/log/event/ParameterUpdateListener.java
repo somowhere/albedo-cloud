@@ -1,6 +1,5 @@
 package com.albedo.java.common.log.event;
 
-import com.albedo.java.common.core.constant.ParameterKey;
 import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.log.event.model.ParameterUpdate;
 import com.albedo.java.modules.sys.feign.RemoteUserOnlineService;

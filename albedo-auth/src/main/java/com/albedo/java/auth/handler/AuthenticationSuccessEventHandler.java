@@ -23,13 +23,12 @@ import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.AddressUtil;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.WebUtil;
-import com.albedo.java.common.log.enums.LogType;
-import com.albedo.java.common.log.enums.OperatorType;
-import com.albedo.java.common.log.event.SysLogOperateEvent;
+import com.albedo.java.common.log.event.SysLogLoginEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
 import com.albedo.java.common.security.handler.AbstractAuthenticationSuccessEventHandler;
 import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.common.util.RedisUtil;
+import com.albedo.java.modules.sys.domain.LogLogin;
 import com.albedo.java.modules.sys.domain.LogOperate;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import lombok.extern.slf4j.Slf4j;
@@ -71,25 +70,21 @@ public class AuthenticationSuccessEventHandler extends AbstractAuthenticationSuc
 		log.info("用户：{} 登录成功", authentication.getPrincipal());
 		HttpServletRequest request = ((ServletRequestAttributes) Objects
 			.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-		LogOperate logOperate = SysLogUtils.getSysLogOperate();
+		LogLogin logLogin = SysLogUtils.getSysLogLogin();
 		if (authentication.getPrincipal() instanceof String) {
-			logOperate.setUsername((String) authentication.getPrincipal());
+			logLogin.setUsername((String) authentication.getPrincipal());
 		} else if (authentication.getPrincipal() instanceof UserDetail) {
 			UserDetail principal = (UserDetail) authentication.getPrincipal();
-			logOperate.setUsername(principal.getUsername());
-			logOperate.setCreatedBy(principal.getId());
+			logLogin.setUsername(principal.getUsername());
+			logLogin.setCreatedBy(principal.getId());
 			String ip = WebUtil.getIp(request);
 			String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
-			taskExecutor.execute(() -> {
-				saveUserOnline(principal, ip, userAgentStr);
-			});
+			taskExecutor.execute(() -> saveUserOnline(principal, ip, userAgentStr));
 		}
-		logOperate.setParams(HttpUtil.toParams(request.getParameterMap()));
-		logOperate.setLogType(LogType.INFO.name());
-		logOperate.setTitle("用户登录成功");
-		logOperate.setOperatorType(OperatorType.MANAGE.name());
+		logLogin.setParams(HttpUtil.toParams(request.getParameterMap()));
+		logLogin.setTitle("用户登录成功");
 		// 发送异步日志事件
-		SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperate));
+		SpringContextHolder.publishEvent(new SysLogLoginEvent(logLogin));
 	}
 
 	/**

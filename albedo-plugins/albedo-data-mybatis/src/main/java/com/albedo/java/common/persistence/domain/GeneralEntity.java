@@ -1,4 +1,4 @@
-package com.albedo.java.common.persistence.domain;
+package com.albedo.java.common.core.basic.domain;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;

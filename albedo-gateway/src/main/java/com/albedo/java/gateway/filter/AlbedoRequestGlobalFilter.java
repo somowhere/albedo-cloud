@@ -16,9 +16,16 @@
 
 package com.albedo.java.gateway.filter;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.context.ContextConstants;
+import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.util.WebUtil;
 import lombok.AllArgsConstructor;
+import org.slf4j.MDC;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -58,21 +65,44 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 		ServerHttpRequest request = exchange.getRequest().mutate()
 			.headers(httpHeaders -> httpHeaders.remove(SecurityConstants.FROM))
 			.build();
-
+		ServerHttpRequest.Builder mutate = request.mutate();
 		// 2. 重写StripPrefix
 		addOriginalRequestUrl(exchange, request.getURI());
 		String rawPath = request.getURI().getRawPath();
 		String newPath = rawPath.substring(StringUtil.getFromIndex(rawPath, "/", 2));
-		ServerHttpRequest newRequest = request.mutate()
+
+		ContextUtil.setTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_TENANT)));
+		ContextUtil.setSubTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_SUB_TENANT)));
+		String traceId = WebUtil.getHeader(request, ContextConstants.TRACE_ID_HEADER);
+		if(StrUtil.isNotBlank(traceId)){
+			MDC.put(ContextConstants.LOG_TRACE_ID, traceId);
+			addHeader(mutate, ContextConstants.LOG_TRACE_ID, traceId);
+		}
+		if(StrUtil.isNotBlank(ContextUtil.getTenant())){
+			addHeader(mutate, ContextConstants.KEY_TENANT, ContextUtil.getTenant());
+			MDC.put(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
+		}
+		if(StrUtil.isNotBlank(ContextUtil.getSubTenant())){
+			addHeader(mutate, ContextConstants.KEY_SUB_TENANT, ContextUtil.getSubTenant());
+			MDC.put(ContextConstants.KEY_SUB_TENANT, ContextUtil.getSubTenant());
+		}
+
+		ServerHttpRequest newRequest = mutate
 			.path(newPath)
 			.build();
 		exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, newRequest.getURI());
 
-		return chain.filter(exchange.mutate()
-			.request(newRequest.mutate()
-				.build()).build());
+		return chain.filter(exchange.mutate().request(newRequest).build());
 	}
 
+	private void addHeader(ServerHttpRequest.Builder mutate, String name, Object value) {
+		if (value == null) {
+			return;
+		}
+		String valueStr = value.toString();
+		String valueEncode = URLUtil.encode(valueStr);
+		mutate.header(name, valueEncode);
+	}
 	@Override
 	public int getOrder() {
 		return -1000;

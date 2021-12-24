@@ -37,16 +37,16 @@
 			<artifactId>albedo-common-core</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
+		<!--UPMS API-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-sys-api</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
 		<!--安全模块-->
 		<dependency>
 			<groupId>org.springframework.security.oauth.boot</groupId>
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-		</dependency>
-		<!--UPMS API-->
-		<dependency>
-			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-api</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 	</dependencies>
 </project>

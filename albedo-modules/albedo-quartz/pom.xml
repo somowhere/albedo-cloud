@@ -12,13 +12,6 @@
 	<artifactId>albedo-quartz</artifactId>
 
 	<dependencies>
-		<!--upms api、model 模块-->
-		<dependency>
-			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-api</artifactId>
-			<version>${project.release.version}</version>
-		</dependency>
-
 		<!--安全模块-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
@@ -134,31 +127,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!--  logOperate configuration -->
-				<logback.loglevel>${profile.dev.log.level}</logback.loglevel>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>dev</spring.profiles.active>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<!--  logOperate configuration -->
-				<logback.loglevel>${profile.prod.log.level}</logback.loglevel>
-				<!-- default Spring profiles -->
-				<spring.profiles.active>prod</spring.profiles.active>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
+
+		<filters>
+			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
