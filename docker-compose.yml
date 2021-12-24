@@ -48,13 +48,13 @@ services:
     hostname: albedo-auth
     image: albedo-auth
 
-  albedo-sys:
+  albedo-sys-server:
     build:
-      context: ./albedo-modules/albedo-sys
+      context: ./albedo-modules/albedo-sys-server
     #restart: always
-    container_name: albedo-sys
-    hostname: albedo-sys
-    image: albedo-sys
+    container_name: albedo-sys-server
+    hostname: albedo-sys-server
+    image: albedo-sys-server
 
   albedo-gen:
     build:

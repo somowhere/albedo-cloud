@@ -33,7 +33,7 @@ public class ApplicationLoggerInitializer implements ApplicationContextInitializ
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		ConfigurableEnvironment environment = applicationContext.getEnvironment();
 
-		String logPath = environment.getProperty("application.logPath");
+		String logPath = environment.getProperty("logging.file.path");
 		String applicationName = environment.getProperty("spring.application.name");
 
 //		String logBase = environment.getProperty("LOGGING_PATH", "logs");

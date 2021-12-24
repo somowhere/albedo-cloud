@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @author somowhere
  * @date 2019/2/1
  */
-@FeignClient(contextId = "remoteLogOperateService", value = ServiceNameConstants.UMPS_SERVICE,
+@FeignClient(contextId = "remoteLogOperateService", value = ServiceNameConstants.SYS_SERVICE,
 	fallbackFactory = RemoteLogOperateServiceFallbackFactory.class)
 public interface RemoteLogOperateService {
 	/**

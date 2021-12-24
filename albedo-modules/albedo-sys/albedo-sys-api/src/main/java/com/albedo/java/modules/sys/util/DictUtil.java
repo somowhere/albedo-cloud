@@ -18,6 +18,7 @@ package com.albedo.java.modules.sys.util;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.CharUtil;
+import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
@@ -53,7 +54,7 @@ public class DictUtil {
 	public static RemoteDictService dictService = SpringContextHolder.getBean(RemoteDictService.class);
 
 	public static List<Dict> getDictList() {
-		return (List<Dict>) cacheOps.get(new DictCacheKeyBuilder().key(CacheNameConstants.DICT_ALL), (k) -> dictService.findAllOrderBySort(SecurityConstants.FROM_IN));
+		return cacheOps.get(new DictCacheKeyBuilder().key(CacheNameConstants.DICT_ALL), (k) -> JSONUtil.toList(dictService.findAllOrderBySort(SecurityConstants.FROM_IN).getData(), Dict.class));
 	}
 
 	public static List<Dict> getDictListByParentCode(String code) {

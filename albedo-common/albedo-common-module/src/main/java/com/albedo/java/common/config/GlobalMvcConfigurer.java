@@ -1,9 +1,10 @@
 package com.albedo.java.common.config;
 
-import com.albedo.java.common.interceptor.HeaderThreadLocalInterceptor;
+import com.albedo.java.common.filter.ThreadLocalContextFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -16,10 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @AllArgsConstructor
 public class GlobalMvcConfigurer implements WebMvcConfigurer {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new HeaderThreadLocalInterceptor())
-                .addPathPatterns("/**")
-                .order(-20);
-    }
+	@Bean
+	@Order(1)
+	public ThreadLocalContextFilter threadLocalContextFilter() {
+		return new ThreadLocalContextFilter();
+	}
 }

@@ -16,6 +16,7 @@
 
 package com.albedo.java.common.feign;
 
+import com.albedo.java.common.feign.interceptor.FeignRequestInterceptor;
 import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFeign;
 import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.sentinel.parser.AlbedoHeaderRequestOriginParser;
@@ -58,6 +59,11 @@ public class AlbedoFeignAutoConfiguration {
 	@ConditionalOnMissingBean
 	public RequestOriginParser requestOriginParser() {
 		return new AlbedoHeaderRequestOriginParser();
+	}
+
+	@Bean
+	public FeignRequestInterceptor feignRequestInterceptor(){
+		return new FeignRequestInterceptor();
 	}
 
 }

@@ -13,6 +13,7 @@ logging:
     ROOT: INFO
     com.albedo.java: @logback.loglevel@
   file:
+    path: @logging.file.path@
     name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 
 spring:

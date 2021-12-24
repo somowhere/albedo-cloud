@@ -16,7 +16,7 @@ import java.util.List;
  * @description
  * @date 2020/6/1 11:10
  */
-@FeignClient(contextId = "remoteDeptService", value = ServiceNameConstants.UMPS_SERVICE,
+@FeignClient(contextId = "remoteDeptService", value = ServiceNameConstants.SYS_SERVICE,
 	fallbackFactory = RemoteDeptServiceFallbackFactory.class)
 public interface RemoteDeptService {
 	/**

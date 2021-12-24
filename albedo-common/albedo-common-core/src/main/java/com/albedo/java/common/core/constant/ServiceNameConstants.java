@@ -23,13 +23,13 @@ package com.albedo.java.common.core.constant;
  */
 public interface ServiceNameConstants {
 	/**
-	 * 认证服务的SERVICEID
+	 * 认证服务的 SERVICE ID
 	 */
 	String AUTH_SERVICE = "albedo-auth";
 
 	/**
-	 * UMPS模块
+	 * SYS模块
 	 */
-	String UMPS_SERVICE = "albedo-sys";
+	String SYS_SERVICE = "albedo-sys-server";
 
 }

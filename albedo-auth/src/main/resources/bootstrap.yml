@@ -8,12 +8,19 @@ nacos:
   username: @nacos.username@
   password: @nacos.password@
 
+#配置日志地址
+logging:
+  file:
+    path: @logging.file.path@
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
+
 spring:
   application:
     name: @artifactId@
   cloud:
     nacos:
       discovery:
+        namespace: ${nacos.namespace}
         server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
         ip: @artifactId@
       config:
@@ -26,10 +33,6 @@ spring:
     active: @spring.profiles.active@
 
 
-#配置日志地址
-logging:
-  file:
-    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 
 
 

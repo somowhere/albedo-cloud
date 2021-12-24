@@ -5,7 +5,7 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.feign.handle.GlobalExceptionHandler;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.modules.AlbedoSysApplication;
+import com.albedo.java.modules.AlbedoSysServerApplication;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.sys.domain.*;
 import com.albedo.java.modules.sys.domain.dto.RoleDto;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @see RoleResource
  */
-@SpringBootTest(classes = AlbedoSysApplication.class)
+@SpringBootTest(classes = AlbedoSysServerApplication.class)
 @Slf4j
 public class RoleResourceIntTest {
 

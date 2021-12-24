@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @description
  * @date 2020/6/1 11:10
  */
-@FeignClient(contextId = "remoteMenuService", value = ServiceNameConstants.UMPS_SERVICE,
+@FeignClient(contextId = "remoteMenuService", value = ServiceNameConstants.SYS_SERVICE,
 	fallbackFactory = RemoteMenuServiceFallbackFactory.class)
 public interface RemoteMenuService {
 

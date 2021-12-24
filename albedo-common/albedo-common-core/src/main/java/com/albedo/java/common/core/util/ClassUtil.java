@@ -378,8 +378,8 @@ public class ClassUtil extends org.springframework.util.ClassUtils {
 					//保存的类文件不需要后缀.class
 					list.add(Class.forName(packagename + '.' + file2.getName().substring(0,
 						file2.getName().length() - 6)));
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+				} catch (Throwable e) {
+					log.debug(e.getMessage());
 				}
 			}
 		}

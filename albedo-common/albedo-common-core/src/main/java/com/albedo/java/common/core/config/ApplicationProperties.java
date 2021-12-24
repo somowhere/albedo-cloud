@@ -62,6 +62,7 @@ public class ApplicationProperties {
 	private Http http = new Http();
 
 	private Rsa rsa = new Rsa();
+	private File file = new File();
 
 	private CorsConfiguration cors = new CorsConfiguration();
 
@@ -165,6 +166,18 @@ public class ApplicationProperties {
 
 	}
 
+	@Data
+	public static class File {
+
+		private final Local local = new Local();
+		@Data
+		public static class Local {
+
+			private String storagePath;
+
+		}
+
+	}
 	@Data
 	public static class Http {
 

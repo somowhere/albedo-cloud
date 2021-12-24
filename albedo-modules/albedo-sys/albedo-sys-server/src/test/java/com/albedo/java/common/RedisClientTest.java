@@ -1,6 +1,6 @@
 package com.albedo.java.common;
 
-import com.albedo.java.modules.AlbedoSysApplication;
+import com.albedo.java.modules.AlbedoSysServerApplication;
 import com.albedo.java.modules.sys.web.UserResource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import java.util.Map;
  *
  * @see UserResource
  */
-@SpringBootTest(classes = {AlbedoSysApplication.class})
+@SpringBootTest(classes = {AlbedoSysServerApplication.class})
 @Slf4j
 public class RedisClientTest {
 

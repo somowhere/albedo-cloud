@@ -13,6 +13,7 @@ logging:
     ROOT: INFO
     com.albedo.java: @logback.loglevel@
   file:
+    path: @logging.file.path@
     name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 spring:
   application:
@@ -20,6 +21,7 @@ spring:
   cloud:
     nacos:
       discovery:
+        namespace: ${nacos.namespace}
         server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}

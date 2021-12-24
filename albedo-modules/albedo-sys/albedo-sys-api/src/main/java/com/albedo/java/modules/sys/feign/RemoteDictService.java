@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @description
  * @date 2020/6/1 11:10
  */
-@FeignClient(contextId = "remoteDictService", value = ServiceNameConstants.UMPS_SERVICE,
+@FeignClient(contextId = "remoteDictService", value = ServiceNameConstants.SYS_SERVICE,
 	fallbackFactory = RemoteDictServiceFallbackFactory.class)
 public interface RemoteDictService {
 
