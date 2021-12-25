@@ -20,6 +20,7 @@ package com.albedo.java.gateway.filter;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.ValidateCodeException;
@@ -53,6 +54,8 @@ import reactor.core.publisher.Mono;
 public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Object> {
 
 	private final GatewayConfigProperties configProperties;
+
+	private final ApplicationProperties applicationProperties;
 
 	private final ObjectMapper objectMapper;
 
@@ -124,6 +127,10 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 
 		Object codeObj = redisTemplate.opsForValue().get(key);
 
+		if(applicationProperties.getDevelopMode()){
+			redisTemplate.delete(key);
+			return;
+		}
 
 		if (ObjectUtil.isEmpty(codeObj) || !code.equals(codeObj)) {
 			throw new ValidateCodeException("验证码不合法");

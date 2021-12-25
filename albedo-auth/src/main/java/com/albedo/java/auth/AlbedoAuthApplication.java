@@ -17,6 +17,7 @@
 package com.albedo.java.auth;
 
 
+import com.albedo.java.common.config.annotation.EnableAlbedoSwagger2;
 import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -33,6 +34,7 @@ import java.net.InetAddress;
  * 认证授权中心
  */
 @Slf4j
+@EnableAlbedoSwagger2
 @EnableAlbedoFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication

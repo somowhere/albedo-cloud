@@ -1,5 +1,6 @@
 package com.albedo.java.gateway.config;
 
+import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.gateway.filter.AlbedoRequestGlobalFilter;
 import com.albedo.java.gateway.filter.ApiLoggingFilter;
 import com.albedo.java.gateway.filter.PasswordDecoderFilter;
@@ -38,8 +39,9 @@ public class GatewayConfiguration {
 	}
 	@Bean
 	public ValidateCodeGatewayFilter validateCodeGatewayFilter(GatewayConfigProperties configProperties,
+															   ApplicationProperties applicationProperties,
 															   ObjectMapper objectMapper, RedisTemplate redisTemplate) {
-		return new ValidateCodeGatewayFilter(configProperties, objectMapper, redisTemplate);
+		return new ValidateCodeGatewayFilter(configProperties, applicationProperties, objectMapper, redisTemplate);
 	}
 
 	@Bean

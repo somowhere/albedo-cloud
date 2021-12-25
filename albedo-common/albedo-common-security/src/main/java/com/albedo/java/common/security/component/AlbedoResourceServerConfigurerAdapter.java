@@ -23,12 +23,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.UserAuthenticationConverter;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -44,14 +41,12 @@ import javax.annotation.Resource;
 public class AlbedoResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
 	@Resource
 	protected ResourceAuthExceptionEntryPoint resourceAuthExceptionEntryPoint;
-	@Resource
-	protected RemoteTokenServices remoteTokenServices;
 	@Autowired
 	private PermitAllUrlProperties permitAllUrl;
 	@Resource
 	private AccessDeniedHandler albedoAccessDeniedHandler;
 	@Autowired
-	private BearerTokenExtractor bearerTokenExtractor;
+	private AlbedoBearerTokenExtractor albedoBearerTokenExtractor;
 	@Autowired
 	private ResourceServerTokenServices resourceServerTokenServices;
 
@@ -75,7 +70,7 @@ public class AlbedoResourceServerConfigurerAdapter extends ResourceServerConfigu
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) {
-		resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint).tokenExtractor(bearerTokenExtractor)
+		resources.authenticationEntryPoint(resourceAuthExceptionEntryPoint).tokenExtractor(albedoBearerTokenExtractor)
 			.accessDeniedHandler(albedoAccessDeniedHandler).tokenServices(resourceServerTokenServices);
 	}
 }

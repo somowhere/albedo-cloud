@@ -52,6 +52,7 @@ public class DictUtil {
 	public static CacheOps cacheOps = SpringContextHolder.getBean("cacheOps");
 
 	public static RemoteDictService dictService = SpringContextHolder.getBean(RemoteDictService.class);
+	public static List<Class<BaseEnum>> baseEnumList = ClassUtil.getAllInterfaceAchieveClass(BaseEnum.class, CommonConstants.BUSINESS_PACKAGE);
 
 	public static List<Dict> getDictList() {
 		return cacheOps.get(new DictCacheKeyBuilder().key(CacheNameConstants.DICT_ALL), (k) -> JSONUtil.toList(dictService.findAllOrderBySort(SecurityConstants.FROM_IN).getData(), Dict.class));
@@ -104,8 +105,7 @@ public class DictUtil {
 				map.put(dict.getCode(), dictTempList);
 			}
 		});
-		Map<String, List<SelectVo>> baseEnumMap = DictUtil.convertBaseEnumToSelectVo(codes,
-			ClassUtil.getAllInterfaceAchieveClass(BaseEnum.class, CommonConstants.BUSINESS_PACKAGE));
+		Map<String, List<SelectVo>> baseEnumMap = DictUtil.convertBaseEnumToSelectVo(codes, baseEnumList);
 		if (baseEnumMap != null) {
 			map.putAll(baseEnumMap);
 		}

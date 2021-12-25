@@ -61,6 +61,14 @@
 			<artifactId>albedo-common-security</artifactId>
 			<version>${project.release.version}</version>
 		</dependency>
+
+		<!--接口文档-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-swagger</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
+
 		<!--JDBC相关-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

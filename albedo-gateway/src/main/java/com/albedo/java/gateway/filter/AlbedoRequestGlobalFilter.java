@@ -92,7 +92,7 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 			.build();
 		exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, newRequest.getURI());
 
-		return chain.filter(exchange.mutate().request(newRequest).build());
+		return chain.filter(exchange.mutate().request(newRequest.mutate().build()).build());
 	}
 
 	private void addHeader(ServerHttpRequest.Builder mutate, String name, Object value) {
