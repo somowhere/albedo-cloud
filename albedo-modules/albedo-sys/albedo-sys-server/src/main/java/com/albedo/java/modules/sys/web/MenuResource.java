@@ -162,7 +162,7 @@ public class MenuResource extends BaseResource {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_menu_del')")
 	@LogOperate(value = "菜单管理删除")
-	public Result removeByIds(@RequestBody Set<String> ids) {
+	public Result removeByIds(@RequestBody Set<Long> ids) {
 		menuService.removeByIds(ids);
 		return Result.buildOk("操作成功");
 	}

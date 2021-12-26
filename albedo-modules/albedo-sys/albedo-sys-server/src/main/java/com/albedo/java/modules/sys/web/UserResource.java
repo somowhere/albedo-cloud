@@ -148,7 +148,7 @@ public class UserResource extends BaseResource {
 	@LogOperate(value = "用户管理删除")
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_user_del')")
-	public Result removeByIds(@RequestBody Set<String> ids) {
+	public Result removeByIds(@RequestBody Set<Long> ids) {
 		return Result.buildByFlag(userService.removeByIds(ids));
 	}
 

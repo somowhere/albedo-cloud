@@ -1,6 +1,6 @@
 package com.albedo.java.common.config;
 
-import com.albedo.java.common.filter.ThreadLocalContextFilter;
+import com.albedo.java.common.core.filter.ThreadLocalContextFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

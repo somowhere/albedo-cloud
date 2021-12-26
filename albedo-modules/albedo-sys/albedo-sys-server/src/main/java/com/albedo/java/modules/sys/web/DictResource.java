@@ -126,7 +126,7 @@ public class DictResource extends BaseResource {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
 	@LogOperate(value = "字典管理删除")
-	public Result removeByIds(@RequestBody Set<String> ids) {
+	public Result removeByIds(@RequestBody Set<Long> ids) {
 		return Result.buildOkData(dictService.removeByIds(ids));
 	}
 

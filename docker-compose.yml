@@ -64,14 +64,6 @@ services:
     hostname: albedo-gen
     image: albedo-gen
 
-  albedo-quartz:
-    build:
-      context: ./albedo-modules/albedo-quartz
-    #restart: always
-    container_name: albedo-quartz
-    hostname: albedo-quartz
-    image: albedo-quartz
-
   albedo-gateway:
     build:
       context: ./albedo-gateway

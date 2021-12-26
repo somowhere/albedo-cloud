@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.albedo.java.common.filter;
+package com.albedo.java.common.core.filter;
 
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.context.ContextConstants;
 import com.albedo.java.common.core.context.ContextUtil;

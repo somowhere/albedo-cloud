@@ -32,7 +32,6 @@
 		<module>albedo-sys</module>
 		<module>albedo-gen</module>
 		<module>albedo-monitor</module>
-		<module>albedo-quartz</module>
 		<module>albedo-sentinel</module>
 		<module>albedo-job</module>
 		<module>albedo-file</module>
