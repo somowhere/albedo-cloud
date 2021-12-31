@@ -40,12 +40,12 @@ import java.net.InetAddress;
 @EnableDiscoveryClient
 @SpringBootApplication
 @Slf4j
-public class AlbedoFileApplication {
+public class AlbedoFileServerApplication {
 	static String SERVER_PORT = "server.port";
 	static String SPRING_APPLICATION_NAME = "spring.application.name";
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication app = new SpringApplication(AlbedoFileApplication.class);
+		SpringApplication app = new SpringApplication(AlbedoFileServerApplication.class);
 		final ApplicationContext applicationContext = app.run(args);
 		Environment env = applicationContext.getEnvironment();
 		log.info("\n----------------------------------------------------------\n\t" +

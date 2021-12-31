@@ -3,19 +3,50 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80023
+ Source Server Version : 80026
  Source Host           : localhost:3306
  Source Schema         : albedo-cloud
 
  Target Server Type    : MySQL
- Target Server Version : 80023
+ Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 17/07/2021 09:01:14
+ Date: 31/12/2021 11:51:05
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sys_appendix
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_appendix`;
+CREATE TABLE `sys_appendix` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `biz_id` bigint NOT NULL DEFAULT '0' COMMENT '业务id',
+  `biz_type` varchar(255) NOT NULL DEFAULT '' COMMENT '业务类型',
+  `file_type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+  `bucket` varchar(255) DEFAULT '' COMMENT '桶',
+  `path` varchar(255) DEFAULT '' COMMENT '文件相对地址',
+  `original_file_name` varchar(255) DEFAULT '' COMMENT '原始文件名',
+  `content_type` varchar(255) DEFAULT '' COMMENT '文件类型',
+  `size` bigint DEFAULT '0' COMMENT '大小',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `created_by` bigint NOT NULL,
+  `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `last_modified_by` bigint DEFAULT NULL,
+  `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='业务附件';
+
+-- ----------------------------
+-- Records of sys_appendix
+-- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -36,21 +67,21 @@ CREATE TABLE `sys_dept` (
   `version` int NOT NULL,
   `description` varchar(100) DEFAULT NULL COMMENT '描述',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='部门管理';
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept` VALUES ('1', '-1', NULL, '总部', 30, b'0', '1', '1', '2020-05-16 02:26:57.020', '1', '2021-02-06 14:35:12.330', 15, '', '0');
-INSERT INTO `sys_dept` VALUES ('4981e65fbb6059f3a5ceddd6b3426e6d', '9e4dcac1683359bfeac1871ccdc29e9f', '9e4dcac1683359bfeac1871ccdc29e9f,', 'ddd', 1, b'1', '1', '1', '2020-05-16 03:05:18.140', '1', '2020-05-16 03:05:23.939', 0, NULL, '1');
-INSERT INTO `sys_dept` VALUES ('6304292a4ecb1448c33447adc0c35f08', '1', '1,', '运营部', 30, b'1', '1', '1', '2020-05-16 03:03:46.542', '1', '2020-05-16 05:27:11.787', 2, '', '0');
-INSERT INTO `sys_dept` VALUES ('701903b72179df2c79d383f621eab9c8', '1', '1,', 'AI部', 30, b'1', '1', '1', '2020-05-16 03:04:11.395', '1', '2020-12-26 10:44:23.011', 2, NULL, '0');
-INSERT INTO `sys_dept` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '-1', NULL, 'test', 1, b'0', '1', '1', '2020-05-16 03:05:05.919', '1', '2020-05-16 03:05:23.939', 1, NULL, '1');
-INSERT INTO `sys_dept` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', '-1', NULL, '平台', 30, b'1', '1', '1', '2020-05-16 02:28:08.383', '1', '2020-05-16 03:04:55.462', 2, NULL, '0');
-INSERT INTO `sys_dept` VALUES ('db32c981785f619401518127c48b6247', '1', '1,', '测试部', 30, b'1', '1', '1', '2020-05-16 03:03:57.184', '1', '2021-02-06 14:35:12.345', 1, NULL, '0');
-INSERT INTO `sys_dept` VALUES ('f52e1e844bf0fbadf5213214fb621e27', '1', '1,', '开发部', 30, b'1', '1', '1', '2020-05-16 03:03:23.518', '1', '2020-05-21 03:09:24.277', 3, NULL, '0');
+INSERT INTO `sys_dept` VALUES ('1', '-1', NULL, '总部', 30, b'0', '1', '1', '2020-05-16 02:26:57.020', '1', '2021-12-23 10:14:44.459', 15, '', '0', '0000');
+INSERT INTO `sys_dept` VALUES ('2', '1', '1,', '运营部', 30, b'1', '1', '1', '2020-05-16 03:03:46.542', '1', '2021-12-23 10:14:44.467', 2, '', '0', '0000');
+INSERT INTO `sys_dept` VALUES ('3', '1', '1,', 'AI部', 30, b'1', '1', '1', '2020-05-16 03:04:11.395', '1', '2021-12-23 10:14:44.468', 2, NULL, '0', '0000');
+INSERT INTO `sys_dept` VALUES ('4', '-1', NULL, 'test', 1, b'0', '1', '1', '2020-05-16 03:05:05.919', '1', '2021-12-23 10:14:44.469', 1, NULL, '1', '0000');
+INSERT INTO `sys_dept` VALUES ('5', '-1', NULL, '平台', 30, b'1', '1', '1', '2020-05-16 02:28:08.383', '1', '2021-12-23 10:14:44.471', 2, NULL, '0', '0000');
+INSERT INTO `sys_dept` VALUES ('6', '1', '1,', '测试部', 30, b'1', '1', '1', '2020-05-16 03:03:57.184', '1', '2021-12-23 10:14:44.473', 1, NULL, '0', '0000');
+INSERT INTO `sys_dept` VALUES ('7', '1', '1,', '开发部', 30, b'1', '1', '1', '2020-05-16 03:03:23.518', '1', '2021-12-23 10:14:44.490', 3, NULL, '0', '0000');
 COMMIT;
 
 -- ----------------------------
@@ -70,19 +101,6 @@ CREATE TABLE `sys_dept_relation` (
 -- Records of sys_dept_relation
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dept_relation` VALUES ('1', '1', '0');
-INSERT INTO `sys_dept_relation` VALUES ('1', '6304292a4ecb1448c33447adc0c35f08', '0');
-INSERT INTO `sys_dept_relation` VALUES ('1', '701903b72179df2c79d383f621eab9c8', '0');
-INSERT INTO `sys_dept_relation` VALUES ('1', 'db32c981785f619401518127c48b6247', '0');
-INSERT INTO `sys_dept_relation` VALUES ('1', 'f52e1e844bf0fbadf5213214fb621e27', '0');
-INSERT INTO `sys_dept_relation` VALUES ('4981e65fbb6059f3a5ceddd6b3426e6d', '4981e65fbb6059f3a5ceddd6b3426e6d', '1');
-INSERT INTO `sys_dept_relation` VALUES ('6304292a4ecb1448c33447adc0c35f08', '6304292a4ecb1448c33447adc0c35f08', '0');
-INSERT INTO `sys_dept_relation` VALUES ('701903b72179df2c79d383f621eab9c8', '701903b72179df2c79d383f621eab9c8', '0');
-INSERT INTO `sys_dept_relation` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '4981e65fbb6059f3a5ceddd6b3426e6d', '1');
-INSERT INTO `sys_dept_relation` VALUES ('9e4dcac1683359bfeac1871ccdc29e9f', '9e4dcac1683359bfeac1871ccdc29e9f', '1');
-INSERT INTO `sys_dept_relation` VALUES ('c095173c3aebcd7ff9c6177fbf7a8b69', 'c095173c3aebcd7ff9c6177fbf7a8b69', '0');
-INSERT INTO `sys_dept_relation` VALUES ('db32c981785f619401518127c48b6247', 'db32c981785f619401518127c48b6247', '0');
-INSERT INTO `sys_dept_relation` VALUES ('f52e1e844bf0fbadf5213214fb621e27', 'f52e1e844bf0fbadf5213214fb621e27', '0');
 COMMIT;
 
 -- ----------------------------
@@ -90,77 +108,181 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
-  `id` varchar(32) NOT NULL COMMENT '编号',
-  `name` varchar(100) NOT NULL COMMENT '标签名',
-  `val` varchar(100) DEFAULT NULL COMMENT '数据值',
-  `code` varchar(100) NOT NULL COMMENT '类型',
-  `parent_id` varchar(32) DEFAULT NULL COMMENT '父菜单ID',
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
+  `id` bigint NOT NULL COMMENT '编号',
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标签名',
+  `val` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '数据值',
+  `code` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
+  `parent_id` bigint DEFAULT NULL COMMENT '父菜单ID',
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父菜单IDs',
   `sort` int NOT NULL COMMENT '排序（升序）',
-  `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
+  `available` bit(1) DEFAULT b'1' COMMENT '是否显示1 是0否',
   `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
-  `created_by` varchar(50) NOT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `last_modified_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   `version` int NOT NULL DEFAULT '0',
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sys_dict_value` (`val`) USING BTREE,
   KEY `sys_dict_label` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='字典表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='字典表';
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_dict` VALUES ('05d01334ecdbe94b856038a32a42512b', '任务分组', NULL, 'quartz_job_group', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-15 16:33:54.745', '1', '2021-02-06 14:35:37.150', 7, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('0b2420638683f1eec41242beb9912069', '在线', 'on_line', 'sys_online_status_on_line', 'f3592a047c466e348279983336ebaf28', '1,cfd5f62f601817a3b0f38f5ccb1f5128,f3592a047c466e348279983336ebaf28,', 30, '1', b'1', '1', '2019-08-11 11:17:28.210', '1', '2021-02-06 14:35:37.152', 2, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('0da02abef85f0c0b4350eaeefb4ca78d', '仅本人数据', '4', 'sys_data_scope_4', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 40, '1', b'1', '1', '2019-07-14 06:00:03.000', '1', '2021-02-06 14:35:37.155', 7, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('0ef7242f2bb88fdbdcbc56e7a879efb0', '其他', '0', 'sys_business_type_0', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 10, '1', b'1', '1', '2019-08-07 16:49:39.000', '1', '2021-02-06 14:35:37.157', 5, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('0fdd548394368b4969136f32c435fd98', '菜单', '1', 'sys_menu_type_1', 'e26ee931e276a099fb876541ca18756f', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e26ee931e276a099fb876541ca18756f,', 20, '1', b'1', '1', '2019-07-14 06:04:44.000', '1', '2021-02-06 14:35:37.158', 7, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('1', '数据字典', '', 'base', '-1', NULL, 1, '1', b'0', '1', '2018-07-09 06:16:14.000', '1', '2021-04-07 09:53:37.229', 14, '', '0');
-INSERT INTO `sys_dict` VALUES ('13276f100593667c3bd40ab8fea734b4', '立即执行', '1', 'quartz_misfire_policy_1', 'cb3d07975904460c94e9e2b30755c04b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,cb3d07975904460c94e9e2b30755c04b,', 30, '1', b'1', '1', '2019-08-15 10:24:19.706', '1', '2021-02-06 14:35:37.159', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('181dd29afa852bd47a5ae8dd2e02a623', '正常', '1', 'sys_status_1', '952c07b027bf0be298a9243af701b8c5', '1,cfd5f62f601817a3b0f38f5ccb1f5128,952c07b027bf0be298a9243af701b8c5,', 30, '1', b'1', '1', '2019-08-14 11:28:01.693', '1', '2021-02-06 14:35:37.161', 2, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('2', '是否标识', '', 'sys_flag', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 10, '1', b'0', '1', '2019-06-02 17:17:44.000', '1', '2021-02-06 14:35:37.163', 21, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('269ebbfff898cf1db0d243e3f7774d2c', '业务数据', 'biz', 'biz', '1', '1,', 30, '1', b'1', '1', '2019-07-14 04:01:51.000', '1', '2020-12-26 10:44:33.586', 6, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('2ec9dffe7cb0dea12c8e4e2a90279711', '强退', '6', 'sys_business_type_6', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 70, '1', b'1', '1', '2019-08-07 16:52:15.681', '1', '2021-02-06 14:35:37.165', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('3', '是', '1', 'sys_flag_yes', '2', '1,cfd5f62f601817a3b0f38f5ccb1f5128,2,', 10, '1', b'1', '1', '2018-07-09 06:15:40.000', '1', '2021-02-06 14:35:37.166', 8, '', '0');
-INSERT INTO `sys_dict` VALUES ('31d677b181cebb9bde79b78f32e1e8a3', '其他', '0', 'sys_operate_type_0', '6b8211aef2fec451b0398b19857443a7', '1,cfd5f62f601817a3b0f38f5ccb1f5128,6b8211aef2fec451b0398b19857443a7,', 10, '1', b'1', '1', '2019-08-07 16:48:21.644', '1', '2021-02-06 14:35:37.168', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('356f3304462386a8827d44b9e6c9482c', '运行中', '1', 'quartz_job_status_1', 'c7243dfd9599957c281be8be786708d5', '1,cfd5f62f601817a3b0f38f5ccb1f5128,c7243dfd9599957c281be8be786708d5,', 10, '1', b'1', '1', '2020-05-16 10:14:46.614', '1', '2021-02-06 14:35:37.170', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('3e949b67e0c5be3357bdcce9705f7433', '放弃执行', '3', 'quartz_misfire_policy_3', 'cb3d07975904460c94e9e2b30755c04b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,cb3d07975904460c94e9e2b30755c04b,', 30, '1', b'1', '1', '2019-08-15 10:24:54.175', '1', '2021-02-06 14:35:37.171', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('4', '否', '0', 'sys_flag_no', '2', '1,cfd5f62f601817a3b0f38f5ccb1f5128,2,', 30, '1', b'1', '1', '2019-06-02 17:26:40.000', '1', '2021-02-06 14:35:37.172', 8, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('4198b5e10fe052546ebb689b4103590e', '所在机构数据', '3', 'sys_data_scope_3', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 30, '1', b'1', '1', '2019-07-14 05:59:13.000', '1', '2021-02-06 14:35:37.173', 9, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('4ebd555fb352328cb2db93e15d3243ad', '系统', 'SYSTEM', 'quartz_job_group_system', '05d01334ecdbe94b856038a32a42512b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,05d01334ecdbe94b856038a32a42512b,', 30, '1', b'1', '1', '2019-08-15 16:34:47.139', '1', '2021-02-06 14:35:37.174', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('51828811168cd9f0ee1d118068a7d0b9', '编辑', '1', 'sys_business_type_1', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 20, '1', b'1', '1', '2019-08-07 16:50:20.634', '1', '2021-02-06 14:35:37.175', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('5933a853cd0199b00424d66f4b92dda3', '所在机构及以下数据', '2', 'sys_data_scope_2', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 20, '1', b'1', '1', '2019-07-14 05:53:55.000', '1', '2021-02-06 14:35:37.176', 9, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('5f2414b2670c9a66c1d5364613caa654', '后台用户', '1', 'sys_operate_type_1', '6b8211aef2fec451b0398b19857443a7', '1,cfd5f62f601817a3b0f38f5ccb1f5128,6b8211aef2fec451b0398b19857443a7,', 20, '1', b'1', '1', '2019-08-07 16:48:40.344', '1', '2021-02-06 14:35:37.177', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('6b8211aef2fec451b0398b19857443a7', '操作人类别', NULL, 'sys_operator_type', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-07 15:37:09.613', '1', '2021-02-06 14:35:37.178', 8, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('6e4bba74f32df9149d69f8e9bb19cd9d', '目录', '0', 'sys_menu_type_0', 'e26ee931e276a099fb876541ca18756f', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e26ee931e276a099fb876541ca18756f,', 10, '1', b'1', '1', '2019-07-14 06:04:10.000', '1', '2021-02-06 14:35:37.180', 9, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('764d1eaf8a39698fc85a7204c96e7089', '生成代码', '7', 'sys_business_type_7', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 80, '1', b'1', '1', '2019-08-07 16:52:36.997', '1', '2021-02-06 14:35:37.182', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('80b084e162b0a30b348a45ff29e5b326', '导出', '4', 'sys_business_type_4', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 50, '1', b'1', '1', '2019-08-07 16:51:33.286', '1', '2021-02-06 14:35:37.183', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('8153bd2af73b6d59eed9f34d2bc05bb9', '删除', '3', 'sys_business_type_3', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 40, '1', b'1', '1', '2019-08-07 16:50:45.270', '1', '2021-02-06 14:35:37.184', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('8883abe4dcf9390df69a5740050abf74', '离线', 'off_line', 'sys_online_status_off_line', 'f3592a047c466e348279983336ebaf28', '1,cfd5f62f601817a3b0f38f5ccb1f5128,f3592a047c466e348279983336ebaf28,', 30, '1', b'1', '1', '2019-08-11 11:17:50.132', '1', '2021-02-06 14:35:37.185', 2, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('8c4589d0a32c9b84b6254507354a195b', 'test', 'test', 'test', '-1', NULL, 30, '1', b'1', '1', '2019-07-14 03:59:38.000', '1', '2019-07-14 04:00:28.000', 0, NULL, '1');
-INSERT INTO `sys_dict` VALUES ('94e00baf14b640d793c133fb7bfa4c9a', '默认', 'DEFAULT', 'quartz_job_group_default', '05d01334ecdbe94b856038a32a42512b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,05d01334ecdbe94b856038a32a42512b,', 30, '1', b'1', '1', '2019-08-15 16:34:28.547', '1', '2021-02-06 14:35:37.185', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('952c07b027bf0be298a9243af701b8c5', '状态', NULL, 'sys_status', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-14 11:26:50.424', '1', '2021-02-06 14:35:37.187', 6, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('a5dfce34bdb7aa99560e8c0d393a632f', '全部', '1', 'sys_data_scope_1', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 10, '1', b'1', '1', '2019-07-14 05:52:44.000', '1', '2021-02-06 14:35:37.189', 9, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('aa294a48211a2deb5c7d76c5e90dc28e', '数据范围', '', 'sys_data_scope', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-07-14 05:50:08.000', '1', '2021-02-06 14:35:37.190', 18, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('b672448a74c1d1a47eb1378e3d8c6dc9', '导入', '5', 'sys_business_type_5', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 60, '1', b'1', '1', '2019-08-07 16:51:45.855', '1', '2021-02-06 14:35:37.192', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('c46ec99af2c1f967bf10cf2c0d96a6c5', '按明细设置', '5', 'sys_data_scope_5', 'aa294a48211a2deb5c7d76c5e90dc28e', '1,cfd5f62f601817a3b0f38f5ccb1f5128,aa294a48211a2deb5c7d76c5e90dc28e,', 50, '1', b'1', '1', '2019-07-14 06:01:11.000', '1', '2021-02-06 14:35:37.193', 7, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('c7243dfd9599957c281be8be786708d5', '任务状态', NULL, 'quartz_job_status', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2020-05-16 10:13:18.543', '1', '2021-02-06 14:35:37.194', 8, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('cb3d07975904460c94e9e2b30755c04b', '计划执行错误策略', NULL, 'quartz_misfire_policy', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-15 10:23:54.460', '1', '2021-02-06 14:35:37.196', 9, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('cfd5f62f601817a3b0f38f5ccb1f5128', '系统数据', 'sys', 'sys', '1', '1,', 30, '1', b'0', '1', '2019-07-14 01:13:12.000', '1', '2021-02-06 14:35:37.132', 25, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('decc4b5f8996c755ba6e5a097486e362', '已暂停', '0', 'quartz_job_status_0', 'c7243dfd9599957c281be8be786708d5', '1,cfd5f62f601817a3b0f38f5ccb1f5128,c7243dfd9599957c281be8be786708d5,', 20, '1', b'1', '1', '2020-05-16 10:15:08.604', '1', '2021-02-06 14:35:37.197', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('e0696db908c87ad57a85c6b326348dbd', '业务操作类型', NULL, 'sys_business_type', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-07 15:33:35.000', '1', '2021-02-06 14:35:37.198', 19, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('e26ee931e276a099fb876541ca18756f', '菜单类型', '', 'sys_menu_type', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-07-14 06:01:48.000', '1', '2021-02-06 14:35:37.199', 15, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('e7891a6351a2e143899849b2955851b2', '锁定', '2', 'sys_business_type_2', 'e0696db908c87ad57a85c6b326348dbd', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e0696db908c87ad57a85c6b326348dbd,', 30, '1', b'1', '1', '2019-08-07 16:50:32.457', '1', '2021-02-06 14:35:37.200', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('ef0368c6fd52ee8f1f4270869da00f18', '按钮', '2', 'sys_menu_type_2', 'e26ee931e276a099fb876541ca18756f', '1,cfd5f62f601817a3b0f38f5ccb1f5128,e26ee931e276a099fb876541ca18756f,', 30, '1', b'1', '1', '2019-08-07 13:55:24.531', '1', '2021-02-06 14:35:37.201', 7, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('f3592a047c466e348279983336ebaf28', '在线状态', NULL, 'sys_online_status', 'cfd5f62f601817a3b0f38f5ccb1f5128', '1,cfd5f62f601817a3b0f38f5ccb1f5128,', 30, '1', b'0', '1', '2019-08-11 11:16:52.095', '1', '2021-02-06 14:35:37.202', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('f35adf75d9ab0ca5cec43815b7db5274', '执行一次', '2', 'quartz_misfire_policy_2', 'cb3d07975904460c94e9e2b30755c04b', '1,cfd5f62f601817a3b0f38f5ccb1f5128,cb3d07975904460c94e9e2b30755c04b,', 30, '1', b'1', '1', '2019-08-15 10:24:39.273', '1', '2021-02-06 14:35:37.203', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('f83a718756762758707c67db3d271c9d', '手机端用户', '2', 'sys_operate_type_2', '6b8211aef2fec451b0398b19857443a7', '1,cfd5f62f601817a3b0f38f5ccb1f5128,6b8211aef2fec451b0398b19857443a7,', 30, '1', b'1', '1', '2019-08-07 16:49:00.766', '1', '2021-02-06 14:35:37.204', 4, NULL, '0');
-INSERT INTO `sys_dict` VALUES ('fafe8843b2f4091f8096dc0df09c300c', '失败', '0', 'sys_status_0', '952c07b027bf0be298a9243af701b8c5', '1,cfd5f62f601817a3b0f38f5ccb1f5128,952c07b027bf0be298a9243af701b8c5,', 30, '1', b'1', '1', '2019-08-14 11:28:11.000', '1', '2021-02-06 14:35:37.205', 4, NULL, '0');
+INSERT INTO `sys_dict` VALUES (0, '所在机构及以下数据', 'THIS_LEVEL_CHILDREN', 'sys_data_scope_2', 199, '1,', 20, b'1', b'1', '1', '2019-07-14 05:53:55.000', '1', '2021-11-22 14:52:37.391', 10, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (1, '数据字典', '', 'base', -1, NULL, 1, b'1', b'0', '1', '2018-07-09 06:16:14.000', '1', '2021-12-08 11:07:00.622', 17, '', '1', '0000');
+INSERT INTO `sys_dict` VALUES (2, '是否标识', '', 'sys_flag', 455, '1,', 10, b'1', b'0', '1', '2019-06-02 17:17:44.000', '1', '2021-11-22 14:49:12.709', 20, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (3, '是', '1', 'sys_flag_yes', 2, '1,', 10, b'1', b'1', '1', '2018-07-09 06:15:40.000', '1', '2021-11-22 14:49:12.709', 12, '', '0', '0000');
+INSERT INTO `sys_dict` VALUES (4, '否', '0', 'sys_flag_no', 2, '1,', 30, b'1', b'1', '1', '2019-06-02 17:26:40.000', '1', '2021-11-22 14:49:12.709', 8, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (111, '编辑', 'EDIT', 'sys_business_type_edit', 4555, '1,', 20, b'1', b'1', '1', '2019-08-07 16:50:20.634', '1', '2021-11-22 14:52:56.329', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (199, '数据范围', '', 'sys_data_scope', 455, '1,', 30, b'1', b'0', '1', '2019-07-14 05:50:08.000', '1', '2021-11-22 14:49:12.709', 20, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (222, '运行中', '1', 'quartz_job_status_1', 344, '1,', 10, b'1', b'1', '1', '2020-05-16 10:14:46.614', '1', '2021-11-25 16:40:23.140', 2, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (223, '导入', 'IMPORT', 'sys_business_type_import', 4555, '1,', 60, b'1', b'1', '1', '2019-08-07 16:51:45.855', '1', '2021-11-22 14:52:56.320', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (233, '其他', 'OTHER', 'sys_business_type_other', 4555, '1,', 90, b'1', b'1', '1', '2020-05-17 13:45:33.764', '1', '2021-11-22 14:52:56.317', 1, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (333, '放弃执行', '3', 'quartz_misfire_policy_3', 445, '1,', 30, b'1', b'1', '1', '2019-08-15 10:24:54.175', '1', '2021-11-25 16:40:12.635', 4, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (334, '按明细设置', 'CUSTOMIZE', 'sys_data_scope_5', 199, '1,', 50, b'1', b'1', '1', '2019-07-14 06:01:11.000', '1', '2021-11-22 14:52:43.388', 9, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (344, '任务状态', NULL, 'quartz_job_status', 1, '1,', 30, b'1', b'0', '1', '2020-05-16 10:13:18.543', '1', '2021-11-25 16:40:31.975', 6, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (345, '失败', '0', 'sys_status_0', 1177, '1,', 30, b'1', b'1', '1', '2019-08-14 11:28:11.000', '1', '2021-11-22 14:51:06.891', 3, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (444, '所在机构数据', 'THIS_LEVEL', 'sys_data_scope_3', 199, '1,', 30, b'1', b'1', '1', '2019-07-14 05:59:13.000', '1', '2021-11-22 14:52:39.790', 10, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (445, '计划执行错误策略', NULL, 'quartz_misfire_policy', 1, '1,', 30, b'1', b'0', '1', '2019-08-15 10:23:54.460', '1', '2021-11-25 16:40:17.971', 11, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (455, '系统数据', 'sys', 'sys', -1, '1,', 30, b'1', b'0', '1', '2019-07-14 01:13:12.000', '1', '2021-11-22 14:49:12.709', 30, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (555, '系统', 'SYSTEM', 'quartz_job_group_system', 55345, '1,', 20, b'1', b'1', '1', '2019-08-15 16:34:47.139', '1', '2021-11-22 14:53:49.574', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (666, '生成代码', 'GEN_CODE', 'sys_business_type_gen_code', 4555, '1,', 80, b'1', b'1', '1', '2019-08-07 16:52:36.997', '1', '2021-11-22 14:52:56.322', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (777, '目录', '0', 'sys_menu_type_0', 66555, '1,', 10, b'1', b'1', '1', '2019-07-14 06:04:10.000', '1', '2021-11-22 14:52:05.625', 7, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (888, '操作人类别', NULL, 'sys_operator_type', 455, '1,', 30, b'1', b'0', '1', '2019-08-07 15:37:09.613', '1', '2021-11-22 14:49:12.709', 13, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (999, '后台用户', 'MANAGE', 'sys_operate_type_manage', 888, '1,', 20, b'1', b'1', '1', '2019-08-07 16:48:40.344', '1', '2021-11-22 14:51:23.856', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (1122, '导出', 'EXPORT', 'sys_business_type_export', 4555, '1,', 50, b'1', b'1', '1', '2019-08-07 16:51:33.286', '1', '2021-11-22 14:52:56.328', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (1133, '离线', 'OFFLINE', 'sys_online_status_off_line', 9967, '1,', 30, b'1', b'1', '1', '2019-08-11 11:17:50.132', '1', '2021-11-25 09:35:25.921', 3, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (1144, '删除', 'DELETE', 'sys_business_type_delete', 4555, '1,', 40, b'1', b'1', '1', '2019-08-07 16:50:45.270', '1', '2021-11-22 14:52:56.329', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (1155, 'test', 'test', 'test', -1, NULL, 30, b'1', b'1', '1', '2019-07-14 03:59:38.000', '1', '2021-11-22 14:49:12.709', 0, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (1166, '默认', 'DEFAULT', 'quartz_job_group_default', 55345, '1,', 10, b'1', b'1', '1', '2019-08-15 16:34:28.547', '1', '2021-11-22 14:53:49.576', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (1177, '状态', NULL, 'sys_status', 455, '1,', 30, b'1', b'0', '1', '2019-08-14 11:26:50.424', '1', '2021-11-22 14:49:12.709', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (4447, '按钮', '2', 'sys_menu_type_2', 66555, '1,', 30, b'1', b'1', '1', '2019-08-07 13:55:24.531', '1', '2021-11-22 14:52:12.939', 8, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (4453, '强退', 'FORCE_LOGOUT', 'sys_business_type_force_logout', 4555, '1,', 70, b'1', b'1', '1', '2019-08-07 16:52:15.681', '1', '2021-11-22 14:52:56.327', 5, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (4534, '其他', 'OTHER', 'sys_operate_type_other', 888, '1,', 10, b'1', b'1', '1', '2019-08-07 16:48:21.644', '1', '2021-11-22 14:51:17.223', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (4555, '业务操作类型', NULL, 'sys_business_type', 455, '1,', 30, b'1', b'0', '1', '2019-08-07 15:33:35.000', '1', '2021-11-22 14:49:12.709', 37, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (4564, '执行一次', '2', 'quartz_misfire_policy_2', 445, '1,', 20, b'1', b'1', '1', '2019-08-15 10:24:39.273', '1', '2021-11-25 16:39:53.801', 5, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (4623, '立即执行', '1', 'quartz_misfire_policy_1', 445, '1,', 10, b'1', b'1', '1', '2019-08-15 10:24:19.706', '1', '2021-11-25 16:39:47.020', 5, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (5555, '已暂停', '0', 'quartz_job_status_0', 344, '1,', 20, b'1', b'1', '1', '2020-05-16 10:15:08.604', '1', '2021-11-25 16:40:27.853', 2, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (6663, '锁定', 'LOCK', 'sys_business_type_lock', 4555, '1,', 30, b'1', b'1', '1', '2019-08-07 16:50:32.457', '1', '2021-11-22 14:52:56.319', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (7654, '手机端用户', 'MOBILE', 'sys_operate_type_moblie', 888, '1,', 30, b'1', b'1', '1', '2019-08-07 16:49:00.766', '1', '2021-11-22 14:51:21.205', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (9967, '在线状态', NULL, 'sys_online_status', 455, '1,', 30, b'1', b'0', '1', '2019-08-11 11:16:52.095', '1', '2021-11-25 09:35:36.574', 5, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (11888, '全部', 'ALL', 'sys_data_scope_1', 199, '1,', 10, b'1', b'1', '1', '2019-07-14 05:52:44.000', '1', '2021-11-22 14:52:35.489', 10, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (40654, '仅本人数据', 'SELF', 'sys_data_scope_4', 199, '1,', 40, b'1', b'1', '1', '2019-07-14 06:00:03.000', '1', '2021-11-22 14:52:41.740', 8, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (44223, '菜单', '1', 'sys_menu_type_1', 66555, '1,', 20, b'1', b'1', '1', '2019-07-14 06:04:44.000', '1', '2021-11-22 14:52:09.706', 7, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (55345, '任务分组', NULL, 'quartz_job_group', 455, '1,', 30, b'1', b'0', '1', '2019-08-15 16:33:54.745', '1', '2021-11-22 14:49:12.709', 10, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (55634, '在线', 'ONLINE', 'sys_online_status_on_line', 9967, '1,', 30, b'1', b'1', '1', '2019-08-11 11:17:28.210', '1', '2021-11-25 09:35:32.195', 3, NULL, '1', '0000');
+INSERT INTO `sys_dict` VALUES (55734, '查看', 'VIEW', 'sys_business_type_view', 4555, '1,', 10, b'1', b'1', '1', '2019-08-07 16:49:39.000', '1', '2021-11-22 14:52:56.315', 8, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (64456, '登录', 'LOGIN', 'sys_business_type_login', 4555, '1,', 100, b'0', b'1', '1', '2020-05-27 11:41:37.787', '1', '2021-11-22 14:52:56.318', 1, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (65765, '业务数据', 'biz', 'biz', -1, '1,', 30, b'1', b'1', '1', '2019-07-14 04:01:51.000', '1', '2021-11-22 14:49:12.709', 6, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (66555, '菜单类型', '', 'sys_menu_type', 455, '1,', 30, b'1', b'0', '1', '2019-07-14 06:01:48.000', '1', '2021-11-22 14:49:12.709', 15, NULL, '0', '0000');
+INSERT INTO `sys_dict` VALUES (74563, '正常', '1', 'sys_status_1', 1177, '1,', 30, b'1', b'1', '1', '2019-08-14 11:28:01.693', '1', '2021-11-22 14:51:09.036', 2, NULL, '0', '0000');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_file
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_file`;
+CREATE TABLE `sys_file` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `biz_type` varchar(255) NOT NULL DEFAULT '' COMMENT '业务类型',
+  `file_type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+  `storage_type` varchar(255) DEFAULT NULL COMMENT '存储类型\nLOCAL FAST_DFS MIN_IO ALI \n',
+  `bucket` varchar(255) DEFAULT '' COMMENT '桶',
+  `path` varchar(255) DEFAULT '' COMMENT '文件相对地址',
+  `url` varchar(255) DEFAULT NULL COMMENT '文件访问地址',
+  `unique_file_name` varchar(255) DEFAULT '' COMMENT '唯一文件名',
+  `file_md5` varchar(255) DEFAULT NULL COMMENT '文件md5',
+  `original_file_name` varchar(255) DEFAULT '' COMMENT '原始文件名',
+  `content_type` varchar(255) DEFAULT '' COMMENT '文件类型',
+  `suffix` varchar(255) DEFAULT '' COMMENT '后缀',
+  `size` bigint DEFAULT '0' COMMENT '大小',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `created_by` bigint NOT NULL,
+  `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `last_modified_by` bigint DEFAULT NULL,
+  `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='增量文件上传日志';
+
+-- ----------------------------
+-- Records of sys_file
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_file` VALUES (1467023162330841088, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/a5b549c113b94f849b412742723bd1b9.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/a5b549c113b94f849b412742723bd1b9.jpg', 'a5b549c113b94f849b412742723bd1b9.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 14:49:12.511', 1, '2021-12-08 10:30:22.838', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467023384859639808, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/c904f1e9ea7549c6943535ddc52695a5.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/c904f1e9ea7549c6943535ddc52695a5.jpg', 'c904f1e9ea7549c6943535ddc52695a5.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 14:50:05.583', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467024571344355328, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/d3ee9280828b4f29b3a4ad2ae27de921.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/d3ee9280828b4f29b3a4ad2ae27de921.jpg', 'd3ee9280828b4f29b3a4ad2ae27de921.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 14:54:48.462', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467024702038867968, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/2f15a9e12b654e6da0d697747997036f.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/2f15a9e12b654e6da0d697747997036f.jpg', '2f15a9e12b654e6da0d697747997036f.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 14:55:19.623', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467024956737978368, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/11d4d77207a6470bbdc9a838b5e92634.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/11d4d77207a6470bbdc9a838b5e92634.jpg', '11d4d77207a6470bbdc9a838b5e92634.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 14:56:20.348', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467027979442847744, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/1202170e9efa4a32b587a501a03f79d6.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/1202170e9efa4a32b587a501a03f79d6.jpg', '1202170e9efa4a32b587a501a03f79d6.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:08:21.011', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467028392086863872, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/ae4a01d7c2aa46008980cb52d9d5fb77.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/ae4a01d7c2aa46008980cb52d9d5fb77.jpg', 'ae4a01d7c2aa46008980cb52d9d5fb77.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:09:59.391', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467029366637592576, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/a13e42026b014bf5940548da97d21a8e.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/a13e42026b014bf5940548da97d21a8e.jpg', 'a13e42026b014bf5940548da97d21a8e.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:13:51.747', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467033048376672256, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/ac22b263cddf4dadb0886d579602f8fc.jpg', 'https://static.tangyh.top/file/dev/0000/USER_AVATAR/2021/12/04/ac22b263cddf4dadb0886d579602f8fc.jpg', 'ac22b263cddf4dadb0886d579602f8fc.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:28:29.541', 1, '2021-12-08 10:30:26.026', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467034144696434688, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/139e2822c6cb4635b333af4e2f3f1fff.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/139e2822c6cb4635b333af4e2f3f1fff.jpg', '139e2822c6cb4635b333af4e2f3f1fff.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:32:50.912', 1, '2021-12-08 10:35:00.362', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467034290523996160, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/d685c34ab657404aa1f562fb5e25ba4a.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/d685c34ab657404aa1f562fb5e25ba4a.jpg', 'd685c34ab657404aa1f562fb5e25ba4a.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:33:25.696', 1, '2021-12-08 10:34:58.515', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467034373625741312, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/8c1aef8043d0495ba73929239e96d3de.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/8c1aef8043d0495ba73929239e96d3de.jpg', '8c1aef8043d0495ba73929239e96d3de.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:33:45.510', 1, '2021-12-08 10:34:55.786', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467034699288281088, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/4f8c39bcacb74ff0a0a15a465b562a31.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/4f8c39bcacb74ff0a0a15a465b562a31.jpg', '4f8c39bcacb74ff0a0a15a465b562a31.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:35:03.154', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467035096501452800, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/7f1b6dbcce2d4830a6ed5a09a5367a96.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/7f1b6dbcce2d4830a6ed5a09a5367a96.jpg', '7f1b6dbcce2d4830a6ed5a09a5367a96.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:36:37.856', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467035309022642176, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/125725a79c9c433d9a78b68e472edb54.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/125725a79c9c433d9a78b68e472edb54.jpg', '125725a79c9c433d9a78b68e472edb54.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:37:28.526', 1, '2021-12-08 10:35:03.808', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467035384608194560, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/252822ef2f7b42ef9b2fe7856b1b4af1.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/252822ef2f7b42ef9b2fe7856b1b4af1.jpg', '252822ef2f7b42ef9b2fe7856b1b4af1.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:37:46.547', 1, '2021-12-08 11:26:55.356', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467035692767903744, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/756e5d2cce154afc85dccd953d9f71ed.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/756e5d2cce154afc85dccd953d9f71ed.jpg', '756e5d2cce154afc85dccd953d9f71ed.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:39:00.013', 1, '2021-12-08 11:26:55.356', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467035880945352704, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/8651019de0b546e8bea62d78545ab0dc.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/8651019de0b546e8bea62d78545ab0dc.jpg', '8651019de0b546e8bea62d78545ab0dc.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:39:44.882', 1, '2021-12-08 11:26:55.356', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467036516415963136, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/a83b05ddeda14db3a80eac1a017ab0e5.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/a83b05ddeda14db3a80eac1a017ab0e5.jpg', 'a83b05ddeda14db3a80eac1a017ab0e5.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:42:16.391', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467036966729023488, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/370dd47b2f1942ffb26a81b30f92fdd8.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/370dd47b2f1942ffb26a81b30f92fdd8.jpg', '370dd47b2f1942ffb26a81b30f92fdd8.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:44:03.752', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467037132164956160, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/9c7e6aa57824469196b2cd5fc11ed4b8.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/9c7e6aa57824469196b2cd5fc11ed4b8.jpg', '9c7e6aa57824469196b2cd5fc11ed4b8.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:44:43.197', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467037699943694336, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/87d2d42bc8ed44758cfa3340efad27c2.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/87d2d42bc8ed44758cfa3340efad27c2.jpg', '87d2d42bc8ed44758cfa3340efad27c2.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:46:58.565', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467039487262457856, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/97e69d2762be4a24aff43085894b3505.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/97e69d2762be4a24aff43085894b3505.jpg', '97e69d2762be4a24aff43085894b3505.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 15:54:04.695', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1467044287936987136, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/04/946d98eb4c0b4b6da1eccc1b648f023d.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/04/946d98eb4c0b4b6da1eccc1b648f023d.jpg', '946d98eb4c0b4b6da1eccc1b648f023d.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-04 16:13:09.254', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1468419790770012160, 'BASE_FILE', 'DOC', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/1ec3372296b24002bae2542cb02ab7dd.txt', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/1ec3372296b24002bae2542cb02ab7dd.txt', '1ec3372296b24002bae2542cb02ab7dd.txt', NULL, '200个免费节点.txt', 'text/plain', 'txt', 121456, '0000', 1, '2021-12-08 11:18:54.691', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1468420594188943360, 'BASE_FILE', 'DOC', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/dd32fe8cf00b4509a79d37ec865d89cf.txt', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/dd32fe8cf00b4509a79d37ec865d89cf.txt', 'dd32fe8cf00b4509a79d37ec865d89cf.txt', NULL, '200个免费节点.txt', 'text/plain', 'txt', 121456, '0000', 1, '2021-12-08 11:22:06.246', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1468421198781087744, 'BASE_FILE', 'DOC', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/f316089dbe3e42b7a629be446c1c7238.txt', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/f316089dbe3e42b7a629be446c1c7238.txt', 'f316089dbe3e42b7a629be446c1c7238.txt', NULL, '200个免费节点.txt', 'text/plain', 'txt', 121456, '0000', 1, '2021-12-08 11:24:30.388', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1468421746632687616, 'BASE_FILE', 'DOC', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/f02fba0a4d6f47b285606311e6a059a2.txt', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/f02fba0a4d6f47b285606311e6a059a2.txt', 'f02fba0a4d6f47b285606311e6a059a2.txt', NULL, '200个免费节点.txt', 'text/plain', 'txt', 121456, '0000', 1, '2021-12-08 11:26:41.010', 1, '2021-12-08 11:26:52.882', NULL, 0, '1');
+INSERT INTO `sys_file` VALUES (1468421845593096192, 'BASE_FILE', 'DOC', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/7d697a6b334b463db51a630ffe741573.txt', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/7d697a6b334b463db51a630ffe741573.txt', '7d697a6b334b463db51a630ffe741573.txt', NULL, '200个免费节点.txt', 'text/plain', 'txt', 121456, '0000', 1, '2021-12-08 11:27:04.604', 1, '2021-12-08 11:27:04.605', NULL, 0, '0');
+INSERT INTO `sys_file` VALUES (1468421845609873408, 'BASE_FILE', 'IMAGE', 'LOCAL', 'dev', '0000/BASE_FILE/2021/12/08/0a63a34fd90543a88cf43ee4b3626723.jpg', 'http://127.0.0.1:8061/file/dev/0000/BASE_FILE/2021/12/08/0a63a34fd90543a88cf43ee4b3626723.jpg', '0a63a34fd90543a88cf43ee4b3626723.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-08 11:27:04.608', 1, '2021-12-08 11:27:04.609', NULL, 0, '0');
+INSERT INTO `sys_file` VALUES (1469157645930725376, 'USER_AVATAR', 'IMAGE', 'LOCAL', 'dev', '0000/USER_AVATAR/2021/12/10/d1b42710b67f4e80a710a687fd4d8412.jpg', 'http://127.0.0.1:8061/file/dev/0000/USER_AVATAR/2021/12/10/d1b42710b67f4e80a710a687fd4d8412.jpg', 'd1b42710b67f4e80a710a687fd4d8412.jpg', NULL, '31921638496726_.pic.jpg', 'image/jpeg', 'jpg', 816277, '0000', 1, '2021-12-10 12:10:53.062', 1, '2021-12-10 12:10:53.075', NULL, 0, '0');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_log_login
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log_login`;
+CREATE TABLE `sys_log_login` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '日志标题',
+  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户名',
+  `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录人昵称',
+  `ip_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'IP地址',
+  `ip_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作系统',
+  `user_agent` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户代理',
+  `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求URI',
+  `params` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '操作提交的数据',
+  `login_date` char(10) DEFAULT NULL COMMENT '登录时间',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `created_by` bigint DEFAULT NULL COMMENT '创建者',
+  `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `sys_log_create_by` (`created_by`) USING BTREE,
+  KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
+  KEY `sys_log_create_date` (`created_date`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1576 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='登录日志表';
+
+-- ----------------------------
+-- Records of sys_log_login
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -169,121 +291,37 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_log_operate`;
 CREATE TABLE `sys_log_operate` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `title` varchar(255) DEFAULT '' COMMENT '日志标题',
-  `log_type` varchar(255) DEFAULT NULL COMMENT '日志类型',
-  `username` varchar(255) DEFAULT NULL COMMENT '用户名',
-  `service_id` varchar(32) DEFAULT NULL COMMENT '服务ID',
-  `ip_address` varchar(255) DEFAULT NULL COMMENT 'IP地址',
-  `ip_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '登录地点',
-  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '操作系统',
-  `user_agent` varchar(1000) DEFAULT NULL COMMENT '用户代理',
-  `request_uri` varchar(255) DEFAULT NULL COMMENT '请求URI',
-  `method` varchar(255) DEFAULT NULL COMMENT '请求方法',
-  `params` text COMMENT '操作提交的数据',
-  `time` mediumtext COMMENT '执行时间',
-  `operator_type` varchar(20) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
-  `business_type` varchar(20) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
-  `exception` text COMMENT '异常信息',
-  `created_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '日志标题',
+  `log_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '日志类型',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户名',
+  `service_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '服务ID',
+  `ip_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'IP地址',
+  `ip_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作系统',
+  `user_agent` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户代理',
+  `request_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求URI',
+  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求方法',
+  `params` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '操作提交的数据',
+  `time` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '执行时间',
+  `operator_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `business_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `exception` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '异常信息',
+  `created_by` bigint DEFAULT NULL COMMENT '创建者',
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
+  `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sys_log_create_by` (`created_by`) USING BTREE,
   KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
   KEY `sys_log_create_date` (`created_date`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1261 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2233 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='操作日志表';
 
 -- ----------------------------
 -- Records of sys_log_operate
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_log_operate` VALUES (1176, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '71', 'MANAGE', '0', NULL, '1', '2020-12-26 11:56:27.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1177, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '9151', 'MANAGE', '0', NULL, '1', '2020-12-26 11:56:38.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1178, '任务调度查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 FS', '/job/', 'com.albedo.java.modules.quartz.web.JobResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  jobQueryCriteria: JobQueryCriteria(blurry=null, available=null, createdDate=null) }', '108', 'MANAGE', '0', NULL, '1', '2020-12-26 11:56:57.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1179, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B78711612592778068%5D&code=%5B1%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:32.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1180, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '183', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:37.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1181, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '30', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:38.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1182, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '3258', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:40.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1183, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '682', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:47.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1184, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '26', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:49.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1185, '任务调度查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/', 'com.albedo.java.modules.quartz.web.JobResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  jobQueryCriteria: JobQueryCriteria(blurry=null, available=null, createdDate=null) }', '140', 'MANAGE', '0', NULL, '1', '2021-02-06 14:26:53.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1186, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '270', 'MANAGE', '0', NULL, '1', '2021-02-06 14:27:20.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1187, '业务表查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/table/', 'com.albedo.java.modules.gen.web.TableResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  tableQueryCriteria: TableQueryCriteria(blurry=null, createdDate=null) }', '81', 'MANAGE', '0', NULL, '1', '2021-02-06 14:28:23.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1188, '数据源查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/datasource-conf/', 'com.albedo.java.modules.gen.web.DatasourceConfResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  datasourceConfQueryCriteria: DatasourceConfQueryCriteria(name=null) }', '338', 'MANAGE', '0', NULL, '1', '2021-02-06 14:28:23.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1189, '生成方案查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/scheme/', 'com.albedo.java.modules.gen.web.SchemeResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  schemeQueryCriteria: SchemeQueryCriteria(blurry=null, createdDate=null) }', '108', 'MANAGE', '0', NULL, '1', '2021-02-06 14:28:25.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1190, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '124', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:01.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1191, '用户管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=test1, nickname=null, password=null, email=13@qqx.om, phone=13254642311, avatar=null, deptId=1, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '229', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:03.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1192, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '72', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:04.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1193, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '43', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:05.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1194, '角色管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/role', 'com.albedo.java.modules.sys.web.RoleResource.save()', '{ roleDto: RoleDto(dataScope=2, level=2, name=机构管理员, menuIdList=[1000, 1100, 1101, 1102, 1200, 1201, 1202, 1203, 1300, 1301, 1302, 1303, 13093fb658c1806ad5bd0600316158f2, 1400, 1401, 1402, 1403, 18d6b5e0f6b986cd074bf23de11ecd34, 2000, 2100, 2101, 2200, 2201, 2202, 2600, 2601, 29de79df95e70d8e8fbdc7945acf214a, 621e50e1c7d66a1febeb699bebb2fe35, 74f2b2a8871a298e0acc4d7129d10e9c, 76d6087052dc26b32f3efa71b9cc119b, 7b14af9e9fbff286856338a194422b07, 9763343d9cce11ce9eb4f21c8e49122b, b963a451117f430703817b3b6c87402a, d4c16faad8f883650a3a8eab829ebad9, ef2382c0cc2d99ee73444e684237a88a], deptIdList=[5, 4, 3]) }', '172', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:08.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1195, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '11', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:08.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1196, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '14', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:09.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1197, '部门管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dept', 'com.albedo.java.modules.sys.web.DeptResource.save()', '{ deptDto: DeptDto() }', '145', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:12.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1198, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '8', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:12.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1199, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '897', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:13.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1200, '菜单管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu', 'com.albedo.java.modules.sys.web.MenuResource.save()', '{ menuDto: MenuDto(permission=null, icon=dev, component=Layout, type=0, hidden=0, cache=0, iframe=0, path=/nested) }', '162', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:17.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1201, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '775', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:18.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1202, '菜单管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu', 'com.albedo.java.modules.sys.web.MenuResource.save()', '{ menuDto: MenuDto(permission=null, icon=dev, component=Layout, type=0, hidden=0, cache=0, iframe=0, path=/nested) }', '58', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:21.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1203, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '813', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:21.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1204, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '23', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:30.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1205, '字典管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dict', 'com.albedo.java.modules.sys.web.DictResource.save()', '{ dictDto: DictDto(val=, code=sys_flag, remark=null) }', '165', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:37.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1206, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '7', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:37.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1207, '任务调度查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/', 'com.albedo.java.modules.quartz.web.JobResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  jobQueryCriteria: JobQueryCriteria(blurry=null, available=null, createdDate=null) }', '30', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:40.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1208, '任务调度编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/run/', 'com.albedo.java.modules.quartz.web.JobResource.run()', '{ ids: [2] }', '124', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:41.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1209, '任务日志查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job-log', 'com.albedo.java.modules.quartz.web.JobLogResource.getPage()', '{ pm: PageModel(current=1,size=6,orders=[])  jobLogQueryCriteria: JobLogQueryCriteria(blurry=null, status=null, createdDate=null) }', '42', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:43.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1210, '任务日志查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job-log', 'com.albedo.java.modules.quartz.web.JobLogResource.getPage()', '{ pm: PageModel(current=1,size=6,orders=[])  jobLogQueryCriteria: JobLogQueryCriteria(blurry=null, status=null, createdDate=null) }', '8', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:47.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1211, '任务调度编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/run/', 'com.albedo.java.modules.quartz.web.JobResource.run()', '{ ids: [1] }', '28', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:50.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1212, '任务调度编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/run/', 'com.albedo.java.modules.quartz.web.JobResource.run()', '{ ids: [2] }', '33', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:51.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1213, '任务调度编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job/run/', 'com.albedo.java.modules.quartz.web.JobResource.run()', '{ ids: [3] }', '40', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:52.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1214, '任务日志查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job-log', 'com.albedo.java.modules.quartz.web.JobLogResource.getPage()', '{ pm: PageModel(current=1,size=6,orders=[])  jobLogQueryCriteria: JobLogQueryCriteria(blurry=null, status=null, createdDate=null) }', '42', 'MANAGE', '0', NULL, '1', '2021-02-06 14:35:54.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1215, '任务日志查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job-log', 'com.albedo.java.modules.quartz.web.JobLogResource.getPage()', '{ pm: PageModel(current=1,size=6,orders=[])  jobLogQueryCriteria: JobLogQueryCriteria(blurry=null, status=null, createdDate=null) }', '15', 'MANAGE', '0', NULL, '1', '2021-02-06 14:36:03.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1216, '任务日志导出', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36 FS', '/job-log/download', 'com.albedo.java.modules.quartz.web.JobLogResource.download()', '{ jobLogQueryCriteria: JobLogQueryCriteria(blurry=null, status=null, createdDate=null) response: org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterResponse@1b5eb506 }', '2934', 'MANAGE', '0', NULL, '1', '2021-02-06 14:36:05.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1217, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B88221614385928596%5D&code=%5B9%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:11.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1218, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '173', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:17.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1219, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '36', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:20.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1220, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '19', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:22.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1221, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '941', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:23.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1222, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '20', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:27.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1223, '任务调度查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/job/', 'com.albedo.java.modules.quartz.web.JobResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  jobQueryCriteria: JobQueryCriteria(blurry=null, available=null, createdDate=null) }', '149', 'MANAGE', '0', NULL, '1', '2021-02-27 08:39:31.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1224, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '378', 'MANAGE', '0', NULL, '1', '2021-02-27 08:40:11.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1225, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '72', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:28.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1226, '用户管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=test1, nickname=null, password=null, email=13@qqx.om, phone=13254642311, avatar=null, deptId=1, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '127', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:30.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1227, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '53', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:31.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1228, '用户管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.save()', '{ userDto: UserDto(username=ttttt, nickname=null, password=null, email=1@e.com, phone=13245678975, avatar=, deptId=c095173c3aebcd7ff9c6177fbf7a8b69, wxOpenId=null, qqOpenId=null, roleIdList=[2]) }', '95', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:33.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1229, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '44', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:33.000', NULL, '1');
-INSERT INTO `sys_log_operate` VALUES (1230, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '497', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:36.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1231, '操作日志删除', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/log-operate/', 'com.albedo.java.modules.sys.web.LogOperateResource.removeById()', '{ ids: [1229] }', '98', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:41.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1232, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '23', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:43.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1233, '数据源查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/datasource-conf/', 'com.albedo.java.modules.gen.web.DatasourceConfResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  datasourceConfQueryCriteria: DatasourceConfQueryCriteria(name=null) }', '366', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:54.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1234, '业务表查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/table/', 'com.albedo.java.modules.gen.web.TableResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  tableQueryCriteria: TableQueryCriteria(blurry=null, createdDate=null) }', '39', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:57.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1235, '生成方案查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/scheme/', 'com.albedo.java.modules.gen.web.SchemeResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  schemeQueryCriteria: SchemeQueryCriteria(blurry=null, createdDate=null) }', '159', 'MANAGE', '0', NULL, '1', '2021-02-27 08:43:59.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1236, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36 FS', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B93361614386342119%5D&code=%5B0%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2021-02-27 08:46:04.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1237, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B54191617760382310%5D&code=%5B%3B0%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:15.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1238, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '315', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:26.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1239, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '34', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:28.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1240, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '22', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:29.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1241, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '1002', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:31.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1242, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '40', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:32.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1243, '字典管理编辑', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/dict', 'com.albedo.java.modules.sys.web.DictResource.save()', '{ dictDto: DictDto(val=, code=base, remark=null) }', '132', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:37.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1244, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '13', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:37.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1245, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '429', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:42.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1246, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '29', 'MANAGE', '0', NULL, '1', '2021-04-07 09:53:45.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1247, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [2976280c-8ef3-449f-a5bd-ef0e7a06ea9b] }', '99', 'MANAGE', '0', 'feign.FeignException$BadRequest: [400 Bad Request] during [DELETE] to [http://albedo-auth/token] [RemoteUserOnlineService#removeByTokens(TokenVo,String)]: [{\"code\":0,\"data\":null,\"message\":\"当前登陆用户无法强退\"}]\n	at feign.FeignException.clientErrorStatus(FeignException.java:195)\n	at feign.FeignException.errorStatus(FeignException.java:177)\n	at feign.FeignException.errorStatus(FeignException.java:169)\n	at feign.codec.ErrorDecoder$Default.decode(ErrorDecoder.java:92)\n	at feign.AsyncResponseHandler.handleResponse(AsyncResponseHandler.java:96)\n	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:138)\n	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:89)\n	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:100)\n	at com.sun.proxy.$Proxy224.removeByTokens(Unknown Source)\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:65)\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)\n	at com.albedo.java.common.log.aspect.RequestLogAspect.around(RequestLogAspect.java:123)\n	at sun.reflect.GeneratedMethodAccessor380.invoke(Unknown Source)\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n	at java.lang.reflect.Method.invoke(Method.java:498)\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n	at java.lang.reflect.Method.invoke(Method.java:498)\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs', '1', '2021-04-07 09:53:47.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1248, '强退在线用户', 'ERROR', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36', '/user-online', 'com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens()', '{ tokens: [2976280c-8ef3-449f-a5bd-ef0e7a06ea9b] }', '600', 'MANAGE', '0', 'feign.FeignException$InternalServerError: [500 Internal Server Error] during [DELETE] to [http://albedo-auth/token] [RemoteUserOnlineService#removeByTokens(TokenVo,String)]: [{\"code\":0,\"data\":null,\"message\":\"当前登陆用户无法强退\"}]\n	at feign.FeignException.serverErrorStatus(FeignException.java:231)\n	at feign.FeignException.errorStatus(FeignException.java:180)\n	at feign.FeignException.errorStatus(FeignException.java:169)\n	at feign.codec.ErrorDecoder$Default.decode(ErrorDecoder.java:92)\n	at feign.AsyncResponseHandler.handleResponse(AsyncResponseHandler.java:96)\n	at feign.SynchronousMethodHandler.executeAndDecode(SynchronousMethodHandler.java:138)\n	at feign.SynchronousMethodHandler.invoke(SynchronousMethodHandler.java:89)\n	at feign.ReflectiveFeign$FeignInvocationHandler.invoke(ReflectiveFeign.java:100)\n	at com.sun.proxy.$Proxy224.removeByTokens(Unknown Source)\n	at com.albedo.java.modules.sys.web.UserOnlineResource.removeByTokens(UserOnlineResource.java:65)\n	at com.albedo.java.modules.sys.web.UserOnlineResource$$FastClassBySpringCGLIB$$8d1ba552.invoke(<generated>)\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)\n	at com.albedo.java.common.log.aspect.RequestLogAspect.around(RequestLogAspect.java:123)\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n	at java.lang.reflect.Method.invoke(Method.java:498)\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)\n	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)\n	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)\n	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)\n	at com.albedo.java.common.log.aspect.SysLogAspect.around(SysLogAspect.java:69)\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n	at java.lang.reflect.Method.invoke(Method.', '1', '2021-04-07 10:09:30.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1249, '用户登录成功', 'INFO', 'admin', NULL, '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/oauth/token', 'POST', 'password=%5B111111%5D&randomStr=%5B71201626483017131%5D&code=%5B1%5D&grant_type=%5Bpassword%5D&scope=%5Bserver%5D&username=%5Badmin%5D', NULL, 'MANAGE', '0', NULL, '1', '2021-07-17 08:53:46.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1250, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '222', 'MANAGE', '0', NULL, '1', '2021-07-17 08:53:56.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1251, '角色管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/role/', 'com.albedo.java.modules.sys.web.RoleResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  roleQueryCriteria: RoleQueryCriteria(blurry=null, available=null, createdDate=null) }', '51', 'MANAGE', '0', NULL, '1', '2021-07-17 08:53:58.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1252, '用户管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/user/', 'com.albedo.java.modules.sys.web.UserResource.findPage()', '{ pm: PageModel(current=1,size=10,orders=[])  userQueryCriteria: UserQueryCriteria(deptIds=null, blurry=null, available=null, deptId=null, createdDate=null) }', '234', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:00.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1253, '部门管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/dept/', 'com.albedo.java.modules.sys.web.DeptResource.findTreeList()', '{ deptQueryCriteria: DeptQueryCriteria(notId=null, deptIds=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '21', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:02.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1254, '菜单管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/menu/', 'com.albedo.java.modules.sys.web.MenuResource.findTreeList()', '{ menuQueryCriteria: MenuQueryCriteria(notId=null, searchId=null, parentId=null, blurry=null, type=null, createdDate=null) }', '737', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:04.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1255, '字典管理查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/dict/', 'com.albedo.java.modules.sys.web.DictResource.findTreeList()', '{ dictQueryCriteria: DictQueryCriteria(notId=null, name=null, available=null, blurry=null, parentId=null, createdDate=null) }', '51', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:06.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1256, '任务调度查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/job/', 'com.albedo.java.modules.quartz.web.JobResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  jobQueryCriteria: JobQueryCriteria(blurry=null, available=null, createdDate=null) }', '138', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:09.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1257, '在线用户查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/user-online/', 'com.albedo.java.modules.sys.web.UserOnlineResource.findPage()', '{ userOnlineQueryCriteria: UserOnlineQueryCriteria(current=1, size=10, username=null) }', '301', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:15.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1258, '数据源查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/datasource-conf/', 'com.albedo.java.modules.gen.web.DatasourceConfResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  datasourceConfQueryCriteria: DatasourceConfQueryCriteria(name=null) }', '229', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:33.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1259, '业务表查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/table/', 'com.albedo.java.modules.gen.web.TableResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  tableQueryCriteria: TableQueryCriteria(blurry=null, createdDate=null) }', '53', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:35.000', NULL, '0');
-INSERT INTO `sys_log_operate` VALUES (1260, '生成方案查看', 'INFO', 'admin', 'albedo', '127.0.0.1', '内网IP', 'Chrome', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', '/scheme/', 'com.albedo.java.modules.gen.web.SchemeResource.getPage()', '{ pm: PageModel(current=1,size=10,orders=[])  schemeQueryCriteria: SchemeQueryCriteria(blurry=null, createdDate=null) }', '75', 'MANAGE', '0', NULL, '1', '2021-07-17 08:54:37.000', NULL, '0');
 COMMIT;
 
 -- ----------------------------
@@ -291,166 +329,127 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
-  `id` varchar(32) NOT NULL COMMENT '菜单ID',
-  `name` varchar(32) NOT NULL COMMENT '菜单名称',
-  `type` char(1) DEFAULT NULL COMMENT '菜单类型 （0目录 1菜单 2按钮）',
-  `permission` varchar(32) DEFAULT NULL COMMENT '菜单权限标识',
-  `path` varchar(128) DEFAULT NULL COMMENT '前端URL',
-  `parent_id` varchar(32) DEFAULT NULL COMMENT '父菜单ID',
-  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单IDs',
-  `icon` varchar(32) DEFAULT NULL COMMENT '图标',
-  `component` varchar(64) DEFAULT NULL COMMENT 'VUE页面',
+  `id` bigint NOT NULL COMMENT '菜单ID',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单名称',
+  `type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '菜单类型 （0目录 1菜单 2按钮）',
+  `permission` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '菜单权限标识',
+  `path` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '前端URL',
+  `parent_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父菜单ID',
+  `parent_ids` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父菜单IDs',
+  `icon` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图标',
+  `component` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'VUE页面',
   `hidden` bit(1) DEFAULT b'0' COMMENT '隐藏',
   `iframe` bit(1) DEFAULT b'0' COMMENT '是否外链',
-  `cache` bit(1) DEFAULT b'0' COMMENT '缓存',
+  `cache_` bit(1) DEFAULT b'0' COMMENT '缓存',
   `leaf` bit(1) DEFAULT b'0' COMMENT '1 叶子节点 0 非叶子节点',
   `sort` int DEFAULT '1' COMMENT '排序值',
-  `created_by` varchar(50) NOT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
   `version` int NOT NULL,
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='菜单权限表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_menu` VALUES ('06874adacf1f272be7928badd4fe8ed1', '配置日志', '1', NULL, 'log', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'dev', 'admin/log/index', b'0', b'0', b'0', b'1', 30, '1', '2019-08-06 07:16:06.000', '1', '2020-05-18 08:54:34.755', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('0747d9d8f651f19e49748ba68f18c6f5', '任务调度方案编辑', '2', 'quartz_job_edit', NULL, 'c77855e4171d00ae3f97563a8391f70a', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-15 01:36:03.602', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('0a160cff2d071eeec3db97f0cb0b30d6', '测试树编辑', '2', 'test_testTreeBook_edit', NULL, '3956b4690e4f49cfb1e065384c1dc0b9', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 00:35:47.308', '1', '2020-05-26 01:12:00.658', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('0b934688321b1db735c3bf6ec3e7cdc7', 'test', '2', 'test', 'test', '-1', NULL, 'date', NULL, b'0', b'0', b'0', b'1', 999, '1', '2020-05-15 08:47:36.261', '1', '2020-05-16 12:06:35.180', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('0be8161ca1f378dcc23fb786e69859a9', '分布式任务', '1', NULL, 'http://albedo-gateway:5005/xxl-job-admin/', '1000', '1000,', 'Steve-Jobs', 'tool/xxljob/index', b'0', b'1', b'0', b'1', 60, '1', '2020-09-20 14:18:06.700', '1', '2020-09-20 14:34:41.994', NULL, 4, '0');
-INSERT INTO `sys_menu` VALUES ('0d0be247863fcbf08b3db943e5f45992', '在线用户查看', '2', 'sys_userOnline_view', NULL, '6e3f89cda84ac2c6e715e7812c102ae8', '2000,6e3f89cda84ac2c6e715e7812c102ae8,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 00:05:28.000', '1', '2020-05-17 08:55:59.725', NULL, 6, '0');
-INSERT INTO `sys_menu` VALUES ('1000', '系统管理', '0', NULL, '/perm', '-1', NULL, 'menu', 'Layout', b'0', b'0', b'0', b'0', 10, '', '2018-09-28 23:29:53.000', '1', '2020-09-20 14:34:41.977', NULL, 40, '0');
-INSERT INTO `sys_menu` VALUES ('10bd98f30a42427dd7ef75418ad3da6b', '邮件工具', '1', NULL, 'email', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'email', 'tool/email/index', b'0', b'0', b'0', b'1', 30, '1', '2020-05-18 08:56:56.008', '1', '2020-05-19 17:17:42.461', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('1100', '用户管理', '1', 'sys_user_view', 'user', '1000', '1000,', 'peoples', 'sys/user/index', b'0', b'0', b'0', b'0', 10, '', '2017-11-03 13:24:37.000', '1', '2020-05-20 21:19:27.618', NULL, 16, '0');
-INSERT INTO `sys_menu` VALUES ('1101', '用户编辑', '2', 'sys_user_edit', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '', '2017-11-09 01:52:09.000', '1', '2020-05-20 21:19:27.630', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('1102', '用户锁定', '2', 'sys_user_lock', NULL, '1100', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 01:52:48.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1103', '用户删除', '2', 'sys_user_del', NULL, '1100', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 01:54:01.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('11b9ae870fb0fc89c52236faf43f3d96', '任务调度方案查看', '2', 'quartz_job_view', NULL, '322efc9833f2562f8862f882dabdf3d6', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2019-08-15 01:35:56.085', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('1200', '菜单管理', '1', 'sys_menu_view', 'menu', '1000', '1000,', 'menu', 'sys/menu/index', b'0', b'0', b'0', b'0', 40, '', '2017-11-09 01:57:27.000', '1', '2020-05-17 08:56:34.959', NULL, 8, '0');
-INSERT INTO `sys_menu` VALUES ('1201', '菜单编辑', '2', 'sys_menu_edit', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:15:53.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1202', '菜单锁定', '2', 'sys_menu_lock', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:16:23.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1203', '菜单删除', '2', 'sys_menu_del', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:16:43.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1300', '角色管理', '1', 'sys_role_view', 'role', '1000', '1000,', 'role', 'sys/role/index', b'0', b'0', b'0', b'0', 20, '', '2017-11-09 02:13:37.000', '1', '2020-05-17 08:56:34.949', NULL, 7, '0');
-INSERT INTO `sys_menu` VALUES ('1301', '角色编辑', '2', 'sys_role_edit', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:14:18.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1302', '角色锁定', '2', 'sys_role_lock', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:14:41.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1303', '角色删除', '2', 'sys_role_del', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2017-11-09 02:14:59.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1304', '角色查看', '2', 'sys_role_view', NULL, '1300', '1300,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '', '2018-04-20 22:22:55.000', '1', '2020-05-16 12:06:35.180', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('13093fb658c1806ad5bd0600316158f2', '操作日志导出', '2', 'sys_logOperate_export', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 08:50:46.973', '1', '2020-05-18 01:23:57.541', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('133f1408f5e3187d3e1a00b0260b7165', '字典可用', '2', 'sys_dict_lock', NULL, '2200', '1000,2200,', NULL, NULL, b'0', NULL, b'0', b'1', 999, '1', '2020-05-16 08:24:57.559', '1', '2020-05-17 08:55:19.915', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('1400', '部门管理', '1', 'sys_dept_view', 'dept', '1000', '1000,', 'dept', 'sys/dept/index', b'0', b'0', b'0', b'0', 30, '', '2018-01-21 05:17:19.000', '1', '2020-05-17 08:56:34.955', NULL, 5, '0');
-INSERT INTO `sys_menu` VALUES ('1401', '部门编辑', '2', 'sys_dept_edit', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2018-01-21 06:56:16.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1402', '部门锁定', '2', 'sys_dept_lock', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2018-01-21 06:56:59.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('1403', '部门删除', '2', 'sys_dept_del', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2018-01-21 06:57:28.000', NULL, '2020-05-16 12:06:35.180', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('17a713e918513ecd42d3e915d1fc79c1', '测试书籍删除', '2', 'test_testBook_del', NULL, '4f5c94e30f3a64e8e1f1bf10e7247e7e', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2020-05-26 01:15:07.791', '1', '2020-05-30 07:36:27.004', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('18d6b5e0f6b986cd074bf23de11ecd34', '任务调度删除', '2', 'quartz_job_del', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-15 01:36:47.091', '1', '2020-05-17 04:24:22.873', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('1a900c3f10ef5b0987e0a8ee4445316d', '用户查看', '2', 'sys_user_view', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 10, '1', '2019-08-08 08:27:34.000', '1', '2020-05-16 12:06:35.180', NULL, 4, '1');
-INSERT INTO `sys_menu` VALUES ('1ae562534a64d4473899e52497c40b2e', '二级菜单1', '1', NULL, 'menu1', 'eb17cee437ea6b630dad59fff2a059ca', 'eb17cee437ea6b630dad59fff2a059ca,', 'dev', 'nested/menu1/index', b'0', b'0', b'0', b'0', 10, '1', '2020-05-19 02:10:06.354', '1', '2020-05-26 01:13:50.580', NULL, 9, '0');
-INSERT INTO `sys_menu` VALUES ('2000', '系统监控', '0', NULL, '/sys', '-1', NULL, 'system', 'Layout', b'0', b'0', b'0', b'0', 20, '', '2017-11-08 12:56:00.000', '1', '2020-12-26 10:44:28.702', NULL, 45, '0');
-INSERT INTO `sys_menu` VALUES ('2100', '操作日志', '1', NULL, 'log-operate', '2000', '2000,', 'log', 'monitor/log-operate/index', b'0', b'0', b'0', b'0', 40, '', '2017-11-21 06:06:22.000', '1', '2020-05-18 01:23:57.530', NULL, 12, '0');
-INSERT INTO `sys_menu` VALUES ('2101', '操作日志删除', '2', 'sys_logOperate_del', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '', '2017-11-21 12:37:37.000', '1', '2020-05-18 01:23:57.545', NULL, 3, '0');
-INSERT INTO `sys_menu` VALUES ('2200', '字典管理', '1', 'sys_dict_view', 'dict', '1000', '1000,', 'dictionary', 'sys/dict/index', b'0', b'0', b'0', b'0', 50, '', '2017-11-30 03:30:52.000', '1', '2020-05-17 08:56:34.943', NULL, 11, '0');
-INSERT INTO `sys_menu` VALUES ('2201', '字典删除', '2', 'sys_dict_del', NULL, '2200', '1000,2200,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '', '2017-11-30 03:30:11.000', '1', '2020-05-17 08:55:19.918', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('2202', '字典编辑', '2', 'sys_dict_edit', NULL, '2200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '', '2018-05-12 13:34:55.000', '1', '2020-05-17 04:24:22.800', NULL, 3, '0');
-INSERT INTO `sys_menu` VALUES ('2245134851ecd3537c454ba8a3ef915c', '测试书籍查看', '2', 'test_testBook_view', NULL, '8ce9f148e5720ace1b7cf24e0985c47e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 20, '1', '2020-05-26 01:12:05.954', '1', '2020-05-26 01:15:07.779', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('23430df88fb72179c2a85c39eaf4d50b', '任务调度日志清空', '2', 'quartz_jobLog_clean', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2019-08-16 07:12:26.285', '1', '2020-05-17 06:40:21.370', NULL, 2, '1');
-INSERT INTO `sys_menu` VALUES ('247071d42ff40267c8d8c44eac92da67', '生成方案', '1', NULL, 'scheme', '413892fe8d52c1163d6659f51299dc96', '413892fe8d52c1163d6659f51299dc96,', 'dev', 'gen/scheme/index', b'0', b'0', b'0', b'0', 30, '1', '2019-07-22 04:27:35.000', '1', '2020-05-19 02:39:42.026', NULL, 21, '0');
-INSERT INTO `sys_menu` VALUES ('2500', '接口文档', '1', NULL, 'http://albedo-gateway:9999/doc.html#/home', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'swagger', 'tool/swagger/index', b'0', b'1', b'0', b'1', 20, '', '2018-06-27 01:50:32.000', '1', '2020-09-20 14:33:30.267', NULL, 12, '0');
-INSERT INTO `sys_menu` VALUES ('2600', '令牌管理', '1', NULL, 'persistent-token', '2000', '2000,', 'dev', 'monitor/persistent-token/index', b'1', b'0', b'0', b'0', 20, '', '2018-09-04 20:58:41.000', '1', '2020-06-03 20:53:57.431', NULL, 15, '0');
-INSERT INTO `sys_menu` VALUES ('2601', '令牌删除', '2', 'sys_persistentToken_del', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 1, '', '2018-09-04 20:59:50.000', '1', '2020-06-03 20:53:57.444', NULL, 7, '0');
-INSERT INTO `sys_menu` VALUES ('2836ced373377be75936827ecddf7fad', '测试树管理编辑', '2', 'test_testTreeBook_edit', NULL, '8d3517427e527df11d51da528261c915', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-12 05:32:06.856', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('29de79df95e70d8e8fbdc7945acf214a', '任务调度查看', '2', 'quartz_job_view', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 10, '1', '2019-08-15 01:36:47.085', '1', '2020-05-17 03:10:40.648', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('29fa5859c9418ab919e172b7d21162de', '测试树查看', '2', 'test_testTreeBook_view', NULL, 'dab11e5104d690be6991002ae4da0cbd', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2020-05-26 01:15:02.872', '1', '2020-05-30 07:36:26.994', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('2af0268f695b79abdf6e8b10d559d081', '测试树管理删除', '2', 'test_testTreeBook_del', NULL, '8d3517427e527df11d51da528261c915', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2019-08-12 05:32:06.859', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('2c0688c2ad9259b9a7e7088a2f6ade4e', '测试书籍', '1', NULL, 'test-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'views/test/test-book/index', b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 00:36:39.119', '1', '2020-05-26 01:12:05.946', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('2c8fdecfee63a310266b2e4b94fd3f4c', '任务调度日志删除', '2', 'quartz_jobLog_del', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 70, '1', '2019-08-16 07:12:07.842', '1', '2020-05-17 06:40:08.708', NULL, 2, '1');
-INSERT INTO `sys_menu` VALUES ('2c90f69bccf0845b1aca8b072b730c39', '任务调度方案删除', '2', 'quartz_job_del', NULL, '322efc9833f2562f8862f882dabdf3d6', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2019-08-15 01:35:56.092', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('2d9efe7ea66351a96da68e6a7cca5e00', '任务调度方案删除', '2', 'quartz_job_del', NULL, 'c77855e4171d00ae3f97563a8391f70a', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2019-08-15 01:36:03.606', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('310c04e534c9af92935c54b4e1357447', 'tes', '1', 'te', 'te', '54cd27f34ca7e9a8848b92377468965d', '54cd27f34ca7e9a8848b92377468965d,', 'app', 'te', b'0', b'0', b'0', b'1', 999, '1', '2020-05-15 09:17:11.736', '1', '2020-05-16 12:07:50.836', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('322efc9833f2562f8862f882dabdf3d6', '任务调度方案', '1', NULL, 'job', '2000', NULL, 'timing', 'quartz/job/index', b'0', b'0', b'0', b'0', 30, '1', '2019-08-15 01:35:56.081', '1', '2020-05-16 12:07:50.836', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('32814c16f6d56b0e7249e9b28bc2dcc5', '数据源删除', '2', 'gen_datasourceConf_del', NULL, '675dd35e5eba2fd1ced476302c459ac9', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, 'system', '2020-09-20 09:11:12.784', 'system', '2020-09-20 09:11:12.784', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('34acb71268387bb85c80849f7377c7fd', '任务日志导出', '2', 'quartz_jobLog_export', NULL, 'c93f8fca7ca6f8631d383b08ab67009a', '2000,c93f8fca7ca6f8631d383b08ab67009a,', NULL, NULL, b'0', b'0', b'0', b'1', 40, '1', '2019-08-15 01:36:42.000', '1', '2020-05-17 04:43:17.758', NULL, 4, '1');
-INSERT INTO `sys_menu` VALUES ('34dae0db3f9c97482d598f964bd4c9c7', '配置管理', '1', NULL, 'configuration', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'dev', 'admin/configuration/index', b'0', b'0', b'0', b'1', 50, '1', '2019-08-06 08:46:50.000', '1', '2020-05-18 08:54:41.694', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('365a9f74f847322d2b8a0eff2b426ef4', '登录日志导出', '2', 'sys_logLogin_export', NULL, 'a41d4ac1a6cc179696e0dbf284e3efc4', 'a41d4ac1a6cc179696e0dbf284e3efc4,', NULL, NULL, b'0', b'0', b'0', b'1', 40, '1', '2019-08-16 00:26:02.000', '1', '2020-05-18 05:55:26.858', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('3716e80de2d2c7cae1e3b247abe314a1', '测试书籍删除', '2', 'test_testBook_del', NULL, '66ea0b88495c98d0ca8cbd51c84f9d87', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, 'system', '2020-06-07 12:20:23.543', 'system', '2020-06-07 12:20:23.543', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('3956b4690e4f49cfb1e065384c1dc0b9', '测试树', '1', NULL, 'test-tree-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'views/test/test-tree-book/index', b'0', NULL, b'0', b'0', 90, '1', '2020-05-26 00:35:47.300', '1', '2020-05-26 01:12:00.658', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('3c1c5a48888650b9a7ba5a1763f2e205', '任务日志查看', '2', 'quartz_jobLog_view', NULL, 'c93f8fca7ca6f8631d383b08ab67009a', '2000,c93f8fca7ca6f8631d383b08ab67009a,', NULL, NULL, b'0', b'0', b'0', b'1', 20, '1', '2019-08-15 01:36:42.000', '1', '2020-05-17 04:43:17.732', NULL, 4, '1');
-INSERT INTO `sys_menu` VALUES ('413892fe8d52c1163d6659f51299dc96', '代码生成', '0', NULL, '/gen', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'codeConsole', 'gen/index', b'0', b'0', b'0', b'0', 10, '1', '2019-07-21 03:00:48.000', '1', '2020-09-20 09:28:37.322', NULL, 49, '0');
-INSERT INTO `sys_menu` VALUES ('48ffd1c39241ab2b4c206155bb2ae8b4', '测试书籍查看', '2', 'test_testBook_view', NULL, '4f5c94e30f3a64e8e1f1bf10e7247e7e', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2020-05-26 01:15:07.785', '1', '2020-05-30 07:36:26.964', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('4f5c94e30f3a64e8e1f1bf10e7247e7e', '测试书籍', '1', NULL, 'test-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'test/test-book/index', b'0', b'0', b'0', b'0', 30, '1', '2020-05-26 01:15:07.782', '1', '2020-05-30 07:36:34.943', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('511c942a5770b6bfa10fbdb3e2fa9d10', '测试树删除', '2', 'test_testTreeBook_del', NULL, 'c206444a1d18c7b505dea8ed5a617669', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 01:12:00.674', '1', '2020-05-26 01:15:02.864', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('52715698214e88cb09fa4dd1ea5ad348', '生成方案菜单', '2', 'gen_scheme_menu', NULL, '247071d42ff40267c8d8c44eac92da67', '413892fe8d52c1163d6659f51299dc96,247071d42ff40267c8d8c44eac92da67,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-26 04:03:03.000', '1', '2020-05-19 02:39:42.037', NULL, 8, '0');
-INSERT INTO `sys_menu` VALUES ('5404c3df9f771dbc0237578814bbe44b', 'Yaml编辑器', '1', NULL, 'yaml', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'dev', 'components/YamlEdit', b'0', b'0', b'0', b'1', 50, '1', '2020-05-16 12:22:43.364', '1', '2020-05-16 12:22:43.364', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('5431004fa397e0280fd75c4a3b73c4aa', '登录日志查看', '2', 'sys_logLogin_view', NULL, 'a41d4ac1a6cc179696e0dbf284e3efc4', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2019-08-16 00:26:02.349', '1', '2020-05-18 05:55:26.848', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('54cd27f34ca7e9a8848b92377468965d', 'test', '1', 'test', 'tes', '-1', NULL, 'Steve-Jobs', 'tes', b'1', b'0', b'1', b'0', 999, '1', '2020-05-15 09:16:52.599', '1', '2020-05-16 12:07:50.836', NULL, 2, '1');
-INSERT INTO `sys_menu` VALUES ('5b39ca5a25c772105c71f8c51d1f19d4', '三级菜单1', '1', NULL, 'menu1-1', '1ae562534a64d4473899e52497c40b2e', 'eb17cee437ea6b630dad59fff2a059ca,1ae562534a64d4473899e52497c40b2e,', 'dev', 'nested/menu1/menu1-1', b'0', b'0', b'0', b'1', 30, '1', '2020-05-19 02:11:16.436', '1', '2020-05-26 01:13:50.586', NULL, 6, '0');
-INSERT INTO `sys_menu` VALUES ('5d94bc2151ec9572966e5e768824752d', '测试树查看', '2', 'test_testTreeBook_view', NULL, '3956b4690e4f49cfb1e065384c1dc0b9', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 20, '1', '2020-05-26 00:35:47.304', '1', '2020-05-26 01:12:00.658', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('5da31e19f05edeea6a7041e3101deefe', '任务日志删除', '2', 'quartz_jobLog_del', NULL, 'c93f8fca7ca6f8631d383b08ab67009a', '2000,c93f8fca7ca6f8631d383b08ab67009a,', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2019-08-15 01:36:42.000', '1', '2020-05-17 04:43:17.702', NULL, 4, '1');
-INSERT INTO `sys_menu` VALUES ('618ee4b9660265a85a8b61277de2a579', '富文本', '1', NULL, 'editor', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'fwb', 'components/Editor', b'0', b'0', b'0', b'1', 30, '1', '2020-05-16 12:16:40.552', '1', '2020-05-16 12:16:50.233', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('621e50e1c7d66a1febeb699bebb2fe35', '任务调度执行', '2', 'quartz_job_run', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 20, '1', '2019-08-16 07:10:59.000', '1', '2020-05-17 03:11:01.548', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('64b61b8966e1c74d9b309069b2f622d1', '图标库', '1', NULL, 'icons', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'icon', 'components/icons/index', b'0', b'0', b'0', b'1', 10, '1', '2020-05-16 12:14:28.945', '1', '2020-05-16 12:15:00.712', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('66ea0b88495c98d0ca8cbd51c84f9d87', '测试书籍', '1', NULL, 'test-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'test/test-book/index', b'0', b'0', b'0', b'0', 30, 'system', '2020-06-07 12:20:23.527', 'system', '2020-06-07 12:20:23.527', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('675dd35e5eba2fd1ced476302c459ac9', '数据源', '1', NULL, 'datasource-conf', '413892fe8d52c1163d6659f51299dc96', 'ef2382c0cc2d99ee73444e684237a88a,413892fe8d52c1163d6659f51299dc96,', 'database', 'gen/datasource-conf/index', b'0', b'0', b'0', b'0', 5, 'system', '2020-09-20 09:11:12.765', '1', '2020-09-20 09:27:40.167', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('6e3f89cda84ac2c6e715e7812c102ae8', '在线用户', '1', '', 'user-online', '2000', '2000,', 'Steve-Jobs', 'monitor/user-online/index', b'0', b'0', b'0', b'0', 30, '1', '2019-08-08 00:03:52.000', '1', '2020-05-17 08:55:59.718', NULL, 10, '0');
-INSERT INTO `sys_menu` VALUES ('74f2b2a8871a298e0acc4d7129d10e9c', '任务调度', '1', NULL, 'job', '1000', '1000,', 'timing', 'quartz/job/index', b'0', b'0', b'0', b'0', 60, '1', '2019-08-15 01:36:47.081', '1', '2020-05-17 08:56:34.966', NULL, 22, '0');
-INSERT INTO `sys_menu` VALUES ('76d6087052dc26b32f3efa71b9cc119b', '任务调度日志', '2', 'quartz_jobLog_view', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 50, '1', '2019-08-16 07:11:30.986', '1', '2020-05-17 04:43:44.992', NULL, 3, '0');
-INSERT INTO `sys_menu` VALUES ('7754b1457826c48290bc189bb1289740', '支付宝工具', '1', NULL, 'alipay', 'ef2382c0cc2d99ee73444e684237a88a', 'ef2382c0cc2d99ee73444e684237a88a,', 'alipay', 'tool/alipay/index', b'0', b'0', b'0', b'1', 40, '1', '2020-05-18 08:58:06.876', '1', '2020-05-19 17:17:53.063', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('795b4d5cf0eb3ed80e24cbab39727b9d', 'Markdown', '1', NULL, 'markdown', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'markdown', 'components/MarkDown', b'0', b'0', b'0', b'1', 40, '1', '2020-05-16 12:21:46.675', '1', '2020-05-16 12:22:53.122', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('7b14af9e9fbff286856338a194422b07', '令牌查看', '2', 'sys_persistentToken_view', NULL, '2600', '2600,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-09 00:44:25.617', '1', '2020-06-03 20:53:57.448', NULL, 5, '0');
-INSERT INTO `sys_menu` VALUES ('7c7a876f4cceba2dd92aa539dea6b6e5', '任务日志清空', '2', 'quartz_jobLog_clean', NULL, 'c93f8fca7ca6f8631d383b08ab67009a', '2000,c93f8fca7ca6f8631d383b08ab67009a,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-16 04:55:37.892', '1', '2020-05-17 04:43:17.774', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('84f55c785ae71eb65e7325e148818041', '测试树查看', '2', 'test_testTreeBook_view', NULL, 'c206444a1d18c7b505dea8ed5a617669', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 20, '1', '2020-05-26 01:12:00.667', '1', '2020-05-26 01:15:02.864', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('862fa87cbc10766da4de286804e01d13', '测试树删除', '2', 'test_testTreeBook_del', NULL, 'dab11e5104d690be6991002ae4da0cbd', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2020-05-26 01:15:02.877', '1', '2020-05-30 07:36:26.973', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('86c0be7a1d82ebf1db2678e76a89da32', '测试书籍查看', '2', 'test_testBook_view', NULL, '66ea0b88495c98d0ca8cbd51c84f9d87', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, 'system', '2020-06-07 12:20:23.535', 'system', '2020-06-07 12:20:23.535', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('8ce9f148e5720ace1b7cf24e0985c47e', '测试书籍', '1', NULL, 'test-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'test/test-book/index', b'0', NULL, b'0', b'0', 90, '1', '2020-05-26 01:12:05.950', '1', '2020-05-26 01:15:07.779', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('8d3517427e527df11d51da528261c915', '测试树管理', '1', NULL, 'test-tree-book', '413892fe8d52c1163d6659f51299dc96', NULL, 'dev', 'test/test-tree-book/index', b'0', b'0', b'0', b'0', 30, '1', '2019-08-12 05:32:06.849', '1', '2020-05-16 12:07:50.836', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('92f78825551a22fa130c03066f398448', '在线用户删除', '2', 'sys_userOnline_del', NULL, '6e3f89cda84ac2c6e715e7812c102ae8', '2000,6e3f89cda84ac2c6e715e7812c102ae8,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 00:06:33.448', '1', '2020-05-17 08:55:59.728', NULL, 5, '0');
-INSERT INTO `sys_menu` VALUES ('94b57a562063d103423e2c6125cb30ad', '菜单查看', '2', 'sys_menu_view', NULL, '1200', '1200,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 08:27:59.697', '1', '2020-05-16 12:06:35.180', NULL, 1, '1');
-INSERT INTO `sys_menu` VALUES ('9763343d9cce11ce9eb4f21c8e49122b', '任务调度编辑', '2', 'quartz_job_edit', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-15 01:36:47.088', '1', '2020-05-17 03:11:35.820', NULL, 1, '0');
-INSERT INTO `sys_menu` VALUES ('97722c6d56c8b9990cc3c1a6eea3d6bb', '业务表编辑', '1', 'gen_table_edit', 'edit', '413892fe8d52c1163d6659f51299dc96', 'ef2382c0cc2d99ee73444e684237a88a,413892fe8d52c1163d6659f51299dc96,', NULL, 'gen/table/edit', b'1', b'0', b'0', b'1', 20, '1', '2019-07-22 04:24:02.000', '1', '2020-05-19 02:39:42.048', NULL, 10, '0');
-INSERT INTO `sys_menu` VALUES ('9f02e346b5350366968f217daef3f1b7', '图表库', '1', NULL, 'Echarts', 'd9d87cf8ed7c29ed2eda06d5dec4dcda', 'd9d87cf8ed7c29ed2eda06d5dec4dcda,', 'chart', 'components/Echarts', b'0', b'0', b'0', b'1', 20, '1', '2020-05-16 12:12:39.827', '1', '2020-05-16 12:15:09.128', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('a18b33e15bde209a3c9115517c56d9ec', '业务表', '1', '', 'table', '413892fe8d52c1163d6659f51299dc96', 'ef2382c0cc2d99ee73444e684237a88a,413892fe8d52c1163d6659f51299dc96,', 'list', 'gen/table/index', b'0', b'0', b'0', b'0', 10, '1', '2019-07-21 03:02:02.000', '1', '2020-09-20 09:28:37.336', NULL, 24, '0');
-INSERT INTO `sys_menu` VALUES ('a41d4ac1a6cc179696e0dbf284e3efc4', '登录日志', '1', NULL, 'log-login', '2000', '2000,', 'log', 'monitor//log-login/index', b'0', b'0', b'0', b'0', 50, '1', '2019-08-16 00:26:02.345', '1', '2020-05-18 05:55:36.150', NULL, 8, '1');
-INSERT INTO `sys_menu` VALUES ('afdc5bea209c6e212a152fb1d73ac973', '测试书籍编辑', '2', 'test_testBook_edit', NULL, '66ea0b88495c98d0ca8cbd51c84f9d87', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, 'system', '2020-06-07 12:20:23.540', 'system', '2020-06-07 12:20:23.540', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('b6bcb9fa8a3726bfbffb955dc9f56b91', '测试书籍编辑', '2', 'test_testBook_edit', NULL, '8ce9f148e5720ace1b7cf24e0985c47e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 01:12:05.958', '1', '2020-05-26 01:15:07.779', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('b8eafb6c3a8bf0919230f0bfa59d86b6', '二级菜单2', '1', NULL, 'menu2', 'eb17cee437ea6b630dad59fff2a059ca', 'eb17cee437ea6b630dad59fff2a059ca,', 'dev', 'nested/menu2/index', b'0', b'0', b'0', b'1', 30, '1', '2020-05-19 02:14:32.907', '1', '2020-05-19 02:15:14.535', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('b961670cbf3454f5927c4bd2a327e915', '生成方案删除', '2', 'gen_scheme_del', NULL, '247071d42ff40267c8d8c44eac92da67', '413892fe8d52c1163d6659f51299dc96,247071d42ff40267c8d8c44eac92da67,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-22 04:30:18.000', '1', '2020-05-19 02:39:42.072', NULL, 8, '0');
-INSERT INTO `sys_menu` VALUES ('b963a451117f430703817b3b6c87402a', '任务调度日志导出', '2', 'quartz_jobLog_export', NULL, '74f2b2a8871a298e0acc4d7129d10e9c', '74f2b2a8871a298e0acc4d7129d10e9c,', NULL, NULL, b'0', b'0', b'0', b'1', 60, '1', '2019-08-16 07:13:16.742', '1', '2020-05-17 04:43:54.409', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('ba860cfe687fd01fd492c683907936aa', '测试树编辑', '2', 'test_testTreeBook_edit', NULL, 'dab11e5104d690be6991002ae4da0cbd', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2020-05-26 01:15:02.874', '1', '2020-05-30 07:36:27.013', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('bb9dd4b7a2a462193d0f01517308f812', '业务表查看', '2', 'gen_table_view', NULL, 'a18b33e15bde209a3c9115517c56d9ec', 'ef2382c0cc2d99ee73444e684237a88a,413892fe8d52c1163d6659f51299dc96,a18b33e15bde209a3c9115517c56d9ec,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 23:47:39.828', '1', '2020-09-20 09:28:37.349', NULL, 6, '0');
-INSERT INTO `sys_menu` VALUES ('bceaa6c321109b9becd91e3eac3647c0', '测试书籍编辑', '2', 'test_testBook_edit', NULL, '4f5c94e30f3a64e8e1f1bf10e7247e7e', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2020-05-26 01:15:07.788', '1', '2020-05-30 07:36:26.983', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('bd62904371247f56594741ff8e9bded9', '用户导出', '2', 'sys_user_export', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2019-08-08 08:50:02.000', '1', '2020-05-16 12:06:35.180', NULL, 7, '0');
-INSERT INTO `sys_menu` VALUES ('c0ba37c10abaecd89a738c5cf2a2fd24', '服务监控', '1', 'sys_monitor_view', 'http://albedo-gateway:5001', '2000', '2000,', 'codeConsole', '', b'0', b'0', b'0', b'1', 40, '1', '2019-08-06 08:21:10.000', '1', '2020-12-26 10:40:29.747', NULL, 9, '0');
-INSERT INTO `sys_menu` VALUES ('c206444a1d18c7b505dea8ed5a617669', '测试树', '1', NULL, 'test-tree-book', 'eb17cee437ea6b630dad59fff2a059ca', 'eb17cee437ea6b630dad59fff2a059ca,', 'icon-right-square', 'test/test-tree-book/index', b'0', b'0', b'1', b'0', 80, '1', '2020-05-26 01:12:00.664', '1', '2020-05-26 01:15:02.864', NULL, 2, '1');
-INSERT INTO `sys_menu` VALUES ('c77855e4171d00ae3f97563a8391f70a', '任务调度方案', '1', NULL, 'job', '2000', NULL, 'timing', 'quartz/job/index', b'0', b'0', b'0', b'0', 30, '1', '2019-08-15 01:36:03.593', '1', '2020-05-16 12:07:50.836', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('c7bc1d64972e77c15ed42d5cf21d9ec5', '测试树删除', '2', 'test_testTreeBook_del', NULL, '3956b4690e4f49cfb1e065384c1dc0b9', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 00:35:47.314', '1', '2020-05-26 01:12:00.658', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('c8b84044eac87a2e2ed0e10da9e095d2', '测试书籍编辑', '2', 'test_testBook_edit', NULL, '2c0688c2ad9259b9a7e7088a2f6ade4e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 00:36:39.128', '1', '2020-05-26 01:12:05.946', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('c93f8fca7ca6f8631d383b08ab67009a', '任务日志', '1', NULL, 'job-log', '2000', '2000,', 'log', 'quartz/job-log/index', b'0', b'0', b'0', b'0', 60, '1', '2019-08-15 01:36:42.000', '1', '2020-05-17 04:43:26.449', NULL, 14, '1');
-INSERT INTO `sys_menu` VALUES ('caaec41413c5713c6f290efe08c11415', '生成方案查看', '2', 'gen_scheme_view', NULL, '247071d42ff40267c8d8c44eac92da67', '413892fe8d52c1163d6659f51299dc96,247071d42ff40267c8d8c44eac92da67,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 23:48:09.000', '1', '2020-05-19 02:39:42.095', NULL, 5, '0');
-INSERT INTO `sys_menu` VALUES ('d4c16faad8f883650a3a8eab829ebad9', '操作日志查看', '2', 'sys_logOperate_view', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 08:51:38.454', '1', '2020-05-18 01:23:57.546', NULL, 2, '0');
-INSERT INTO `sys_menu` VALUES ('d4ceb3697e8e2384824ac3093cccb5e0', '数据源编辑', '2', 'gen_datasourceConf_edit', NULL, '675dd35e5eba2fd1ced476302c459ac9', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, 'system', '2020-09-20 09:11:12.778', 'system', '2020-09-20 09:11:12.778', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('d5642a62bb1dc261baaf7dc883bba7e1', '测试书籍删除', '2', 'test_testBook_del', NULL, '8ce9f148e5720ace1b7cf24e0985c47e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 01:12:05.961', '1', '2020-05-26 01:15:07.779', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('d5897b78312e09024546530fd8b2e8fc', '任务调度方案查看', '2', 'quartz_job_view', NULL, 'c77855e4171d00ae3f97563a8391f70a', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2019-08-15 01:36:03.598', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('d9d87cf8ed7c29ed2eda06d5dec4dcda', '组件管理', '0', NULL, '/components', '-1', NULL, 'zujian', 'Layout', b'0', b'0', b'0', b'0', 80, '1', '2020-05-16 11:57:28.521', '1', '2020-05-17 04:38:57.307', NULL, 26, '0');
-INSERT INTO `sys_menu` VALUES ('da5709484a056154e0e89891eea6d6ac', '测试书籍查看', '2', 'test_testBook_view', NULL, '2c0688c2ad9259b9a7e7088a2f6ade4e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 20, '1', '2020-05-26 00:36:39.124', '1', '2020-05-26 01:12:05.946', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('dab11e5104d690be6991002ae4da0cbd', '测试树', '1', NULL, 'test-tree-book', 'eb17cee437ea6b630dad59fff2a059ca', NULL, 'icon-right-square', 'test/test-tree-book/index', b'0', b'0', b'0', b'0', 30, '1', '2020-05-26 01:15:02.868', '1', '2020-05-30 07:36:34.931', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('e086c4aa4943a883b29cf94680608b89', '生成方案代码', '2', 'gen_scheme_code', NULL, '247071d42ff40267c8d8c44eac92da67', '413892fe8d52c1163d6659f51299dc96,247071d42ff40267c8d8c44eac92da67,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 23:55:37.000', '1', '2020-05-19 02:39:42.099', NULL, 3, '0');
-INSERT INTO `sys_menu` VALUES ('e590df103d3382d3091eae818f68626b', '测试树管理查看', '2', 'test_testTreeBook_view', NULL, '8d3517427e527df11d51da528261c915', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2019-08-12 05:32:06.853', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('e5ea38c1f97dee0043e78f3fb27b25d6', '生成方案编辑', '2', 'gen_scheme_edit', NULL, '247071d42ff40267c8d8c44eac92da67', '413892fe8d52c1163d6659f51299dc96,247071d42ff40267c8d8c44eac92da67,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-22 04:29:14.000', '1', '2020-05-19 02:39:42.102', NULL, 6, '0');
-INSERT INTO `sys_menu` VALUES ('e66c7efccb9e1a0519afc328339e9108', '登录日志删除', '2', 'sys_logLogin_del', NULL, 'a41d4ac1a6cc179696e0dbf284e3efc4', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2019-08-16 00:26:02.357', '1', '2020-05-18 05:55:26.867', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('e6ea0a5dc986c69852010e4a24329cf1', '任务调度方案编辑', '2', 'quartz_job_edit', NULL, '322efc9833f2562f8862f882dabdf3d6', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-15 01:35:56.089', '1', '2020-05-16 12:06:35.180', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('e710a66583fe0e324492462adb16014e', '业务表删除', '2', 'gen_table_del', NULL, 'a18b33e15bde209a3c9115517c56d9ec', 'ef2382c0cc2d99ee73444e684237a88a,413892fe8d52c1163d6659f51299dc96,a18b33e15bde209a3c9115517c56d9ec,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-22 04:24:45.000', '1', '2020-09-20 09:28:37.353', NULL, 7, '0');
-INSERT INTO `sys_menu` VALUES ('eb17cee437ea6b630dad59fff2a059ca', '多级菜单', '0', NULL, '/nested', '-1', NULL, 'dev', 'Layout', b'0', b'0', b'0', b'0', 100, '1', '2020-05-19 02:09:23.393', '1', '2021-02-06 14:35:21.519', NULL, 15, '0');
-INSERT INTO `sys_menu` VALUES ('ef2382c0cc2d99ee73444e684237a88a', '系统工具', '0', NULL, '/admin', '-1', NULL, 'sys-tools', 'Layout', b'0', b'0', b'0', b'0', 30, '1', '2019-08-06 06:58:12.000', '1', '2020-09-20 14:33:30.208', NULL, 50, '0');
-INSERT INTO `sys_menu` VALUES ('f15e2186907d22765cd149a94905842a', '在线用户强退', '2', 'sys_userOnline_logout', NULL, '6e3f89cda84ac2c6e715e7812c102ae8', '2000,6e3f89cda84ac2c6e715e7812c102ae8,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-12 01:57:51.502', '1', '2020-05-17 08:55:59.729', NULL, 5, '0');
-INSERT INTO `sys_menu` VALUES ('f6d6b0be40b21899380fd7983d371c3a', '测试书籍删除', '2', 'test_testBook_del', NULL, '2c0688c2ad9259b9a7e7088a2f6ade4e', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 80, '1', '2020-05-26 00:36:39.132', '1', '2020-05-26 01:12:05.946', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('f88f4f338734f70af948d078439980aa', '数据源查看', '2', 'gen_datasourceConf_view', NULL, '675dd35e5eba2fd1ced476302c459ac9', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, 'system', '2020-09-20 09:11:12.771', 'system', '2020-09-20 09:11:12.771', NULL, 0, '0');
-INSERT INTO `sys_menu` VALUES ('f9ad900ea905f0d388d9d2da66a42aef', '测试树编辑', '2', 'test_testTreeBook_edit', NULL, 'c206444a1d18c7b505dea8ed5a617669', NULL, NULL, NULL, b'0', NULL, b'0', b'0', 40, '1', '2020-05-26 01:12:00.671', '1', '2020-05-26 01:15:02.864', NULL, 0, '1');
-INSERT INTO `sys_menu` VALUES ('fe4c7938e146ec223e99d426aaa87109', '三级菜单2', '1', NULL, 'menu1-2', '1ae562534a64d4473899e52497c40b2e', 'eb17cee437ea6b630dad59fff2a059ca,1ae562534a64d4473899e52497c40b2e,', 'dev', 'nested/menu1/menu1-2', b'0', b'0', b'0', b'1', 30, '1', '2020-05-19 02:13:18.819', '1', '2020-05-26 01:13:50.588', NULL, 3, '0');
+INSERT INTO `sys_menu` VALUES (330, '生成方案编辑', '2', 'gen_scheme_edit', NULL, '9999', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-21 13:29:14.000', '1', '2021-11-22 15:20:28.451', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (334, '服务监控', '1', 'sys_monitor_view', 'server', '2000', '2000,', 'codeConsole', 'monitor/server/index', b'0', b'0', b'0', b'1', 40, '1', '2019-08-05 17:21:10.000', '1', '2021-11-19 18:29:35.734', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (335, '生成方案查看', '2', 'gen_scheme_view', NULL, '9999', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 08:48:09.000', '1', '2021-11-22 15:20:28.453', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (336, '操作日志查看', '2', 'sys_logOperate_view', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-07 17:51:38.454', '1', '2021-11-19 18:29:35.736', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (337, '数据源编辑', '2', 'gen_datasourceConf_edit', NULL, '8877', '', NULL, NULL, b'0', b'0', b'0', b'1', 40, '1', '2020-09-20 09:11:12.778', '1', '2021-11-22 15:30:14.383', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (338, '组件管理', '0', NULL, '/components', '-1', NULL, 'zujian', 'Layout', b'0', b'0', b'0', b'0', 80, '1', '2020-05-15 20:57:28.521', '1', '2021-11-19 18:29:35.739', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (339, '生成方案代码', '2', 'gen_scheme_code', NULL, '9999', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 08:55:37.000', '1', '2021-11-22 15:20:28.443', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (440, '三级菜单2', '1', NULL, 'menu1-2', '9000', '', 'dev', 'nested/menu1/menu1-2', b'0', b'0', b'0', b'1', 30, '1', '2020-05-18 11:13:18.819', '1', '2021-11-22 15:34:11.433', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (445, '业务表删除', '2', 'gen_table_del', NULL, '7000', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-21 13:24:45.000', '1', '2021-11-22 15:20:53.409', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (446, '多级菜单', '0', NULL, '/nested', '-1', NULL, 'dev', 'Layout', b'0', b'0', b'0', b'0', 100, '1', '2020-05-18 11:09:23.393', '1', '2021-11-19 18:29:35.745', NULL, 9, '0', '0000');
+INSERT INTO `sys_menu` VALUES (447, '系统工具', '0', NULL, '/admin', '-1', NULL, 'sys-tools', 'Layout', b'0', b'0', b'0', b'0', 30, '1', '2019-08-05 15:58:12.000', '1', '2021-11-19 18:29:35.750', NULL, 2, '0', '0000');
+INSERT INTO `sys_menu` VALUES (448, '在线用户强退', '2', 'sys_userOnline_logout', NULL, '7766', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 10:57:51.502', '1', '2021-11-22 15:21:25.665', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (449, '数据源查看', '2', 'gen_datasourceConf_view', NULL, '8877', '', NULL, NULL, b'0', b'0', b'0', b'1', 20, '1', '2020-09-20 09:11:12.771', '1', '2021-11-22 15:30:14.384', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1000, '系统管理', '0', NULL, '/perm', '-1', NULL, 'menu', 'Layout', b'0', b'0', b'0', b'0', 10, '1', '2018-09-28 08:29:53.000', '1', '2021-12-26 11:31:40.144', NULL, 3, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1100, '用户管理', '1', 'sys_user_view', 'user', '1000', '1000,', 'peoples', 'sys/user/index', b'0', b'0', b'0', b'0', 10, '1', '2017-11-02 22:24:37.000', '1', '2021-12-26 11:31:40.146', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1101, '用户编辑', '2', 'sys_user_edit', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2017-11-08 09:52:09.000', '1', '2021-12-26 11:31:40.147', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1102, '用户锁定', '2', 'sys_user_lock', NULL, '1100', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 09:52:48.000', NULL, '2021-12-26 11:31:40.148', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1103, '用户删除', '2', 'sys_user_del', NULL, '1100', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 09:54:01.000', NULL, '2021-12-26 11:31:40.149', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1166, '富文本', '1', NULL, 'editor', '338', '', 'fwb', 'components/Editor', b'0', b'0', b'0', b'1', 30, '1', '2020-05-15 21:16:40.552', '1', '2021-11-22 15:33:24.892', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1200, '菜单管理', '1', 'sys_menu_view', 'menu', '1000', '1000,', 'menu', 'sys/menu/index', b'0', b'0', b'0', b'0', 40, '1', '2017-11-08 09:57:27.000', '1', '2021-12-26 11:31:40.151', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1201, '菜单编辑', '2', 'sys_menu_edit', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:15:53.000', NULL, '2021-12-26 11:31:40.152', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1202, '菜单锁定', '2', 'sys_menu_lock', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:16:23.000', NULL, '2021-12-26 11:31:40.154', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1203, '菜单删除', '2', 'sys_menu_del', NULL, '1200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:16:43.000', NULL, '2021-12-26 11:31:40.155', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1300, '角色管理', '1', 'sys_role_view', 'role', '1000', '1000,', 'role', 'sys/role/index', b'0', b'0', b'0', b'0', 20, '1', '2017-11-08 10:13:37.000', '1', '2021-12-26 11:31:40.156', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1301, '角色编辑', '2', 'sys_role_edit', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:14:18.000', NULL, '2021-12-26 11:31:40.158', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1302, '角色锁定', '2', 'sys_role_lock', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:14:41.000', NULL, '2021-12-26 11:31:40.159', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1303, '角色删除', '2', 'sys_role_del', NULL, '1300', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2017-11-08 10:14:59.000', NULL, '2021-12-26 11:31:40.161', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1400, '部门管理', '1', 'sys_dept_view', 'dept', '1000', '1000,', 'dept', 'sys/dept/index', b'0', b'0', b'0', b'0', 30, '1', '2018-01-20 13:17:19.000', '1', '2021-12-26 11:31:40.163', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1401, '部门编辑', '2', 'sys_dept_edit', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2018-01-20 14:56:16.000', NULL, '2021-12-26 11:31:40.164', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1402, '部门锁定', '2', 'sys_dept_lock', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2018-01-20 14:56:59.000', NULL, '2021-12-26 11:31:40.165', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1403, '部门删除', '2', 'sys_dept_del', NULL, '1400', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2018-01-20 14:57:28.000', NULL, '2021-12-26 11:31:40.166', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2000, '系统监控', '0', NULL, '/sys', '-1', NULL, 'system', 'Layout', b'0', b'0', b'0', b'0', 20, '1', '2017-11-07 20:56:00.000', '1', '2021-11-19 18:29:35.780', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2100, '操作日志', '1', NULL, 'log-operate', '2000', '2000,', 'log', 'monitor/log-operate/index', b'0', b'0', b'0', b'0', 60, '1', '2017-11-20 14:06:22.000', '1', '2021-11-19 18:29:35.781', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2101, '操作日志删除', '2', 'sys_logOperate_del', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2017-11-20 20:37:37.000', '1', '2021-11-19 18:29:35.782', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2200, '字典管理', '1', 'sys_dict_view', 'dict', '1000', '1000,', 'dictionary', 'sys/dict/index', b'0', b'0', b'0', b'0', 50, '1', '2017-11-29 11:30:52.000', '1', '2021-12-26 11:31:40.171', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2201, '字典删除', '2', 'sys_dict_del', NULL, '2200', '1000,2200,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2017-11-29 11:30:11.000', '1', '2021-12-26 11:31:40.173', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2202, '字典编辑', '2', 'sys_dict_edit', NULL, '2200', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 30, '1', '2018-05-11 22:34:55.000', '1', '2021-12-26 11:31:40.174', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2500, '接口文档', '1', NULL, 'swagger2', '447', '', 'swagger', 'tool/swagger/index', b'0', b'0', b'0', b'1', 20, '1', '2018-06-26 10:50:32.000', '1', '2021-11-22 15:31:37.510', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2600, '令牌管理', '1', NULL, 'persistent-token', '2000', '2000,', 'dev', 'monitor/persistent-token/index', b'0', b'0', b'0', b'0', 20, '1', '2018-09-04 05:58:41.000', '1', '2021-11-19 18:29:35.788', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (2601, '令牌删除', '2', 'sys_persistentToken_del', NULL, '2600', '', NULL, NULL, b'0', b'0', b'0', b'1', 1, '1', '2018-09-04 05:59:50.000', '1', '2021-11-19 18:29:35.789', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (3333, '在线用户查看', '2', 'sys_userOnline_view', NULL, '7766', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-07 09:05:28.000', '1', '2021-11-22 15:21:25.667', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (4422, '任务调度执行', '2', 'quartz_job_run', NULL, '6655', '', NULL, NULL, b'0', b'0', b'0', b'1', 20, '1', '2019-08-15 16:10:59.000', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (4433, '支付宝工具', '1', NULL, 'alipay', '447', '', 'alipay', 'tool/alipay/index', b'0', b'0', b'0', b'1', 40, '1', '2020-05-17 17:58:06.876', '1', '2021-11-22 15:31:26.775', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (4444, '邮件工具', '1', NULL, 'email', '447', '', 'email', 'tool/email/index', b'0', b'0', b'0', b'1', 30, '1', '2020-05-17 17:56:56.008', '1', '2021-11-22 15:31:26.773', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (4455, '任务调度查看', '2', 'quartz_job_view', NULL, '6655', '', NULL, NULL, b'0', b'0', b'0', b'1', 10, '1', '2019-08-14 10:36:47.085', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (5544, '任务调度日志', '2', 'quartz_jobLog_view', NULL, '6655', '', NULL, NULL, b'0', b'0', b'0', b'1', 50, '1', '2019-08-15 16:11:30.986', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (5555, '操作日志导出', '2', 'sys_logOperate_export', NULL, '2100', '2000,2100,', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-07 17:50:46.973', '1', '2021-11-19 18:29:35.796', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (5566, '数据源删除', '2', 'gen_datasourceConf_del', NULL, '8877', '', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2020-09-20 09:11:12.784', '1', '2021-11-22 15:30:14.380', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (5588, '令牌查看', '2', 'sys_persistentToken_view', NULL, '2600', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-08 09:44:25.617', '1', '2021-11-19 18:29:35.798', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (6000, '图表库', '1', NULL, 'Echarts', '338', '', 'chart', 'components/Echarts', b'0', b'0', b'0', b'1', 20, '1', '2020-05-15 21:12:39.827', '1', '2021-11-22 15:33:36.828', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (6655, '任务调度', '1', NULL, 'job', '1000', '1000,', 'timing', 'quartz/job/index', b'0', b'0', b'0', b'0', 60, '1', '2019-08-14 10:36:47.081', '1', '2021-12-26 12:00:55.719', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (6666, '字典可用', '2', 'sys_dict_lock', NULL, '2200', '1000,2200,', NULL, NULL, b'0', NULL, b'0', b'1', 999, '1', '2020-05-15 17:24:57.559', '1', '2021-12-26 11:31:40.179', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (6677, '代码生成', '0', NULL, '/gen', '447', '', 'codeConsole', 'gen/index', b'0', b'0', b'0', b'0', 10, '1', '2019-07-20 12:00:48.000', '1', '2021-11-22 15:32:02.221', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (7000, '业务表', '1', '', 'table', '6677', '', 'list', 'gen/table/index', b'0', b'0', b'0', b'0', 10, '1', '2019-07-20 12:02:02.000', '1', '2021-11-22 15:32:49.229', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (7700, '业务表编辑', '1', 'gen_table_edit', 'edit', '6677', '', NULL, 'gen/table/edit', b'1', b'0', b'0', b'1', 20, '1', '2019-07-21 13:24:02.000', '1', '2021-11-22 15:20:53.411', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (7766, '在线用户', '1', '', 'user-online', '2000', '2000,', 'Steve-Jobs', 'monitor/user-online/index', b'0', b'0', b'0', b'0', 30, '1', '2019-08-07 09:03:52.000', '1', '2021-11-19 18:29:35.805', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (7777, '任务调度删除', '2', 'quartz_job_del', NULL, '6655', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2019-08-14 10:36:47.091', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (7788, '生成方案菜单', '2', 'gen_scheme_menu', NULL, '9999', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-25 13:03:03.000', '1', '2021-11-22 15:20:28.452', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (7799, '任务调度编辑', '2', 'quartz_job_edit', NULL, '6655', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-14 10:36:47.088', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (8855, 'Markdown', '1', NULL, 'markdown', '338', '', 'markdown', 'components/MarkDown', b'0', b'0', b'0', b'1', 40, '1', '2020-05-15 21:21:46.675', '1', '2021-11-22 15:33:22.311', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (8877, '数据源', '1', NULL, 'datasource-conf', '6677', '', 'database', 'gen/datasource-conf/index', b'0', b'0', b'0', b'0', 5, '1', '2020-09-20 09:11:12.765', '1', '2021-11-22 15:33:20.945', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (8888, '二级菜单1', '1', NULL, 'menu1', '446', '', 'dev', 'nested/menu1/index', b'0', b'0', b'0', b'0', 10, '1', '2020-05-18 11:10:06.354', '1', '2021-11-22 15:33:58.182', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (8899, 'Yaml编辑器', '1', NULL, 'yaml', '338', '', 'dev', 'components/YamlEdit', b'0', b'0', b'0', b'1', 50, '1', '2020-05-15 21:22:43.364', '1', '2021-11-22 15:33:14.776', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9000, '二级菜单2', '1', NULL, 'menu2', '446', '', 'dev', 'nested/menu2/index', b'0', b'0', b'0', b'1', 30, '1', '2020-05-18 11:14:32.907', '1', '2021-11-22 15:34:07.276', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9900, '三级菜单1', '1', NULL, 'menu1-1', '9000', '', 'dev', 'nested/menu1/menu1-1', b'0', b'0', b'0', b'1', 30, '1', '2020-05-18 11:11:16.436', '1', '2021-11-22 15:34:09.295', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9911, '生成方案删除', '2', 'gen_scheme_del', NULL, '9999', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-07-21 13:30:18.000', '1', '2021-11-22 15:20:28.449', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9922, '任务调度日志导出', '2', 'quartz_jobLog_export', NULL, '6655', '', NULL, NULL, b'0', b'0', b'0', b'1', 60, '1', '2019-08-15 16:13:16.742', '1', '2021-12-26 12:00:46.281', NULL, 0, '1', '0000');
+INSERT INTO `sys_menu` VALUES (9944, '业务表查看', '2', 'gen_table_view', NULL, '7000', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-11 08:47:39.828', '1', '2021-11-22 15:20:53.413', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9955, '用户导出', '2', 'sys_user_export', NULL, '1100', '1000,1100,', NULL, NULL, b'0', b'0', b'0', b'1', 80, '1', '2019-08-07 17:50:02.000', '1', '2021-12-26 11:31:40.170', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9977, '在线用户删除', '2', 'sys_userOnline_del', NULL, '7766', '', NULL, NULL, b'0', b'0', b'0', b'1', 30, '1', '2019-08-07 09:06:33.448', '1', '2021-11-22 15:21:25.663', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9988, '图标库', '1', NULL, 'icons', '338', '', 'icon', 'components/icons/index', b'0', b'0', b'0', b'1', 10, '1', '2020-05-15 21:14:28.945', '1', '2021-11-22 15:33:12.130', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (9999, '生成方案', '1', NULL, 'scheme', '6677', '', 'dev', 'gen/scheme/index', b'0', b'0', b'0', b'0', 30, '1', '2019-07-21 13:27:35.000', '1', '2021-11-22 15:33:01.113', NULL, 2, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465206065929912320, '测试书籍', '1', NULL, 'test-book', '446', NULL, 'icon-right-square', 'test/test-book/index', b'0', b'0', b'0', b'0', 30, '1', '2021-11-29 14:28:42.987', '1', '2021-12-26 11:31:40.169', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465206065955078144, '测试书籍查看', '2', 'test_testBook_view', NULL, '1465206065929912320', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2021-11-29 14:28:42.993', '1', '2021-12-26 11:31:40.167', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465206065976049664, '测试书籍编辑', '2', 'test_testBook_edit', NULL, '1465206065929912320', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2021-11-29 14:28:42.998', '1', '2021-12-26 11:31:40.150', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465206065988632576, '测试书籍删除', '2', 'test_testBook_del', NULL, '1465206065929912320', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2021-11-29 14:28:43.001', '1', '2021-12-26 11:31:40.143', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465216162739519488, '测试树书籍', '1', NULL, 'test-tree-book', '446', NULL, 'icon-right-square', 'test/test-tree-book/index', b'0', b'0', b'0', b'0', 30, '1', '2021-11-29 15:08:50.254', '1', '2021-12-26 11:31:40.142', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465216162764685312, '测试树书籍查看', '2', 'test_testTreeBook_view', NULL, '1465216162739519488', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2021-11-29 15:08:50.259', '1', '2021-12-26 11:31:40.141', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465216162777268224, '测试树书籍编辑', '2', 'test_testTreeBook_edit', NULL, '1465216162739519488', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2021-11-29 15:08:50.263', '1', '2021-12-26 11:31:40.140', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465216162798239744, '测试树书籍删除', '2', 'test_testTreeBook_del', NULL, '1465216162739519488', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2021-11-29 15:08:50.268', '1', '2021-12-26 11:31:40.125', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465502605210812416, '登录日志', '1', NULL, 'log-login', '2000', NULL, 'log', 'monitor/log-login/index', b'0', b'0', b'0', b'0', 50, '1', '2021-11-30 10:07:03.460', '1', '2021-11-30 10:07:03.460', NULL, 3, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465502605244366848, '登录日志查看', '2', 'sys_logLogin_view', NULL, '1465502605210812416', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2021-11-30 10:07:03.469', '1', '2021-11-30 10:07:03.469', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465502605277921280, '登录日志导出', '2', 'sys_logLogin_export', NULL, '1465502605210812416', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2021-11-30 10:07:03.477', '1', '2021-11-30 10:07:03.477', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1465502605307281408, '登录日志删除', '2', 'sys_logLogin_del', NULL, '1465502605210812416', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2021-11-30 10:07:03.484', '1', '2021-11-30 10:07:03.484', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468397111971151872, '附件管理', '1', NULL, 'appendix', '1000', NULL, 'documentation', 'sys/appendix/index', b'0', b'0', b'0', b'0', 70, '1', '2021-12-08 09:48:47.649', '1', '2021-12-26 11:31:40.122', NULL, 2, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468397112000512000, '附件管理查看', '2', 'sys_appendix_view', NULL, '1468397111971151872', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2021-12-08 09:48:47.657', '1', '2021-12-26 11:31:40.121', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468397112017289216, '附件管理添加', '2', 'sys_appendix_add', NULL, '1468397111971151872', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2021-12-08 09:48:47.661', '1', '2021-12-26 11:31:40.119', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468397112029872128, '附件管理删除', '2', 'sys_appendix_del', NULL, '1468397111971151872', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2021-12-08 09:48:47.664', '1', '2021-12-26 11:31:40.118', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468405431398301696, '文件管理', '1', NULL, 'file', '1000', NULL, 'app', 'sys/file/index', b'0', b'0', b'0', b'0', 70, '1', '2021-12-08 10:21:51.156', '1', '2021-12-26 11:31:40.117', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468405431419273216, '文件管理查看', '2', 'sys_file_view', NULL, '1468405431398301696', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 20, '1', '2021-12-08 10:21:51.161', '1', '2021-12-26 11:31:40.116', NULL, 0, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468405431440244736, '文件管理编辑', '2', 'sys_file_add', NULL, '1468405431398301696', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 40, '1', '2021-12-08 10:21:51.166', '1', '2021-12-26 11:31:40.115', NULL, 1, '0', '0000');
+INSERT INTO `sys_menu` VALUES (1468405431457021952, '文件管理删除', '2', 'sys_file_del', NULL, '1468405431398301696', NULL, NULL, NULL, b'0', b'0', b'0', b'0', 80, '1', '2021-12-08 10:21:51.169', '1', '2021-12-26 11:31:40.112', NULL, 0, '0', '0000');
 COMMIT;
 
 -- ----------------------------
@@ -484,14 +483,45 @@ INSERT INTO `sys_oauth_client_detail` VALUES ('swagger', NULL, 'swagger', 'all',
 COMMIT;
 
 -- ----------------------------
+-- Table structure for sys_parameter
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_parameter`;
+CREATE TABLE `sys_parameter` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `key_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '参数键',
+  `value` varchar(255) NOT NULL COMMENT '参数值',
+  `name` varchar(255) NOT NULL COMMENT '参数名称',
+  `state` bit(1) DEFAULT b'1' COMMENT '状态',
+  `readonly_` bit(1) DEFAULT b'0' COMMENT '内置',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `created_by` bigint NOT NULL,
+  `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `last_modified_by` bigint DEFAULT NULL,
+  `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_key` (`tenant_code`,`key_`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='参数配置';
+
+-- ----------------------------
+-- Records of sys_parameter
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_parameter` VALUES (1, 'LoginPolicy', 'MANY', '登录策略', b'1', b'1', '0000', 0, '2021-10-27 13:51:01.785', NULL, NULL, NULL, 0, '0');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `id` bigint NOT NULL,
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '名称',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '编码',
   `level` int DEFAULT NULL COMMENT '角色级别',
-  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置',
+  `data_scope` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '数据权限 1全部 2所在机构及以下数据  3 所在机构数据  4仅本人数据 5 按明细设置',
   `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
   `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `created_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -500,6 +530,7 @@ CREATE TABLE `sys_role` (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
   `version` int NOT NULL,
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='系统角色表';
 
@@ -507,11 +538,11 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES ('1', '超级管理员', 1, '1', '1', '', '2017-10-30 06:45:51.000', '1', '2020-12-26 10:44:18.591', NULL, 76, '0');
-INSERT INTO `sys_role` VALUES ('2', '机构管理员', 2, '2', '1', '', '2018-11-12 11:42:26.000', '1', '2021-02-06 14:35:08.095', NULL, 19, '0');
-INSERT INTO `sys_role` VALUES ('262da20a182dd09e70422cbca05503b7', 'tets', 3, '5', '1', '1', '2020-05-15 02:21:30.869', '1', '2020-05-15 02:28:55.628', NULL, 0, '1');
-INSERT INTO `sys_role` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '部门管理员', 3, '3', '1', '1', '2020-05-15 02:02:13.389', '1', '2020-05-26 02:13:04.474', NULL, 3, '0');
-INSERT INTO `sys_role` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '普通管理员', 4, '4', '1', '1', '2020-05-15 02:00:50.813', '1', '2020-05-15 02:30:26.577', '普通管理', 6, '0');
+INSERT INTO `sys_role` VALUES (1, '超级管理员', NULL, 1, 'ALL', '1', '', '2017-10-29 15:45:51.000', '1', '2021-11-19 18:29:00.367', NULL, 75, '0', '0000');
+INSERT INTO `sys_role` VALUES (2, '机构管理员', NULL, 2, 'CUSTOMIZE', '1', '', '2018-11-11 19:42:26.000', '1', '2021-11-19 18:29:00.370', NULL, 19, '0', '0000');
+INSERT INTO `sys_role` VALUES (3, 'tets', NULL, 3, 'SELF', '1', '1', '2020-05-14 11:21:30.869', '1', '2021-11-19 18:29:00.371', NULL, 0, '1', '0000');
+INSERT INTO `sys_role` VALUES (4, '部门管理员', NULL, 3, 'THIS_LEVEL_CHILDREN', '1', '1', '2020-05-14 11:02:13.389', '1', '2021-11-19 18:29:00.372', NULL, 3, '1', '0000');
+INSERT INTO `sys_role` VALUES (5, '普通管理员', NULL, 4, 'CUSTOMIZE', '1', '1', '2020-05-14 11:00:50.813', '1', '2021-11-19 18:29:00.374', '普通管理', 6, '0', '0000');
 COMMIT;
 
 -- ----------------------------
@@ -519,21 +550,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept` (
-  `id` varchar(32) NOT NULL,
-  `role_id` varchar(32) DEFAULT NULL COMMENT '角色ID',
-  `dept_id` varchar(32) DEFAULT NULL COMMENT '部门ID',
+  `id` bigint NOT NULL,
+  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色与部门对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='角色与部门对应关系';
 
 -- ----------------------------
 -- Records of sys_role_dept
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_dept` VALUES ('042b68149062528fb11b257e07e49ed9', '2', '4');
-INSERT INTO `sys_role_dept` VALUES ('27abf68ef4391991e310882b124a265f', '2', '3');
-INSERT INTO `sys_role_dept` VALUES ('396851a7ab666682918dc2f1d193df32', '2', '5');
-INSERT INTO `sys_role_dept` VALUES ('6df08d485dfd5e6eb79917860e1bee88', '1', '8');
-INSERT INTO `sys_role_dept` VALUES ('c3b5457350bb7a9be8201fa3f88d3c2c', '262da20a182dd09e70422cbca05503b7', NULL);
+INSERT INTO `sys_role_dept` VALUES (1, 1, 8, '0000');
+INSERT INTO `sys_role_dept` VALUES (2, 2, 5, '0000');
+INSERT INTO `sys_role_dept` VALUES (3, 2, 4, '0000');
+INSERT INTO `sys_role_dept` VALUES (4, 2, 3, '0000');
 COMMIT;
 
 -- ----------------------------
@@ -541,134 +572,194 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
-  `menu_id` varchar(32) NOT NULL COMMENT '菜单ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `menu_id` bigint NOT NULL COMMENT '菜单ID',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`role_id`,`menu_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色菜单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='角色菜单表';
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role_menu` VALUES ('1', '0be8161ca1f378dcc23fb786e69859a9');
-INSERT INTO `sys_role_menu` VALUES ('1', '0d0be247863fcbf08b3db943e5f45992');
-INSERT INTO `sys_role_menu` VALUES ('1', '1000');
-INSERT INTO `sys_role_menu` VALUES ('1', '10bd98f30a42427dd7ef75418ad3da6b');
-INSERT INTO `sys_role_menu` VALUES ('1', '1100');
-INSERT INTO `sys_role_menu` VALUES ('1', '1101');
-INSERT INTO `sys_role_menu` VALUES ('1', '1102');
-INSERT INTO `sys_role_menu` VALUES ('1', '1103');
-INSERT INTO `sys_role_menu` VALUES ('1', '1200');
-INSERT INTO `sys_role_menu` VALUES ('1', '1201');
-INSERT INTO `sys_role_menu` VALUES ('1', '1202');
-INSERT INTO `sys_role_menu` VALUES ('1', '1203');
-INSERT INTO `sys_role_menu` VALUES ('1', '1300');
-INSERT INTO `sys_role_menu` VALUES ('1', '1301');
-INSERT INTO `sys_role_menu` VALUES ('1', '1302');
-INSERT INTO `sys_role_menu` VALUES ('1', '1303');
-INSERT INTO `sys_role_menu` VALUES ('1', '13093fb658c1806ad5bd0600316158f2');
-INSERT INTO `sys_role_menu` VALUES ('1', '133f1408f5e3187d3e1a00b0260b7165');
-INSERT INTO `sys_role_menu` VALUES ('1', '1400');
-INSERT INTO `sys_role_menu` VALUES ('1', '1401');
-INSERT INTO `sys_role_menu` VALUES ('1', '1402');
-INSERT INTO `sys_role_menu` VALUES ('1', '1403');
-INSERT INTO `sys_role_menu` VALUES ('1', '18d6b5e0f6b986cd074bf23de11ecd34');
-INSERT INTO `sys_role_menu` VALUES ('1', '1ae562534a64d4473899e52497c40b2e');
-INSERT INTO `sys_role_menu` VALUES ('1', '2000');
-INSERT INTO `sys_role_menu` VALUES ('1', '2100');
-INSERT INTO `sys_role_menu` VALUES ('1', '2101');
-INSERT INTO `sys_role_menu` VALUES ('1', '2200');
-INSERT INTO `sys_role_menu` VALUES ('1', '2201');
-INSERT INTO `sys_role_menu` VALUES ('1', '2202');
-INSERT INTO `sys_role_menu` VALUES ('1', '247071d42ff40267c8d8c44eac92da67');
-INSERT INTO `sys_role_menu` VALUES ('1', '2500');
-INSERT INTO `sys_role_menu` VALUES ('1', '2600');
-INSERT INTO `sys_role_menu` VALUES ('1', '2601');
-INSERT INTO `sys_role_menu` VALUES ('1', '29de79df95e70d8e8fbdc7945acf214a');
-INSERT INTO `sys_role_menu` VALUES ('1', '32814c16f6d56b0e7249e9b28bc2dcc5');
-INSERT INTO `sys_role_menu` VALUES ('1', '413892fe8d52c1163d6659f51299dc96');
-INSERT INTO `sys_role_menu` VALUES ('1', '52715698214e88cb09fa4dd1ea5ad348');
-INSERT INTO `sys_role_menu` VALUES ('1', '5404c3df9f771dbc0237578814bbe44b');
-INSERT INTO `sys_role_menu` VALUES ('1', '5b39ca5a25c772105c71f8c51d1f19d4');
-INSERT INTO `sys_role_menu` VALUES ('1', '618ee4b9660265a85a8b61277de2a579');
-INSERT INTO `sys_role_menu` VALUES ('1', '621e50e1c7d66a1febeb699bebb2fe35');
-INSERT INTO `sys_role_menu` VALUES ('1', '64b61b8966e1c74d9b309069b2f622d1');
-INSERT INTO `sys_role_menu` VALUES ('1', '66ea0b88495c98d0ca8cbd51c84f9d87');
-INSERT INTO `sys_role_menu` VALUES ('1', '675dd35e5eba2fd1ced476302c459ac9');
-INSERT INTO `sys_role_menu` VALUES ('1', '6e3f89cda84ac2c6e715e7812c102ae8');
-INSERT INTO `sys_role_menu` VALUES ('1', '74f2b2a8871a298e0acc4d7129d10e9c');
-INSERT INTO `sys_role_menu` VALUES ('1', '76d6087052dc26b32f3efa71b9cc119b');
-INSERT INTO `sys_role_menu` VALUES ('1', '7754b1457826c48290bc189bb1289740');
-INSERT INTO `sys_role_menu` VALUES ('1', '795b4d5cf0eb3ed80e24cbab39727b9d');
-INSERT INTO `sys_role_menu` VALUES ('1', '7b14af9e9fbff286856338a194422b07');
-INSERT INTO `sys_role_menu` VALUES ('1', '92f78825551a22fa130c03066f398448');
-INSERT INTO `sys_role_menu` VALUES ('1', '9763343d9cce11ce9eb4f21c8e49122b');
-INSERT INTO `sys_role_menu` VALUES ('1', '97722c6d56c8b9990cc3c1a6eea3d6bb');
-INSERT INTO `sys_role_menu` VALUES ('1', '9f02e346b5350366968f217daef3f1b7');
-INSERT INTO `sys_role_menu` VALUES ('1', 'a18b33e15bde209a3c9115517c56d9ec');
-INSERT INTO `sys_role_menu` VALUES ('1', 'b8eafb6c3a8bf0919230f0bfa59d86b6');
-INSERT INTO `sys_role_menu` VALUES ('1', 'b961670cbf3454f5927c4bd2a327e915');
-INSERT INTO `sys_role_menu` VALUES ('1', 'b963a451117f430703817b3b6c87402a');
-INSERT INTO `sys_role_menu` VALUES ('1', 'bb9dd4b7a2a462193d0f01517308f812');
-INSERT INTO `sys_role_menu` VALUES ('1', 'bd62904371247f56594741ff8e9bded9');
-INSERT INTO `sys_role_menu` VALUES ('1', 'c0ba37c10abaecd89a738c5cf2a2fd24');
-INSERT INTO `sys_role_menu` VALUES ('1', 'caaec41413c5713c6f290efe08c11415');
-INSERT INTO `sys_role_menu` VALUES ('1', 'd4c16faad8f883650a3a8eab829ebad9');
-INSERT INTO `sys_role_menu` VALUES ('1', 'd4ceb3697e8e2384824ac3093cccb5e0');
-INSERT INTO `sys_role_menu` VALUES ('1', 'd9d87cf8ed7c29ed2eda06d5dec4dcda');
-INSERT INTO `sys_role_menu` VALUES ('1', 'e086c4aa4943a883b29cf94680608b89');
-INSERT INTO `sys_role_menu` VALUES ('1', 'e5ea38c1f97dee0043e78f3fb27b25d6');
-INSERT INTO `sys_role_menu` VALUES ('1', 'e710a66583fe0e324492462adb16014e');
-INSERT INTO `sys_role_menu` VALUES ('1', 'eb17cee437ea6b630dad59fff2a059ca');
-INSERT INTO `sys_role_menu` VALUES ('1', 'ef2382c0cc2d99ee73444e684237a88a');
-INSERT INTO `sys_role_menu` VALUES ('1', 'f15e2186907d22765cd149a94905842a');
-INSERT INTO `sys_role_menu` VALUES ('1', 'f88f4f338734f70af948d078439980aa');
-INSERT INTO `sys_role_menu` VALUES ('1', 'fe4c7938e146ec223e99d426aaa87109');
-INSERT INTO `sys_role_menu` VALUES ('2', '1000');
-INSERT INTO `sys_role_menu` VALUES ('2', '1100');
-INSERT INTO `sys_role_menu` VALUES ('2', '1101');
-INSERT INTO `sys_role_menu` VALUES ('2', '1102');
-INSERT INTO `sys_role_menu` VALUES ('2', '1200');
-INSERT INTO `sys_role_menu` VALUES ('2', '1201');
-INSERT INTO `sys_role_menu` VALUES ('2', '1202');
-INSERT INTO `sys_role_menu` VALUES ('2', '1203');
-INSERT INTO `sys_role_menu` VALUES ('2', '1300');
-INSERT INTO `sys_role_menu` VALUES ('2', '1301');
-INSERT INTO `sys_role_menu` VALUES ('2', '1302');
-INSERT INTO `sys_role_menu` VALUES ('2', '1303');
-INSERT INTO `sys_role_menu` VALUES ('2', '13093fb658c1806ad5bd0600316158f2');
-INSERT INTO `sys_role_menu` VALUES ('2', '1400');
-INSERT INTO `sys_role_menu` VALUES ('2', '1401');
-INSERT INTO `sys_role_menu` VALUES ('2', '1402');
-INSERT INTO `sys_role_menu` VALUES ('2', '1403');
-INSERT INTO `sys_role_menu` VALUES ('2', '18d6b5e0f6b986cd074bf23de11ecd34');
-INSERT INTO `sys_role_menu` VALUES ('2', '2000');
-INSERT INTO `sys_role_menu` VALUES ('2', '2100');
-INSERT INTO `sys_role_menu` VALUES ('2', '2101');
-INSERT INTO `sys_role_menu` VALUES ('2', '2200');
-INSERT INTO `sys_role_menu` VALUES ('2', '2201');
-INSERT INTO `sys_role_menu` VALUES ('2', '2202');
-INSERT INTO `sys_role_menu` VALUES ('2', '2600');
-INSERT INTO `sys_role_menu` VALUES ('2', '2601');
-INSERT INTO `sys_role_menu` VALUES ('2', '29de79df95e70d8e8fbdc7945acf214a');
-INSERT INTO `sys_role_menu` VALUES ('2', '621e50e1c7d66a1febeb699bebb2fe35');
-INSERT INTO `sys_role_menu` VALUES ('2', '74f2b2a8871a298e0acc4d7129d10e9c');
-INSERT INTO `sys_role_menu` VALUES ('2', '76d6087052dc26b32f3efa71b9cc119b');
-INSERT INTO `sys_role_menu` VALUES ('2', '7b14af9e9fbff286856338a194422b07');
-INSERT INTO `sys_role_menu` VALUES ('2', '9763343d9cce11ce9eb4f21c8e49122b');
-INSERT INTO `sys_role_menu` VALUES ('2', 'b963a451117f430703817b3b6c87402a');
-INSERT INTO `sys_role_menu` VALUES ('2', 'd4c16faad8f883650a3a8eab829ebad9');
-INSERT INTO `sys_role_menu` VALUES ('2', 'ef2382c0cc2d99ee73444e684237a88a');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1100');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1101');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1102');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1103');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1300');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1301');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1302');
-INSERT INTO `sys_role_menu` VALUES ('3570f348af7214a976e5d6bfbdd97df1', '1303');
-INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1000');
-INSERT INTO `sys_role_menu` VALUES ('4647a907ad1dd30b28cbdaa229b67fc1', '1100');
+INSERT INTO `sys_role_menu` VALUES (1, 330, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 334, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 335, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 336, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 337, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 338, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 339, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 440, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 445, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 446, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 447, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 448, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 449, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1100, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1101, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1102, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1103, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1166, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1200, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1201, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1202, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1203, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1300, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1301, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1302, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1303, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1400, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1401, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1402, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1403, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2100, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2101, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2200, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2201, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2202, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2500, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2600, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 2601, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 3333, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 4433, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 4444, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 5555, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 5566, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 5588, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 6000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 6666, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 6677, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 7000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 7700, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 7766, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 7788, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 8855, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 8877, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 8888, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 8899, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9900, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9911, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9944, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9955, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9977, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9988, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 9999, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1465502605210812416, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1465502605244366848, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1465502605277921280, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1465502605307281408, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468397111971151872, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468397112000512000, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468397112017289216, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468397112029872128, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468405431398301696, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468405431419273216, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468405431440244736, '0000');
+INSERT INTO `sys_role_menu` VALUES (1, 1468405431457021952, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 334, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 338, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 440, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 446, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1000, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1100, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1101, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1102, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1103, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1166, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1200, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1300, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 1400, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 2000, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 2200, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 6000, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 6655, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 8855, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 8888, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 8899, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 9000, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 9900, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 9955, '0000');
+INSERT INTO `sys_role_menu` VALUES (2, 9988, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 338, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 440, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 446, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1000, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1101, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1102, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1103, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1166, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1200, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 1400, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 2200, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 6000, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 6655, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 8855, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 8888, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 8899, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 9000, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 9900, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 9955, '0000');
+INSERT INTO `sys_role_menu` VALUES (5, 9988, '0000');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_tenant
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_tenant`;
+CREATE TABLE `sys_tenant` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `code` varchar(20) NOT NULL COMMENT '企业编码',
+  `name` varchar(255) DEFAULT '' COMMENT '企业名称',
+  `type` varchar(10) DEFAULT '' COMMENT '类型 \n#{CREATE:创建;REGISTER:注册}',
+  `connect_type` varchar(10) DEFAULT '' COMMENT '链接类型 \n#TenantConnectTypeEnum{LOCAL:本地;REMOTE:远程}',
+  `status` varchar(10) DEFAULT '' COMMENT '状态 \n#{NORMAL:正常;WAIT_INIT:待初始化;FORBIDDEN:禁用;WAITING:待审核;REFUSE:拒绝;DELETE:已删除}',
+  `readonly_` bit(1) DEFAULT b'0' COMMENT '内置',
+  `duty` varchar(50) DEFAULT '' COMMENT '责任人',
+  `expiration_time` datetime DEFAULT NULL COMMENT '有效期 \n为空表示永久',
+  `logo` varchar(255) DEFAULT '' COMMENT 'logo地址',
+  `describe_` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '简介',
+  `created_by` bigint NOT NULL,
+  `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `last_modified_by` bigint DEFAULT NULL,
+  `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='企业';
+
+-- ----------------------------
+-- Records of sys_tenant
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_tenant` VALUES (1, '0000', '最后内置的运营&超级租户', 'CREATE', 'LOCAL', 'NORMAL', b'1', '最后', NULL, NULL, NULL, 0, '2021-10-27 13:51:59.303', NULL, NULL, NULL, 0, '0');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_tenant_datasource_conf
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_tenant_datasource_conf`;
+CREATE TABLE `sys_tenant_datasource_conf` (
+  `id` bigint NOT NULL COMMENT 'ID',
+  `tenant_id` bigint NOT NULL COMMENT '租户id',
+  `datasource_config_id` bigint NOT NULL COMMENT '数据源id',
+  `application` varchar(100) NOT NULL DEFAULT '' COMMENT '服务',
+  `created_by` bigint NOT NULL,
+  `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `version` int NOT NULL,
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_tenan_application` (`tenant_id`,`datasource_config_id`,`application`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='租户数据源关系';
+
+-- ----------------------------
+-- Records of sys_tenant_datasource_conf
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -676,24 +767,26 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '1' COMMENT '主键ID',
+  `id` bigint NOT NULL DEFAULT '1' COMMENT '主键ID',
   `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `nickname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '昵称',
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '简介',
   `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '邮箱',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '头像',
+  `sex` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '性别 \n#Sex{W:女;M:男;N:未知}',
   `dept_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '部门ID',
   `qq_open_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'QQ openid',
   `wx_open_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '微信openid',
   `available` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '1' COMMENT '1-正常，0-锁定',
-  `created_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_by` bigint NOT NULL,
   `created_date` timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `last_modified_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `last_modified_by` bigint DEFAULT NULL,
   `last_modified_date` timestamp(3) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
   `version` int NOT NULL,
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '0' COMMENT '0-正常，1-删除',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `user_wx_openid` (`wx_open_id`) USING BTREE,
   KEY `user_qq_openid` (`qq_open_id`) USING BTREE,
@@ -704,15 +797,16 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$6z14VGdfVnlWY2K1pvdzJOHkvjLmOuBrJXXeZ0mGIqB60Qd6WYDoC', 'albedo', '17034642999', '22@ss.com', '', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', '', '2018-04-20 22:15:18.000', '1', '2020-12-26 10:44:13.918', '11', 47, '0');
-INSERT INTO `sys_user` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', 'test1', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254642311', '13@qqx.om', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 00:51:46.703', '1', '2021-02-27 08:43:30.895', NULL, 8, '0');
-INSERT INTO `sys_user` VALUES ('4c2796f3667e3e5907a04623d7fd8de4', 'ttttt', '$2a$10$KYuAjYBhucUG4GbYQTuRO.YOl6JJlGdEdD5zGLkfrSumnjEF59S7G', '1', '13245678975', '1@e.com', '', 'c095173c3aebcd7ff9c6177fbf7a8b69', NULL, NULL, '1', '1', '2020-05-30 07:41:21.126', '1', '2021-02-27 08:43:33.287', NULL, 8, '0');
-INSERT INTO `sys_user` VALUES ('5168fcfd16b8bad9fb38edfab4409023', 'www', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258465211', 'qq@ee.com', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 01:22:11.393', '1', '2020-05-30 07:42:57.181', NULL, 18, '0');
-INSERT INTO `sys_user` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', 'dddd', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', 'dd', '13258465214', '1@1.com', NULL, '1', NULL, NULL, '1', '1', '2020-05-28 18:08:17.639', '1', '2020-05-30 07:42:57.184', NULL, 0, '0');
-INSERT INTO `sys_user` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', 'dsafdf', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462101', '837158@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:32:17.000', '1', '2020-05-30 07:42:57.186', '11', 26, '0');
-INSERT INTO `sys_user` VALUES ('90da0206c39867a1b36ac36ced80c1a9', 'test', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462222', 'ww@qq.com', NULL, '1', NULL, NULL, '1', '1', '2019-07-08 05:35:13.000', '1', '2020-05-30 07:42:57.187', NULL, 50, '0');
-INSERT INTO `sys_user` VALUES ('db351fa51ba2fb6db590d8d8a673a243', 'test3', '$2a$10$J4IpQRDNuzNWAwKsu3Q/xeH/wtCB.bF3aG1NhVcGTLzxD2975f/y.', NULL, '13245632453', '1@13.com', NULL, '1', NULL, NULL, '1', '1', '2020-06-03 22:16:52.382', '1', '2020-06-03 22:16:52.382', NULL, 0, '0');
-INSERT INTO `sys_user` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', 'ttt', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254732131', '2113@ed.bom', NULL, '1', NULL, NULL, '1', '1', '2020-05-13 01:06:21.381', '1', '2020-05-30 07:42:57.190', NULL, 1, '1');
+INSERT INTO `sys_user` VALUES (1, 'admin', '$2a$10$6z14VGdfVnlWY2K1pvdzJOHkvjLmOuBrJXXeZ0mGIqB60Qd6WYDoC', 'albedo', '17034642999', 'albedo@ss.com', 'default.jpg', 'W', '1', NULL, 'o_0FT0uyg_H1vVy2H0JpSwlVGhWQ', '1', 1, '2018-04-20 07:15:18.000', 1, '2021-12-25 09:46:31.267', '11', 90, '0', '0000');
+INSERT INTO `sys_user` VALUES (2, 'manage', '$2a$10$rmMeskeLIFFqP39zH5a2duJ0pcDvePqdwrSQHFW.rBVszm3lE9E2y', NULL, '13254642311', '13@qqx.om', NULL, 'M', '1', NULL, NULL, '1', 1, '2020-05-12 09:51:46.703', 1, '2021-12-04 13:15:51.645', NULL, 15, '0', '0000');
+INSERT INTO `sys_user` VALUES (3, 'ttttt', '$2a$10$KYuAjYBhucUG4GbYQTuRO.YOl6JJlGdEdD5zGLkfrSumnjEF59S7G', '1', '13245678975', '1@e.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2020-05-29 16:41:21.126', 1, '2021-12-04 13:15:52.453', NULL, 12, '1', '0000');
+INSERT INTO `sys_user` VALUES (4, 'normal', '$2a$10$tr91uxFhn2emY7sXqLqzz.66xrXGgLkzxyREnRhgWcNbxmlgUXJU6', NULL, '13258465211', 'qq@ee.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2020-05-12 10:22:11.393', 1, '2021-12-04 13:15:53.372', NULL, 24, '0', '0000');
+INSERT INTO `sys_user` VALUES (5, 'dddd', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', 'dd', '13258465214', '1@1.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2020-05-28 03:08:17.639', 1, '2021-12-04 13:15:54.490', NULL, 1, '1', '0000');
+INSERT INTO `sys_user` VALUES (6, 'dsafdf', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462101', '837158@qq.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2019-07-07 14:32:17.000', 1, '2021-12-04 13:15:55.244', '11', 26, '1', '0000');
+INSERT INTO `sys_user` VALUES (7, 'test', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13258462222', 'ww@qq.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2019-07-07 14:35:13.000', 1, '2021-12-04 13:15:55.937', NULL, 50, '1', '0000');
+INSERT INTO `sys_user` VALUES (8, 'ttt', '$2a$10$hZ5daUd8k4LSOgmFuRlSZuEnYRndkGjMJ/wsl6UQ5.rlWFqNcmPSe', NULL, '13254732131', '2113@ed.bom', NULL, 'N', '1', NULL, NULL, '1', 1, '2020-05-12 10:06:21.381', 1, '2021-12-04 13:15:56.571', NULL, 1, '1', '0000');
+INSERT INTO `sys_user` VALUES (9, 'test', '$2a$10$g74ZwJNgw52R/A6t7lQBzuMbBcBFzm.cKd7SqS5uNxkkecvN/MVte', NULL, '13265843021', '33@d.com', NULL, 'N', '1', NULL, NULL, '1', 1, '2021-12-02 20:03:08.829', 1, '2021-12-04 13:34:39.680', NULL, 3, '0', '0000');
+INSERT INTO `sys_user` VALUES (1467013500122431488, 'dddddd', '$2a$10$K0C0WyfF4owq6M1c.p4G6OzJkCY8vWCBRrFeSlGy.3b9YdKVEdX7.', NULL, '13258465001', '1@1x.com', NULL, 'W', '1', NULL, NULL, '1', 1, '2021-12-04 14:10:48.872', 1, '2021-12-04 14:10:48.879', NULL, 1, '0', '0000');
 COMMIT;
 
 -- ----------------------------
@@ -720,25 +814,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `user_id` varchar(32) NOT NULL COMMENT '用户ID',
-  `role_id` varchar(32) NOT NULL COMMENT '角色ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `tenant_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
   PRIMARY KEY (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户角色表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='用户角色表';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_role` VALUES ('1', '1');
-INSERT INTO `sys_user_role` VALUES ('1', '2');
-INSERT INTO `sys_user_role` VALUES ('49f40b21c1dbdc83255d5c64119fcd4d', '2');
-INSERT INTO `sys_user_role` VALUES ('4c2796f3667e3e5907a04623d7fd8de4', '2');
-INSERT INTO `sys_user_role` VALUES ('5168fcfd16b8bad9fb38edfab4409023', '2');
-INSERT INTO `sys_user_role` VALUES ('51e995c64ed5982b9ce8ad5d559f100c', '4647a907ad1dd30b28cbdaa229b67fc1');
-INSERT INTO `sys_user_role` VALUES ('53fb3761bdd95ed3d03f4a07f78ea0eb', '1');
-INSERT INTO `sys_user_role` VALUES ('90da0206c39867a1b36ac36ced80c1a9', '2');
-INSERT INTO `sys_user_role` VALUES ('db351fa51ba2fb6db590d8d8a673a243', '2');
-INSERT INTO `sys_user_role` VALUES ('dcc5b57ad27014f1839a9f4bb2b568b1', '2');
+INSERT INTO `sys_user_role` VALUES (1, 1, '0000');
+INSERT INTO `sys_user_role` VALUES (2, 2, '0000');
+INSERT INTO `sys_user_role` VALUES (3, 2, '0000');
+INSERT INTO `sys_user_role` VALUES (4, 5, '0000');
+INSERT INTO `sys_user_role` VALUES (9, 5, '0000');
+INSERT INTO `sys_user_role` VALUES (1466377391856156672, 5, '0000');
+INSERT INTO `sys_user_role` VALUES (1467013500122431488, 5, '0000');
 COMMIT;
 
 -- ----------------------------
@@ -758,7 +850,7 @@ CREATE TABLE `tool_alipay_config` (
   `sign_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '签名方式',
   `sys_service_provider_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '商户号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='支付宝配置类';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT COMMENT='支付宝配置类';
 
 -- ----------------------------
 -- Records of tool_alipay_config
@@ -779,7 +871,7 @@ CREATE TABLE `tool_email_config` (
   `port` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '端口',
   `user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '发件者用户名',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='邮箱配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT COMMENT='邮箱配置';
 
 -- ----------------------------
 -- Records of tool_email_config

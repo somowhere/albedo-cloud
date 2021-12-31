@@ -1,5 +1,5 @@
 server:
-  port: 4000
+  port: 4020
 
 nacos:
   ip: @nacos.ip@
@@ -14,8 +14,7 @@ logging:
     com.albedo.java: @logback.loglevel@
   file:
     path: @logging.file.path@
-    name: logs/${spring.application.name}/${spring.application.name}-info.log
-
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
 spring:
   application:
     name: @artifactId@

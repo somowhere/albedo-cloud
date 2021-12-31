@@ -57,17 +57,6 @@
 		<groupId>com.alibaba.cloud</groupId>
 		<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 	</dependency>
-	<!--mybatis-->
-	<dependency>
-		<groupId>com.baomidou</groupId>
-		<artifactId>mybatis-plus-boot-starter</artifactId>
-		<version>${mybatis-plus.version}</version>
-	</dependency>
-	<!--数据库-->
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-	</dependency>
 	<!--web 模块-->
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
