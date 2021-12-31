@@ -44,7 +44,7 @@ import static feign.Util.checkNotNull;
 /**
  * 支持自动降级注入 重写 {@link SentinelInvocationHandler}
  *
- * @author lengleng
+ * @author somewhere
  * @date 2020/6/9
  */
 @Slf4j

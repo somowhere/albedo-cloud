@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2020/9/29
  * <p>
  * redis token store 自动配置

@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2018/7/5 验证码生成逻辑处理类
  */
 @Slf4j

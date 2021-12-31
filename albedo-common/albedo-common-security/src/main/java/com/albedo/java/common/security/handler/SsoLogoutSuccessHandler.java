@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2020/10/6
  * <p>
  * sso 退出功能 ，根据客户端传入跳转

@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2019/2/1
  */
 @Target(ElementType.TYPE)

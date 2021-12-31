@@ -27,7 +27,7 @@ import java.lang.annotation.*;
 /**
  * 开启 pig swagger
  *
- * @author lengleng
+ * @author somewhere
  * @date 2020/10/2
  */
 @Target({ ElementType.TYPE })

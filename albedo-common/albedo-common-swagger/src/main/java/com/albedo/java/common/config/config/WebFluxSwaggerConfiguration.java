@@ -4,7 +4,7 @@ import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2020/10/2
  * <p>
  * webflux 网关 swagger 资源路径配置

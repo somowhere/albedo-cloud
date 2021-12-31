@@ -22,7 +22,7 @@ import java.util.UUID;
 /**
  * 自定义 token 放发处理逻辑
  *
- * @author lengleng
+ * @author somewhere
  * @date 2021/10/15
  */
 public class CustomTokenServices implements AuthorizationServerTokenServices, ResourceServerTokenServices,

@@ -17,7 +17,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2020/9/29
  */
 @RequiredArgsConstructor

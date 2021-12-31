@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * sentinel 请求头解析判断
  *
- * @author lengleng
+ * @author somewhere
  * @date 2020-06-11
  */
 public class AlbedoHeaderRequestOriginParser implements RequestOriginParser {

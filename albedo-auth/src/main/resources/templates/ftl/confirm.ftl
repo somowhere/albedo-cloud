@@ -45,7 +45,7 @@
 </div>
 <footer>
     <p>support by: pig4cloud.com</p>
-    <p>email: <a href="mailto:wangiegie@gmail.com">wangiegie@gmail.com</a>.</p>
+    <p>email: <a href="mailto:somewhere0813@gmail.com">somewhere0813@gmail.com</a>.</p>
 </footer>
 </body>
 </html>

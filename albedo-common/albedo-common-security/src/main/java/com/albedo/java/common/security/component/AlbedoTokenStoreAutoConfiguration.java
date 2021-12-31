@@ -6,7 +6,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
- * @author lengleng
+ * @author somewhere
  * @date 2021/10/16
  */
 public class AlbedoTokenStoreAutoConfiguration {
