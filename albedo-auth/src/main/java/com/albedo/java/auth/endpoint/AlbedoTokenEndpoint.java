@@ -21,9 +21,12 @@ import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.CacheNameConstants;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.*;
 import com.albedo.java.common.security.annotation.Inner;
+import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.common.security.util.SecurityUtil;
+import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.sys.cache.UserCacheKeyBuilder;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineQueryCriteria;
@@ -33,9 +36,14 @@ import com.albedo.java.plugins.cache.repository.CacheOps;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ConvertingCursor;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
@@ -48,10 +56,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author somowhere
@@ -124,11 +131,35 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 令牌管理调用
-	 * @param token token
+	 *
+	 * @param tokenVo
 	 */
 	@Inner
-	@DeleteMapping("/{token}")
-	public Result<Boolean> removeToken(@PathVariable("token") String token) {
+	@DeleteMapping
+	public Result<Boolean> removeByTokens(@RequestBody TokenVo tokenVo) throws BadRequestException {
+		if (tokenVo == null || ObjectUtil.isNull(tokenVo.getUserId())) {
+			throw new BadRequestException("当前登陆用户为空，无法操作");
+		}
+		tokenVo.getTokens().forEach(token -> {
+			OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+			Authentication authentication = tokenStore.readAuthentication(oAuth2AccessToken).getUserAuthentication();
+			if (authentication.getPrincipal() instanceof UserDetail) {
+				UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+				if (tokenVo.getUserId().equals(userDetail.getId())) {
+					throw new BadRequestException("当前登陆用户无法强退");
+				}
+
+			}
+			removeToken(token);
+		});
+		return Result.buildOk("操作成功");
+	}
+
+	/**
+	 * 令牌管理调用
+	 * @param token token
+	 */
+	private Result<Boolean> removeToken(@PathVariable("token") String token) {
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
 		if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
 			return Result.buildOk();
@@ -154,22 +185,75 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 查询token
-	 * @param params 分页参数
+	 * @param userOnlineQueryCriteria 分页参数
 	 * @return
 	 */
 	@Inner
-	@PostMapping("/page")
-	public Result<Page> tokenList(@RequestBody Map<String, Object> params) {
-		// 根据分页参数获取对应数据
-		String key = String.format("%sauth_to_access:*", SecurityConstants.PROJECT_OAUTH_ACCESS);
-		int current = MapUtil.getInt(params, CommonConstants.CURRENT);
-		int size = MapUtil.getInt(params, CommonConstants.SIZE);
-		Set<String> keys = redisTemplate.keys(key);
-		List<String> pages = keys.stream().skip((current - 1) * size).limit(size).collect(Collectors.toList());
-		Page result = new Page(current, size);
-		result.setRecords(redisTemplate.opsForValue().multiGet(pages));
-		result.setTotal(keys.size());
+	@PostMapping("/find-page")
+	public Result findPage(@RequestBody UserOnlineQueryCriteria userOnlineQueryCriteria) {
+
+		List<UserOnlineVo> list = new ArrayList<>();
+		//根据分页参数获取对应数据
+		List<String> tokenStrs = findKeysForPage(SecurityConstants.PROJECT_OAUTH_ACCESS + "*", userOnlineQueryCriteria.getUsername(),
+			userOnlineQueryCriteria.getCurrent(), userOnlineQueryCriteria.getSize());
+
+		for (String tokenStr : tokenStrs) {
+			OAuth2AccessToken token = tokenStore.readAccessToken(tokenStr);
+			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(token);
+			Authentication authentication = oAuth2Auth.getUserAuthentication();
+			UserOnlineVo userOnlineVo = new UserOnlineVo();
+			if (authentication.getPrincipal() instanceof UserDetail) {
+				UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+				UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(SecurityConstants.PROJECT_OAUTH_ONLINE + userDetail.getId());
+				BeanUtil.copyProperties(userOnlineDto, userOnlineVo);
+			}
+			userOnlineVo.setTokenType(token.getTokenType());
+			userOnlineVo.setAccessToken(token.getValue());
+			userOnlineVo.setExpiresIn(token.getExpiration());
+			userOnlineVo.setClientId(oAuth2Auth.getOAuth2Request().getClientId());
+			userOnlineVo.setGrantType(oAuth2Auth.getOAuth2Request().getGrantType());
+			list.add(userOnlineVo);
+		}
+
+		Page result = new Page(userOnlineQueryCriteria.getCurrent(), userOnlineQueryCriteria.getSize());
+		result.setRecords(list);
+		result.setTotal(Long.valueOf(redisTemplate.keys(SecurityConstants.PROJECT_OAUTH_ACCESS + "*").size()));
 		return Result.buildOkData(result);
+
+	}
+
+	private List<String> findKeysForPage(String patternKey, String username, int pageNum, int pageSize) {
+		ScanOptions options = ScanOptions.scanOptions().match(patternKey).build();
+		RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+		Cursor cursor = (Cursor) redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
+		List<String> result = new ArrayList<>();
+		int tmpIndex = 0;
+		int startIndex = (pageNum - 1) * pageSize;
+		int end = pageNum * pageSize;
+
+		assert cursor != null;
+		while (cursor.hasNext()) {
+			String token = cursor.next().toString(), targetName = "";
+			String realToken = StrUtil.subAfter(token, SecurityConstants.PROJECT_OAUTH_ACCESS, true);
+			OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(realToken);
+			OAuth2Authentication oAuth2Auth = tokenStore.readAuthentication(oAuth2AccessToken);
+			Authentication authentication = oAuth2Auth.getUserAuthentication();
+			if (authentication.getPrincipal() instanceof UserDetail) {
+				UserDetail user = (UserDetail) authentication.getPrincipal();
+				targetName = user.getUsername();
+			}
+			if (tmpIndex >= startIndex && tmpIndex < end && (StringUtil.isEmpty(username) || targetName.indexOf(username) != -1)) {
+				result.add(realToken);
+				tmpIndex++;
+				continue;
+			}
+			if (tmpIndex >= end) {
+				break;
+			}
+			tmpIndex++;
+			cursor.next();
+		}
+		return result;
 	}
 
 }

@@ -42,7 +42,6 @@ public interface CacheNameConstants {
 	/**
 	 * oauth 缓存前缀
 	 */
-	String OAUTH_ACCESS = "access";
 	String DICT_ALL = "dict_all";
 
 
