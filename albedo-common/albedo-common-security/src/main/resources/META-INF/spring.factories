@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.albedo.java.common.security.service.UserDetailsServiceImpl,\
+  com.albedo.java.common.security.component.SecurityInnerAspect,\
+  com.albedo.java.common.security.component.AlbedoTokenStoreAutoConfiguration,\
+  com.albedo.java.common.security.component.AlbedoTokenStoreAutoCleanSchedule

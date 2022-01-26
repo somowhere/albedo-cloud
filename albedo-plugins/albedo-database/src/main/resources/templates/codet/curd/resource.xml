@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>resource</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/web/${subModuleName}</filePath>
+	<fileName>${ClassName}Resource.java</fileName>
+	<content><![CDATA[
+/*
+ *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  <p>
+ *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  <p>
+ * https://www.gnu.org/licenses/lgpl.html
+ *  <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package ${packageName}.${moduleName}.web<#if subModuleName != "">.${subModuleName}</#if>;
+
+
+import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.log.annotation.LogOperate;
+import com.albedo.java.common.web.resource.BaseResource;
+import com.albedo.java.common.core.util.Result;
+import com.albedo.java.plugins.database.mybatis.util.QueryWrapperUtil;
+import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dto;
+import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}QueryCriteria;
+import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+
+import javax.validation.Valid;
+import java.util.Set;
+
+/**
+ * ${functionName}Controller ${functionNameSimple}
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@RestController
+@RequestMapping(value = "${r"${application.admin-path}"}/${urlPrefix}")
+@AllArgsConstructor
+@Api(tags = "${functionNameSimple}")
+public class ${ClassName}Resource extends BaseResource {
+
+	private final ${ClassName}Service service;
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(CommonConstants.URL_ID_REGEX)
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_view')")
+	public Result get(@PathVariable String id) {
+		log.debug("REST request to get Entity : {}", id);
+		return  Result.buildOkData(service.getOneDto(id));
+	}
+	/**
+	 * GET / : get all ${className}.
+	 *
+	 * @param pm the pagination information
+	 * @return the Result with status 200 (OK) and with body all ${className}
+	 */
+
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_view')")
+	@GetMapping
+	@LogOperate(value = "${functionName}分页查看")
+	@ApiOperation("${functionNameSimple}分页查看")
+	public Result getPage(PageModel pm, ${ClassName}QueryCriteria ${className}QueryCriteria) {
+		QueryWrapper wrapper = QueryWrapperUtil.getWrapper(pm, ${className}QueryCriteria);
+		return Result.buildOkData(service.page(pm, wrapper));
+	}
+
+	/**
+	 * POST / : Save a ${className}Dto.
+	 *
+	 * @param ${className}Dto the HTTP ${className}
+	 */
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_edit')")
+	@LogOperate(value = "${functionName}编辑")
+	@ApiOperation("${functionNameSimple}编辑")
+	@PostMapping
+	public Result save(@Valid @RequestBody ${ClassName}Dto ${className}Dto) {
+		log.debug("REST request to save ${ClassName}Dto : {}", ${className}Dto);
+		service.saveOrUpdate(${className}Dto);
+		return Result.buildOk("保存${functionNameSimple}成功");
+
+	}
+
+	/**
+	 * DELETE //:ids : delete the "ids" ${ClassName}.
+	 *
+	 * @param ids the id of the ${className} to delete
+	 * @return the Result with status 200 (OK)
+	 */
+	@PreAuthorize("@pms.hasPermission('${permissionPrefix}_del')")
+	@LogOperate(value = "${functionName}删除")
+	@ApiOperation("${functionNameSimple}删除")
+	@DeleteMapping
+	public Result delete(@RequestBody Set<String> ids) {
+		log.debug("REST request to delete ${ClassName}: {}", ids);
+		service.removeByIds(ids);
+		return Result.buildOk("删除${functionNameSimple}成功");
+	}
+}]]>
+	</content>
+</template>

@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+  ~  <p>
+  ~  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~  <p>
+  ~ https://www.gnu.org/licenses/lgpl.html
+  ~  <p>
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.albedo.java</groupId>
+	<artifactId>albedo-cloud</artifactId>
+	<version>3.2.1-SNAPSHOT</version>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<url>https://www.albedo.com</url>
+
+	<properties>
+		<project.release.version>3.2.1-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.6.2</spring-boot.version>
+		<spring-cloud.version>2021.0.0</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<spring-boot-admin.version>2.5.5</spring-boot-admin.version>
+		<git.commit.plugin>4.9.9</git.commit.plugin>
+		<spring.checkstyle.plugin>0.0.29</spring.checkstyle.plugin>
+		<hutool.version>5.7.18</hutool.version>
+		<p6spy.version>3.9.1</p6spy.version>
+		<mybatis-plus.version>3.5.0</mybatis-plus.version>
+		<mybatis.version>3.5.9</mybatis.version>
+		<dynamic-ds.version>3.4.1</dynamic-ds.version>
+		<knife4j.version>3.0.3</knife4j.version>
+		<captcha.version>2.2.1</captcha.version>
+		<velocity.version>1.7</velocity.version>
+		<jasypt.version>2.1.0</jasypt.version>
+		<security.oauth.version>2.3.6.RELEASE</security.oauth.version>
+		<druid.version>1.2.8</druid.version>
+		<h2.version>1.4.199</h2.version>
+		<poi.version>5.0.0</poi.version>
+		<springfox.version>3.0.0</springfox.version>
+		<guava.version>30.1-jre</guava.version>
+		<mail.version>1.5.0-b01</mail.version>
+		<alipay.version>4.16.38.ALL</alipay.version>
+		<xxl-job.version>2.3.0</xxl-job.version>
+		<swagger.version>1.5.20</swagger.version>
+		<protostuff.version>1.7.4</protostuff.version>
+		<ip2region.version>1.7.2</ip2region.version>
+		<transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
+		<minio.version>8.2.2</minio.version>
+		<qcloudsms.version>1.0.6</qcloudsms.version>
+		<tobato-fastdfs-client.version>1.27.2</tobato-fastdfs-client.version>
+		<aliyun-java-sdk-core.version>4.5.25</aliyun-java-sdk-core.version>
+		<aliyun-java-sdk-dysmsapi.version>2.1.0</aliyun-java-sdk-dysmsapi.version>
+		<aliyun-sdk-oss.version>3.13.2</aliyun-sdk-oss.version>
+		<bce-java-sdk.version>0.10.21</bce-java-sdk.version>
+		<esdk-obs-java.version>3.21.8.1</esdk-obs-java.version>
+		<qiniu-java-sdk.version>7.8.0</qiniu-java-sdk.version>
+
+		<docker.plugin.version>0.32.0</docker.plugin.version>
+		<docker.host>http://192.168.1.100:8088/</docker.host>
+		<docker.registry>192.168.1.100</docker.registry>
+		<docker.namespace>library</docker.namespace>
+		<docker.username>admin</docker.username>
+		<docker.password>Harbor123</docker.password>
+
+		<profile.dev.log.level>DEBUG</profile.dev.log.level>
+		<profile.prod.log.level>INFO</profile.prod.log.level>
+	</properties>
+
+	<dependencies>
+		<!--bootstrap 启动器-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<!--配置文件处理器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--配置文件加解密-->
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>${jasypt.version}</version>
+		</dependency>
+		<!--监控-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!--监控客户端-->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+			<version>${spring-boot-admin.version}</version>
+		</dependency>
+		<!--Lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--测试依赖-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>albedo-gateway</module>
+		<module>albedo-auth</module>
+		<module>albedo-modules</module>
+		<module>albedo-common</module>
+		<module>albedo-plugins</module>
+		<module>albedo-register</module>
+    </modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--稳定版本，替代spring security bom内置-->
+
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>${security.oauth.version}</version>
+			</dependency>
+			<!--web 模块-->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<!--排除tomcat依赖-->
+					<exclusion>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+						<groupId>org.springframework.boot</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>p6spy</groupId>
+				<artifactId>p6spy</artifactId>
+				<version>${p6spy.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-extension</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-annotation</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+
+			<!-- 阿里云 -->
+			<dependency>
+				<groupId>com.aliyun</groupId>
+				<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+				<version>${aliyun-java-sdk-dysmsapi.version}</version>
+			</dependency>
+			<!-- 阿里云 -->
+			<dependency>
+				<groupId>com.aliyun</groupId>
+				<artifactId>aliyun-java-sdk-core</artifactId>
+				<version>${aliyun-java-sdk-core.version}</version>
+			</dependency>
+			<!-- 阿里云OSS -->
+			<dependency>
+				<groupId>com.aliyun.oss</groupId>
+				<artifactId>aliyun-sdk-oss</artifactId>
+				<version>${aliyun-sdk-oss.version}</version>
+			</dependency>
+			<!-- 华为云OBS -->
+			<dependency>
+				<groupId>com.huaweicloud</groupId>
+				<artifactId>esdk-obs-java</artifactId>
+				<version>${esdk-obs-java.version}</version>
+			</dependency>
+			<!-- 七牛云OSS -->
+			<dependency>
+				<groupId>com.qiniu</groupId>
+				<artifactId>qiniu-java-sdk</artifactId>
+				<version>${qiniu-java-sdk.version}</version>
+			</dependency>
+			<!-- FastDFS文件 -->
+			<dependency>
+				<groupId>com.github.tobato</groupId>
+				<artifactId>fastdfs-client</artifactId>
+				<version>${tobato-fastdfs-client.version}</version>
+			</dependency>
+			<!--minio文件系统 -->
+			<dependency>
+				<groupId>io.minio</groupId>
+				<artifactId>minio</artifactId>
+				<version>${minio.version}</version>
+			</dependency>
+			<!-- 腾讯云短信  -->
+			<dependency>
+				<groupId>com.github.qcloudsms</groupId>
+				<artifactId>qcloudsms</artifactId>
+				<version>${qcloudsms.version}</version>
+			</dependency>
+			<!-- 百度短信 -->
+			<dependency>
+				<groupId>com.baidubce</groupId>
+				<artifactId>bce-java-sdk</artifactId>
+				<version>${bce-java-sdk.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.lionsoul</groupId>
+				<artifactId>ip2region</artifactId>
+				<version>${ip2region.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+					<configuration>
+						<finalName>${project.build.finalName}</finalName>
+						<layers>
+							<enabled>true</enabled>
+						</layers>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker.plugin.version}</version>
+					<configuration>
+						<!-- Docker Remote Api-->
+						<dockerHost>${docker.host}</dockerHost>
+						<!-- Docker 镜像私服-->
+						<registry>${docker.registry}</registry>
+						<!-- 认证信息-->
+						<authConfig>
+							<push>
+								<username>${docker.username}</username>
+								<password>${docker.password}</password>
+							</push>
+						</authConfig>
+						<images>
+							<image>
+								<!-- 镜像名称： 172.17.0.111/library/pig-gateway:2.6.3-->
+								<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
+								<build>
+									<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+								</build>
+							</image>
+						</images>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<target>${maven.compiler.target}</target>
+					<source>${maven.compiler.source}</source>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<!--打包jar 与git commit 关联插件-->
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>${git.commit.plugin}</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnNoGitDirectory>false</failOnNoGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<!--因为项目定制了jackson的日期时间序列化/反序列化格式，因此这里要进行配置,不然通过management.info.git.mode=full进行完整git信息监控时会存在问题-->
+					<dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.(id|message|time).*$</includeOnlyProperty>
+					</includeOnlyProperties>
+				</configuration>
+			</plugin>
+			<!--代码格式插件，默认使用spring 规则-->
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>${spring.checkstyle.plugin}</version>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker.plugin.version}</version>
+				<configuration>
+					<!-- Docker Remote Api-->
+					<dockerHost>${docker.host}</dockerHost>
+					<!-- Docker 镜像私服-->
+					<registry>${docker.registry}</registry>
+					<!-- 认证信息-->
+					<authConfig>
+						<push>
+							<username>${docker.username}</username>
+							<password>${docker.password}</password>
+						</push>
+					</authConfig>
+					<images>
+						<image>
+							<!-- 镜像名称： 172.17.0.111/library/pig-gateway:2.6.3-->
+							<name>${docker.registry}/${docker.namespace}/${project.name}:${project.version}</name>
+							<build>
+								<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			<!--			<plugin>-->
+			<!--				<groupId>org.apache.maven.plugins</groupId>-->
+			<!--				<artifactId>maven-resources-plugin</artifactId>-->
+			<!--				<executions>-->
+			<!--					<execution>-->
+			<!--						<id>default-resources</id>-->
+			<!--						<phase>validate</phase>-->
+			<!--						<goals>-->
+			<!--							<goal>copy-resources</goal>-->
+			<!--						</goals>-->
+			<!--						<configuration>-->
+			<!--							<outputDirectory>${project.build.directory}/classes</outputDirectory>-->
+			<!--							<useDefaultDelimiters>false</useDefaultDelimiters>-->
+			<!--							<delimiters>-->
+			<!--								<delimiter>#</delimiter>-->
+			<!--							</delimiters>-->
+			<!--							<resources>-->
+			<!--								<web>-->
+			<!--									<directory>src/main/resources/</directory>-->
+			<!--									<filtering>true</filtering>-->
+			<!--									<includes>-->
+			<!--										<include>*.yml</include>-->
+			<!--									</includes>-->
+			<!--								</web>-->
+			<!--								<web>-->
+			<!--									<directory>src/main/resources/</directory>-->
+			<!--									<filtering>false</filtering>-->
+			<!--									<excludes>-->
+			<!--										<exclude>*.yml</exclude>-->
+			<!--									</excludes>-->
+			<!--								</web>-->
+			<!--							</resources>-->
+			<!--						</configuration>-->
+			<!--					</execution>-->
+			<!--				</executions>-->
+			<!--			</plugin>-->
+		</plugins>
+	</build>
+
+		<repositories>
+			<!--阿里云主仓库，代理了maven central和jcenter仓库-->
+			<repository>
+				<id>aliyun</id>
+				<name>aliyun</name>
+				<url>https://maven.aliyun.com/repository/public</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</repository>
+			<!--阿里云代理Spring 官方仓库-->
+			<repository>
+				<id>spring-milestones</id>
+				<name>Spring Milestones</name>
+				<url>https://maven.aliyun.com/repository/spring</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</repository>
+		</repositories>
+		<pluginRepositories>
+			<!--阿里云代理Spring 插件仓库-->
+			<pluginRepository>
+				<id>spring-plugin</id>
+				<name>spring-plugin</name>
+				<url>https://maven.aliyun.com/repository/spring-plugin</url>
+				<releases>
+					<enabled>true</enabled>
+				</releases>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+			</pluginRepository>
+		</pluginRepositories>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!--  log configuration -->
+				<logback.loglevel>${profile.dev.log.level}</logback.loglevel>
+				<!-- default Spring profiles -->
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<!--  log configuration -->
+				<logback.loglevel>${profile.prod.log.level}</logback.loglevel>
+				<!-- default Spring profiles -->
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
+</project>

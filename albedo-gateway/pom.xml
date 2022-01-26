@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
+  ~  <p>
+  ~  Licensed under the GNU Lesser General Public License 3.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~  <p>
+  ~ https://www.gnu.org/licenses/lgpl.html
+  ~  <p>
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.albedo.java</groupId>
+		<artifactId>albedo-cloud</artifactId>
+		<version>3.2.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>albedo-gateway</artifactId>
+
+
+	<description>albedo 服务网关，基于 spring cloud gateway</description>
+
+	<dependencies>
+
+		<!--gateway 网关依赖,内置webflux 依赖-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+		</dependency>
+		<!--注册中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+		<!--配置中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--断路器依赖-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+		</dependency>
+		<!-- LB 扩展 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+		<!--验证码 源码： https://github.com/pig-mesh/easy-captcha -->
+		<dependency>
+			<groupId>com.pig4cloud.plugin</groupId>
+			<artifactId>captcha-spring-boot-starter</artifactId>
+			<version>${captcha.version}</version>
+		</dependency>
+		<!-- 工具包依赖 -->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-core</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
+		<!--接口文档-->
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-swagger</artifactId>
+			<version>${project.release.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<filters>
+			<filter>../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

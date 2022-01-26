@@ -1,0 +1,36 @@
+server:
+  port: 5001
+
+nacos:
+  ip: @nacos.ip@
+  port: @nacos.port@
+  namespace: @nacos.namespace@
+  username: @nacos.username@
+  password: @nacos.password@
+
+logging:
+  level:
+    ROOT: INFO
+    com.albedo.java: @logback.loglevel@
+  file:
+    path: @logging.file.path@
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${nacos.namespace}
+        server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        namespace: ${nacos.namespace}
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @spring.profiles.active@
+  autoconfigure:
+    exclude: com.albedo.java.common.core.config.JacksonConfig

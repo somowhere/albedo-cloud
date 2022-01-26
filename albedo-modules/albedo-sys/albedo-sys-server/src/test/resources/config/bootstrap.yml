@@ -1,0 +1,15 @@
+server:
+  port: 40001
+
+spring:
+  application:
+    name: albedo-test
+  # 配置中心
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+  main:
+    allow-bean-definition-overriding: true

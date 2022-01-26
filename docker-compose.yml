@@ -1,0 +1,106 @@
+version: '3'
+services:
+  albedo-mysql:
+    build:
+      context: ./db
+    restart: always
+    container_name: albedo-mysql
+    image: albedo-mysql
+    ports:
+      - 3317:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 111111
+      TZ: Asia/Shanghai
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    security_opt:
+      - seccomp:unconfined
+
+  albedo-redis:
+    image: redis:6.0
+    ports:
+      - 6177:6379
+    restart: always
+    container_name: albedo-redis
+    hostname: albedo-redis
+
+  albedo-register:
+    build:
+      context: ./albedo-register
+    restart: always
+    volumes:
+      - ./logs/nacos-logs/:/root/nacos/logs
+    ports:
+      - 8844:8848
+    container_name: albedo-register
+    hostname: albedo-register
+    image: albedo-register
+
+  albedo-auth:
+    build:
+      context: ./albedo-auth
+    #restart: always
+    container_name: albedo-auth
+    hostname: albedo-auth
+    image: albedo-auth
+
+  albedo-sys-server:
+    build:
+      context: ./albedo-modules/albedo-sys-server
+    #restart: always
+    container_name: albedo-sys-server
+    hostname: albedo-sys-server
+    image: albedo-sys-server
+
+  albedo-gen:
+    build:
+      context: ./albedo-modules/albedo-gen
+    #restart: always
+    container_name: albedo-gen
+    hostname: albedo-gen
+    image: albedo-gen
+
+  albedo-gateway:
+    build:
+      context: ./albedo-gateway
+    #restart: always
+    ports:
+      - 9997:9999
+    container_name: albedo-gateway
+    hostname: albedo-gateway
+    image: albedo-gateway
+
+  albedo-job:
+    build:
+      context: ./albedo-modules/albedo-job
+    #restart: always
+    container_name: albedo-job
+    hostname: albedo-job
+    image: albedo-job
+    ports:
+      - 5077:5005
+
+  albedo-sentinel:
+    build:
+      context: ./albedo-modules/albedo-sentinel
+    ports:
+      - 8857:8858
+    #restart: always
+    container_name: albedo-sentinel
+    hostname: albedo-sentinel
+    image: albedo-sentinel
+
+  albedo-monitor:
+    build:
+      context: ./albedo-modules/albedo-monitor
+    #restart: always
+    ports:
+      - 5007:5001
+    container_name: albedo-monitor
+    hostname: albedo-monitor
+    image: albedo-monitor
+
