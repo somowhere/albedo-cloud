@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.io.File;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ConfigurationProperties(prefix = FileServerProperties.PREFIX)
+@RefreshScope
 public class FileServerProperties {
 	public static final String PREFIX = "application.file";
 	/**
@@ -81,9 +83,9 @@ public class FileServerProperties {
 	public static class Local {
 		private String bucket = "dev";
 		/**
-		 * 文件访问前缀
+		 * 文件访问前缀（部署nginx后，配置nginx的ip，并配置nginx静态代理storage-path地址的静态资源）
 		 */
-		private String urlPrefix = "http://127.0.0.1:8061/file/";
+		private String urlPrefix = "http://127.0.0.1:9999/file/";
 		/**
 		 * 文件存储路径
 		 */

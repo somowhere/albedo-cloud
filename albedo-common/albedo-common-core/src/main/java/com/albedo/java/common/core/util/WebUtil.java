@@ -207,6 +207,35 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	 * @param request HttpServletRequest
 	 * @return {String}
 	 */
+	public String getIp(ServerHttpRequest request) {
+		Assert.notNull(request, "HttpServletRequest is null");
+		String ip = request.getHeaders().getFirst("X-Requested-For");
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeaders().getFirst("X-Forwarded-For");
+		}
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeaders().getFirst("Proxy-Client-IP");
+		}
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeaders().getFirst("WL-Proxy-Client-IP");
+		}
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeaders().getFirst("HTTP_CLIENT_IP");
+		}
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getHeaders().getFirst("HTTP_X_FORWARDED_FOR");
+		}
+		if (StringUtil.isBlank(ip) || CommonConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddress().getHostName();
+		}
+		return StringUtil.isBlank(ip) ? null : ip.split(",")[0];
+	}
+	/**
+	 * 获取ip
+	 *
+	 * @param request HttpServletRequest
+	 * @return {String}
+	 */
 	public String getIp(HttpServletRequest request) {
 		Assert.notNull(request, "HttpServletRequest is null");
 		String ip = request.getHeader("X-Requested-For");
@@ -276,4 +305,5 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 		}
 		return URLUtil.decode(value);
 	}
+
 }

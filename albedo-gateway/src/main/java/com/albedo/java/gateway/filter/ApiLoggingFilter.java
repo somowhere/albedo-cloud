@@ -1,5 +1,6 @@
 package com.albedo.java.gateway.filter;
 
+import com.albedo.java.common.core.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -39,8 +40,7 @@ public class ApiLoggingFilter implements GlobalFilter, Ordered {
 			Long startTime = exchange.getAttribute(START_TIME);
 			if (startTime != null) {
 				Long executeTime = (System.currentTimeMillis() - startTime);
-				List<String> ips = exchange.getRequest().getHeaders().get(X_REAL_IP);
-				String ip = ips != null ? ips.get(0) : null;
+				String ip = WebUtil.getIp(exchange.getRequest());
 				String api = exchange.getRequest().getURI().getRawPath();
 				int code = exchange.getResponse().getStatusCode() != null
 						? exchange.getResponse().getStatusCode().value() : 500;

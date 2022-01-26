@@ -1,7 +1,7 @@
  <p align="center">
    <img src="https://img.shields.io/badge/Spring%20Cloud-2021.0.0-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.1-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.5.4-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.6.2-blue.svg" alt="Downloads">
  </p>  
 
 **albedo-cloud Microservice Architecture**
@@ -26,6 +26,7 @@
 127.0.0.1 albedo-gateway
 127.0.0.1 albedo-register
 127.0.0.1 albedo-sentinel
+127.0.0.1 albedo-monitor
 ```
 
 2. 依次启动

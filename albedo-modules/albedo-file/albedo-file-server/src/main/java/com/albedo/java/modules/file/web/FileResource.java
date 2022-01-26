@@ -53,7 +53,6 @@ import java.util.Set;
  */
 @RestController
 @Slf4j
-@RequestMapping("file")
 @AllArgsConstructor
 @Api(tags = "文件管理")
 public class FileResource {
