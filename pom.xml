@@ -21,27 +21,27 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.2.1-SNAPSHOT</version>
+	<version>3.2.3-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.2.1-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.6.2</spring-boot.version>
-		<spring-cloud.version>2021.0.0</spring-cloud.version>
+		<project.release.version>3.2.3-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.6.3</spring-boot.version>
+		<spring-cloud.version>2021.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.5.5</spring-boot-admin.version>
+		<spring-boot-admin.version>2.6.2</spring-boot-admin.version>
 		<git.commit.plugin>4.9.9</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.29</spring.checkstyle.plugin>
-		<hutool.version>5.7.18</hutool.version>
+		<hutool.version>5.7.21</hutool.version>
 		<p6spy.version>3.9.1</p6spy.version>
-		<mybatis-plus.version>3.5.0</mybatis-plus.version>
+		<mybatis-plus.version>3.5.1</mybatis-plus.version>
 		<mybatis.version>3.5.9</mybatis.version>
-		<dynamic-ds.version>3.4.1</dynamic-ds.version>
+		<dynamic-ds.version>3.5.1</dynamic-ds.version>
 		<knife4j.version>3.0.3</knife4j.version>
 		<captcha.version>2.2.1</captcha.version>
 		<velocity.version>1.7</velocity.version>
@@ -64,10 +64,10 @@
 		<tobato-fastdfs-client.version>1.27.2</tobato-fastdfs-client.version>
 		<aliyun-java-sdk-core.version>4.5.25</aliyun-java-sdk-core.version>
 		<aliyun-java-sdk-dysmsapi.version>2.1.0</aliyun-java-sdk-dysmsapi.version>
-		<aliyun-sdk-oss.version>3.13.2</aliyun-sdk-oss.version>
+		<aliyun-sdk-oss.version>3.14.0</aliyun-sdk-oss.version>
 		<bce-java-sdk.version>0.10.21</bce-java-sdk.version>
-		<esdk-obs-java.version>3.21.8.1</esdk-obs-java.version>
-		<qiniu-java-sdk.version>7.8.0</qiniu-java-sdk.version>
+		<esdk-obs-java.version>3.21.11</esdk-obs-java.version>
+		<qiniu-java-sdk.version>7.9.3</qiniu-java-sdk.version>
 
 		<docker.plugin.version>0.32.0</docker.plugin.version>
 		<docker.host>http://192.168.1.100:8088/</docker.host>

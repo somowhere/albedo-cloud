@@ -72,7 +72,6 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 		String newPath = rawPath.substring(StringUtil.getFromIndex(rawPath, "/", 2));
 
 		ContextUtil.setTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_TENANT)));
-		ContextUtil.setSubTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_SUB_TENANT)));
 		String traceId = WebUtil.getHeader(request, ContextConstants.TRACE_ID_HEADER);
 		if(StrUtil.isNotBlank(traceId)){
 			MDC.put(ContextConstants.LOG_TRACE_ID, traceId);
@@ -82,11 +81,6 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 			addHeader(mutate, ContextConstants.KEY_TENANT, ContextUtil.getTenant());
 			MDC.put(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
 		}
-		if(StrUtil.isNotBlank(ContextUtil.getSubTenant())){
-			addHeader(mutate, ContextConstants.KEY_SUB_TENANT, ContextUtil.getSubTenant());
-			MDC.put(ContextConstants.KEY_SUB_TENANT, ContextUtil.getSubTenant());
-		}
-
 		ServerHttpRequest newRequest = mutate
 			.path(newPath)
 			.build();

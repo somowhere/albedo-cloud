@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.2.1-SNAPSHOT</version>
+		<version>3.2.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-common</artifactId>
@@ -19,7 +19,6 @@
 		<module>albedo-common-log</module>
 		<module>albedo-common-security</module>
 		<module>albedo-common-module</module>
-		<module>albedo-common-datasource</module>
 		<module>albedo-common-job</module>
 		<module>albedo-common-feign</module>
 		<module>albedo-common-swagger</module>

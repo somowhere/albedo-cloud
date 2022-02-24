@@ -21,8 +21,10 @@ import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
 import com.albedo.java.modules.gen.domain.vo.TableQuery;
 import com.albedo.java.plugins.database.mybatis.repository.BaseRepository;
 import com.baomidou.dynamic.datasource.annotation.DS;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ import java.util.List;
  *
  * @author somewhere
  */
-@Repository
+@Mapper
 public interface TableRepository extends BaseRepository<Table> {
 
 	/**
@@ -41,6 +43,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
 	@DS("#last")
 	List<Table> findTableList(@Param("tableQuery") TableQuery tableQuery, String dsName);
 
@@ -51,6 +54,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
 	@DS("#last")
 	List<TableColumnDto> findTableColumnList(@Param("tableName") String tableName, String dsName);
 
@@ -61,6 +65,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
 	@DS("#last")
 	List<String> findTablePk(@Param("tableName") String tableName, String dsName);
 

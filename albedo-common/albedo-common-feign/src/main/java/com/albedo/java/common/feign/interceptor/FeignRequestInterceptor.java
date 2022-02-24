@@ -21,7 +21,6 @@ public class FeignRequestInterceptor implements RequestInterceptor {
 			requestTemplate.header(ContextConstants.TRACE_ID_HEADER, ContextUtil.getTenant());
 		}
 		requestTemplate.header(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
-		requestTemplate.header(ContextConstants.KEY_SUB_TENANT, ContextUtil.getSubTenant());
 
 	}
 }

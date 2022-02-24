@@ -55,7 +55,6 @@ public interface TableService extends DataCacheService<Table, TableDto> {
 	 * @param tableDto
 	 * @return
 	 */
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	List<String> findTablePk(TableDto tableDto);
 
 	/**
@@ -64,7 +63,6 @@ public interface TableService extends DataCacheService<Table, TableDto> {
 	 * @param tableDto
 	 * @return
 	 */
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	List<TableColumnDto> findTableColumnList(TableDto tableDto);
 
 	/**

@@ -37,9 +37,12 @@ import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
 import com.albedo.java.modules.sys.domain.Dict;
 import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -195,14 +198,13 @@ public class TableServiceImpl extends DataCacheServiceImpl<TableRepository, Tabl
 	}
 
 	@Override
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public List<String> findTablePk(TableDto tableDto) {
 		List<String> pkList = repository.findTablePk(tableDto.getName(), tableDto.getDsName());
 		return pkList;
 	}
 
 	@Override
-	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public List<TableColumnDto> findTableColumnList(TableDto tableDto) {
 		List<TableColumnDto> list = repository.findTableColumnList(tableDto.getName(), tableDto.getDsName());
 		Assert.notNull(list, StringUtil.toAppendStr("无法获取[", tableDto.getName(), "]表的列信息"));
@@ -211,19 +213,18 @@ public class TableServiceImpl extends DataCacheServiceImpl<TableRepository, Tabl
 		}
 		return list;
 	}
-
 	@Override
 	public List<TableDto> findTableListFormDb(TableDto tableDto) {
 		Assert.isTrue(tableDto != null, "无效参数");
-		List<Table> tableEntities = list();
 		TableQuery tableQuery = new TableQuery();
 		if (StringUtil.isNotEmpty(tableDto.getName())) {
 			tableQuery.setName(tableDto.getName());
 		} else {
 			List<String> tempNames = Lists.newArrayList("gen_");
 			tableQuery.setNotLikeNames(tempNames);
-			if (ObjectUtil.isNotEmpty(tableEntities)) {
-				tableQuery.setNotNames(CollUtil.extractToList(tableEntities, Table.F_NAME));
+			List<Table> tableList = list();
+			if (ObjectUtil.isNotEmpty(tableList)) {
+				tableQuery.setNotNames(CollUtil.extractToList(tableList, Table.F_NAME));
 			}
 		}
 		List<Table> list = repository.findTableList(tableQuery, tableDto.getDsName());
