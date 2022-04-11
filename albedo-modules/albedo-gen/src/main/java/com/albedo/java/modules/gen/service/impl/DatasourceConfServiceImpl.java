@@ -38,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
-import java.io.Serializable;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;

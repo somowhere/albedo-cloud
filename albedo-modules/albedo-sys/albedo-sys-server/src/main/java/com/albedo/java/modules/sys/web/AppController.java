@@ -36,6 +36,7 @@ public class AppController {
 
 	/**
 	 * 获取指定用户全部信息
+	 *
 	 * @param phone 手机号
 	 * @return 用户信息
 	 */

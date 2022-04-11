@@ -17,7 +17,6 @@
 package com.albedo.java.gateway.filter;
 
 
-import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.Mode;
@@ -108,6 +107,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	/**
 	 * 原文解密
+	 *
 	 * @return
 	 */
 	private Function decryptAES() {
@@ -123,8 +123,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 				String password = aes.decryptStr(inParamsMap.get(PASSWORD));
 				// 返回修改后报文字符
 				inParamsMap.put(PASSWORD, password);
-			}
-			else {
+			} else {
 				log.error("非法请求数据:{}", s);
 			}
 			return Mono.just(HttpUtil.toParams(inParamsMap, Charset.defaultCharset(), true));
@@ -133,6 +132,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 
 	/**
 	 * 报文转换
+	 *
 	 * @return
 	 */
 	private ServerHttpRequestDecorator decorate(ServerWebExchange exchange, HttpHeaders headers,
@@ -145,8 +145,7 @@ public class PasswordDecoderFilter extends AbstractGatewayFilterFactory {
 				httpHeaders.putAll(super.getHeaders());
 				if (contentLength > 0) {
 					httpHeaders.setContentLength(contentLength);
-				}
-				else {
+				} else {
 					httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
 				}
 				return httpHeaders;

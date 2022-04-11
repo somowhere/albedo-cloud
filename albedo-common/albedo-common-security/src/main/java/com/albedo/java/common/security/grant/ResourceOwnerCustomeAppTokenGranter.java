@@ -27,14 +27,14 @@ public class ResourceOwnerCustomeAppTokenGranter extends AbstractTokenGranter {
 	private final AuthenticationManager authenticationManager;
 
 	public ResourceOwnerCustomeAppTokenGranter(AuthenticationManager authenticationManager,
-			AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
-			OAuth2RequestFactory requestFactory) {
+											   AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
+											   OAuth2RequestFactory requestFactory) {
 		this(authenticationManager, tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
 	}
 
 	protected ResourceOwnerCustomeAppTokenGranter(AuthenticationManager authenticationManager,
-			AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
-			OAuth2RequestFactory requestFactory, String grantType) {
+												  AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
+												  OAuth2RequestFactory requestFactory, String grantType) {
 		super(tokenServices, clientDetailsService, requestFactory, grantType);
 		this.authenticationManager = authenticationManager;
 	}
@@ -60,8 +60,7 @@ public class ResourceOwnerCustomeAppTokenGranter extends AbstractTokenGranter {
 		((AbstractAuthenticationToken) userAuth).setDetails(parameters);
 		try {
 			userAuth = authenticationManager.authenticate(userAuth);
-		}
-		catch (AccountStatusException | BadCredentialsException ase) {
+		} catch (AccountStatusException | BadCredentialsException ase) {
 			// covers expired, locked, disabled cases (mentioned in section 5.2, draft 31)
 			throw new InvalidGrantException(ase.getMessage());
 		}

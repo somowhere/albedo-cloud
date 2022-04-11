@@ -29,7 +29,6 @@ import com.albedo.java.common.security.handler.AbstractAuthenticationSuccessEven
 import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.common.util.RedisUtil;
 import com.albedo.java.modules.sys.domain.LogLogin;
-import com.albedo.java.modules.sys.domain.LogOperate;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

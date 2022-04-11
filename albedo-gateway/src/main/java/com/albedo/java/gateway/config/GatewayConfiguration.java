@@ -37,6 +37,7 @@ public class GatewayConfiguration {
 	public ApiLoggingFilter apiLoggingFilter() {
 		return new ApiLoggingFilter();
 	}
+
 	@Bean
 	public ValidateCodeGatewayFilter validateCodeGatewayFilter(GatewayConfigProperties configProperties,
 															   ApplicationProperties applicationProperties,

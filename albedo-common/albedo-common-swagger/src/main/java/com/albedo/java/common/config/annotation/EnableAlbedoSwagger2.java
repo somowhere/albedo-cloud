@@ -30,12 +30,12 @@ import java.lang.annotation.*;
  * @author somewhere
  * @date 2020/10/2
  */
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @EnableConfigurationProperties(ApplicationSwaggerProperties.class)
-@Import({ SwaggerAutoConfiguration.class, GatewaySwaggerAutoConfiguration.class })
+@Import({SwaggerAutoConfiguration.class, GatewaySwaggerAutoConfiguration.class})
 public @interface EnableAlbedoSwagger2 {
 
 }

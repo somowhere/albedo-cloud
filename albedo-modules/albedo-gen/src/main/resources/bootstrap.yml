@@ -33,3 +33,6 @@ spring:
   profiles:
     active: @spring.profiles.active@
 
+application:
+  version: @project.release.version@
+

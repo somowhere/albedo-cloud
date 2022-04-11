@@ -17,9 +17,9 @@
 
 package com.albedo.java.common.feign.sentinel;
 
+import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFeign;
 import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFilterConfiguration;
-import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.sentinel.parser.AlbedoHeaderRequestOriginParser;
 import com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;

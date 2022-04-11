@@ -50,9 +50,9 @@ import java.util.stream.Collectors;
  *
  * <p>
  * 禁用方法1：使用注解@Profile({"dev","test"})
- *
+ * <p>
  * 表示在开发或测试环境开启，而在生产关闭。（推荐使用） 禁用方法2：使用注解@ConditionalOnProperty(name = "swagger.enable",
- *
+ * <p>
  * havingValue = "true") 然后在测试配置或者开发配置中添加swagger.enable=true即可开启，生产环境不填则默认关闭Swagger.
  * </p>
  *
@@ -69,6 +69,84 @@ public class SwaggerAutoConfiguration {
 	private static final List<String> DEFAULT_EXCLUDE_PATH = Arrays.asList("/error", "/actuator/**");
 
 	private static final String BASE_PATH = "/**";
+
+	/**
+	 * 配置默认的全局鉴权策略的开关，通过正则表达式进行匹配；默认匹配所有URL
+	 *
+	 * @return
+	 */
+	private static SecurityContext securityContext(ApplicationSwaggerProperties swaggerProperties) {
+		return SecurityContext.builder().securityReferences(defaultAuth(swaggerProperties)).build();
+	}
+
+	/**
+	 * 默认的全局鉴权策略
+	 *
+	 * @return
+	 */
+	private static List<SecurityReference> defaultAuth(ApplicationSwaggerProperties swaggerProperties) {
+		ArrayList<AuthorizationScope> authorizationScopeList = new ArrayList<>();
+		swaggerProperties.getAuthorization().getAuthorizationScopeList()
+			.forEach(authorizationScope -> authorizationScopeList.add(
+				new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
+		AuthorizationScope[] authorizationScopes = new AuthorizationScope[authorizationScopeList.size()];
+		return Collections
+			.singletonList(SecurityReference.builder().reference(swaggerProperties.getAuthorization().getName())
+				.scopes(authorizationScopeList.toArray(authorizationScopes)).build());
+	}
+
+	private static OAuth securitySchema(ApplicationSwaggerProperties swaggerProperties) {
+		ArrayList<AuthorizationScope> authorizationScopeList = new ArrayList<>();
+		swaggerProperties.getAuthorization().getAuthorizationScopeList()
+			.forEach(authorizationScope -> authorizationScopeList.add(
+				new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
+		ArrayList<GrantType> grantTypes = new ArrayList<>();
+		swaggerProperties.getAuthorization().getTokenUrlList()
+			.forEach(tokenUrl -> grantTypes.add(new ResourceOwnerPasswordCredentialsGrant(tokenUrl)));
+		return new OAuth(swaggerProperties.getAuthorization().getName(), authorizationScopeList, grantTypes);
+	}
+
+	private static ApiInfo apiInfo(ApplicationSwaggerProperties swaggerProperties) {
+		return new ApiInfoBuilder().title(swaggerProperties.getTitle()).description(swaggerProperties.getDescription())
+			.license(swaggerProperties.getLicense()).licenseUrl(swaggerProperties.getLicenseUrl())
+			.termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
+			.contact(new Contact(swaggerProperties.getContact().getName(), swaggerProperties.getContact().getUrl(),
+				swaggerProperties.getContact().getEmail()))
+			.version(swaggerProperties.getVersion()).build();
+	}
+
+	@Bean
+	public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+		return new BeanPostProcessor() {
+
+			@Override
+			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+				if (bean instanceof WebMvcRequestHandlerProvider) {
+					customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+				}
+				return bean;
+			}
+
+			private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(
+				List<T> mappings) {
+				List<T> copy = mappings.stream().filter(mapping -> mapping.getPatternParser() == null)
+					.collect(Collectors.toList());
+				mappings.clear();
+				mappings.addAll(copy);
+			}
+
+			@SuppressWarnings("unchecked")
+			private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
+				try {
+					Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
+					field.setAccessible(true);
+					return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					throw new IllegalStateException(e);
+				}
+			}
+		};
+	}
 
 	@Bean
 	public Docket api(ApplicationSwaggerProperties swaggerProperties) {
@@ -88,97 +166,20 @@ public class SwaggerAutoConfiguration {
 		List<RequestParameter> pars = new ArrayList<>();
 
 		RequestParameterBuilder versionPar = new RequestParameterBuilder().description("灰度路由版本信息")
-				.in(ParameterType.HEADER).name("VERSION").required(false)
-				.query(param -> param.model(model -> model.scalarModel(ScalarType.STRING)));
+			.in(ParameterType.HEADER).name("VERSION").required(false)
+			.query(param -> param.model(model -> model.scalarModel(ScalarType.STRING)));
 
 		pars.add(versionPar.build());
 
 		ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2).host(swaggerProperties.getHost())
-				.apiInfo(apiInfo(swaggerProperties)).globalRequestParameters(pars).select()
-				.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()));
+			.apiInfo(apiInfo(swaggerProperties)).globalRequestParameters(pars).select()
+			.apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()));
 
 		swaggerProperties.getBasePath().forEach(p -> builder.paths(PathSelectors.ant(p)));
 		swaggerProperties.getExcludePath().forEach(p -> builder.paths(PathSelectors.ant(p).negate()));
 
 		return builder.build().securitySchemes(Collections.singletonList(securitySchema(swaggerProperties)))
-				.securityContexts(Collections.singletonList(securityContext(swaggerProperties))).pathMapping("/");
-	}
-
-	/**
-	 * 配置默认的全局鉴权策略的开关，通过正则表达式进行匹配；默认匹配所有URL
-	 * @return
-	 */
-	private static SecurityContext securityContext(ApplicationSwaggerProperties swaggerProperties) {
-		return SecurityContext.builder().securityReferences(defaultAuth(swaggerProperties)).build();
-	}
-
-	/**
-	 * 默认的全局鉴权策略
-	 * @return
-	 */
-	private static List<SecurityReference> defaultAuth(ApplicationSwaggerProperties swaggerProperties) {
-		ArrayList<AuthorizationScope> authorizationScopeList = new ArrayList<>();
-		swaggerProperties.getAuthorization().getAuthorizationScopeList()
-				.forEach(authorizationScope -> authorizationScopeList.add(
-						new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
-		AuthorizationScope[] authorizationScopes = new AuthorizationScope[authorizationScopeList.size()];
-		return Collections
-				.singletonList(SecurityReference.builder().reference(swaggerProperties.getAuthorization().getName())
-						.scopes(authorizationScopeList.toArray(authorizationScopes)).build());
-	}
-
-	private static OAuth securitySchema(ApplicationSwaggerProperties swaggerProperties) {
-		ArrayList<AuthorizationScope> authorizationScopeList = new ArrayList<>();
-		swaggerProperties.getAuthorization().getAuthorizationScopeList()
-				.forEach(authorizationScope -> authorizationScopeList.add(
-						new AuthorizationScope(authorizationScope.getScope(), authorizationScope.getDescription())));
-		ArrayList<GrantType> grantTypes = new ArrayList<>();
-		swaggerProperties.getAuthorization().getTokenUrlList()
-				.forEach(tokenUrl -> grantTypes.add(new ResourceOwnerPasswordCredentialsGrant(tokenUrl)));
-		return new OAuth(swaggerProperties.getAuthorization().getName(), authorizationScopeList, grantTypes);
-	}
-
-	private static ApiInfo apiInfo(ApplicationSwaggerProperties swaggerProperties) {
-		return new ApiInfoBuilder().title(swaggerProperties.getTitle()).description(swaggerProperties.getDescription())
-				.license(swaggerProperties.getLicense()).licenseUrl(swaggerProperties.getLicenseUrl())
-				.termsOfServiceUrl(swaggerProperties.getTermsOfServiceUrl())
-				.contact(new Contact(swaggerProperties.getContact().getName(), swaggerProperties.getContact().getUrl(),
-						swaggerProperties.getContact().getEmail()))
-				.version(swaggerProperties.getVersion()).build();
-	}
-
-	@Bean
-	public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
-		return new BeanPostProcessor() {
-
-			@Override
-			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-				if (bean instanceof WebMvcRequestHandlerProvider) {
-					customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
-				}
-				return bean;
-			}
-
-			private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(
-					List<T> mappings) {
-				List<T> copy = mappings.stream().filter(mapping -> mapping.getPatternParser() == null)
-						.collect(Collectors.toList());
-				mappings.clear();
-				mappings.addAll(copy);
-			}
-
-			@SuppressWarnings("unchecked")
-			private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
-				try {
-					Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-					field.setAccessible(true);
-					return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
-				}
-				catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new IllegalStateException(e);
-				}
-			}
-		};
+			.securityContexts(Collections.singletonList(securityContext(swaggerProperties))).pathMapping("/");
 	}
 
 }

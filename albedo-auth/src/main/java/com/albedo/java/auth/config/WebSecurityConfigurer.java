@@ -85,6 +85,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	/**
 	 * 支持SSO 退出
+	 *
 	 * @return LogoutSuccessHandler
 	 */
 	@Bean
@@ -95,6 +96,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	/**
 	 * https://spring.io/blog/2017/11/01/spring-security-5-0-0-rc1-released#password-storage-updated
 	 * Encoded password does not look like BCrypt
+	 *
 	 * @return PasswordEncoder
 	 */
 	@Bean

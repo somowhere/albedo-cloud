@@ -41,8 +41,7 @@ public class SwaggerBasicGatewayFilter implements GlobalFilter {
 
 		if (hasAuth(exchange)) {
 			return chain.filter(exchange);
-		}
-		else {
+		} else {
 			ServerHttpResponse response = exchange.getResponse();
 			response.setStatusCode(HttpStatus.UNAUTHORIZED);
 			response.getHeaders().add(HttpHeaders.WWW_AUTHENTICATE, "Basic Realm=\"pig\"");
@@ -52,6 +51,7 @@ public class SwaggerBasicGatewayFilter implements GlobalFilter {
 
 	/**
 	 * 简单的basic认证
+	 *
 	 * @param exchange 上下文
 	 * @return 是否有权限
 	 */
@@ -67,7 +67,7 @@ public class SwaggerBasicGatewayFilter implements GlobalFilter {
 		String password = swaggerProperties.getBasic().getPassword();
 
 		String encodeToString = Base64Utils
-				.encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
+			.encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8));
 
 		return auth.equals(BASIC_PREFIX + encodeToString);
 	}

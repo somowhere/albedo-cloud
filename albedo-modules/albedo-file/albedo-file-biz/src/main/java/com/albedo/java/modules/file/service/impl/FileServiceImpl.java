@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

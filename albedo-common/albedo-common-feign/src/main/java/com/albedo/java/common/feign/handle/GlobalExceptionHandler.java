@@ -98,17 +98,18 @@ public class GlobalExceptionHandler {
 		return path;
 	}
 
-	private void setContentType(String contentType){
-		if(StringUtil.isNotEmpty(contentType)){
+	private void setContentType(String contentType) {
+		if (StringUtil.isNotEmpty(contentType)) {
 			RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 			if (requestAttributes != null) {
 				HttpServletResponse response = ((ServletRequestAttributes) requestAttributes).getResponse();
-				if(response.getContentType() != contentType){
+				if (response.getContentType() != contentType) {
 					response.setContentType(contentType);
 				}
 			}
 		}
 	}
+
 	/**
 	 * 全局异常.
 	 *

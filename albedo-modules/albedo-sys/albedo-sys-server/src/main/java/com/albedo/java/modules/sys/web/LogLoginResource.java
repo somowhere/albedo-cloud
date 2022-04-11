@@ -51,6 +51,7 @@ import java.util.Set;
 public class LogLoginResource extends BaseResource {
 
 	private final LogLoginService service;
+
 	/**
 	 * 插入日志
 	 *
@@ -62,6 +63,7 @@ public class LogLoginResource extends BaseResource {
 	public Result<IPage> save(@Valid @RequestBody com.albedo.java.modules.sys.domain.LogLogin logLogin) {
 		return Result.buildOkData(service.save(logLogin));
 	}
+
 	/**
 	 * GET / : get all logLogin.
 	 *

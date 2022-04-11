@@ -54,7 +54,7 @@ public class RemoteUserServiceFallbackImpl implements RemoteUserService {
 	 * 通过电话查询用户、角色信息
 	 *
 	 * @param phone 用户名
-	 * @param from     内外标志
+	 * @param from  内外标志
 	 * @return R
 	 */
 	@Override

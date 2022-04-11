@@ -53,6 +53,7 @@ public class AppServiceImpl implements AppService {
 
 	/**
 	 * 发送手机验证码 TODO: 调用短信网关发送验证码,测试返回前端
+	 *
 	 * @param phone 手机号
 	 * @return code
 	 */
@@ -62,7 +63,7 @@ public class AppServiceImpl implements AppService {
 
 		if (CollUtil.isEmpty(userList)) {
 			log.info("手机号未注册:{}", phone);
-			return Result.buildFail( "手机号未注册");
+			return Result.buildFail("手机号未注册");
 		}
 		CacheKey key = new UserCacheKeyBuilder().key(CommonConstants.DEFAULT_CODE_KEY, phone);
 		Object codeObj = cacheOps.get(key);

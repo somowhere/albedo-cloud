@@ -45,6 +45,6 @@ public interface CacheNameConstants {
 	String DICT_ALL = "dict_all";
 
 
-	String SYS_USER_FIND_VO_BY_USERNAME="findVoByUsername";
+	String SYS_USER_FIND_VO_BY_USERNAME = "findVoByUsername";
 
 }

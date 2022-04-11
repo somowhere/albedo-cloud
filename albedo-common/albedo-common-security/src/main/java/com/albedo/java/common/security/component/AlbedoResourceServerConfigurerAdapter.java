@@ -24,14 +24,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
-
-import javax.annotation.Resource;
 
 /**
  * @author somowhere
@@ -67,7 +62,7 @@ public class AlbedoResourceServerConfigurerAdapter extends ResourceServerConfigu
 	public void configure(HttpSecurity httpSecurity) {
 		//允许使用iframe 嵌套，避免swagger-ui 不被加载的问题
 		httpSecurity.headers().frameOptions().disable();
-		if(threadLocalContextFilter !=null){
+		if (threadLocalContextFilter != null) {
 			httpSecurity.addFilterBefore(threadLocalContextFilter, HeaderWriterFilter.class);
 		}
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>

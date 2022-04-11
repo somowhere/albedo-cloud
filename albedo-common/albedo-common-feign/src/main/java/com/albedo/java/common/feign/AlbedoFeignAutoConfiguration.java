@@ -16,9 +16,9 @@
 
 package com.albedo.java.common.feign;
 
+import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.interceptor.FeignRequestInterceptor;
 import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFeign;
-import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.sentinel.parser.AlbedoHeaderRequestOriginParser;
 import com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
@@ -62,7 +62,7 @@ public class AlbedoFeignAutoConfiguration {
 	}
 
 	@Bean
-	public FeignRequestInterceptor feignRequestInterceptor(){
+	public FeignRequestInterceptor feignRequestInterceptor() {
 		return new FeignRequestInterceptor();
 	}
 

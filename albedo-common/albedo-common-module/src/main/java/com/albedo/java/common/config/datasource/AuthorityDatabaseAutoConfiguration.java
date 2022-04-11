@@ -18,7 +18,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 

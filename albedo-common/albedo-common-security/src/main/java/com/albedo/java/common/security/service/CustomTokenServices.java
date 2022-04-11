@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.common.*;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.InvalidScopeException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -26,7 +25,7 @@ import java.util.UUID;
  * @date 2021/10/15
  */
 public class CustomTokenServices implements AuthorizationServerTokenServices, ResourceServerTokenServices,
-		ConsumerTokenServices, InitializingBean {
+	ConsumerTokenServices, InitializingBean {
 
 	private int refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.
 
@@ -68,9 +67,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 		if (refreshToken == null) {
 			refreshToken = createRefreshToken(authentication);
-		}
-
-		else if (refreshToken instanceof ExpiringOAuth2RefreshToken) {
+		} else if (refreshToken instanceof ExpiringOAuth2RefreshToken) {
 			ExpiringOAuth2RefreshToken expiring = (ExpiringOAuth2RefreshToken) refreshToken;
 			if (System.currentTimeMillis() > expiring.getExpiration().getTime()) {
 				refreshToken = createRefreshToken(authentication);
@@ -87,9 +84,9 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 		return accessToken;
 	}
 
-	@Transactional(noRollbackFor = { InvalidTokenException.class, InvalidGrantException.class })
+	@Transactional(noRollbackFor = {InvalidTokenException.class, InvalidGrantException.class})
 	public OAuth2AccessToken refreshAccessToken(String refreshTokenValue, TokenRequest tokenRequest)
-			throws AuthenticationException {
+		throws AuthenticationException {
 
 		if (!supportRefreshToken) {
 			throw new InvalidGrantException("Invalid refresh token: " + refreshTokenValue);
@@ -106,7 +103,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 			// might be old now, so give it a
 			// chance to re-authenticate.
 			Authentication user = new PreAuthenticatedAuthenticationToken(authentication.getUserAuthentication(), "",
-					authentication.getAuthorities());
+				authentication.getAuthorities());
 			user = authenticationManager.authenticate(user);
 			Object details = authentication.getDetails();
 			authentication = new OAuth2Authentication(authentication.getOAuth2Request(), user);
@@ -147,14 +144,15 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * Create a refreshed authentication.
+	 *
 	 * @param authentication The authentication.
-	 * @param request The scope for the refreshed token.
+	 * @param request        The scope for the refreshed token.
 	 * @return The refreshed authentication.
 	 * @throws InvalidScopeException If the scope requested is invalid or wider than the
-	 * original scope.
+	 *                               original scope.
 	 */
 	private OAuth2Authentication createRefreshedAuthentication(OAuth2Authentication authentication,
-			TokenRequest request) {
+															   TokenRequest request) {
 		OAuth2Authentication narrowed = authentication;
 		Set<String> scope = request.getScope();
 		OAuth2Request clientAuth = authentication.getOAuth2Request().refresh(request);
@@ -162,9 +160,8 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 			Set<String> originalScope = clientAuth.getScope();
 			if (originalScope == null || !originalScope.containsAll(scope)) {
 				throw new InvalidScopeException(
-						"Unable to narrow the scope of the client authentication to " + scope + ".", originalScope);
-			}
-			else {
+					"Unable to narrow the scope of the client authentication to " + scope + ".", originalScope);
+			} else {
 				clientAuth = clientAuth.narrowScope(scope);
 			}
 		}
@@ -176,7 +173,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 		if (refreshToken instanceof ExpiringOAuth2RefreshToken) {
 			ExpiringOAuth2RefreshToken expiringToken = (ExpiringOAuth2RefreshToken) refreshToken;
 			return expiringToken.getExpiration() == null
-					|| System.currentTimeMillis() > expiringToken.getExpiration().getTime();
+				|| System.currentTimeMillis() > expiringToken.getExpiration().getTime();
 		}
 		return false;
 	}
@@ -186,12 +183,11 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	}
 
 	public OAuth2Authentication loadAuthentication(String accessTokenValue)
-			throws AuthenticationException, InvalidTokenException {
+		throws AuthenticationException, InvalidTokenException {
 		OAuth2AccessToken accessToken = tokenStore.readAccessToken(accessTokenValue);
 		if (accessToken == null) {
 			throw new InvalidTokenException("Invalid access token: " + accessTokenValue);
-		}
-		else if (accessToken.isExpired()) {
+		} else if (accessToken.isExpired()) {
 			tokenStore.removeAccessToken(accessToken);
 			throw new InvalidTokenException("Access token expired: " + accessTokenValue);
 		}
@@ -205,8 +201,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 			String clientId = result.getOAuth2Request().getClientId();
 			try {
 				clientDetailsService.loadClientByClientId(clientId);
-			}
-			catch (ClientRegistrationException e) {
+			} catch (ClientRegistrationException e) {
 				throw new InvalidTokenException("Client not valid: " + clientId, e);
 			}
 		}
@@ -245,7 +240,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 		String value = UUID.randomUUID().toString();
 		if (validitySeconds > 0) {
 			return new DefaultExpiringOAuth2RefreshToken(value,
-					new Date(System.currentTimeMillis() + (validitySeconds * 1000L)));
+				new Date(System.currentTimeMillis() + (validitySeconds * 1000L)));
 		}
 		return new DefaultOAuth2RefreshToken(value);
 	}
@@ -264,6 +259,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * The access token validity period in seconds
+	 *
 	 * @param clientAuth the current authorization request
 	 * @return the access token validity period in seconds
 	 */
@@ -280,6 +276,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * The refresh token validity period in seconds
+	 *
 	 * @param clientAuth the current authorization request
 	 * @return the refresh token validity period in seconds
 	 */
@@ -298,6 +295,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	 * Is a refresh token supported for this client (or the global setting if
 	 * {@link #setClientDetailsService(org.springframework.security.oauth2.provider.ClientDetailsService) clientDetailsService} is not
 	 * set.
+	 *
 	 * @param clientAuth the current authorization request
 	 * @return boolean to indicate if refresh token is supported
 	 */
@@ -312,6 +310,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	/**
 	 * An access token enhancer that will be applied to a new token before it is saved in
 	 * the token store.
+	 *
 	 * @param accessTokenEnhancer the access token enhancer to set
 	 */
 	public void setTokenEnhancer(TokenEnhancer accessTokenEnhancer) {
@@ -321,6 +320,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	/**
 	 * The validity (in seconds) of the refresh token. If less than or equal to zero then
 	 * the tokens will be non-expiring.
+	 *
 	 * @param refreshTokenValiditySeconds The validity (in seconds) of the refresh token.
 	 */
 	public void setRefreshTokenValiditySeconds(int refreshTokenValiditySeconds) {
@@ -331,6 +331,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	 * The default validity (in seconds) of the access token. Zero or negative for
 	 * non-expiring tokens. If a client details service is set the validity period will be
 	 * read from the client, defaulting to this value if not defined by the client.
+	 *
 	 * @param accessTokenValiditySeconds The validity (in seconds) of the access token.
 	 */
 	public void setAccessTokenValiditySeconds(int accessTokenValiditySeconds) {
@@ -339,6 +340,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * Whether to support the refresh token.
+	 *
 	 * @param supportRefreshToken Whether to support the refresh token.
 	 */
 	public void setSupportRefreshToken(boolean supportRefreshToken) {
@@ -347,6 +349,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * Whether to reuse refresh tokens (until expired).
+	 *
 	 * @param reuseRefreshToken Whether to reuse refresh tokens (until expired).
 	 */
 	public void setReuseRefreshToken(boolean reuseRefreshToken) {
@@ -355,6 +358,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 
 	/**
 	 * The persistence strategy for token storage.
+	 *
 	 * @param tokenStore the store for access and refresh tokens.
 	 */
 	public void setTokenStore(TokenStore tokenStore) {
@@ -364,6 +368,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	/**
 	 * An authentication manager that will be used (if provided) to check the user
 	 * authentication when a token is refreshed.
+	 *
 	 * @param authenticationManager the authenticationManager to set
 	 */
 	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
@@ -374,6 +379,7 @@ public class CustomTokenServices implements AuthorizationServerTokenServices, Re
 	 * The client details service to use for looking up clients (if necessary). Optional
 	 * if the access token expiry is set globally via
 	 * {@link #setAccessTokenValiditySeconds(int)}.
+	 *
 	 * @param clientDetailsService the client details service
 	 */
 	public void setClientDetailsService(ClientDetailsService clientDetailsService) {

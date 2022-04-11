@@ -5,9 +5,7 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.common.log.annotation.LogOperate;
-import com.albedo.java.common.security.util.SecurityUtil;
 import com.albedo.java.common.web.resource.BaseResource;
-import com.albedo.java.modules.sys.domain.dto.UserQueryCriteria;
 import com.albedo.java.modules.sys.domain.vo.UserPageVo;
 import com.albedo.java.modules.tenant.domain.Tenant;
 import com.albedo.java.modules.tenant.domain.dto.TenantConnectDto;
@@ -62,6 +60,7 @@ import java.util.List;
 public class TenantResource extends BaseResource {
 
 	private final TenantService tenantService;
+
 	/**
 	 * @param id
 	 * @return
@@ -85,37 +84,38 @@ public class TenantResource extends BaseResource {
 	public Result<IPage<UserPageVo>> findPage(PageModel pm) {
 		return Result.buildOkData(tenantService.page(pm));
 	}
-    @ApiOperation(value = "查询所有企业", notes = "查询所有企业")
-    @GetMapping("/all")
-    public Result<List<Tenant>> list() {
-        return Result.buildOkData(tenantService.list(Wraps.<Tenant>lbQ().eq(Tenant::getStatus, TenantStatusEnum.NORMAL)));
-    }
 
-    @ApiOperation(value = "检测租户是否存在", notes = "检测租户是否存在")
-    @GetMapping("/check/{code}")
-    public Result<Boolean> check(@PathVariable("code") String code) {
-        return Result.buildOkData(tenantService.check(code));
-    }
+	@ApiOperation(value = "查询所有企业", notes = "查询所有企业")
+	@GetMapping("/all")
+	public Result<List<Tenant>> list() {
+		return Result.buildOkData(tenantService.list(Wraps.<Tenant>lbQ().eq(Tenant::getStatus, TenantStatusEnum.NORMAL)));
+	}
 
-    @ApiOperation(value = "删除租户和基础租户数据，请谨慎操作")
-    @DeleteMapping("/deleteAll")
-    public Result<Boolean> deleteAll(@RequestBody List<Long> ids) {
-        return Result.buildOkData(tenantService.deleteAll(ids));
-    }
+	@ApiOperation(value = "检测租户是否存在", notes = "检测租户是否存在")
+	@GetMapping("/check/{code}")
+	public Result<Boolean> check(@PathVariable("code") String code) {
+		return Result.buildOkData(tenantService.check(code));
+	}
 
-    @ApiOperation(value = "修改租户状态", notes = "修改租户状态")
-    @PostMapping("/status")
-    public Result<Boolean> updateStatus(@RequestParam("ids[]") List<Long> ids,
-                                   @RequestParam(defaultValue = "FORBIDDEN") @NotNull(message = "状态不能为空") TenantStatusEnum status) {
-        return Result.buildOkData(tenantService.updateStatus(ids, status));
-    }
+	@ApiOperation(value = "删除租户和基础租户数据，请谨慎操作")
+	@DeleteMapping("/deleteAll")
+	public Result<Boolean> deleteAll(@RequestBody List<Long> ids) {
+		return Result.buildOkData(tenantService.deleteAll(ids));
+	}
 
-    /**
-     * 初始化
-     */
-    @ApiOperation(value = "连接数据源", notes = "连接数据源")
-    @PostMapping("/initConnect")
-    public Result<Boolean> initConnect(@Validated @RequestBody TenantConnectDto tenantConnect) {
-        return Result.buildOkData(tenantService.connect(tenantConnect));
-    }
+	@ApiOperation(value = "修改租户状态", notes = "修改租户状态")
+	@PostMapping("/status")
+	public Result<Boolean> updateStatus(@RequestParam("ids[]") List<Long> ids,
+										@RequestParam(defaultValue = "FORBIDDEN") @NotNull(message = "状态不能为空") TenantStatusEnum status) {
+		return Result.buildOkData(tenantService.updateStatus(ids, status));
+	}
+
+	/**
+	 * 初始化
+	 */
+	@ApiOperation(value = "连接数据源", notes = "连接数据源")
+	@PostMapping("/initConnect")
+	public Result<Boolean> initConnect(@Validated @RequestBody TenantConnectDto tenantConnect) {
+		return Result.buildOkData(tenantService.connect(tenantConnect));
+	}
 }

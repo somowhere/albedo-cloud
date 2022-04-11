@@ -50,7 +50,7 @@ public class MinIoFileStrategyImpl extends AbstractFileStrategy {
 	private final MinioClient minioClient;
 
 	public MinIoFileStrategyImpl(FileServerProperties fileProperties, MinioClient minioClient,
-                                 FileRepository fileMapper) {
+								 FileRepository fileMapper) {
 		super(fileProperties, fileMapper);
 		this.minioClient = minioClient;
 	}

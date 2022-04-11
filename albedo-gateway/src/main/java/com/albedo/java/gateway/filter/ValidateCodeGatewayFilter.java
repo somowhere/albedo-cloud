@@ -40,7 +40,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.web.util.WebUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -85,8 +84,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 				if (!isIgnoreClient) {
 					checkCode(request);
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.PRECONDITION_REQUIRED);
 				response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
@@ -98,8 +96,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 						DataBuffer dataBuffer = response.bufferFactory().wrap(bytes);
 
 						monoSink.success(dataBuffer);
-					}
-					catch (JsonProcessingException jsonProcessingException) {
+					} catch (JsonProcessingException jsonProcessingException) {
 						log.error("对象输出异常", jsonProcessingException);
 						monoSink.error(jsonProcessingException);
 					}
@@ -127,7 +124,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory<Obje
 
 		Object codeObj = redisTemplate.opsForValue().get(key);
 
-		if(applicationProperties.getDevelopMode()){
+		if (applicationProperties.getDevelopMode()) {
 			redisTemplate.delete(key);
 			return;
 		}

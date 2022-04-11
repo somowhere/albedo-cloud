@@ -23,18 +23,19 @@ public class CustomAppAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 	/**
 	 * 校验 请求信息userDetails
-	 * @param userDetails 用户信息
+	 *
+	 * @param userDetails    用户信息
 	 * @param authentication 认证信息
 	 * @throws AuthenticationException
 	 */
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails,
-			UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+												  UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
 		if (authentication.getCredentials() == null) {
 			this.logger.debug("Failed to authenticate since no credentials provided");
 			throw new BadCredentialsException(this.messages
-					.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
+				.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
 		}
 
 	}
@@ -57,7 +58,7 @@ public class CustomAppAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 	@Override
 	protected UserDetails retrieveUser(String phone, UsernamePasswordAuthenticationToken authentication)
-			throws AuthenticationException {
+		throws AuthenticationException {
 		return null;
 	}
 

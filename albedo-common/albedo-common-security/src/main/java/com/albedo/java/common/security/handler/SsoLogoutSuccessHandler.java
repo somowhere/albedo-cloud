@@ -21,7 +21,7 @@ public class SsoLogoutSuccessHandler implements LogoutSuccessHandler {
 
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-			throws IOException {
+		throws IOException {
 		if (response == null) {
 			return;
 		}
@@ -30,8 +30,7 @@ public class SsoLogoutSuccessHandler implements LogoutSuccessHandler {
 		String redirectUrl = request.getParameter(REDIRECT_URL);
 		if (StrUtil.isNotBlank(redirectUrl)) {
 			response.sendRedirect(redirectUrl);
-		}
-		else {
+		} else {
 			// 默认跳转referer 地址
 			String referer = request.getHeader(HttpHeaders.REFERER);
 			response.sendRedirect(referer);

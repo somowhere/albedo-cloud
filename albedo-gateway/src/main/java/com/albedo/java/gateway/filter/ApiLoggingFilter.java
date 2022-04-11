@@ -5,11 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 /**
  * @author zhangran
@@ -30,8 +27,8 @@ public class ApiLoggingFilter implements GlobalFilter, Ordered {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		String info = String.format("Method:{%s} Host:{%s} Path:{%s} Query:{%s}",
-				exchange.getRequest().getMethod().name(), exchange.getRequest().getURI().getHost(),
-				exchange.getRequest().getURI().getPath(), exchange.getRequest().getQueryParams());
+			exchange.getRequest().getMethod().name(), exchange.getRequest().getURI().getHost(),
+			exchange.getRequest().getURI().getPath(), exchange.getRequest().getQueryParams());
 		if (log.isDebugEnabled()) {
 			log.debug(info);
 		}
@@ -43,7 +40,7 @@ public class ApiLoggingFilter implements GlobalFilter, Ordered {
 				String ip = WebUtil.getIp(exchange.getRequest());
 				String api = exchange.getRequest().getURI().getRawPath();
 				int code = exchange.getResponse().getStatusCode() != null
-						? exchange.getResponse().getStatusCode().value() : 500;
+					? exchange.getResponse().getStatusCode().value() : 500;
 				// 当前仅记录日志，后续可以添加日志队列，来过滤请求慢的接口
 				if (log.isDebugEnabled()) {
 					log.debug("来自IP地址：{}的请求接口：{}，响应状态码：{}，请求耗时：{}ms", ip, api, code, executeTime);

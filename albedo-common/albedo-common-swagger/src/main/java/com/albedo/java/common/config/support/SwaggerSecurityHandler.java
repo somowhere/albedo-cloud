@@ -40,13 +40,14 @@ public class SwaggerSecurityHandler implements HandlerFunction<ServerResponse> {
 
 	/**
 	 * Handle the given request.
+	 *
 	 * @param request the request to handler
 	 * @return the response
 	 */
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest request) {
 		return ServerResponse.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromValue(securityConfiguration));
+			.body(BodyInserters.fromValue(securityConfiguration));
 	}
 
 }

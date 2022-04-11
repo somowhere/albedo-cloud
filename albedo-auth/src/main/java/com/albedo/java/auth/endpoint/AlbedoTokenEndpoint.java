@@ -16,10 +16,8 @@
 
 package com.albedo.java.auth.endpoint;
 
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.CacheNameConstants;
-import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.exception.BadRequestException;
 import com.albedo.java.common.core.util.*;
@@ -80,8 +78,9 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 认证页面
+	 *
 	 * @param modelAndView
-	 * @param error 表单登录失败处理回调的错误信息
+	 * @param error        表单登录失败处理回调的错误信息
 	 * @return ModelAndView
 	 */
 	@GetMapping("/login")
@@ -93,6 +92,7 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 确认授权页面
+	 *
 	 * @param request
 	 * @param session
 	 * @param modelAndView
@@ -117,6 +117,7 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 退出并删除token
+	 *
 	 * @param authHeader Authorization
 	 */
 	@DeleteMapping("/logout")
@@ -157,6 +158,7 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 令牌管理调用
+	 *
 	 * @param token token
 	 */
 	private Result<Boolean> removeToken(@PathVariable("token") String token) {
@@ -185,6 +187,7 @@ public class AlbedoTokenEndpoint {
 
 	/**
 	 * 查询token
+	 *
 	 * @param userOnlineQueryCriteria 分页参数
 	 * @return
 	 */

@@ -30,7 +30,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -73,11 +72,11 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 
 		ContextUtil.setTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_TENANT)));
 		String traceId = WebUtil.getHeader(request, ContextConstants.TRACE_ID_HEADER);
-		if(StrUtil.isNotBlank(traceId)){
+		if (StrUtil.isNotBlank(traceId)) {
 			MDC.put(ContextConstants.LOG_TRACE_ID, traceId);
 			addHeader(mutate, ContextConstants.LOG_TRACE_ID, traceId);
 		}
-		if(StrUtil.isNotBlank(ContextUtil.getTenant())){
+		if (StrUtil.isNotBlank(ContextUtil.getTenant())) {
 			addHeader(mutate, ContextConstants.KEY_TENANT, ContextUtil.getTenant());
 			MDC.put(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
 		}
@@ -97,6 +96,7 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 		String valueEncode = URLUtil.encode(valueStr);
 		mutate.header(name, valueEncode);
 	}
+
 	@Override
 	public int getOrder() {
 		return -1000;

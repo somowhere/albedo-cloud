@@ -47,8 +47,8 @@ public class AlbedoRedisTokenStore implements TokenStore {
 	private static final String UNAME_TO_ACCESS = "uname_to_access_z:";
 
 	private static final boolean springDataRedis_2_0 = ClassUtils.isPresent(
-			"org.springframework.data.redis.connection.RedisStandaloneConfiguration",
-			RedisTokenStore.class.getClassLoader());
+		"org.springframework.data.redis.connection.RedisStandaloneConfiguration",
+		RedisTokenStore.class.getClassLoader());
 
 	private final RedisConnectionFactory connectionFactory;
 
@@ -67,6 +67,16 @@ public class AlbedoRedisTokenStore implements TokenStore {
 		}
 	}
 
+	private static String getApprovalKey(OAuth2Authentication authentication) {
+		String userName = authentication.getUserAuthentication() == null ? ""
+			: authentication.getUserAuthentication().getName();
+		return getApprovalKey(authentication.getOAuth2Request().getClientId(), userName);
+	}
+
+	private static String getApprovalKey(String clientId, String userName) {
+		return clientId + (userName == null ? "" : ":" + userName);
+	}
+
 	public void setAuthenticationKeyGenerator(AuthenticationKeyGenerator authenticationKeyGenerator) {
 		this.authenticationKeyGenerator = authenticationKeyGenerator;
 	}
@@ -81,7 +91,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 
 	private void loadRedisConnectionMethods_2_0() {
 		this.redisConnectionSet_2_0 = ReflectionUtils.findMethod(RedisConnection.class, "set", byte[].class,
-				byte[].class);
+			byte[].class);
 	}
 
 	private RedisConnection getConnection() {
@@ -128,7 +138,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 		if (accessToken != null) {
 			OAuth2Authentication storedAuthentication = readAuthentication(accessToken.getValue());
 			if ((storedAuthentication == null
-					|| !key.equals(authenticationKeyGenerator.extractKey(storedAuthentication)))) {
+				|| !key.equals(authenticationKeyGenerator.extractKey(storedAuthentication)))) {
 				// Keep the stores consistent (maybe the same user is
 				// represented by this authentication but the details have
 				// changed)
@@ -182,12 +192,10 @@ public class AlbedoRedisTokenStore implements TokenStore {
 					this.redisConnectionSet_2_0.invoke(conn, accessKey, serializedAccessToken);
 					this.redisConnectionSet_2_0.invoke(conn, authKey, serializedAuth);
 					this.redisConnectionSet_2_0.invoke(conn, authToAccessKey, serializedAccessToken);
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
-			}
-			else {
+			} else {
 				conn.set(accessKey, serializedAccessToken);
 				conn.set(authKey, serializedAuth);
 				conn.set(authToAccessKey, serializedAccessToken);
@@ -207,8 +215,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 				conn.expire(authToAccessKey, seconds);
 				conn.expire(clientId, seconds);
 				conn.expire(approvalKey, seconds);
-			}
-			else {
+			} else {
 				conn.zAdd(clientId, -1, serializedAccessToken);
 				if (!authentication.isClientOnly()) {
 					conn.zAdd(approvalKey, -1, serializedAccessToken);
@@ -221,12 +228,10 @@ public class AlbedoRedisTokenStore implements TokenStore {
 				if (springDataRedis_2_0) {
 					try {
 						this.redisConnectionSet_2_0.invoke(conn, refreshToAccessKey, auth);
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						throw new RuntimeException(ex);
 					}
-				}
-				else {
+				} else {
 					conn.set(refreshToAccessKey, auth);
 				}
 				if (refreshToken instanceof ExpiringOAuth2RefreshToken) {
@@ -234,23 +239,13 @@ public class AlbedoRedisTokenStore implements TokenStore {
 					Date expiration = expiringRefreshToken.getExpiration();
 					if (expiration != null) {
 						int seconds = Long.valueOf((expiration.getTime() - System.currentTimeMillis()) / 1000L)
-								.intValue();
+							.intValue();
 						conn.expire(refreshToAccessKey, seconds);
 					}
 				}
 			}
 			conn.closePipeline();
 		}
-	}
-
-	private static String getApprovalKey(OAuth2Authentication authentication) {
-		String userName = authentication.getUserAuthentication() == null ? ""
-				: authentication.getUserAuthentication().getName();
-		return getApprovalKey(authentication.getOAuth2Request().getClientId(), userName);
-	}
-
-	private static String getApprovalKey(String clientId, String userName) {
-		return clientId + (userName == null ? "" : ":" + userName);
 	}
 
 	@Override
@@ -309,12 +304,10 @@ public class AlbedoRedisTokenStore implements TokenStore {
 				try {
 					this.redisConnectionSet_2_0.invoke(conn, refreshKey, serializedRefreshToken);
 					this.redisConnectionSet_2_0.invoke(conn, refreshAuthKey, serialize(authentication));
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
-			}
-			else {
+			} else {
 				conn.set(refreshKey, serializedRefreshToken);
 				conn.set(refreshAuthKey, serialize(authentication));
 			}
@@ -413,6 +406,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 	 * being stored into the RedisTokenStore before whole key gets expired, the expiration
 	 * is prolonged and the key is not effectively deleted. To do "garbage collection"
 	 * this method should be called once upon a time.
+	 *
 	 * @return how many items were removed
 	 */
 	public long doMaintenance() {
@@ -420,7 +414,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 		try (RedisConnection conn = getConnection()) {
 			// client_id_to_acccess maintenance
 			Cursor<byte[]> clientToAccessKeys = conn
-					.scan(ScanOptions.scanOptions().match(prefix + CLIENT_ID_TO_ACCESS + "*").build());
+				.scan(ScanOptions.scanOptions().match(prefix + CLIENT_ID_TO_ACCESS + "*").build());
 			while (clientToAccessKeys.hasNext()) {
 				byte[] clientIdToAccessKey = clientToAccessKeys.next();
 
@@ -429,7 +423,7 @@ public class AlbedoRedisTokenStore implements TokenStore {
 
 			// uname_to_access maintenance
 			Cursor<byte[]> unameToAccessKeys = conn
-					.scan(ScanOptions.scanOptions().match(prefix + UNAME_TO_ACCESS + "*").build());
+				.scan(ScanOptions.scanOptions().match(prefix + UNAME_TO_ACCESS + "*").build());
 			while (unameToAccessKeys.hasNext()) {
 				byte[] unameToAccessKey = unameToAccessKeys.next();
 

@@ -48,6 +48,7 @@ public class LogAutoConfiguration {
 	public SysLogLoginListener sysLogLoginListener() {
 		return new SysLogLoginListener(remoteLogLoginService);
 	}
+
 	@Bean
 	public SysLogAspect sysLogAspect() {
 		return new SysLogAspect();

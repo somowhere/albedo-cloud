@@ -48,16 +48,16 @@ public class GatewaySwaggerAutoConfiguration {
 
 	@Bean
 	public SwaggerSecurityHandler swaggerSecurityHandler(
-			ObjectProvider<SecurityConfiguration> securityConfigurationObjectProvider) {
+		ObjectProvider<SecurityConfiguration> securityConfigurationObjectProvider) {
 		SecurityConfiguration securityConfiguration = securityConfigurationObjectProvider
-				.getIfAvailable(() -> SecurityConfigurationBuilder.builder().build());
+			.getIfAvailable(() -> SecurityConfigurationBuilder.builder().build());
 		return new SwaggerSecurityHandler(securityConfiguration);
 	}
 
 	@Bean
 	public SwaggerUiHandler swaggerUiHandler(ObjectProvider<UiConfiguration> uiConfigurationObjectProvider) {
 		UiConfiguration uiConfiguration = uiConfigurationObjectProvider
-				.getIfAvailable(() -> UiConfigurationBuilder.builder().build());
+			.getIfAvailable(() -> UiConfigurationBuilder.builder().build());
 		return new SwaggerUiHandler(uiConfiguration);
 	}
 
@@ -68,18 +68,17 @@ public class GatewaySwaggerAutoConfiguration {
 		// 开启swagger 匹配路由
 		if (swaggerProperties.getEnabled()) {
 			return RouterFunctions
-					.route(RequestPredicates.GET("/swagger-resources").and(RequestPredicates.accept(MediaType.ALL)),
-							swaggerResourceHandler)
-					.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
-							.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
-					.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
-							.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
-		}
-		else {
+				.route(RequestPredicates.GET("/swagger-resources").and(RequestPredicates.accept(MediaType.ALL)),
+					swaggerResourceHandler)
+				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/ui")
+					.and(RequestPredicates.accept(MediaType.ALL)), swaggerUiHandler)
+				.andRoute(RequestPredicates.GET("/swagger-resources/configuration/security")
+					.and(RequestPredicates.accept(MediaType.ALL)), swaggerSecurityHandler);
+		} else {
 			// 关闭时，返回404
 			return RouterFunctions.route(
-					RequestPredicates.GET("/swagger-ui/**").and(RequestPredicates.accept(MediaType.ALL)),
-					serverRequest -> ServerResponse.notFound().build());
+				RequestPredicates.GET("/swagger-ui/**").and(RequestPredicates.accept(MediaType.ALL)),
+				serverRequest -> ServerResponse.notFound().build());
 		}
 	}
 

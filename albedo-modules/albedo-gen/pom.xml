@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-modules</artifactId>
-		<version>3.2.3-SNAPSHOT</version>
+		<version>3.2.5-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>albedo-gen</artifactId>
@@ -80,12 +80,6 @@
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-log</artifactId>
 			<version>${project.release.version}</version>
-		</dependency>
-		<!--代码生成模板引擎-->
-		<dependency>
-			<artifactId>velocity</artifactId>
-			<groupId>org.apache.velocity</groupId>
-			<version>${velocity.version}</version>
 		</dependency>
 		<!--web 模块-->
 		<dependency>

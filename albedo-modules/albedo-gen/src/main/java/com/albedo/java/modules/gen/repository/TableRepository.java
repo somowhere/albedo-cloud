@@ -43,7 +43,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, readOnly = true)
 	@DS("#last")
 	List<Table> findTableList(@Param("tableQuery") TableQuery tableQuery, String dsName);
 
@@ -54,7 +54,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, readOnly = true)
 	@DS("#last")
 	List<TableColumnDto> findTableColumnList(@Param("tableName") String tableName, String dsName);
 
@@ -65,7 +65,7 @@ public interface TableRepository extends BaseRepository<Table> {
 	 * @param dsName
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class,readOnly = true)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class, readOnly = true)
 	@DS("#last")
 	List<String> findTablePk(@Param("tableName") String tableName, String dsName);
 

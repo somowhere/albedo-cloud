@@ -29,6 +29,7 @@ public abstract class AbstractLogoutSuccessEventHandler implements ApplicationLi
 
 	/**
 	 * Handle an application event.
+	 *
 	 * @param event the event to respond to
 	 */
 	@Override
@@ -43,6 +44,7 @@ public abstract class AbstractLogoutSuccessEventHandler implements ApplicationLi
 	 * 处理退出成功方法
 	 * <p>
 	 * 获取到登录的authentication 对象
+	 *
 	 * @param authentication 登录对象
 	 */
 	public abstract void handle(Authentication authentication);

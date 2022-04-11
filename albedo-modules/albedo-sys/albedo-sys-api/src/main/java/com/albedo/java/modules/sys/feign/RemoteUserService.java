@@ -42,11 +42,12 @@ public interface RemoteUserService {
 	 */
 	@GetMapping("/user/info/{username}")
 	Result<UserInfo> getInfoByUsername(@PathVariable("username") String username, @RequestHeader(SecurityConstants.FROM) String from);
+
 	/**
 	 * 通过电话查询用户、角色信息
 	 *
 	 * @param phone 用户名
-	 * @param from     调用标志
+	 * @param from  调用标志
 	 * @return R
 	 */
 	@GetMapping("/app/info/{phone}")

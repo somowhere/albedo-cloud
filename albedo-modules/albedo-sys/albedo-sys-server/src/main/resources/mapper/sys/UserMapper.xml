@@ -102,7 +102,10 @@
 	</resultMap>
 
 	<sql id="userRoleDeptSql">
-		a.id,
+		a
+		.
+		id
+		,
 		a.username,
 		a.`password`,
 		a.nickname,
@@ -132,7 +135,7 @@
 		r.del_flag AS role_del_flag,
 		d.name AS dept_name,
 		d.id AS dept_id
-    </sql>
+	</sql>
 
 	<select id="findVoByUsername" resultMap="userVoResultMap">
 		SELECT
@@ -188,10 +191,13 @@
 	</select>
 
 	<select id="findListByRoleId" resultType="com.albedo.java.modules.sys.domain.User">
-		SELECT
-            a.*
-        FROM
-        sys_user a, sys_user_role b WHERE a.id = b.user_id AND a.del_flag = 0 and a.available = 1 and b.role_id = #{roleId}
+		SELECT a.*
+		FROM sys_user a,
+			 sys_user_role b
+		WHERE a.id = b.user_id
+		  AND a.del_flag = 0
+		  and a.available = 1
+		  and b.role_id = #{roleId}
 	</select>
 
 	<select id="findListByRoleIds" resultType="com.albedo.java.modules.sys.domain.User">
@@ -206,10 +212,19 @@
 	</select>
 
 	<select id="findListByMenuId" resultType="com.albedo.java.modules.sys.domain.User">
-		SELECT
-            a.*
-        FROM
-        sys_user a, sys_user_role b, sys_role_menu c, sys_role d WHERE a.id = b.user_id AND c.role_id=b.role_id and c.role_id = d.id AND d.del_flag = 0 and d.available = 1 AND a.del_flag = 0 and a.available = 1 and c.menu_id = #{menuId}
+		SELECT a.*
+		FROM sys_user a,
+			 sys_user_role b,
+			 sys_role_menu c,
+			 sys_role d
+		WHERE a.id = b.user_id
+		  AND c.role_id = b.role_id
+		  and c.role_id = d.id
+		  AND d.del_flag = 0
+		  and d.available = 1
+		  AND a.del_flag = 0
+		  and a.available = 1
+		  and c.menu_id = #{menuId}
 	</select>
 
 

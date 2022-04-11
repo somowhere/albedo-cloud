@@ -29,7 +29,7 @@ public class FastDfsFileStrategyImpl extends AbstractFileStrategy {
 	private final FastFileStorageClient storageClient;
 
 	public FastDfsFileStrategyImpl(FileServerProperties fileProperties, FastFileStorageClient storageClient,
-                                   FileRepository fileMapper) {
+								   FileRepository fileMapper) {
 		super(fileProperties, fileMapper);
 		this.storageClient = storageClient;
 	}

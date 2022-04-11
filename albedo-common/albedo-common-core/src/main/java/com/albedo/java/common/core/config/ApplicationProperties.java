@@ -170,6 +170,7 @@ public class ApplicationProperties {
 	public static class File {
 
 		private final Local local = new Local();
+
 		@Data
 		public static class Local {
 
@@ -178,6 +179,7 @@ public class ApplicationProperties {
 		}
 
 	}
+
 	@Data
 	public static class Http {
 

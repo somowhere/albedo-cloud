@@ -64,7 +64,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 
 	private void registerFeignClients(BeanDefinitionRegistry registry) {
 		List<String> feignClients = SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(),
-				getBeanClassLoader());
+			getBeanClassLoader());
 		// 如果 spring.factories 里为空
 		if (feignClients.isEmpty()) {
 			return;
@@ -73,7 +73,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 			try {
 				Class<?> clazz = beanClassLoader.loadClass(className);
 				AnnotationAttributes attributes = AnnotatedElementUtils.getMergedAnnotationAttributes(clazz,
-						FeignClient.class);
+					FeignClient.class);
 				if (attributes == null) {
 					continue;
 				}
@@ -85,7 +85,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 
 				validate(attributes);
 				BeanDefinitionBuilder definition = BeanDefinitionBuilder
-						.genericBeanDefinition(FeignClientFactoryBean.class);
+					.genericBeanDefinition(FeignClientFactoryBean.class);
 				definition.addPropertyValue("url", getUrl(attributes));
 				definition.addPropertyValue("path", getPath(attributes));
 				String name = getName(attributes);
@@ -97,8 +97,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 					String contextId = getContextId(attributes);
 					aliasBuilder.append(contextId);
 					definition.addPropertyValue("contextId", contextId);
-				}
-				else {
+				} else {
 					aliasBuilder.append(name);
 				}
 
@@ -124,11 +123,10 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 				}
 
 				BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className,
-						new String[] { alias });
+					new String[]{alias});
 				BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
 
-			}
-			catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -137,6 +135,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 	/**
 	 * Return the class used by {@link SpringFactoriesLoader} to load configuration
 	 * candidates.
+	 *
 	 * @return the factory class
 	 */
 	private Class<?> getSpringFactoriesLoaderFactoryClass() {
@@ -221,7 +220,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 		}
 
 		throw new IllegalStateException(
-				"Either 'name' or 'value' must be provided in @" + FeignClient.class.getSimpleName());
+			"Either 'name' or 'value' must be provided in @" + FeignClient.class.getSimpleName());
 	}
 
 	private void registerClientConfiguration(BeanDefinitionRegistry registry, Object name, Object configuration) {
@@ -229,7 +228,7 @@ public class AlbedoFeignClientsRegistrar implements ImportBeanDefinitionRegistra
 		builder.addConstructorArgValue(name);
 		builder.addConstructorArgValue(configuration);
 		registry.registerBeanDefinition(name + "." + FeignClientSpecification.class.getSimpleName(),
-				builder.getBeanDefinition());
+			builder.getBeanDefinition());
 	}
 
 	@Override

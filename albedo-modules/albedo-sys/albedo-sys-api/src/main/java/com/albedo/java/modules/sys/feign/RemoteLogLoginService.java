@@ -31,15 +31,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @date 2019/2/1
  */
 @FeignClient(contextId = "remoteLogLoginService", value = ServiceNameConstants.SYS_SERVICE,
-        fallbackFactory = RemoteLogLoginServiceFallbackFactory.class)
+	fallbackFactory = RemoteLogLoginServiceFallbackFactory.class)
 public interface RemoteLogLoginService {
-    /**
-     * 保存日志
-     *
-     * @param logLogin 日志实体
-     * @param from     内部调用标志
-     * @return succes、false
-     */
-    @PostMapping("/log-login")
-    Result<Boolean> save(@RequestBody LogLogin logLogin, @RequestHeader(SecurityConstants.FROM) String from);
+	/**
+	 * 保存日志
+	 *
+	 * @param logLogin 日志实体
+	 * @param from     内部调用标志
+	 * @return succes、false
+	 */
+	@PostMapping("/log-login")
+	Result<Boolean> save(@RequestBody LogLogin logLogin, @RequestHeader(SecurityConstants.FROM) String from);
 }

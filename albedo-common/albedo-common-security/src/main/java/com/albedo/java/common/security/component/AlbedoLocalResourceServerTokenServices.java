@@ -29,7 +29,7 @@ public class AlbedoLocalResourceServerTokenServices implements ResourceServerTok
 
 	@Override
 	public OAuth2Authentication loadAuthentication(String accessToken)
-			throws AuthenticationException, InvalidTokenException {
+		throws AuthenticationException, InvalidTokenException {
 		OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
 		if (oAuth2Authentication == null) {
 			return null;
@@ -46,13 +46,12 @@ public class AlbedoLocalResourceServerTokenServices implements ResourceServerTok
 		UserDetails userDetails;
 		try {
 			userDetails = userDetailsService.loadUserByUsername(userDetail.getUsername());
-		}
-		catch (UsernameNotFoundException notFoundException) {
+		} catch (UsernameNotFoundException notFoundException) {
 			throw new UnauthorizedException(String.format("%s username not found", userDetail.getUsername()),
-					notFoundException);
+				notFoundException);
 		}
 		Authentication userAuthentication = new UsernamePasswordAuthenticationToken(userDetails, "N/A",
-				userDetails.getAuthorities());
+			userDetails.getAuthorities());
 		OAuth2Authentication authentication = new OAuth2Authentication(oAuth2Request, userAuthentication);
 		authentication.setAuthenticated(true);
 		return authentication;

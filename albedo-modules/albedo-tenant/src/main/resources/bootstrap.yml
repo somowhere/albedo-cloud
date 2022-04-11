@@ -32,6 +32,8 @@ spring:
   profiles:
     active: @spring.profiles.active@
 
+application:
+  version: @project.release.version@
 
 # 暴露监控端点
 management:

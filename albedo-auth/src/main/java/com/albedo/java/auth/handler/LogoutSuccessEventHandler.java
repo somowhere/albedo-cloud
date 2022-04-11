@@ -42,6 +42,7 @@ public class LogoutSuccessEventHandler extends AbstractLogoutSuccessEventHandler
 	 * 处理退出成功方法
 	 * <p>
 	 * 获取到登录的authentication 对象
+	 *
 	 * @param authentication 登录对象
 	 */
 	@Override
@@ -67,8 +68,8 @@ public class LogoutSuccessEventHandler extends AbstractLogoutSuccessEventHandler
 		if (authentication.getPrincipal() instanceof UserDetail) {
 			UserDetail userDetail = (UserDetail) authentication.getPrincipal();
 			logOperate.setCreatedBy(userDetail.getId());
-		SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperate));
-	}
+			SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperate));
+		}
 
-}
+	}
 }

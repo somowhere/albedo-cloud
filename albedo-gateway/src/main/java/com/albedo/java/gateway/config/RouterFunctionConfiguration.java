@@ -16,7 +16,8 @@
 
 package com.albedo.java.gateway.config;
 
-import com.albedo.java.gateway.handler.*;
+import com.albedo.java.gateway.handler.AssetFileHandler;
+import com.albedo.java.gateway.handler.ImageCodeHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
