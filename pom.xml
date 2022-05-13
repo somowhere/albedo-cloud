@@ -21,20 +21,20 @@
 
 	<groupId>com.albedo.java</groupId>
 	<artifactId>albedo-cloud</artifactId>
-	<version>3.2.5-SNAPSHOT</version>
+	<version>3.2.6-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<project.release.version>3.2.5-SNAPSHOT</project.release.version>
-		<spring-boot.version>2.6.6</spring-boot.version>
-		<spring-cloud.version>2021.0.1</spring-cloud.version>
+		<project.release.version>3.2.6-SNAPSHOT</project.release.version>
+		<spring-boot.version>2.6.7</spring-boot.version>
+		<spring-cloud.version>2021.0.2</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.6.3</spring-boot-admin.version>
+		<spring-boot-admin.version>2.6.6</spring-boot-admin.version>
 		<git.commit.plugin>4.9.9</git.commit.plugin>
 		<spring.checkstyle.plugin>0.0.29</spring.checkstyle.plugin>
 		<hutool.version>5.7.22</hutool.version>

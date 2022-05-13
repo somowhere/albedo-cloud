@@ -19,7 +19,6 @@ package com.albedo.java.common.feign.sentinel;
 
 import com.albedo.java.common.feign.handle.AlbedoUrlBlockHandler;
 import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFeign;
-import com.albedo.java.common.feign.sentinel.ext.AlbedoSentinelFilterConfiguration;
 import com.albedo.java.common.feign.sentinel.parser.AlbedoHeaderRequestOriginParser;
 import com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
@@ -30,7 +29,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
 /**
@@ -40,7 +38,6 @@ import org.springframework.context.annotation.Scope;
  * sentinel 配置
  */
 @Configuration(proxyBeanMethods = false)
-@Import(AlbedoSentinelFilterConfiguration.class)
 @AutoConfigureBefore(SentinelFeignAutoConfiguration.class)
 public class SentinelAutoConfiguration {
 
