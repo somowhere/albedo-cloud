@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>albedo-auth</artifactId>
@@ -39,51 +39,49 @@
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
+		<!--工具类核心包-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-module</artifactId>
-			<version>${project.release.version}</version>
+			<artifactId>albedo-common-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-sys-api</artifactId>
 		</dependency>
 		<!--断路器依赖-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-feign</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-log</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<!--security-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-security</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 
 		<!--接口文档-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-swagger</artifactId>
-			<version>${project.release.version}</version>
+			<artifactId>albedo-swagger-api</artifactId>
 		</dependency>
-
-		<!--JDBC相关-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
-		<!--freemarker-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-		<!--undertow容器-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-undertow</artifactId>
-		</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	<!--freemarker-->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-freemarker</artifactId>
+	</dependency>
+	<!--undertow容器-->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-undertow</artifactId>
+	</dependency>
 	</dependencies>
 
 	<build>

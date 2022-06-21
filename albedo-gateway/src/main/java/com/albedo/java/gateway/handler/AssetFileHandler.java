@@ -16,7 +16,7 @@
 
 package com.albedo.java.gateway.handler;
 
-import com.albedo.java.common.core.config.ApplicationConfig;
+import com.albedo.java.common.core.config.ApplicationConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -39,7 +39,7 @@ public class AssetFileHandler implements HandlerFunction<ServerResponse> {
 
 	@Override
 	public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-		String pathUtl = ApplicationConfig.getStaticFileDirectory().replace("\\", "/");
+		String pathUtl = ApplicationConfiguration.getStaticFileDirectory().replace("\\", "/");
 		return ServerResponse
 			.status(HttpStatus.OK)
 			.contentType(MediaType.MULTIPART_FORM_DATA)

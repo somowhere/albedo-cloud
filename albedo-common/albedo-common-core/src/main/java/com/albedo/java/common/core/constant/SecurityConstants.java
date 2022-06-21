@@ -1,21 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -57,7 +41,7 @@ public interface SecurityConstants {
 	/**
 	 * 项目的license
 	 */
-	String PROJECT_LICENSE = "made by albedo";
+	String PROJECT_LICENSE = "https://github.com/somowhere";
 
 	/**
 	 * 内部
@@ -72,11 +56,11 @@ public interface SecurityConstants {
 	/**
 	 * 默认登录URL
 	 */
-	String OAUTH_TOKEN_URL = "/oauth/token";
+	String OAUTH_TOKEN_URL = "/oauth2/token";
 	/**
 	 *
 	 */
-	String OAUTH_URL = "/oauth";
+	String OAUTH_URL = "/oauth2";
 	/**
 	 * grant_type
 	 */
@@ -91,6 +75,11 @@ public interface SecurityConstants {
 	 * {bcrypt} 加密的特征码
 	 */
 	String BCRYPT = "{bcrypt}";
+
+	/**
+	 * {noop} 加密的特征码
+	 */
+	String NOOP = "{noop}";
 
 	/**
 	 * sys_oauth_client_detail 表的字段，不包括client_id、client_secret
@@ -138,7 +127,15 @@ public interface SecurityConstants {
 	 * 客户端ID
 	 */
 	String CLIENT_ID = "clientId";
+	/**
+	 * 短信登录 参数名称
+	 */
+	String SMS_PARAMETER_NAME = "mobile";
 
+	/**
+	 * 授权码模式confirm
+	 */
+	String CUSTOM_CONSENT_PAGE_URI = "/token/confirm_access";
 
 	/**
 	 * 验证码有效期,默认 60秒

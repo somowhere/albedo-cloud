@@ -2,7 +2,7 @@
  * Copyright &copy; 2015 <a href="http://www.bs-innotech.com/">bs-innotech</a> All rights reserved.
  */
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 package com.albedo.java.plugins.database.mybatis.repository;
 
-import com.albedo.java.common.core.basic.domain.BaseEntity;
+import com.albedo.java.common.core.domain.BaseDo;
 
 /**
  * TreeRepository
@@ -27,6 +27,6 @@ import com.albedo.java.common.core.basic.domain.BaseEntity;
  * @author sys
  * @version 2017-01-01
  */
-public interface TreeRepository<T extends BaseEntity> extends BaseRepository<T> {
+public interface TreeRepository<T extends BaseDo> extends BaseRepository<T> {
 
 }

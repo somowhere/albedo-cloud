@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>albedo-gateway</artifactId>
@@ -65,23 +65,25 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
 		</dependency>
+		<!--caffeine 替换LB 默认缓存实现-->
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
 		<!--验证码 源码： https://github.com/pig-mesh/easy-captcha -->
 		<dependency>
 			<groupId>com.pig4cloud.plugin</groupId>
 			<artifactId>captcha-spring-boot-starter</artifactId>
-			<version>${captcha.version}</version>
 		</dependency>
 		<!-- 工具包依赖 -->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-core</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<!--接口文档-->
 		<dependency>
-			<groupId>com.albedo.java</groupId>
-			<artifactId>albedo-common-swagger</artifactId>
-			<version>${project.release.version}</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
 		</dependency>
 	</dependencies>
 

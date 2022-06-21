@@ -17,7 +17,6 @@
 package com.albedo.java.gateway;
 
 
-import com.albedo.java.common.config.annotation.EnableAlbedoSwagger2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,7 +32,6 @@ import java.net.InetAddress;
  * <p>
  * 网关应用
  */
-@EnableAlbedoSwagger2
 @SpringBootApplication
 @EnableDiscoveryClient
 @Slf4j
@@ -50,7 +48,7 @@ public class AlbedoGatewayApplication {
 		log.info(
 			"\n----------------------------------------------------------\n\t"
 				+ "Application '{} v{}' is running! Access URLs:\n\t" + "Local: \t\thttp://localhost:{}\n\t"
-				+ "Doc: \t\thttp://localhost:{}/doc.html\n\t"
+				+ "Doc: \t\thttp://localhost:{}/swagger-ui.html\n\t"
 				+ "External: \thttp://{}:{}\n\t"
 				+ "\n----------------------------------------------------------",
 			env.getProperty(SPRING_APPLICATION_NAME), env.getProperty(APPLICATION_VERSION), env.getProperty(SERVER_PORT), env.getProperty(SERVER_PORT),

@@ -976,7 +976,7 @@ public class RedisOps {
 	 *
 	 * @param key 一定不能为 {@literal null}.
 	 * @return 返回键 key 在执行加一操作之后的值。
-	 * @see <a href="https://redis.io/commands/incr">Redis Documentation: INCR</a>
+	 * @see <a href="https://redis.io/commands/incr">Redis Documentation: INCResult</a>
 	 */
 	public Long incr(@NonNull CacheKey key) {
 		Long increment = stringRedisTemplate.opsForValue().increment(key.getKey());
@@ -1061,7 +1061,7 @@ public class RedisOps {
 	 *
 	 * @param key 一定不能为 {@literal null}.
 	 * @return 在减去增量 1 之后， 键 key 的值。
-	 * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECR</a>
+	 * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECResult</a>
 	 */
 	public Long decr(@NonNull CacheKey key) {
 		Long decr = stringRedisTemplate.opsForValue().decrement(key.getKey());
@@ -1077,7 +1077,7 @@ public class RedisOps {
 	 *
 	 * @param key 一定不能为 {@literal null}.
 	 * @return 在减去增量 decrement 之后， 键 key 的值。
-	 * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECR</a>
+	 * @see <a href="https://redis.io/commands/decr">Redis Documentation: DECResult</a>
 	 */
 	public Long decrBy(@NonNull CacheKey key, long decrement) {
 		Long decr = stringRedisTemplate.opsForValue().decrement(key.getKey(), decrement);
@@ -1804,7 +1804,7 @@ public class RedisOps {
 	 * @param key    一定不能为 {@literal null}.
 	 * @param member 元素
 	 * @return 如果 member 元素是集合的成员，返回 1 。 如果 member 元素不是集合的成员，或 key 不存在，返回 0 。
-	 * @see <a href="https://redis.io/commands/sismember">Redis Documentation: SISMEMBER</a>
+	 * @see <a href="https://redis.io/commands/sismember">Redis Documentation: SISMEMBEResult</a>
 	 */
 	public Boolean sIsMember(@NonNull CacheKey key, Object member) {
 		return setOps.isMember(key.getKey(), member);
@@ -1828,7 +1828,7 @@ public class RedisOps {
 	 *
 	 * @param key 一定不能为 {@literal null}.
 	 * @return 只提供 key 参数时，返回一个元素；如果集合为空，返回 nil
-	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBER</a>
+	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBEResult</a>
 	 */
 	@Nullable
 	public <T> T sRandMember(@NonNull CacheKey key) {
@@ -1844,7 +1844,7 @@ public class RedisOps {
 	 * @param key   一定不能为 {@literal null}.
 	 * @param count 数量
 	 * @return 只提供 key 参数时，返回一个元素；如果集合为空，返回 nil
-	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBER</a>
+	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBEResult</a>
 	 */
 	@Nullable
 	public <V> Set<V> sRandMember(@NonNull CacheKey key, long count) {
@@ -1861,7 +1861,7 @@ public class RedisOps {
 	 * @param key   一定不能为 {@literal null}.
 	 * @param count 数量
 	 * @return 只提供 key 参数时，返回一个元素；如果集合为空，返回 nil
-	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBER</a>
+	 * @see <a href="https://redis.io/commands/srandmember">Redis Documentation: SRANDMEMBEResult</a>
 	 */
 	@Nullable
 	public <V> List<V> sRandMembers(@NonNull CacheKey key, long count) {
@@ -1934,7 +1934,7 @@ public class RedisOps {
 	 * @param key      一定不能为{@literal null}.
 	 * @param otherKey 一定不能为 {@literal null}.
 	 * @return 交集成员的列表。
-	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTER</a>
+	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTEResult</a>
 	 */
 	@Nullable
 	public <V> Set<V> sInter(@NonNull CacheKey key, @NonNull CacheKey otherKey) {
@@ -1951,7 +1951,7 @@ public class RedisOps {
 	 * @param key       一定不能为{@literal null}.
 	 * @param otherKeys 一定不能为 {@literal null}.
 	 * @return 交集成员的列表。
-	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTER</a>
+	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTEResult</a>
 	 */
 	@Nullable
 	public Set<Object> sInter(@NonNull CacheKey key, Collection<CacheKey> otherKeys) {
@@ -1967,7 +1967,7 @@ public class RedisOps {
 	 *
 	 * @param otherKeys 一定不能为 {@literal null}.
 	 * @return 交集成员的列表。
-	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTER</a>
+	 * @see <a href="https://redis.io/commands/sinter">Redis Documentation: SINTEResult</a>
 	 */
 	@Nullable
 	public <V> Set<V> sInter(Collection<CacheKey> otherKeys) {

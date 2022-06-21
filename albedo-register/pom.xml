@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-cloud</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
 	<description>nacos 注册配置中心</description>
 
 	<properties>
-		<nacos.version>2.0.3</nacos.version>
+		<nacos.version>2.1.0</nacos.version>
 	</properties>
 
 	<dependencies>
@@ -40,6 +40,13 @@
 			<artifactId>nacos-istio</artifactId>
 			<version>${nacos.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springboot.nacos</groupId>
+			<artifactId>nacos-plugin-default-impl</artifactId>
+			<version>${nacos.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -48,11 +55,9 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-system</artifactId>
-			<version>${hutool.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
-
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

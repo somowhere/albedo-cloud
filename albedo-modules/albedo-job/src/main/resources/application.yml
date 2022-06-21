@@ -1,6 +1,14 @@
+
+# 此配置只适合开发测试环境，详细配置参考： http://t.cn/A64RaHJm
+server:
+  port: 5004
+  servlet:
+    context-path: /xxl-job-admin
+
 # xxl
 xxl:
   job:
+    accessToken: default_token
     i18n: zh_CN
     logretentiondays: 30
     triggerpool:
@@ -13,11 +21,19 @@ mybatis:
 
 # spring
 spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:albedo-register}:${NACOS_PORT:8848}
+        metadata:
+          management.context-path: ${server.servlet.context-path}/actuator
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:albedo-mysql}:${MYSQL_PORT:3306}/${MYSQL_DB:albedo-job}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${MYSQL-PWD:root}
-    password: ${MYSQL-PWD:111111}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PWD:111111}
   mvc:
     static-path-pattern: /static/**
   freemarker:

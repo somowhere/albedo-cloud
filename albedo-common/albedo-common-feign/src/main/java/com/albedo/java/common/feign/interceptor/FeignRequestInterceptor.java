@@ -18,9 +18,14 @@ public class FeignRequestInterceptor implements RequestInterceptor {
 		HttpServletRequest request = attributes.getRequest();
 		String traceId = request.getHeader(ContextConstants.TRACE_ID_HEADER);
 		if (StringUtil.isNotBlank(traceId)) {
-			requestTemplate.header(ContextConstants.TRACE_ID_HEADER, ContextUtil.getTenant());
+			requestTemplate.header(ContextConstants.TRACE_ID_HEADER, traceId);
 		}
-		requestTemplate.header(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
+		String tenant = request.getHeader(ContextConstants.KEY_TENANT);
+		if (StringUtil.isNotBlank(tenant)) {
+			requestTemplate.header(ContextConstants.KEY_TENANT, tenant);
+		} else {
+			requestTemplate.header(ContextConstants.KEY_TENANT, ContextUtil.getTenant());
+		}
 
 	}
 }

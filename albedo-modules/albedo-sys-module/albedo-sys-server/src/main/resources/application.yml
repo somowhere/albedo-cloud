@@ -1,0 +1,49 @@
+server:
+  port: 4000
+
+nacos:
+  ip: @nacos.ip@
+  port: @nacos.port@
+  namespace: @nacos.namespace@
+  username: @nacos.username@
+  password: @nacos.password@
+
+logging:
+  level:
+    ROOT: DEBUG
+    com.albedo.java: @logback.loglevel@
+  file:
+    path: @logging.file.path@
+    name: @logging.file.path@/${spring.application.name}/${spring.application.name}-info.log
+
+spring:
+  application:
+    name: albedo-sys
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${nacos.namespace}
+        server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}
+      config:
+        namespace: ${nacos.namespace}
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+  config:
+    import:
+      - nacos:${spring.application.name}-@spring.profiles.active@.yml
+      - nacos:application-@spring.profiles.active@.yml
+  profiles:
+    active: @spring.profiles.active@
+
+application:
+  version: @revision@
+
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

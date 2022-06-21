@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>albedo-modules</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -47,12 +47,6 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
-		<!-- starter-actuator -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
 		<!-- mybatis-starter：mybatis + mybatis-spring + hikari（default） -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -69,7 +63,6 @@
 		<dependency>
 			<groupId>com.xuxueli</groupId>
 			<artifactId>xxl-job-core</artifactId>
-			<version>${xxl-job.version}</version>
 		</dependency>
 
 		<!--undertow容器-->
@@ -78,10 +71,8 @@
 			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 	</dependencies>
+
 	<build>
-		<filters>
-			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
-		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -92,5 +83,25 @@
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>sta**/*.woff</exclude>
+					<exclude>**/*.woff2</exclude>
+					<exclude>**/*.ttf</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.woff</include>
+					<include>**/*.woff2</include>
+					<include>**/*.ttf</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>

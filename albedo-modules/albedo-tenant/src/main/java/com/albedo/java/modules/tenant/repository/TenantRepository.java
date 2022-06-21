@@ -1,6 +1,6 @@
 package com.albedo.java.modules.tenant.repository;
 
-import com.albedo.java.modules.tenant.domain.Tenant;
+import com.albedo.java.modules.tenant.domain.TenantDo;
 import com.albedo.java.plugins.database.mybatis.repository.BaseRepository;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 @InterceptorIgnore(tenantLine = "true", dynamicTableName = "true")
-public interface TenantRepository extends BaseRepository<Tenant> {
+public interface TenantRepository extends BaseRepository<TenantDo> {
 
 	/**
 	 * 根据租户编码查询
@@ -25,5 +25,5 @@ public interface TenantRepository extends BaseRepository<Tenant> {
 	 * @param code 租户编码
 	 * @return 租户
 	 */
-	Tenant getByCode(@Param("code") String code);
+	TenantDo getByCode(@Param("code") String code);
 }

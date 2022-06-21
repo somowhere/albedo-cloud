@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2018-2025, somewhere All rights reserved.
+ *    Copyright (c) 2018-2025, lengleng All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -12,13 +12,13 @@
  * Neither the name of the pig4cloud.com developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: somewhere (somewhere0813@gmail.com)
+ * Author: lengleng (wangiegie@gmail.com)
  */
 
 package com.alibaba.nacos.config;
 
 /**
- * @author somewhere
+ * @author lengleng
  * @date 2019-10-31
  * <p>
  * 覆盖nacos 默认配置
@@ -39,5 +39,10 @@ public interface ConfigConstants {
 	 * 日志目录
 	 */
 	String LOG_BASEDIR = "server.tomcat.basedir";
+
+	/**
+	 * access_log日志开关
+	 */
+	String LOG_ENABLED = "server.tomcat.accesslog.enabled";
 
 }

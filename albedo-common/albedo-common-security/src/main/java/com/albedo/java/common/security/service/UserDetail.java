@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2020, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,20 +16,23 @@
 
 package com.albedo.java.common.security.service;
 
-import com.albedo.java.plugins.database.mybatis.datascope.DataScope;
+import com.albedo.java.common.core.domain.vo.DataScope;
 import lombok.Getter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author somewhere
  * @date 2019/2/1
  * 扩展用户信息
  */
-public class UserDetail extends User {
+public class UserDetail extends User implements OAuth2AuthenticatedPrincipal {
 	/**
 	 * 用户ID
 	 */
@@ -50,6 +53,11 @@ public class UserDetail extends User {
 	 */
 	@Getter
 	private String deptName;
+	/**
+	 * 手机号
+	 */
+	@Getter
+	private String phone;
 
 	/**
 	 * Construct the <code>User</code> with the details required by
@@ -72,12 +80,29 @@ public class UserDetail extends User {
 	 * @throws IllegalArgumentException if a <code>null</code> value was passed either as
 	 *                                  a parameter or as an element in the <code>GrantedAuthority</code> collection
 	 */
-	public UserDetail(Long id, Long deptId, String deptName, String loginId, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, DataScope dataScope) {
+	public UserDetail(Long id, Long deptId, String deptName, String phone, String loginId, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, DataScope dataScope) {
 		super(loginId, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
+		this.phone = phone;
 		this.deptId = deptId;
 		this.deptName = deptName;
 		this.dataScope = dataScope;
+	}
+
+
+	/**
+	 * Get the OAuth 2.0 token attributes
+	 *
+	 * @return the OAuth 2.0 token attributes
+	 */
+	@Override
+	public Map<String, Object> getAttributes() {
+		return new HashMap<>();
+	}
+
+	@Override
+	public String getName() {
+		return this.getUsername();
 	}
 
 }

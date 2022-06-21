@@ -1,52 +1,114 @@
 /*
+ * Copyright (c) 2019-2022, somewhere (somewhere0813@gmail.com).
  *
- *  *  Copyright (c) 2019-2021, somewhere (somewhere0813@gmail.com).
- *  *  <p>
- *  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  *  you may not use this file except in compliance with the License.
- *  *  You may obtain a copy of the License at
- *  *  <p>
- *  * https://www.gnu.org/licenses/lgpl.html
- *  *  <p>
- *  * Unless required by applicable law or agreed to in writing, software
- *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  * See the License for the specific language governing permissions and
- *  * limitations under the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.albedo.java.common.security.component;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.server.resource.BearerTokenError;
+import org.springframework.security.oauth2.server.resource.BearerTokenErrors;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * 改造 {@link org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor} 对公开权限的请求不进行校验
- *
  * @author caiqy
  * @date 2020.05.15
  */
-@Component
-@RequiredArgsConstructor
-public class AlbedoBearerTokenExtractor extends BearerTokenExtractor {
+public class AlbedoBearerTokenExtractor implements BearerTokenResolver {
 
+	private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-:._~+/]+=*)$",
+		Pattern.CASE_INSENSITIVE);
 	private final PathMatcher pathMatcher = new AntPathMatcher();
-
 	private final PermitAllUrlProperties urlProperties;
+	private boolean allowFormEncodedBodyParameter = false;
+	private boolean allowUriQueryParameter = false;
+	private String bearerTokenHeaderName = HttpHeaders.AUTHORIZATION;
+
+	public AlbedoBearerTokenExtractor(PermitAllUrlProperties urlProperties) {
+		this.urlProperties = urlProperties;
+	}
+
+	private static String resolveFromRequestParameters(HttpServletRequest request) {
+		String[] values = request.getParameterValues("access_token");
+		if (values == null || values.length == 0) {
+			return null;
+		}
+		if (values.length == 1) {
+			return values[0];
+		}
+		BearerTokenError error = BearerTokenErrors.invalidRequest("Found multiple bearer tokens in the request");
+		throw new OAuth2AuthenticationException(error);
+	}
 
 	@Override
-	public Authentication extract(HttpServletRequest request) {
+	public String resolve(HttpServletRequest request) {
 		boolean match = urlProperties.getUrls().stream()
 			.anyMatch(url -> pathMatcher.match(url, request.getRequestURI()));
 
-		return match ? null : super.extract(request);
+		if (match) {
+			return null;
+		}
+
+		final String authorizationHeaderToken = resolveFromAuthorizationHeader(request);
+		final String parameterToken = isParameterTokenSupportedForRequest(request)
+			? resolveFromRequestParameters(request) : null;
+		if (authorizationHeaderToken != null) {
+			if (parameterToken != null) {
+				final BearerTokenError error = BearerTokenErrors
+					.invalidRequest("Found multiple bearer tokens in the request");
+				throw new OAuth2AuthenticationException(error);
+			}
+			return authorizationHeaderToken;
+		}
+		if (parameterToken != null && isParameterTokenEnabledForRequest(request)) {
+			return parameterToken;
+		}
+		return null;
+	}
+
+	private String resolveFromAuthorizationHeader(HttpServletRequest request) {
+		String authorization = request.getHeader(this.bearerTokenHeaderName);
+		if (!StringUtils.startsWithIgnoreCase(authorization, "bearer")) {
+			return null;
+		}
+		Matcher matcher = authorizationPattern.matcher(authorization);
+		if (!matcher.matches()) {
+			BearerTokenError error = BearerTokenErrors.invalidToken("Bearer token is malformed");
+			throw new OAuth2AuthenticationException(error);
+		}
+		return matcher.group("token");
+	}
+
+	private boolean isParameterTokenSupportedForRequest(final HttpServletRequest request) {
+		return (("POST".equals(request.getMethod())
+			&& MediaType.APPLICATION_FORM_URLENCODED_VALUE.equals(request.getContentType()))
+			|| "GET".equals(request.getMethod()));
+	}
+
+	private boolean isParameterTokenEnabledForRequest(final HttpServletRequest request) {
+		return ((this.allowFormEncodedBodyParameter && "POST".equals(request.getMethod())
+			&& MediaType.APPLICATION_FORM_URLENCODED_VALUE.equals(request.getContentType()))
+			|| (this.allowUriQueryParameter && "GET".equals(request.getMethod())));
 	}
 
 }

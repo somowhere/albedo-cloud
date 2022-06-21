@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.albedo.java.common.core.util;
 
 import cn.hutool.core.io.FileUtil;
-import com.albedo.java.common.core.config.ApplicationConfig;
+import com.albedo.java.common.core.config.ApplicationConfiguration;
 import com.albedo.java.common.core.exception.BizException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +44,7 @@ public class FileUploadUtil {
 	/**
 	 * 默认上传的地址
 	 */
-	private static String defaultBaseDir = ApplicationConfig.getStaticFileDirectory();
+	private static String defaultBaseDir = ApplicationConfiguration.getStaticFileDirectory();
 
 	private static int counter = 0;
 

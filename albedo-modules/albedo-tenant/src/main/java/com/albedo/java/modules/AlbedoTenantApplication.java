@@ -17,9 +17,9 @@
 package com.albedo.java.modules;
 
 
-import com.albedo.java.common.config.annotation.EnableAlbedoSwagger2;
 import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
+import com.albedo.java.plugins.swagger.annotation.EnableSwaggerDoc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,7 +34,7 @@ import java.net.InetAddress;
  * @date 2018年06月21日
  * 用户统一管理系统
  */
-@EnableAlbedoSwagger2
+@EnableSwaggerDoc
 @EnableAlbedoResourceServer
 @EnableAlbedoFeignClients
 @EnableDiscoveryClient
@@ -52,7 +52,7 @@ public class AlbedoTenantApplication {
 		log.info(
 			"\n----------------------------------------------------------\n\t"
 				+ "Application '{} v{}' is running! Access URLs:\n\t" + "Local: \t\thttp://localhost:{}\n\t"
-				+ "Doc: \t\thttp://localhost:{}/doc.html\n\t"
+				+ "Doc: \t\thttp://localhost:{}/swagger-ui.html\n\t"
 				+ "External: \thttp://{}:{}\n\t"
 				+ "\n----------------------------------------------------------",
 			env.getProperty(SPRING_APPLICATION_NAME), env.getProperty(APPLICATION_VERSION), env.getProperty(SERVER_PORT), env.getProperty(SERVER_PORT),

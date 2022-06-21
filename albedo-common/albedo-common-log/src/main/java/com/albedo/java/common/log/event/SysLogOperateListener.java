@@ -18,7 +18,7 @@ package com.albedo.java.common.log.event;
 
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.util.AddressUtil;
-import com.albedo.java.modules.sys.domain.LogOperate;
+import com.albedo.java.modules.sys.domain.LogOperateDo;
 import com.albedo.java.modules.sys.feign.RemoteLogOperateService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +43,8 @@ public class SysLogOperateListener {
 		if (log.isTraceEnabled()) {
 			log.trace("{}", event);
 		}
-		LogOperate logOperate = (LogOperate) event.getSource();
-		logOperate.setIpLocation(AddressUtil.getRegion(logOperate.getIpAddress()));
-		remoteLogOperateService.save(logOperate, SecurityConstants.FROM_IN);
+		LogOperateDo logOperateDo = (LogOperateDo) event.getSource();
+		logOperateDo.setIpLocation(AddressUtil.getRegion(logOperateDo.getIpAddress()));
+		remoteLogOperateService.save(logOperateDo, SecurityConstants.FROM_IN);
 	}
 }

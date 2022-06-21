@@ -2,13 +2,14 @@ package com.albedo.java.gateway.config;
 
 import com.albedo.java.common.core.config.ApplicationProperties;
 import com.albedo.java.gateway.filter.AlbedoRequestGlobalFilter;
-import com.albedo.java.gateway.filter.ApiLoggingFilter;
 import com.albedo.java.gateway.filter.PasswordDecoderFilter;
+import com.albedo.java.gateway.filter.SwaggerBasicGatewayFilter;
 import com.albedo.java.gateway.filter.ValidateCodeGatewayFilter;
 import com.albedo.java.gateway.handler.AssetFileHandler;
 import com.albedo.java.gateway.handler.GlobalGatewayExceptionHandler;
 import com.albedo.java.gateway.handler.ImageCodeHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,10 @@ public class GatewayConfiguration {
 	}
 
 	@Bean
-	public ApiLoggingFilter apiLoggingFilter() {
-		return new ApiLoggingFilter();
+	@ConditionalOnProperty(name = "swagger.basic.enabled")
+	public SwaggerBasicGatewayFilter swaggerBasicGatewayFilter(
+		SpringDocConfiguration.SwaggerDocProperties swaggerProperties) {
+		return new SwaggerBasicGatewayFilter(swaggerProperties);
 	}
 
 	@Bean

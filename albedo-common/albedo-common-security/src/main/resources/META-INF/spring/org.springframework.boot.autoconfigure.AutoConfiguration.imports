@@ -1,0 +1,7 @@
+com.albedo.java.common.security.service.AlbedoUserDetailsServiceImpl
+com.albedo.java.common.security.service.AlbedoAppUserDetailsServiceImpl
+com.albedo.java.common.security.service.AlbedoRedisOAuth2AuthorizationService
+com.albedo.java.common.security.service.AlbedoRedisOAuth2AuthorizationConsentService
+com.albedo.java.common.security.component.AlbedoSecurityInnerAspect
+com.albedo.java.common.security.component.AlbedoSecurityMessageSourceConfiguration
+com.albedo.java.common.security.service.AlbedoRemoteRegisteredClientRepository

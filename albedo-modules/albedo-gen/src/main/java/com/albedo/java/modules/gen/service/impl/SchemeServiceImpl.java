@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ package com.albedo.java.modules.gen.service.impl;
 import cn.hutool.core.util.CharUtil;
 import com.albedo.java.common.core.cache.model.CacheKeyBuilder;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.domain.vo.PageModel;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.FreeMarkers;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.core.vo.PageModel;
 import com.albedo.java.modules.gen.cache.SchemeCacheKeyBuilder;
-import com.albedo.java.modules.gen.domain.Scheme;
-import com.albedo.java.modules.gen.domain.Table;
-import com.albedo.java.modules.gen.domain.TableColumn;
+import com.albedo.java.modules.gen.domain.SchemeDo;
+import com.albedo.java.modules.gen.domain.TableColumnDo;
+import com.albedo.java.modules.gen.domain.TableDo;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
@@ -41,7 +41,7 @@ import com.albedo.java.modules.gen.service.SchemeService;
 import com.albedo.java.modules.gen.service.TableColumnService;
 import com.albedo.java.modules.gen.service.TableService;
 import com.albedo.java.modules.gen.util.GenUtil;
-import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.DictDo;
 import com.albedo.java.modules.sys.domain.dto.GenSchemeDto;
 import com.albedo.java.modules.sys.feign.RemoteMenuService;
 import com.albedo.java.plugins.database.mybatis.service.impl.DataCacheServiceImpl;
@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Scheme, SchemeDto>
+public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, SchemeDo, SchemeDto>
 	implements SchemeService {
 
 	private final TableRepository tableRepository;
@@ -85,8 +85,8 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 	}
 
 	@Override
-	public List<Scheme> findAllListIdNot(String id) {
-		return super.list(Wrappers.<Scheme>query().ne(Table.F_ID, id == null ? "-1" : id));
+	public List<SchemeDo> findAllListIdNot(String id) {
+		return super.list(Wrappers.<SchemeDo>query().ne(TableDo.F_ID, id == null ? "-1" : id));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
 		tableDto.setColumnList(tableColumnService
-			.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableDto.getId())).stream()
+			.list(Wrappers.<TableColumnDo>query().eq(TableColumnDo.F_SQL_GENTABLEID, tableDto.getId())).stream()
 			.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 		Collections.sort(tableDto.getColumnList());
 
@@ -110,7 +110,7 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		// 如果有子表模板，则需要获取子表列表
 		if (childTableTemplateList.size() > 0) {
 			tableDto.setChildList(tableRepository
-				.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId())).stream()
+				.selectList(Wrappers.<TableDo>lambdaQuery().eq(TableDo::getParentTable, tableDto.getId())).stream()
 				.map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
 		}
 
@@ -155,21 +155,21 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		GenConfig config = GenUtil.getConfig();
 		schemeFormDataVo.setConfig(config);
 
-		schemeFormDataVo.setCategoryList(CollUtil.convertSelectVoList(config.getCategoryList(), Dict.F_VAL, Dict.F_NAME));
-		schemeFormDataVo.setViewTypeList(CollUtil.convertSelectVoList(config.getViewTypeList(), Dict.F_VAL, Dict.F_NAME));
+		schemeFormDataVo.setCategoryList(CollUtil.convertSelectVoList(config.getCategoryList(), DictDo.F_VAL, DictDo.F_NAME));
+		schemeFormDataVo.setViewTypeList(CollUtil.convertSelectVoList(config.getViewTypeList(), DictDo.F_VAL, DictDo.F_NAME));
 
-		List<Table> tableList = tableService.list(), list = Lists.newArrayList();
+		List<TableDo> tableDoList = tableService.list(), list = Lists.newArrayList();
 		List<String> tableIds = Lists.newArrayList();
 		if (StringUtil.isNotEmpty(schemeDto.getId())) {
-			List<Scheme> schemeList = findAllListIdNot(schemeDto.getId());
-			tableIds = CollUtil.extractToList(schemeList, "tableId");
+			List<SchemeDo> schemeDoList = findAllListIdNot(schemeDto.getId());
+			tableIds = CollUtil.extractToList(schemeDoList, "tableId");
 		}
-		for (Table table : tableList) {
-			if (!tableIds.contains(table.getId())) {
-				list.add(table);
+		for (TableDo tableDo : tableDoList) {
+			if (!tableIds.contains(tableDo.getId())) {
+				list.add(tableDo);
 			}
 		}
-		schemeFormDataVo.setTableList(CollUtil.convertSelectVoList(list, Table.F_ID, Table.F_NAMESANDTITLE));
+		schemeFormDataVo.setTableList(CollUtil.convertSelectVoList(list, TableDo.F_ID, TableDo.F_NAMESANDTITLE));
 		return schemeFormDataVo;
 	}
 
@@ -177,7 +177,7 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 	@Override
 	public IPage getSchemeVoPage(PageModel pageModel, SchemeQueryCriteria schemeQueryCriteria) {
 		Wrapper wrapper = QueryWrapperUtil.getWrapper(pageModel, schemeQueryCriteria);
-		pageModel.addOrder(OrderItem.desc("a." + Scheme.F_SQL_CREATED_DATE));
+		pageModel.addOrder(OrderItem.desc("a." + SchemeDo.F_SQL_CREATED_DATE));
 		IPage<List<SchemeVo>> userVosPage = repository.getSchemeVoPage(pageModel, wrapper);
 		return userVosPage;
 	}
@@ -189,7 +189,7 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		// 查询主表及字段列
 		TableDto tableDto = tableService.getOneDto(schemeDto.getTableId());
 		tableDto.setColumnList(tableColumnService
-			.list(Wrappers.<TableColumn>query().eq(TableColumn.F_SQL_GENTABLEID, tableDto.getId())).stream()
+			.list(Wrappers.<TableColumnDo>query().eq(TableColumnDo.F_SQL_GENTABLEID, tableDto.getId())).stream()
 			.map(item -> tableColumnService.copyBeanToDto(item)).collect(Collectors.toList()));
 		Collections.sort(tableDto.getColumnList());
 
@@ -203,7 +203,7 @@ public class SchemeServiceImpl extends DataCacheServiceImpl<SchemeRepository, Sc
 		// 如果有子表模板，则需要获取子表列表
 		if (childTableTemplateList.size() > 0) {
 			tableDto.setChildList(tableRepository
-				.selectList(Wrappers.<Table>lambdaQuery().eq(Table::getParentTable, tableDto.getId())).stream()
+				.selectList(Wrappers.<TableDo>lambdaQuery().eq(TableDo::getParentTable, tableDto.getId())).stream()
 				.map(item -> tableService.copyBeanToDto(item)).collect(Collectors.toList()));
 		}
 

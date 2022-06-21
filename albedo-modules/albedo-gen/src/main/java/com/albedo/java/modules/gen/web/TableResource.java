@@ -1,15 +1,15 @@
 package com.albedo.java.modules.gen.web;
 
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.domain.vo.PageModel;
+import com.albedo.java.common.core.domain.vo.SelectVo;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.web.resource.BaseResource;
-import com.albedo.java.modules.gen.domain.DatasourceConf;
-import com.albedo.java.modules.gen.domain.Table;
+import com.albedo.java.modules.gen.domain.DatasourceConfDo;
+import com.albedo.java.modules.gen.domain.TableDo;
 import com.albedo.java.modules.gen.domain.dto.TableDto;
 import com.albedo.java.modules.gen.domain.dto.TableFromDto;
 import com.albedo.java.modules.gen.domain.dto.TableQueryCriteria;
@@ -42,7 +42,7 @@ public class TableResource extends BaseResource {
 	@GetMapping(value = "/ds-list")
 	@PreAuthorize("@pms.hasPermission('gen_table_view')")
 	public Result<SelectVo> dsList() {
-		return Result.buildOkData(CollUtil.convertSelectVoList(datasourceConfService.list(), DatasourceConf.F_NAME, DatasourceConf.F_NAME));
+		return Result.buildOkData(CollUtil.convertSelectVoList(datasourceConfService.list(), DatasourceConfDo.F_NAME, DatasourceConfDo.F_NAME));
 	}
 
 	@GetMapping(value = "/ds-table-list/{dsName:^[a-zA-Z0-9]+$}")
@@ -50,7 +50,7 @@ public class TableResource extends BaseResource {
 	public Result<SelectVo> tableList(@PathVariable String dsName) {
 		TableDto tableDto = new TableDto();
 		tableDto.setDsName(dsName);
-		return Result.buildOkData(CollUtil.convertSelectVoList(tableService.findTableListFormDb(tableDto), Table.F_NAME, Table.F_NAMESANDTITLE));
+		return Result.buildOkData(CollUtil.convertSelectVoList(tableService.findTableListFormDb(tableDto), TableDo.F_NAME, TableDo.F_NAMESANDTITLE));
 	}
 
 	@GetMapping(value = "/form-data")

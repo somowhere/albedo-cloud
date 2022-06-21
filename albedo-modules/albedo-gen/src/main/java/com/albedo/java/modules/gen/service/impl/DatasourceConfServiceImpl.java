@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.albedo.java.common.core.exception.EntityExistException;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.modules.gen.cache.DatasourceConfCacheKeyBuilder;
-import com.albedo.java.modules.gen.domain.DatasourceConf;
+import com.albedo.java.modules.gen.domain.DatasourceConfDo;
 import com.albedo.java.modules.gen.domain.dto.DatasourceConfDto;
 import com.albedo.java.modules.gen.repository.DatasourceConfRepository;
 import com.albedo.java.modules.gen.service.DatasourceConfService;
@@ -52,7 +52,7 @@ import java.util.Collection;
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class DatasourceConfServiceImpl
-	extends DataCacheServiceImpl<DatasourceConfRepository, DatasourceConf, DatasourceConfDto>
+	extends DataCacheServiceImpl<DatasourceConfRepository, DatasourceConfDo, DatasourceConfDto>
 	implements DatasourceConfService {
 
 	private final StringEncryptor stringEncryptor;
@@ -65,9 +65,9 @@ public class DatasourceConfServiceImpl
 	}
 
 	public Boolean exitDatasourceConfByName(DatasourceConfDto datasourceConfDto) {
-		return getOne(Wrappers.<DatasourceConf>lambdaUpdate()
-			.ne(StringUtil.isNotEmpty(datasourceConfDto.getId()), DatasourceConf::getId, datasourceConfDto.getId())
-			.eq(DatasourceConf::getName, datasourceConfDto.getName())) != null;
+		return getOne(Wrappers.<DatasourceConfDo>lambdaUpdate()
+			.ne(StringUtil.isNotEmpty(datasourceConfDto.getId()), DatasourceConfDo::getId, datasourceConfDto.getId())
+			.eq(DatasourceConfDo::getName, datasourceConfDto.getName())) != null;
 	}
 
 	@Override

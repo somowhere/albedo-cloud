@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +50,7 @@ public class SchemaInitSystemStrategy implements InitSystemStrategy {
 	private final InitDbRepository initDbMapper;
 	private final DatabaseProperties databaseProperties;
 
-	@Value("${application.mysql.database}")
+	//@Value("${application.mysql.database}")
 	private String defaultDatabase;
 
 

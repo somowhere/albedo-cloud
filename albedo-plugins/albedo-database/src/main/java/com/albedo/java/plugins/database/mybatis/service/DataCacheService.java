@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.albedo.java.plugins.database.mybatis.service;
 
-import com.albedo.java.common.core.basic.domain.BaseDataEntity;
-import com.albedo.java.common.core.vo.DataDto;
+import com.albedo.java.common.core.domain.BaseDataDo;
+import com.albedo.java.common.core.domain.vo.DataDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @description
  * @date 2020/5/31 17:07
  */
-public interface DataCacheService<T extends BaseDataEntity, D extends DataDto>
+public interface DataCacheService<T extends BaseDataDo, D extends DataDto>
 	extends DataService<T, D>, CacheService<T> {
 
 	/**

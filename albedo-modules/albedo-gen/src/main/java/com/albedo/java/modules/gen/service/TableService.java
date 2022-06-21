@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.gen.service;
 
-import com.albedo.java.modules.gen.domain.Table;
+import com.albedo.java.modules.gen.domain.TableDo;
 import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
 import com.albedo.java.modules.gen.domain.dto.TableDto;
 import com.albedo.java.modules.gen.domain.dto.TableFromDto;
@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * @author somewhere
  */
-public interface TableService extends DataCacheService<Table, TableDto> {
+public interface TableService extends DataCacheService<TableDo, TableDto> {
 
 	/**
 	 * 判断表名是否存在

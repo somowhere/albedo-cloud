@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import com.albedo.java.common.core.exception.RuntimeMsgException;
 import com.albedo.java.common.core.util.ClassUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.modules.sys.domain.Dict;
+import com.albedo.java.modules.sys.domain.DictDo;
 import com.albedo.java.modules.sys.util.DictUtil;
 import com.google.common.collect.Maps;
 import org.apache.poi.ss.usermodel.*;
@@ -155,13 +155,13 @@ public class ExcelUtil<T> {
 	}
 
 	public static String getDataDictValue(String dictType, Object value) {
-		List<Dict> listTemp = (List<Dict>) dataDictMap.get(dictType);
+		List<DictDo> listTemp = (List<DictDo>) dataDictMap.get(dictType);
 		if (listTemp == null) {
 			listTemp = DictUtil.getDictListByParentCode(dictType);
 			dataDictMap.put(dictType, listTemp);
 		}
 		if (ObjectUtil.isNotEmpty(listTemp)) {
-			for (Dict item : listTemp) {
+			for (DictDo item : listTemp) {
 				if (String.valueOf(value).equals(item.getVal())) {
 					return item.getName();
 				}

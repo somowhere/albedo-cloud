@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>albedo-plugins</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +17,6 @@
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-			<version>${dynamic-ds.version}</version>
 		</dependency>
 	</dependencies>
 </project>

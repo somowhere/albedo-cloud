@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package com.albedo.java.common.config;
 
 import cn.hutool.core.map.MapUtil;
 import com.albedo.java.common.core.annotation.DictType;
+import com.albedo.java.common.core.domain.vo.SelectVo;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.StringUtil;
-import com.albedo.java.common.core.vo.SelectVo;
 import com.albedo.java.modules.sys.util.DictUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;

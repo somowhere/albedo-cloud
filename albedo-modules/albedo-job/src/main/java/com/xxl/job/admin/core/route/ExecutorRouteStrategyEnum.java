@@ -4,32 +4,25 @@ import com.xxl.job.admin.core.route.strategy.*;
 import com.xxl.job.admin.core.util.I18nUtil;
 
 /**
- * @author xuxueli
- * @date 17/3/10
+ * Created by xuxueli on 17/3/10.
  */
 public enum ExecutorRouteStrategyEnum {
 
-	FIRST(I18nUtil.getString("jobconf_route_first"), new BaseExecutorRouteFirst()), LAST(
-		I18nUtil.getString("jobconf_route_last"), new BaseExecutorRouteLast()), ROUND(
-		I18nUtil.getString("jobconf_route_round"), new BaseExecutorRouteRound()), RANDOM(
-		I18nUtil.getString("jobconf_route_random"), new BaseExecutorRouteRandom()), CONSISTENT_HASH(
-		I18nUtil.getString("jobconf_route_consistenthash"),
-		new BaseExecutorRouteConsistentHash()), LEAST_FREQUENTLY_USED(
-		I18nUtil.getString("jobconf_route_lfu"),
-		new BaseExecutorRouteLFU()), LEAST_RECENTLY_USED(
-		I18nUtil.getString("jobconf_route_lru"),
-		new BaseExecutorRouteLRU()), FAILOVER(
-		I18nUtil.getString("jobconf_route_failover"),
-		new BaseExecutorRouteFailover()), BUSYOVER(
-		I18nUtil.getString("jobconf_route_busyover"),
-		new BaseExecutorRouteBusyover()), SHARDING_BROADCAST(
-		I18nUtil.getString("jobconf_route_shard"),
-		null);
+	FIRST(I18nUtil.getString("jobconf_route_first"), new ExecutorRouteFirst()),
+	LAST(I18nUtil.getString("jobconf_route_last"), new ExecutorRouteLast()),
+	ROUND(I18nUtil.getString("jobconf_route_round"), new ExecutorRouteRound()),
+	RANDOM(I18nUtil.getString("jobconf_route_random"), new ExecutorRouteRandom()),
+	CONSISTENT_HASH(I18nUtil.getString("jobconf_route_consistenthash"), new ExecutorRouteConsistentHash()),
+	LEAST_FREQUENTLY_USED(I18nUtil.getString("jobconf_route_lfu"), new ExecutorRouteLFU()),
+	LEAST_RECENTLY_USED(I18nUtil.getString("jobconf_route_lru"), new ExecutorRouteLRU()),
+	FAILOVER(I18nUtil.getString("jobconf_route_failover"), new ExecutorRouteFailover()),
+	BUSYOVER(I18nUtil.getString("jobconf_route_busyover"), new ExecutorRouteBusyover()),
+	SHARDING_BROADCAST(I18nUtil.getString("jobconf_route_shard"), null);
 
 	private String title;
-	private BaseExecutorRouter router;
+	private ExecutorRouter router;
 
-	ExecutorRouteStrategyEnum(String title, BaseExecutorRouter router) {
+	ExecutorRouteStrategyEnum(String title, ExecutorRouter router) {
 		this.title = title;
 		this.router = router;
 	}
@@ -49,7 +42,7 @@ public enum ExecutorRouteStrategyEnum {
 		return title;
 	}
 
-	public BaseExecutorRouter getRouter() {
+	public ExecutorRouter getRouter() {
 		return router;
 	}
 

@@ -14,4 +14,3 @@ COPY ./albedo-gen.sql /docker-entrypoint-initdb.d
 
 COPY ./albedo-job.sql /docker-entrypoint-initdb.d
 
-COPY ./albedo-quartz.sql /docker-entrypoint-initdb.d

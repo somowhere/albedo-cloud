@@ -1,14 +1,14 @@
  <p align="center">
-   <img src="https://img.shields.io/badge/Spring%20Cloud-2021.0.2-blue.svg" alt="Coverage Status">
+   <img src="https://img.shields.io/badge/Spring%20Cloud-2021.0.3-blue.svg" alt="Coverage Status">
    <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.0.1.0-blue.svg" alt="Coverage Status">
-   <img src="https://img.shields.io/badge/Spring%20Boot-2.6.7-blue.svg" alt="Downloads">
+   <img src="https://img.shields.io/badge/Spring%20Boot-2.7.0-blue.svg" alt="Downloads">
  </p>  
 
 **albedo-cloud Microservice Architecture**
 
 - 全网最新spring-cloud-alibaba微服务架构
 - 前端<a href="https://github.com/somowhere/albedo-ui" target="_blank">albedo-ui </a>
-- 基于<a href="https://gitee.com/log4j/pig" target="_blank">pix</a>开源版本（保持更新）二次开发(
+- 基于<a href="https://gitee.com/log4j/pig" target="_blank">pig</a>开源版本（保持更新）二次开发(
   同时借鉴<a href="https://www.jhipster.tech/" target="_blank">jhipster</a>)
 - 基于 Spring Cloud 、Spring Security OAuth2 的RBAC权限管理系统
 - 基于数据驱动视图的理念封装 Element-ui，即使没有 vue 的使用经验也能快速上手
@@ -47,7 +47,7 @@ AlbedoGatewayApplication
 
 #### 系统预览
 
-<table>
+<tableDo>
     <tr>
         <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/1.png"/></td>
         <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/2.png"/></td>
@@ -72,17 +72,16 @@ AlbedoGatewayApplication
         <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/11.png"/></td>
         <td></td>
     </tr>
-</table>
+</tableDo>
 #### 核心依赖 
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.6.7
-Spring Cloud | 2021.0.2
+Spring Boot |  2.7.0
+Spring Cloud | 2021.0.3
 Spring Cloud Alibaba | 2021.0.1.0
-Spring Security OAuth2 | 2.1.8.RELEASE
-Mybatis Plus | 3.5.1
-hutool | 5.7.22
+Mybatis Plus | 3.5.2
+hutool | 5.8.2
 
 #### 模块说明
 
@@ -90,23 +89,30 @@ hutool | 5.7.22
 albedo
 ├── albedo-auth -- 授权服务提供[3000]
 └── albedo-common -- 系统公共模块 
-     ├── albedo-sys-api --  服务基础api
      ├── albedo-common-core -- 公共工具类核心包
+     ├── albedo-common-feign -- feign服务
+     ├── albedo-common-job -- 分布式任务
      ├── albedo-common-log -- 日志服务
      ├── albedo-common-module -- 模块基础包
      └── albedo-common-security -- 安全工具类
 ├── albedo-gateway -- Spring Cloud Gateway网关[9999]
 └── albedo-modules -- 功能模块
+     ├── albedo-appendix --  业务附件
+     ├── albedo-file-module -- 文件模块[4010]
      ├── albedo-gen -- 图形化代码生成[5003]
+     ├── albedo-job -- 分布式调度模块[5004]
      ├── albedo-monitor -- Spring Boot Admin监控 [5001]
-     ├── albedo-quartz -- 任务调度 [5004]
-     ├── albedo-sentinel -- 流量监控模块 [8858]
-     ├── albedo-sys -- 通用用户权限管理系统业务处理模块[4000]
-     └── albedo-job -- 分布式调度模块[5005]
-└── albedo-plugin  -- 插件模块 
-     ├── albedo-database -- mybatis 基础模块
-     └── albedo-swagger-api -- swagger api
-└── albedo-register  -- Nacos 注册中心
+     ├── albedo-sentinel -- 流量监控模块 [8848]
+     ├── albedo-sys-module -- 通用用户权限管理系统业务处理模块[4000]
+     └── albedo-tenantDo -- 租户模块[4020]
+└── albedo-plugins  -- 插件模块 
+     ├── albedo-cache-starter -- 缓存插件
+     ├── albedo-database -- 数据库基础插件
+     ├── albedo-dynamic-database -- 动态数据源插件
+     ├── albedo-swagger-seata -- 分布式事务
+     ├── albedo-swagger-api -- swagger api插件
+     └── albedo-uid -- 主键uid插件
+└── albedo-register  -- Nacos 注册中心[8848]
 	 
 ```
 
@@ -114,7 +120,7 @@ albedo
 
 - 感谢 [JetBrains](https://www.jetbrains.com/) 提供的非商业开源软件开发授权
 - 感谢
-  [jhipster](https://www.jhipster.tech/)  [pig](https://gitee.com/log4j/pig)  [RuoYi](https://gitee.com/y_project/RuoYi)  [eladmin](https://github.com/elunez/eladmin)
+  [jhipster](https://www.jhipster.tech/)  [pig](https://gitee.com/log4j/pig)  [RuoYi](https://gitee.com/y_project/RuoYi)  [eladmin](https://github.com/elunez/eladmin) [lamp-boot](https://gitee.com/zuihou111/lamp-boot)
 
 #### 提交反馈
 
@@ -130,11 +136,11 @@ albedo
 
 项目的发展离不开您的支持，请作者喝杯咖啡吧☕
 
-<table>
+<tableDo>
     <tr>
         <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/alipay.png"/></td>
         <td><img src="https://raw.githubusercontent.com/somowhere/albedo-source/master/albedo/wxpay.png"/></td>
     </tr>
-</table>
+</tableDo>
  
 

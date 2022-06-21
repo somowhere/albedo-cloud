@@ -7,7 +7,7 @@ import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.modules.file.service.AppendixService;
 import com.albedo.java.modules.tenant.TenantCacheKeyBuilder;
 import com.albedo.java.modules.tenant.TenantCodeCacheKeyBuilder;
-import com.albedo.java.modules.tenant.domain.Tenant;
+import com.albedo.java.modules.tenant.domain.TenantDo;
 import com.albedo.java.modules.tenant.domain.dto.TenantConnectDto;
 import com.albedo.java.modules.tenant.domain.dto.TenantDto;
 import com.albedo.java.modules.tenant.enumeration.TenantStatusEnum;
@@ -39,7 +39,7 @@ import java.util.function.Function;
 @Service
 
 @RequiredArgsConstructor
-public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Tenant, TenantDto> implements TenantService {
+public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, TenantDo, TenantDto> implements TenantService {
 
 	private final InitSystemContext initSystemContext;
 	private final AppendixService appendixService;
@@ -58,9 +58,9 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	 * @return
 	 */
 	@Override
-	public Tenant getByCode(String tenant) {
+	public TenantDo getByCode(String tenant) {
 		Function<CacheKey, Object> loader = (k) ->
-			getObj(Wraps.<Tenant>lbQ().select(Tenant::getId).eq(Tenant::getCode, tenant), Convert::toLong);
+			getObj(Wraps.<TenantDo>lbQ().select(TenantDo::getId).eq(TenantDo::getCode, tenant), Convert::toLong);
 		CacheKey cacheKey = new TenantCodeCacheKeyBuilder().key(tenant);
 		return getByKey(cacheKey, loader);
 	}
@@ -70,26 +70,26 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	public void saveOrUpdate(TenantDto tenantDto) {
 		// defaults 库
 		Assert.isTrue(check(tenantDto.getCode()), "编码重复，请重新输入");
-		Tenant tenant = BeanUtil.toBean(tenantDto, Tenant.class);
+		TenantDo tenantDo = BeanUtil.toBean(tenantDto, TenantDo.class);
 		if (tenantDto.getId() == null) {
 			// 1， 保存租户 (默认库)
-			tenant.setStatus(TenantStatusEnum.WAIT_INIT);
-			tenant.setType(TenantTypeEnum.CREATE);
+			tenantDo.setStatus(TenantStatusEnum.WAIT_INIT);
+			tenantDo.setType(TenantTypeEnum.CREATE);
 			// defaults 库
-			save(tenant);
+			save(tenantDo);
 		} else {
-			updateById(tenant);
+			updateById(tenantDo);
 		}
 
-		appendixService.save(tenant.getId(), tenantDto.getLogos());
+		appendixService.save(tenantDo.getId(), tenantDto.getLogos());
 
-		CacheKey cacheKey = new TenantCodeCacheKeyBuilder().key(tenant.getCode());
-		super.cacheOps.set(cacheKey, tenant.getId());
+		CacheKey cacheKey = new TenantCodeCacheKeyBuilder().key(tenantDo.getCode());
+		super.cacheOps.set(cacheKey, tenantDo.getId());
 	}
 
 	@Override
 	public boolean check(String tenantCode) {
-		return count(Wraps.<Tenant>lbQ().eq(Tenant::getCode, tenantCode)) < 1;
+		return count(Wraps.<TenantDo>lbQ().eq(TenantDo::getCode, tenantCode)) < 1;
 	}
 
 	@Override
@@ -99,10 +99,10 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	}
 
 	private Boolean updateTenantStatus(TenantConnectDto tenantConnect) {
-		Boolean flag = this.update(Wraps.<Tenant>lbU()
-			.set(Tenant::getStatus, TenantStatusEnum.NORMAL)
-			.set(Tenant::getConnectType, tenantConnect.getConnectType())
-			.eq(Tenant::getId, tenantConnect.getId()));
+		Boolean flag = this.update(Wraps.<TenantDo>lbU()
+			.set(TenantDo::getStatus, TenantStatusEnum.NORMAL)
+			.set(TenantDo::getConnectType, tenantConnect.getConnectType())
+			.eq(TenantDo::getId, tenantConnect.getId()));
 		delCache(tenantConnect.getId());
 		return flag;
 	}
@@ -110,7 +110,7 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean delete(List<Long> ids) {
-		List<String> tenantCodeList = listObjs(Wraps.<Tenant>lbQ().select(Tenant::getCode).in(Tenant::getId, ids), Convert::toStr);
+		List<String> tenantCodeList = listObjs(Wraps.<TenantDo>lbQ().select(TenantDo::getCode).in(TenantDo::getId, ids), Convert::toStr);
 		if (tenantCodeList.isEmpty()) {
 			return true;
 		}
@@ -121,7 +121,7 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean deleteAll(List<Long> ids) {
-		List<String> tenantCodeList = listObjs(Wraps.<Tenant>lbQ().select(Tenant::getCode).in(Tenant::getId, ids), Convert::toStr);
+		List<String> tenantCodeList = listObjs(Wraps.<TenantDo>lbQ().select(TenantDo::getCode).in(TenantDo::getId, ids), Convert::toStr);
 		if (tenantCodeList.isEmpty()) {
 			return true;
 		}
@@ -131,15 +131,15 @@ public class TenantServiceImpl extends DataCacheServiceImpl<TenantRepository, Te
 	}
 
 	@Override
-	public List<Tenant> find() {
-		return list(Wraps.<Tenant>lbQ().eq(Tenant::getStatus, TenantStatusEnum.NORMAL));
+	public List<TenantDo> find() {
+		return list(Wraps.<TenantDo>lbQ().eq(TenantDo::getStatus, TenantStatusEnum.NORMAL));
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean updateStatus(List<Long> ids, TenantStatusEnum status) {
-		boolean update = super.update(Wraps.<Tenant>lbU().set(Tenant::getStatus, status)
-			.in(Tenant::getId, ids));
+		boolean update = super.update(Wraps.<TenantDo>lbU().set(TenantDo::getStatus, status)
+			.in(TenantDo::getId, ids));
 
 		delCache(ids);
 		return update;

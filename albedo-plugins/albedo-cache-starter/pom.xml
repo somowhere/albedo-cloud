@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>albedo-plugins</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,6 @@
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-core</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -24,9 +23,14 @@
 		</dependency>
 
 		<!-- 默认使用redis 作为缓存， 若演示项目时，不想部署redis，则将业务代码pom 中的 redis 排除 -->
+		<!--redis-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson-spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
@@ -56,13 +60,11 @@
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-core</artifactId>
-			<version>${protostuff.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
-			<version>${protostuff.version}</version>
 		</dependency>
 
 	</dependencies>

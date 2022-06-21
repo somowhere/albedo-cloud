@@ -1,12 +1,12 @@
 /*
- *  Copyright (c) 2019-2020, somowhere (somewhere0813@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
+ * Copyright (c) 2019-2022, somewhere (somewhere0813@gmail.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,28 +20,25 @@ import cn.hutool.http.HttpStatus;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.util.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.common.exceptions.ClientAuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 /**
- * @author somowhere
+ * @author lengleng
  * @date 2019/2/1
- * 客户端异常处理
- * 1. 可以根据 AuthenticationException 不同细化异常处理
+ * <p>
+ * 客户端异常处理 AuthenticationException 不同细化异常处理
  */
-@Slf4j
-@Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint {
+
 	private final ObjectMapper objectMapper;
 
 	@Override
@@ -52,16 +49,19 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 		response.setContentType(CommonConstants.CONTENT_TYPE);
 		Result<String> result = new Result<>();
 		result.setCode(CommonConstants.FAIL);
-		if (authException != null) {
-			if (authException.getCause() instanceof ClientAuthenticationException) {
-				ClientAuthenticationException clientAuthenticationException = (ClientAuthenticationException) authException.getCause();
-				result.setMessage(clientAuthenticationException.getOAuth2ErrorCode() + " " + authException.getMessage());
-			} else {
-				result.setMessage(authException.getMessage());
-			}
-		}
 		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
+		if (authException != null) {
+			result.setMessage("error");
+			result.setData(authException.getMessage());
+		}
+
+		// 针对令牌过期返回特殊的 424
+		if (authException instanceof InsufficientAuthenticationException) {
+			response.setStatus(org.springframework.http.HttpStatus.FAILED_DEPENDENCY.value());
+			result.setMessage("token expire");
+		}
 		PrintWriter printWriter = response.getWriter();
 		printWriter.append(objectMapper.writeValueAsString(result));
 	}
+
 }

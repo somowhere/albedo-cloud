@@ -1,6 +1,6 @@
 package com.albedo.java.modules.tenant.service;
 
-import com.albedo.java.modules.tenant.domain.Tenant;
+import com.albedo.java.modules.tenant.domain.TenantDo;
 import com.albedo.java.modules.tenant.domain.dto.TenantConnectDto;
 import com.albedo.java.modules.tenant.domain.dto.TenantDto;
 import com.albedo.java.modules.tenant.enumeration.TenantStatusEnum;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author somewhere
  * @date 2019-10-24
  */
-public interface TenantService extends DataCacheService<Tenant, TenantDto> {
+public interface TenantService extends DataCacheService<TenantDo, TenantDto> {
 	/**
 	 * 检测 租户编码是否存在
 	 *
@@ -41,7 +41,7 @@ public interface TenantService extends DataCacheService<Tenant, TenantDto> {
 	 * @param tenant 租户编码
 	 * @return 租户
 	 */
-	Tenant getByCode(String tenant);
+	TenantDo getByCode(String tenant);
 
 	/**
 	 * 通知所有服务链接数据源
@@ -73,7 +73,7 @@ public interface TenantService extends DataCacheService<Tenant, TenantDto> {
 	 *
 	 * @return 租户信息
 	 */
-	List<Tenant> find();
+	List<TenantDo> find();
 
 	/**
 	 * 修改租户状态

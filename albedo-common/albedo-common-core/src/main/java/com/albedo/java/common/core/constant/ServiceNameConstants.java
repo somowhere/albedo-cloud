@@ -30,6 +30,6 @@ public interface ServiceNameConstants {
 	/**
 	 * SYS模块
 	 */
-	String SYS_SERVICE = "albedo-sys-server";
+	String SYS_SERVICE = "albedo-sys";
 
 }

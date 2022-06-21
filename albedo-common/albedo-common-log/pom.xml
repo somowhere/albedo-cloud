@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-common</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>albedo-common-log</artifactId>
@@ -35,13 +35,11 @@
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-core</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<!--UPMS接口模块-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-sys-api</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<!--安全依赖获取上下文信息-->
 		<dependency>

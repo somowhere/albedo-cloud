@@ -2,7 +2,6 @@ package com.albedo.java.gateway.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
  * 网关配置文件
  */
 @Data
-@RefreshScope
 @ConfigurationProperties("application.gateway")
 public class GatewayConfigProperties {
 

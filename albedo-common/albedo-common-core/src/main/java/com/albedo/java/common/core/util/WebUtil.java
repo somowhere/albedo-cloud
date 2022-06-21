@@ -1,21 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -58,6 +42,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 /**
  * Miscellaneous utilities for web applications.
@@ -102,7 +87,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	 * @return cookie value
 	 */
 	public String getCookieVal(String name) {
-		HttpServletRequest request = WebUtil.getRequest();
+		HttpServletRequest request = WebUtil.getRequest().get();
 		Assert.notNull(request, "request from RequestContextHolder is null");
 		return getCookieVal(request, name);
 	}
@@ -150,9 +135,11 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	 *
 	 * @return {HttpServletRequest}
 	 */
-	public HttpServletRequest getRequest() {
-		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	public Optional<HttpServletRequest> getRequest() {
+		return Optional
+			.ofNullable(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 	}
+
 
 	/**
 	 * 获取 HttpServletResponse
@@ -198,7 +185,7 @@ public class WebUtil extends org.springframework.web.util.WebUtils {
 	 * @return {String}
 	 */
 	public String getIp() {
-		return getIp(WebUtil.getRequest());
+		return getIp(WebUtil.getRequest().get());
 	}
 
 	/**

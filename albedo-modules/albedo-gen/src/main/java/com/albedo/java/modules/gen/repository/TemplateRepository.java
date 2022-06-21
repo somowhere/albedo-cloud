@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.gen.repository;
 
-import com.albedo.java.modules.gen.domain.Template;
+import com.albedo.java.modules.gen.domain.TemplateDo;
 import com.albedo.java.plugins.database.mybatis.repository.BaseRepository;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,6 +26,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author somewhere
  */
 @Mapper
-public interface TemplateRepository extends BaseRepository<Template> {
+public interface TemplateRepository extends BaseRepository<TemplateDo> {
 
 }

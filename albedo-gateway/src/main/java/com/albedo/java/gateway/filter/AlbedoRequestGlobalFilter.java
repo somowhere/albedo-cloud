@@ -22,7 +22,6 @@ import cn.hutool.core.util.URLUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.context.ContextConstants;
 import com.albedo.java.common.core.context.ContextUtil;
-import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.util.WebUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.MDC;
@@ -30,8 +29,12 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
@@ -68,7 +71,8 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 		// 2. 重写StripPrefix
 		addOriginalRequestUrl(exchange, request.getURI());
 		String rawPath = request.getURI().getRawPath();
-		String newPath = rawPath.substring(StringUtil.getFromIndex(rawPath, "/", 2));
+		String newPath = "/" + Arrays.stream(StringUtils.tokenizeToStringArray(rawPath, "/")).skip(1L)
+			.collect(Collectors.joining("/"));
 
 		ContextUtil.setTenant(Base64.decodeStr(WebUtil.getHeader(request, ContextConstants.KEY_TENANT)));
 		String traceId = WebUtil.getHeader(request, ContextConstants.TRACE_ID_HEADER);
@@ -99,6 +103,6 @@ public class AlbedoRequestGlobalFilter implements GlobalFilter, Ordered {
 
 	@Override
 	public int getOrder() {
-		return -1000;
+		return 10;
 	}
 }

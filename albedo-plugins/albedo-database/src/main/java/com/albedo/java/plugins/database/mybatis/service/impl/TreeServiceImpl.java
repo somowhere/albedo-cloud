@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.albedo.java.plugins.database.mybatis.service.impl;
 
-import com.albedo.java.common.core.basic.domain.TreeEntity;
-import com.albedo.java.common.core.vo.TreeDto;
+import com.albedo.java.common.core.domain.TreeDo;
+import com.albedo.java.common.core.domain.vo.TreeDto;
 import com.albedo.java.plugins.database.mybatis.repository.TreeRepository;
 import com.albedo.java.plugins.database.mybatis.service.TreeService;
 import lombok.Data;
@@ -29,7 +29,7 @@ import lombok.Data;
  * @author somewhere
  */
 @Data
-public abstract class TreeServiceImpl<Repository extends TreeRepository<T>, T extends TreeEntity, D extends TreeDto>
+public abstract class TreeServiceImpl<Repository extends TreeRepository<T>, T extends TreeDo, D extends TreeDto>
 	extends DataServiceImpl<Repository, T, D> implements TreeService<T, D> {
 
 }

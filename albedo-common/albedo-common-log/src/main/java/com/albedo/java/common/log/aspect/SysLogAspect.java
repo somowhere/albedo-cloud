@@ -23,7 +23,7 @@ import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.log.enums.LogType;
 import com.albedo.java.common.log.event.SysLogOperateEvent;
 import com.albedo.java.common.log.util.SysLogUtils;
-import com.albedo.java.modules.sys.domain.LogOperate;
+import com.albedo.java.modules.sys.domain.LogOperateDo;
 import feign.FeignException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -60,26 +60,26 @@ public class SysLogAspect {
 				params.append(" ").append(argNames[i]).append(": ").append(argValues[i]);
 			}
 		}
-		LogOperate logOperateVo = SysLogUtils.getSysLogOperate();
-		logOperateVo.setTitle(logOperate.value());
-		logOperateVo.setMethod(methodName);
-		logOperateVo.setParams(params + " }");
-		logOperateVo.setOperatorType(logOperate.operatorType().name());
+		LogOperateDo logOperateDoVo = SysLogUtils.getSysLogOperate();
+		logOperateDoVo.setTitle(logOperate.value());
+		logOperateDoVo.setMethod(methodName);
+		logOperateDoVo.setParams(params + " }");
+		logOperateDoVo.setOperatorType(logOperate.operatorType().name());
 		Long startTime = System.currentTimeMillis();
 		Object obj;
 		try {
 			obj = point.proceed();
-			logOperateVo.setLogType(LogType.INFO.name());
+			logOperateDoVo.setLogType(LogType.INFO.name());
 		} catch (Exception e) {
-			logOperateVo.setException(ExceptionUtil.stacktraceToString(e));
+			logOperateDoVo.setException(ExceptionUtil.stacktraceToString(e));
 			if (e instanceof FeignException && ((FeignException) e).status() != HttpStatus.HTTP_INTERNAL_ERROR) {
-				logOperateVo.setLogType(LogType.WARN.name());
+				logOperateDoVo.setLogType(LogType.WARN.name());
 			} else {
-				logOperateVo.setLogType(LogType.ERROR.name());
+				logOperateDoVo.setLogType(LogType.ERROR.name());
 			}
 			throw e;
 		} finally {
-			saveLog(startTime, logOperateVo, logOperate);
+			saveLog(startTime, logOperateDoVo, logOperate);
 		}
 
 		return obj;
@@ -87,19 +87,19 @@ public class SysLogAspect {
 
 	/**
 	 * @param startTime
-	 * @param logOperateVo
+	 * @param logOperateDoVo
 	 * @param logOperate
 	 */
-	public void saveLog(Long startTime, LogOperate logOperateVo, com.albedo.java.common.log.annotation.LogOperate logOperate) {
+	public void saveLog(Long startTime, LogOperateDo logOperateDoVo, com.albedo.java.common.log.annotation.LogOperate logOperate) {
 		Long endTime = System.currentTimeMillis();
-		logOperateVo.setTime(endTime - startTime);
+		logOperateDoVo.setTime(endTime - startTime);
 		if (log.isTraceEnabled()) {
-			log.trace("[logOperateVo]:{}", logOperateVo);
+			log.trace("[logOperateVo]:{}", logOperateDoVo);
 		}
 		// 是否需要保存request，参数和值
 		if (logOperate.isSaveRequestData()) {
 			// 发送异步日志事件
-			SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperateVo));
+			SpringContextHolder.publishEvent(new SysLogOperateEvent(logOperateDoVo));
 		}
 	}
 

@@ -4,6 +4,14 @@ server:
     encoding:
       force: true
 
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:albedo-register}:${NACOS_PORT:8848}
+
 management:
   endpoints:
     web:

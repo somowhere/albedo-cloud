@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -113,7 +113,7 @@ public class RequestLogAspect {
 	@SneakyThrows
 	@Around("execution(!static com.albedo.java.common.core.util.Result *(..)) && (@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController))")
 	public Object around(ProceedingJoinPoint point) {
-		HttpServletRequest request = WebUtil.getRequest();
+		HttpServletRequest request = WebUtil.getRequest().get();
 		String requestUri = Objects.requireNonNull(request).getRequestURI();
 		String requestMethod = request.getMethod();
 		// 构建成一条长 日志，避免并发下日志错乱

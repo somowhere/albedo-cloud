@@ -40,7 +40,7 @@ import java.util.Set;
 /**
  * @author leyou
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class WebConfig implements WebMvcConfigurer {
 
 	private final Logger logger = LoggerFactory.getLogger(WebConfig.class);

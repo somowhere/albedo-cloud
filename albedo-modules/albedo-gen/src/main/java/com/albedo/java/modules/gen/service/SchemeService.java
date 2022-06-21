@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.albedo.java.modules.gen.service;
 
-import com.albedo.java.common.core.vo.PageModel;
-import com.albedo.java.modules.gen.domain.Scheme;
+import com.albedo.java.common.core.domain.vo.PageModel;
+import com.albedo.java.modules.gen.domain.SchemeDo;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeGenDto;
 import com.albedo.java.modules.gen.domain.dto.SchemeQueryCriteria;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @description
  * @date 2020/5/30 11:25 下午
  */
-public interface SchemeService extends DataCacheService<Scheme, SchemeDto> {
+public interface SchemeService extends DataCacheService<SchemeDo, SchemeDto> {
 
 	/**
 	 * findAllListIdNot
@@ -43,7 +43,7 @@ public interface SchemeService extends DataCacheService<Scheme, SchemeDto> {
 	 * @author somewhere
 	 * @updateTime 2020/5/31 17:34
 	 */
-	List<Scheme> findAllListIdNot(String id);
+	List<SchemeDo> findAllListIdNot(String id);
 
 	/**
 	 * generateCode

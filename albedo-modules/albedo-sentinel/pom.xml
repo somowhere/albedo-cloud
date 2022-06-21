@@ -6,12 +6,11 @@
 	<parent>
 		<artifactId>albedo-modules</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>albedo-sentinel</artifactId>
 	<packaging>jar</packaging>
-
 
 	<dependencies>
 		<!--注册中心客户端-->
@@ -78,9 +77,7 @@
 	</dependencies>
 
 	<build>
-		<filters>
-			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
-		</filters>
+		<finalName>pig-sentinel-dashboard</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

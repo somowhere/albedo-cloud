@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.gen.repository;
 
-import com.albedo.java.modules.gen.domain.Scheme;
+import com.albedo.java.modules.gen.domain.SchemeDo;
 import com.albedo.java.modules.gen.domain.vo.SchemeVo;
 import com.albedo.java.plugins.database.mybatis.repository.BaseRepository;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author somewhere
  */
 @Mapper
-public interface SchemeRepository extends BaseRepository<Scheme> {
+public interface SchemeRepository extends BaseRepository<SchemeDo> {
 
 	/**
 	 * 分页查询方案信息

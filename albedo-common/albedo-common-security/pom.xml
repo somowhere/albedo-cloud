@@ -21,7 +21,7 @@
 	<parent>
 		<groupId>com.albedo.java</groupId>
 		<artifactId>albedo-common</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>albedo-common-security</artifactId>
@@ -35,18 +35,33 @@
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-core</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<!--UPMS API-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-sys-api</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
-		<!--安全模块-->
+		<!--common utils-->
 		<dependency>
-			<groupId>org.springframework.security.oauth.boot</groupId>
-			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+		</dependency>
+		<!--feign 工具类-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springboot.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 	</dependencies>
 </project>

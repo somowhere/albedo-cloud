@@ -197,13 +197,11 @@ public class JacksonUtil {
 				.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN, Locale.CHINA))
 				.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
 				.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER.mappedFeature(), true)
-				.findAndRegisterModules()
 				.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
 				.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 				.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
 				.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			super.registerModule(new CustomModule());
-			super.findAndRegisterModules();
 		}
 	}
 }

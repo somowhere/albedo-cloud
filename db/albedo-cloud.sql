@@ -14,6 +14,14 @@
  Date: 11/04/2022 14:02:54
 */
 
+DROP DATABASE IF EXISTS `albedo-cloud`;
+
+CREATE DATABASE  `albedo-cloud` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+USE `albedo-cloud`;
 SET NAMES utf8mb4;
 SET
 FOREIGN_KEY_CHECKS = 0;

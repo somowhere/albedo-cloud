@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>albedo-plugins</artifactId>
 		<groupId>com.albedo.java</groupId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,17 +15,14 @@
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-core</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-uid</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-cache-starter</artifactId>
-			<version>${project.release.version}</version>
 		</dependency>
 
 		<!--mybatis plus extension,包含了mybatis plus core-->
@@ -60,7 +57,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>${druid.version}</version>
 		</dependency>
 		<!-- 必须有这个jar 才能提示 -->
 		<dependency>

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2019-2021  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
+ *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
  *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.albedo.java.modules.gen.service;
 
-import com.albedo.java.modules.gen.domain.TableColumn;
+import com.albedo.java.modules.gen.domain.TableColumnDo;
 import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
 import com.albedo.java.plugins.database.mybatis.service.DataCacheService;
 
@@ -25,7 +25,7 @@ import com.albedo.java.plugins.database.mybatis.service.DataCacheService;
  * @description
  * @date 2020/5/30 11:25 下午
  */
-public interface TableColumnService extends DataCacheService<TableColumn, TableColumnDto> {
+public interface TableColumnService extends DataCacheService<TableColumnDo, TableColumnDto> {
 
 	/**
 	 * deleteByTableId
