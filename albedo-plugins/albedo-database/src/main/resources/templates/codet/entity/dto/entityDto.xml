@@ -7,7 +7,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -21,11 +20,8 @@
  */
 package ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>;
 
-import com.albedo.java.common.core.vo.DataDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.albedo.java.common.core.domain.vo.DataDto;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import javax.validation.constraints.NotNull;
@@ -48,6 +44,13 @@ public class ${ClassName}Dto extends DataDto<${table.pkJavaType}> {
 	</#list>
 
 	<@generateFields/>
+	@Builder
+	public ${ClassName}Dto(<#if table.compositeId>${ClassName}Id id<#else>${table.pkJavaType} id</#if><#list table.columnList as column><#if !column.pk && column.isNotBaseField && column.isNotBaseTreeField || column.simpleJavaField == 'name' || column.simpleJavaField == 'sort' || column.simpleJavaField == 'parentId' || column.simpleJavaField == 'description'>, ${column.simpleJavaType} ${column.simpleJavaField}</#if></#list>) {
+		<#list table.columnList as column>
+		<#if column.isNotBaseField && column.isNotBaseTreeField || column.simpleJavaField == 'name' || column.simpleJavaField == 'sort' || column.simpleJavaField == 'parentId' || column.simpleJavaField == 'description'>
+		set${column.simpleJavaField?cap_first}(${column.simpleJavaField});</#if>
+		</#list>
+	}
 
 }
 <#macro generateFields>

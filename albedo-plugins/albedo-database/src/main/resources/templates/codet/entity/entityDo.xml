@@ -2,12 +2,11 @@
 <template>
 	<name>entity</name>
 	<filePath>src/main/java/${packageName}/${moduleName}/domain/${subModuleName}</filePath>
-	<fileName>${ClassName}.java</fileName>
+	<fileName>${ClassName}Do.java</fileName>
 	<content><![CDATA[
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -37,7 +36,7 @@ import javax.validation.constraints.*;
 @TableName(value = "${table.name}")
 @Data @ToString @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ${ClassName} extends IdEntity<${ClassName}, ${table.pkColumn.javaType}> {
+public class ${ClassName}Do extends IdDo<${ClassName}Do, ${table.pkColumn.javaType}> {
 
 	private static final long serialVersionUID = 1L;
 	<#list table.columnList as column>
@@ -66,7 +65,7 @@ public class ${ClassName} extends IdEntity<${ClassName}, ${table.pkColumn.javaTy
 	@TableField(exist = false)
 	private ${table.parent.className} ${column.simpleJavaField};
 	<#elseif column.showType == "userselect" || column.showType == "orgselect" || column.showType == "areaselect">
-	@TableField(${ClassName}.F_SQL_${column.constantJavaField})
+	@TableField(${ClassName}Do.F_SQL_${column.constantJavaField})
 	private String ${column.simpleJavaField}Id;
 	@TableField(exist = false)
 	private ${column.simpleJavaType} ${column.simpleJavaField};
@@ -85,11 +84,11 @@ public class ${ClassName} extends IdEntity<${ClassName}, ${table.pkColumn.javaTy
 <#macro generateCompositeIdConstructorIfis>
 
 	<#if table.compositeId>
-	public ${ClassName}(${ClassName}Id id) {
+	public ${ClassName}Do(${ClassName}Id id) {
 		this.id = id;
 	}
 	<#else>
-	public ${ClassName}(${table.pkJavaType} id) {
+	public ${ClassName}Do(${table.pkJavaType} id) {
 		this.id = id;
 	}
 	</#if>
@@ -150,7 +149,7 @@ public class ${ClassName} extends IdEntity<${ClassName}, ${table.pkColumn.javaTy
 			</#if>
 		</#if>
 	</#list>
-	<#list table.childList as table>
+	<#list table.childList as tableDo>
 	public List<${table.className}> get${table.className}List() {
 		return ${table.className?uncap_first}List;
 	}

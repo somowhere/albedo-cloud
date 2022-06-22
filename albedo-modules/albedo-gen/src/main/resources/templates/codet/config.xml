@@ -46,7 +46,7 @@
 			<template>entity/dto/entityDto.xml</template>
 			<template>entity/dto/entityQueryCriteria.xml</template>
 			<!--			<template>entity/entityId.xml</template>-->
-			<template>entity/entity.xml</template>
+			<template>entity/entityDo.xml</template>
 		</category>
 		<category val="treeTable" name="树结构表（一体）">
 			<template>category-ref:treeTable_back</template>
@@ -62,7 +62,7 @@
 			<template>treetable/dto/entityDto.xml</template>
 			<template>treetable/dto/entityQueryCriteria.xml</template>
 			<template>treetable/vo/entityVo.xml</template>
-			<template>treetable/entity.xml</template>
+			<template>treetable/entityDo.xml</template>
 		</category>
 		<category val="treeTable_front" name="树结构表（一体）- 前端">
 			<template>treetable/viewIndex.xml</template>
@@ -77,8 +77,8 @@
 		<dict val="Double" name="Double"/>
 		<dict val="java.util.Date" name="Date"/>
 		<!--		<dict val="com.albedo.java.modules.sys.domain.UserDo" name="User"/>-->
-		<!--		<dict val="com.albedo.java.modules.sys.domain.Org" name="Org"/>-->
-		<!--		<dict val="com.albedo.java.modules.sys.domain.Area" name="Area"/>-->
+		<!--		<dict val="com.albedo.java.modules.sys.domain.OrgDo" name="Org"/>-->
+		<!--		<dict val="com.albedo.java.modules.sys.domain.AreaDo" name="Area"/>-->
 		<!--		<dict val="This" name="ThisObj" description="生成当前对象"/>-->
 		<dict val="Custom" name="Custom" description="自定义对象，生成后手动设置"/>
 	</javaType>

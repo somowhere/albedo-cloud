@@ -7,7 +7,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -23,8 +22,7 @@ package ${packageName}.${moduleName}.domain.vo<#if subModuleName != "">.${subMod
 
 import com.albedo.java.common.core.annotation.DictType;
 import com.albedo.java.common.core.vo.TreeVo;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 
 import java.util.Date;
@@ -34,6 +32,8 @@ import java.util.Date;
  * @version ${functionVersion}
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ${ClassName}Vo extends TreeVo<${ClassName}Vo> {
 
@@ -44,8 +44,14 @@ public class ${ClassName}Vo extends TreeVo<${ClassName}Vo> {
 	public static final String F_${column.constantJavaField} = "${column.simpleJavaField}";
 		</#if>
 	</#list>
-
 	<@generateFields/>
+	@Builder
+	public ${ClassName}Vo(<#if table.compositeId>${ClassName}Id id<#else>${table.pkJavaType} id</#if><#list table.columnList as column><#if !column.pk && column.isNotBaseField && column.isNotBaseTreeField || column.simpleJavaField == 'name' || column.simpleJavaField == 'sort' || column.simpleJavaField == 'parentId' || column.simpleJavaField == 'description'>, ${column.simpleJavaType} ${column.simpleJavaField}</#if></#list>) {
+		<#list table.columnList as column>
+		<#if column.isNotBaseField && column.isNotBaseTreeField || column.simpleJavaField == 'name' || column.simpleJavaField == 'sort' || column.simpleJavaField == 'parentId' || column.simpleJavaField == 'description'>
+		set${column.simpleJavaField?cap_first}(${column.simpleJavaField});</#if></#list>
+	}
+
 }
 <#macro generateFields>
 

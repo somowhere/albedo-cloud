@@ -15,7 +15,7 @@
 //
 //package com.albedo.java.plugins.swagger.config.apidoc.customizer;
 //
-//import com.albedo.java.common.core.vo.PageModel;
+//import com.albedo.java.common.core.domain.vo.PageModel;
 //import com.albedo.java.plugins.swagger.config.ApplicationSwaggerProperties;
 //import com.google.common.collect.Lists;
 //import org.springframework.core.Ordered;

@@ -7,7 +7,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -23,7 +22,7 @@ package ${packageName}.${moduleName}.web<#if subModuleName != "">.${subModuleNam
 
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.vo.PageModel;
+import com.albedo.java.common.core.domain.vo.PageModel;
 import com.albedo.java.common.log.annotation.LogOperate;
 import com.albedo.java.common.web.resource.BaseResource;
 import com.albedo.java.common.core.util.Result;
@@ -32,11 +31,12 @@ import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subMod
 import ${packageName}.${moduleName}.domain.dto<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}QueryCriteria;
 import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
-import io.swagger.v3.oas.annotations.Operation;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.validation.Valid;
@@ -48,7 +48,7 @@ import java.util.Set;
  * @version ${functionVersion}
  */
 @RestController
-@RequestMapping(value = "${r"${application.admin-path}"}/${urlPrefix}")
+@RequestMapping(value = "${urlPrefix}")
 @AllArgsConstructor
 @Tag(name = "${functionNameSimple}")
 public class ${ClassName}Resource extends BaseResource {
@@ -98,7 +98,7 @@ public class ${ClassName}Resource extends BaseResource {
 	}
 
 	/**
-	 * DELETE //:ids : delete the "ids" ${ClassName}.
+	 * DELETE //:ids : delete the "ids" ${ClassName}Do.
 	 *
 	 * @param ids the id of the ${className} to delete
 	 * @return the Result with status 200 (OK)
@@ -107,8 +107,8 @@ public class ${ClassName}Resource extends BaseResource {
 	@LogOperate(value = "${functionName}删除")
 	@Operation(summary = "${functionNameSimple}删除")
 	@DeleteMapping
-	public Result delete(@RequestBody Set<String> ids) {
-		log.debug("REST request to delete ${ClassName}: {}", ids);
+	public Result delete(@RequestBody Set<${table.pkColumn.javaType}> ids) {
+		log.debug("REST request to delete ${ClassName}Do: {}", ids);
 		service.removeByIds(ids);
 		return Result.buildOk("删除${functionNameSimple}成功");
 	}

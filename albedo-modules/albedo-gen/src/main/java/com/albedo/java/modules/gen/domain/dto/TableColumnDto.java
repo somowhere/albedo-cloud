@@ -1,7 +1,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -16,10 +15,12 @@
 
 package com.albedo.java.modules.gen.domain.dto;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.util.StrPool;
+import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.common.core.domain.vo.DataDto;
 import com.albedo.java.common.core.domain.vo.TreeDto;
-import com.albedo.java.common.core.util.StringUtil;
 import com.albedo.java.modules.gen.util.GenTableColumnVoUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
@@ -87,42 +88,42 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	/**
 	 * JAVA字段名
 	 */
-	private String javaField;
+	private String javaFieldName;
 
 	/**
 	 * 是否主键（1：主键）
 	 */
-	private boolean isPk;
+	private boolean pk;
 
 	/**
 	 * 是否唯一（1：是；0：否）
 	 */
-	private boolean isUnique;
+	private boolean uniqueField;
 
 	/**
 	 * 是否可为空（1：可为空；0：不为空）
 	 */
-	private boolean isNull;
+	private boolean nullField;
 
 	/**
 	 * 是否为插入字段（1：插入字段）
 	 */
-	private boolean isInsert;
+	private boolean insertField;
 
 	/**
 	 * 是否编辑字段（1：编辑字段）
 	 */
-	private boolean isEdit;
+	private boolean editField;
 
 	/**
 	 * 是否列表字段（1：列表字段）
 	 */
-	private boolean isList;
+	private boolean listField;
 
 	/**
 	 * 是否查询字段（1：查询字段）
 	 */
-	private boolean isQuery;
+	private boolean queryField;
 
 	/**
 	 * 查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）
@@ -151,9 +152,9 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 
 	private String nameAndTitle;
 
-	public TableColumnDto(String name, boolean isNull, Integer sort, String title, String jdbcType) {
+	public TableColumnDto(String name, boolean nullField, Integer sort, String title, String jdbcType) {
 		this.name = name;
-		this.isNull = isNull;
+		this.nullField = nullField;
 		this.sort = sort;
 		this.title = title;
 		this.jdbcType = jdbcType;
@@ -188,7 +189,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	 * @return
 	 */
 	public Integer getDataLength() {
-		List<String> ss = StringUtil.split(
+		List<String> ss = CharSequenceUtil.split(
 			StringUtil.subBetween(getJdbcType(), StringUtil.BRACKETS_START, StringUtil.BRACKETS_END),
 			StringUtil.SPLIT_DEFAULT);
 		if (ss != null && ss.size() == 1) {
@@ -206,7 +207,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	@JsonIgnore
 	public String getSimpleJavaType() {
 		return StringUtil.indexOf(getJavaType(), StringUtil.C_DOT) != -1
-			? StringUtil.subAfter(getJavaType(), StringUtil.DOT, true) : getJavaType();
+			? StringUtil.subAfter(getJavaType(), StrPool.DOT, true) : getJavaType();
 	}
 
 	/**
@@ -228,7 +229,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	 * @return
 	 */
 	public String getSimpleJavaField() {
-		return StringUtil.subBefore(getJavaField(), StringUtil.DOT, false);
+		return StringUtil.subBefore(getJavaFieldName(), StrPool.DOT, false);
 	}
 
 	/**
@@ -247,7 +248,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	 * @return
 	 */
 	public String getJavaFieldId() {
-		return StringUtil.subBefore(getJavaField(), "|", false);
+		return StringUtil.subBefore(getJavaFieldName(), "|", false);
 	}
 
 	/**
@@ -255,9 +256,9 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	 *
 	 * @return
 	 */
-	public String getJavaFieldName() {
+	public String getJavaFieldNameText() {
 		String[][] ss = getJavaFieldAttrs();
-		return ss.length > 0 ? getSimpleJavaField() + StringUtil.DOT + ss[0][0] : "";
+		return ss.length > 0 ? getSimpleJavaField() + StrPool.DOT + ss[0][0] : "";
 	}
 
 	/**
@@ -286,7 +287,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	 * @return
 	 */
 	public String[][] getJavaFieldAttrs() {
-		List<String> ss = StringUtil.split(StringUtil.subAfter(getJavaField(), "|", false), "|");
+		List<String> ss = CharSequenceUtil.split(StringUtil.subAfter(getJavaFieldName(), "|", false), "|");
 		String[][] sss = new String[ss.size()][2];
 		if (ss != null) {
 			for (int i = 0; i < ss.size(); i++) {
@@ -307,7 +308,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 		// 导入JSR303验证依赖包
 		if (!CommonConstants.STR_YES.equals(isPk()) && !CommonConstants.TYPE_STRING.equals(getJavaType())) {
 			list.add("javax.validation.constraints.NotNull(message=\"" + getTitle() + "不能为空\")");
-		} else if (!CommonConstants.STR_YES.equals(isNull()) && CommonConstants.TYPE_STRING.equals(getJavaType())
+		} else if (!CommonConstants.STR_YES.equals(isNullField()) && CommonConstants.TYPE_STRING.equals(getJavaType())
 			&& !CommonConstants.ZERO.equals(getDataLength())) {
 			list.add("javax.validation.constraints.Size(min=1, max=" + getDataLength() + ", message=\"" + getTitle()
 				+ "长度必须介于 1 和 " + getDataLength() + " 之间\")");
@@ -326,7 +327,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	public List<String> getSimpleAnnotationList() {
 		List<String> list = Lists.newArrayList();
 		for (String ann : getAnnotationList()) {
-			list.add(StringUtil.subAfter(ann, StringUtil.DOT, true));
+			list.add(StringUtil.subAfter(ann, StrPool.DOT, true));
 		}
 		return list;
 	}
@@ -378,7 +379,7 @@ public class TableColumnDto extends DataDto<String> implements Comparable {
 	}
 
 	public boolean getIsDateTimeColumn() {
-		return getJavaField().contains(CommonConstants.TYPE_DATE) && getJavaType().contains(CommonConstants.TYPE_DATE);
+		return getJavaFieldName().contains(CommonConstants.TYPE_DATE) && getJavaType().contains(CommonConstants.TYPE_DATE);
 	}
 
 	public String getHibernateValidatorExprssion() {

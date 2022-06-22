@@ -1,7 +1,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GenTableColumnVoUtil {
 
 	public static String getHibernateValidatorExpression(TableColumnDto c) {
-		if (!c.isPk() && !c.isNull()) {
+		if (!c.isPk() && !c.isNullField()) {
 			if (c.getJavaType() != null && c.getJavaType().endsWith(CommonConstants.TYPE_STRING)) {
 				return (new StringBuilder()).append("@NotBlank ").append(getNotRequiredHibernateValidatorExpression(c))
 					.toString();

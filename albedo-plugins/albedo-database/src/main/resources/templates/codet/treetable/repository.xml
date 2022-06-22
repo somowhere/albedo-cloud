@@ -7,7 +7,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -22,7 +21,7 @@
 package ${packageName}.${moduleName}.repository<#if subModuleName != "">.${subModuleName}</#if>;
 
 import com.albedo.java.plugins.database.mybatis.repository.TreeRepository;
-import ${packageName}.${moduleName}.domain<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
+import ${packageName}.${moduleName}.domain<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Do;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -33,7 +32,7 @@ import java.util.List;
  * @version ${functionVersion}
  */
 @Mapper
-public interface ${ClassName}Repository extends TreeRepository<${ClassName}> {
+public interface ${ClassName}Repository extends TreeRepository<${ClassName}Do> {
 
 
 }

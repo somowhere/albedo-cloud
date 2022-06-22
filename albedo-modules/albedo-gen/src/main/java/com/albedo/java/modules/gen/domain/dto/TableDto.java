@@ -1,7 +1,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -17,9 +16,9 @@
 package com.albedo.java.modules.gen.domain.dto;
 
 import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.domain.vo.DataDto;
 import com.albedo.java.common.core.util.CollUtil;
 import com.albedo.java.common.core.util.StringUtil;
+import com.albedo.java.common.core.domain.vo.DataDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -213,7 +212,7 @@ public class TableDto extends DataDto<String> {
 		// 引用列表
 		List<String> importList = Lists.newArrayList("com.baomidou.mybatisplus.annotation.*");
 		if (CATEGORY_TREETABLE.equalsIgnoreCase(getCategory())) {
-			importList.add("com.albedo.java.common.core.basic.domain.TreeEntity");
+			importList.add("com.albedo.java.common.core.domain.TreeDo");
 			initImport(importList);
 			// 如果有子表，则需要导入List相关引用
 			if (getChildList() != null && getChildList().size() > 0) {
@@ -222,7 +221,7 @@ public class TableDto extends DataDto<String> {
 					"org.hibernate.annotations.Where");
 			}
 		} else {
-			importList.add("com.albedo.java.common.core.basic.domain.IdEntity");
+			importList.add("com.albedo.java.common.core.domain.IdDo");
 			initImport(importList);
 			// 如果有子表，则需要导入List相关引用
 			if (getChildList() != null && getChildList().size() > 0) {
@@ -235,7 +234,7 @@ public class TableDto extends DataDto<String> {
 
 	private void initImport(List<String> importList) {
 		for (TableColumnDto column : getColumnList()) {
-			boolean isImport = column.getIsNotBaseField() || column.isQuery() && "between".equals(column.getQueryType())
+			boolean isImport = column.getIsNotBaseField() || column.isQueryField() && "between".equals(column.getQueryType())
 				&& (DataDto.F_CREATED_DATE.equals(column.getSimpleJavaField())
 				|| DataDto.F_LAST_MODIFIED_DATE.equals(column.getSimpleJavaField()));
 			if (isImport) {
@@ -250,7 +249,7 @@ public class TableDto extends DataDto<String> {
 					addNoRepeatList(importList, ann.substring(0, ann.indexOf(StringUtil.BRACKETS_START)));
 				}
 			}
-			if (!column.isPk() && !column.isNull() && column.getJavaType().endsWith(CommonConstants.TYPE_STRING)) {
+			if (!column.isPk() && !column.isNullField() && column.getJavaType().endsWith(CommonConstants.TYPE_STRING)) {
 				addNoRepeatList(importList, "javax.validation.constraints.NotBlank");
 			}
 			if (StringUtil.isNotEmpty(column.getDictType())) {

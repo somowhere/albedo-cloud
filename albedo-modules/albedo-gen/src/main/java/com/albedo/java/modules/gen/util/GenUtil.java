@@ -1,7 +1,6 @@
 /*
  *  Copyright (c) 2019-2022  <a href="https://github.com/somowhere/albedo">Albedo</a>, somewhere (somewhere0813@gmail.com).
  *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *  <p>
@@ -18,12 +17,13 @@ package com.albedo.java.modules.gen.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.CharsetUtil;
-import com.albedo.java.common.core.constant.CommonConstants;
-import com.albedo.java.common.core.constant.DictNameConstants;
 import com.albedo.java.common.core.domain.BaseDataDo;
 import com.albedo.java.common.core.domain.TreeDo;
+import com.albedo.java.common.core.constant.CommonConstants;
+import com.albedo.java.common.core.constant.DictNameConstants;
 import com.albedo.java.common.core.util.*;
 import com.albedo.java.modules.gen.domain.dto.SchemeDto;
 import com.albedo.java.modules.gen.domain.dto.TableColumnDto;
@@ -55,63 +55,69 @@ public class GenUtil {
 	private static Logger logger = LoggerFactory.getLogger(GenUtil.class);
 
 	private static void initTreeColumn(TableColumnDto column) {
-		boolean isTitle = StringUtil.equalsIgnoreCase(column.getJavaField(), "title");
-		if (StringUtil.equalsIgnoreCase(column.getJavaField(), TreeDo.F_NAME) || isTitle) {
-			column.setQuery(true);
+		boolean isTitle = StringUtil.equalsIgnoreCase(column.getJavaFieldName(), "title");
+		if (StringUtil.equalsIgnoreCase(column.getJavaFieldName(), TreeDo.F_NAME) || isTitle) {
+			column.setQueryField(true);
 			column.setQueryType("like");
 		} // 父级ID
 		else if (StringUtil.equalsIgnoreCase(column.getName(), TreeDo.F_PARENT_ID)) {
 			column.setShowType("treeselect");
-			column.setNull(false);
+			column.setNullField(false);
 			column.setTitle("父节点");
 		}
 		// 所有父级ID
 		else if (StringUtil.equalsIgnoreCase(column.getName(), TreeDo.F_PARENT_IDS)) {
 			column.setQueryType("like");
-			column.setList(false);
-			column.setNull(false);
+			column.setListField(false);
+			column.setNullField(false);
 			column.setTitle("所有父级");
 		}
 		// 所有父级ID
 		else if (StringUtil.equalsIgnoreCase(column.getName(), TreeDo.F_LEAF)) {
 			column.setQueryType("eq");
-			column.setList(false);
-			column.setEdit(false);
-			column.setNull(false);
+			column.setListField(false);
+			column.setEditField(false);
+			column.setNullField(false);
 			column.setTitle("叶子节点");
+		} else if (StringUtil.equalsIgnoreCase(column.getName(), TreeDo.F_SQL_SORT)) {
+			column.setListField(true);
+			column.setEditField(true);
+			column.setNullField(false);
+			column.setTitle("排序");
+			column.setJavaType(CommonConstants.TYPE_INTEGER);
 		}
 	}
 
 	private static void initDataColumn(TableColumnDto column) {
-		boolean content = StringUtil.equalsIgnoreCase(column.getJavaField(), "content");
-		boolean remark = StringUtil.equalsIgnoreCase(column.getJavaField(), "remark");
-		if (StringUtil.equalsIgnoreCase(column.getJavaField(), BaseDataDo.F_DESCRIPTION)) {
-			column.setEdit(true);
+		boolean content = StringUtil.equalsIgnoreCase(column.getJavaFieldName(), "content");
+		boolean remark = StringUtil.equalsIgnoreCase(column.getJavaFieldName(), "remark");
+		if (StringUtil.equalsIgnoreCase(column.getJavaFieldName(), BaseDataDo.F_DESCRIPTION)) {
+			column.setEditField(true);
 			column.setTitle("备注");
 		}
 		// 创建者、更新者
 		else if (StringUtil.startWithIgnoreCase(column.getName(), BaseDataDo.F_CREATED_BY)
 			|| StringUtil.startWithIgnoreCase(column.getName(), BaseDataDo.F_LAST_MODIFIED_BY)) {
 			column.setJavaType(UserDo.class.getName());
-			column.setJavaField(column.getJavaField());
-			column.setNull(false);
+			column.setJavaFieldName(column.getJavaFieldName());
+			column.setNullField(false);
 		}
 		// 创建时间、更新时间
 		else if (StringUtil.startWithIgnoreCase(column.getName(), BaseDataDo.F_CREATED_DATE)
 			|| StringUtil.startWithIgnoreCase(column.getName(), BaseDataDo.F_LAST_MODIFIED_DATE)) {
 			column.setShowType("dateselect");
-			column.setNull(false);
+			column.setNullField(false);
 		}
 		// 备注、内容
-		else if (StringUtil.equalsIgnoreCase(column.getJavaField(), BaseDataDo.F_DESCRIPTION) || content
+		else if (StringUtil.equalsIgnoreCase(column.getJavaFieldName(), BaseDataDo.F_DESCRIPTION) || content
 			|| remark) {
 			column.setShowType("textarea");
 		}
 		// 删除标记
-		else if (StringUtil.equalsIgnoreCase(column.getJavaField(), BaseDataDo.F_DEL_FLAG)) {
+		else if (StringUtil.equalsIgnoreCase(column.getJavaFieldName(), BaseDataDo.F_DEL_FLAG)) {
 			column.setShowType("radio");
 			column.setDictType(DictNameConstants.SYS_FLAG);
-			column.setNull(false);
+			column.setNullField(false);
 		}
 	}
 
@@ -148,7 +154,7 @@ public class GenUtil {
 				|| StringUtil.startWithIgnoreCase(column.getJdbcType(), "BIT")
 				|| StringUtil.startWithIgnoreCase(column.getJdbcType(), "DOUBLE")) {
 				// 如果是浮点型
-				List<String> ss = StringUtil.split(
+				List<String> ss = CharSequenceUtil.split(
 					StringUtil.subBetween(column.getJdbcType(), StringUtil.BRACKETS_START, StringUtil.BRACKETS_END),
 					StringUtil.SPLIT_DEFAULT);
 				if (ss != null && ss.size() == 2 && Integer.parseInt(ss.get(1)) > 0) {
@@ -164,21 +170,16 @@ public class GenUtil {
 				}
 			}
 			// 设置java字段名
-			column.setJavaField(StringUtil.toCamelCase(column.getName()));
+			column.setJavaFieldName(StringUtil.toCamelCase(column.getName()));
 			// 是否是主键
 			column.setPk(table.getPkList().contains(column.getName()));
 			// 插入字段
-			column.setInsert(true);
+			column.setInsertField(true);
 			if (column.getIsNotBaseField()) {
-				column.setList(true);
-				column.setEdit(true);
+				column.setListField(true);
+				column.setEditField(true);
 			}
 			// 查询字段
-			if (StringUtil.startWithIgnoreCase(column.getName(), "is_")
-				|| StringUtil.startWithIgnoreCase(column.getName(), "has_")) {
-				column.setDictType(DictNameConstants.SYS_FLAG);
-				column.setShowType("radio");
-			}
 			if (StringUtil.isEmpty(column.getShowType())) {
 				column.setShowType("input");
 			}
@@ -191,9 +192,9 @@ public class GenUtil {
 			initDataColumn(column);
 			initTreeColumn(column);
 			if (StringUtil.equalsIgnoreCase(column.getName(), TreeDo.F_TENANT_CODE)) {
-				column.setList(false);
-				column.setEdit(false);
-				column.setNull(false);
+				column.setListField(false);
+				column.setEditField(false);
+				column.setNullField(false);
 			}
 		}
 	}
@@ -296,9 +297,9 @@ public class GenUtil {
 			.getBeansWithAnnotation(SpringBootApplication.class).keySet().iterator().next();
 		model.put("applicationName",
 			SpringContextHolder.getApplicationContext().getBean(applicationName).getClass().getPackage().getName()
-				+ StringUtil.DOT + StringUtil.upperFirst(applicationName));
+				+ StrPool.DOT + StringUtil.upperFirst(applicationName));
 		model.put("packageName", StringUtil.lowerCase(scheme.getPackageName()));
-		model.put("lastPackageName", StringUtil.subAfter((String) model.get("packageName"), StringUtil.DOT, true));
+		model.put("lastPackageName", StringUtil.subAfter((String) model.get("packageName"), StrPool.DOT, true));
 		model.put("moduleName", StringUtil.lowerCase(scheme.getModuleName()));
 		model.put("subModuleName",
 			StringUtil.lowerCase(StringUtil.isEmpty(scheme.getSubModuleName()) ? "" : scheme.getSubModuleName()));

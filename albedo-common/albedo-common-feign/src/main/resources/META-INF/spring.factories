@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.albedo.java.common.feign.sentinel.SentinelAutoConfiguration,\
-  com.albedo.java.common.feign.handle.GlobalExceptionHandler,\
+  com.albedo.java.common.core.exception.handler.GlobalExceptionHandler,\
   com.albedo.java.common.feign.AlbedoFeignAutoConfiguration

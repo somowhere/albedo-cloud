@@ -15,7 +15,7 @@
 //
 //package com.albedo.java.plugins.swagger.config.apidoc;
 //
-//import com.albedo.java.common.core.vo.PageModel;
+//import com.albedo.java.common.core.domain.vo.PageModel;
 //import com.albedo.java.plugins.swagger.config.ApplicationSwaggerProperties;
 //import com.albedo.java.plugins.swagger.config.apidoc.customizer.AlbedoSwaggerCustomizer;
 //import com.albedo.java.plugins.swagger.config.apidoc.customizer.SwaggerCustomizer;

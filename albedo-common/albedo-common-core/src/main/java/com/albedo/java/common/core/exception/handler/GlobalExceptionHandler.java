@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.albedo.java.common.feign.handle;
+package com.albedo.java.common.core.exception.handler;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
