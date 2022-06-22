@@ -18,8 +18,6 @@ package com.albedo.java.auth.config;
 
 import com.albedo.java.auth.support.core.AlbedoDaoAuthenticationProvider;
 import com.albedo.java.auth.support.core.FormIdentityLoginConfigurer;
-import com.albedo.java.common.core.jackson.JacksonUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

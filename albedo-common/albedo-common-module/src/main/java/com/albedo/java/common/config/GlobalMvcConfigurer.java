@@ -27,6 +27,7 @@ public class GlobalMvcConfigurer implements WebMvcConfigurer {
 	 * <li>yyyy-MM-dd -> LocalDate</li>
 	 * <li>yyyy-MM-dd HH:mm:ss -> LocalDateTime</li>
 	 * </ul>
+	 *
 	 * @param registry
 	 */
 	@Override
@@ -37,6 +38,7 @@ public class GlobalMvcConfigurer implements WebMvcConfigurer {
 		registrar.setDateTimeFormatter(DatePattern.NORM_DATETIME_FORMATTER);
 		registrar.registerFormatters(registry);
 	}
+
 	@Bean
 	@Order(1)
 	public ThreadLocalContextFilter threadLocalContextFilter() {

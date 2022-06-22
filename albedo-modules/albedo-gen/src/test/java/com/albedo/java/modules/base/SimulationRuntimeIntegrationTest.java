@@ -24,32 +24,32 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest(classes = AlbedoGenApplication.class)
-	public class SimulationRuntimeIntegrationTest {
+public class SimulationRuntimeIntegrationTest {
 
-		@Autowired
-		public CacheOps cacheOps;
+	@Autowired
+	public CacheOps cacheOps;
 
-		@Autowired
-		private AlbedoUserDetailsService albedoUserDetailsService;
+	@Autowired
+	private AlbedoUserDetailsService albedoUserDetailsService;
 
-		@BeforeEach
-		public void initBeforeTest() {
-			ContextUtil.setTenant(CommonConstants.TENANT_CODE_ADMIN);
-			setAuth("admin");
-			getDictList();
-		}
-
-		public void setAuth(String username) {
-			UserDetails principal = new UserDetail(1l, 1l, "dept", "1325818654", "admin", SecurityConstants.BCRYPT + "password",
-				true, true, true, true, Lists.newArrayList(), null);
-			Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(principal,
-				principal.getPassword(), principal.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
-
-		public List<DictDo> getDictList() {
-			return cacheOps.get(new DictCacheKeyBuilder().key(CacheNameConstants.DICT_ALL), (k) -> Lists.newArrayList());
-		}
-
+	@BeforeEach
+	public void initBeforeTest() {
+		ContextUtil.setTenant(CommonConstants.TENANT_CODE_ADMIN);
+		setAuth("admin");
+		getDictList();
 	}
+
+	public void setAuth(String username) {
+		UserDetails principal = new UserDetail(1l, 1l, "dept", "1325818654", "admin", SecurityConstants.BCRYPT + "password",
+			true, true, true, true, Lists.newArrayList(), null);
+		Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(principal,
+			principal.getPassword(), principal.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+
+	public List<DictDo> getDictList() {
+		return cacheOps.get(new DictCacheKeyBuilder().key(CacheNameConstants.DICT_ALL), (k) -> Lists.newArrayList());
+	}
+
+}
 

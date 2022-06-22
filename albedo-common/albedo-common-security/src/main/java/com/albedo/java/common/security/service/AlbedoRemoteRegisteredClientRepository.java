@@ -7,7 +7,6 @@ import com.albedo.java.modules.sys.domain.OauthClientDetailDo;
 import com.albedo.java.modules.sys.feign.RemoteClientDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenFormat;

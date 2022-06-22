@@ -17,14 +17,9 @@
 package com.albedo.java.common.core.config;
 
 import com.albedo.java.common.core.jackson.CustomModule;
-import com.albedo.java.common.core.jackson.databind.LocalDateTimeDeserializer;
-import com.albedo.java.common.core.jackson.databind.LocalDateTimeSerializer;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.LocalDateTime;
 
 /**
  * @author somewhere
