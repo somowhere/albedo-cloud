@@ -5,7 +5,7 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.domain.vo.PageModel;
 import com.albedo.java.common.core.exception.code.ResponseCode;
 import com.albedo.java.common.core.util.CollUtil;
-import com.albedo.java.common.core.exception.handler.GlobalExceptionHandler;
+import com.albedo.java.common.feign.handle.GlobalExceptionHandler;
 import com.albedo.java.modules.TestUtil;
 import com.albedo.java.modules.base.SimulationRuntimeIntegrationTest;
 import com.albedo.java.modules.sys.domain.DeptDo;

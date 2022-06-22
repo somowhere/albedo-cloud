@@ -21,7 +21,7 @@
 package ${packageName}.${moduleName}.domain.vo<#if subModuleName != "">.${subModuleName}</#if>;
 
 import com.albedo.java.common.core.annotation.DictType;
-import com.albedo.java.common.core.vo.TreeVo;
+import com.albedo.java.common.core.domain.vo.TreeVo;
 import lombok.*;
 
 

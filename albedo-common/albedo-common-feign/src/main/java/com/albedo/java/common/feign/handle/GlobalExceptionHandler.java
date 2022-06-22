@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.albedo.java.common.core.exception.handler;
+package com.albedo.java.common.feign.handle;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
@@ -29,6 +29,7 @@ import com.albedo.java.common.core.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.mybatis.spring.MyBatisSystemException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -70,6 +71,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @Slf4j
 @RestControllerAdvice
+@ConditionalOnExpression("!'${security.oauth2.client.clientId}'.isEmpty()")
 public class GlobalExceptionHandler {
 
 	private String getPath() {
