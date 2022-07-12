@@ -18,7 +18,9 @@ package com.albedo.java.auth.config;
 
 import com.albedo.java.auth.support.core.AlbedoDaoAuthenticationProvider;
 import com.albedo.java.auth.support.core.FormIdentityLoginConfigurer;
+import com.albedo.java.common.core.filter.ThreadLocalContextFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -53,5 +55,10 @@ public class WebSecurityConfiguration {
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring().antMatchers("/actuator/**", "/css/**", "/error");
+	}
+	@Bean
+	@Order(1)
+	public ThreadLocalContextFilter threadLocalContextFilter() {
+		return new ThreadLocalContextFilter();
 	}
 }

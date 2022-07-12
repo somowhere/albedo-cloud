@@ -17,6 +17,7 @@
 package com.albedo.java.modules;
 
 
+import com.albedo.java.common.feign.annotation.EnableAlbedoFeignClients;
 import com.albedo.java.common.security.annotation.EnableAlbedoResourceServer;
 import com.albedo.java.plugins.swagger.annotation.EnableSwaggerDoc;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ import java.net.InetAddress;
  */
 @EnableSwaggerDoc
 @EnableAlbedoResourceServer
+@EnableAlbedoFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
 @Slf4j

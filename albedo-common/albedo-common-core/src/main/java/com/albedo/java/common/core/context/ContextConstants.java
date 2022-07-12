@@ -38,10 +38,6 @@ public final class ContextConstants {
 	 */
 	public static final String KEY_TENANT = "tenant";
 	/**
-	 * 刷新 Token
-	 */
-	public static final String REFRESH_TOKEN_KEY = "refresh_token";
-	/**
 	 * User信息 认证请求头
 	 */
 	public static final String BEARER_HEADER_KEY = "token";

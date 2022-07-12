@@ -52,7 +52,7 @@ public interface RemoteUserOnlineService {
 	 * @param form
 	 * @return
 	 */
-	@DeleteMapping("/token")
+	@DeleteMapping("/token/remove-tokens")
 	Result removeByTokens(@RequestBody TokenDto tokenDto, @RequestHeader(SecurityConstants.FROM) String form);
 
 }

@@ -18,14 +18,14 @@ package com.albedo.java.common.feign.handle;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
-import com.albedo.java.common.core.exception.BizException;
-import com.albedo.java.common.core.exception.EntityExistException;
-import com.albedo.java.common.core.exception.EntityNotFoundException;
-import com.albedo.java.common.core.exception.ForbiddenException;
+import cn.hutool.json.JSONUtil;
+import com.albedo.java.common.core.exception.*;
 import com.albedo.java.common.core.exception.code.ResponseCode;
+import com.albedo.java.common.core.jackson.JacksonUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.StrPool;
 import com.albedo.java.common.core.util.StringUtil;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -109,7 +109,18 @@ public class GlobalExceptionHandler {
 		return Result.build(ResponseCode.SYSTEM_BUSY).setPath(getPath());
 	}
 
-
+	/**
+	 * Feign异常.
+	 *
+	 * @param e the e
+	 * @return R
+	 */
+	@ExceptionHandler(FeignException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Result exception(FeignException e) {
+		log.warn("FeignException ex={}", e.contentUTF8());
+		return JacksonUtil.parse(e.contentUTF8(), Result.class);
+	}
 	/**
 	 * AccessDenied Exception
 	 *
@@ -268,16 +279,29 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * 处理 badException
+	 * 处理 EntityExistException
 	 *
 	 * @return Result
 	 */
 	@ResponseStatus(BAD_REQUEST)
-	@ExceptionHandler(value = {EntityExistException.class})
+	@ExceptionHandler(value = { EntityExistException.class})
 	public Result badException(EntityExistException ex) {
 		// 打印堆栈信息
 		log.error(ExceptionUtil.stacktraceToString(ex));
 		return Result.build(ex.getErrorCode(), ex.getMessage()).setPath(getPath());
+	}
+
+	/**
+	 * 处理 BadRequestException
+	 *
+	 * @return Result
+	 */
+	@ResponseStatus(BAD_REQUEST)
+	@ExceptionHandler(value = { BadRequestException.class})
+	public Result badException(BadRequestException ex) {
+		// 打印堆栈信息
+		log.error(ExceptionUtil.stacktraceToString(ex));
+		return Result.build(ResponseCode.OPERATION_EX.getCode(), ex.getMessage()).setPath(getPath());
 	}
 
 	/**

@@ -38,13 +38,12 @@ public class AlbedoCustomOpaqueTokenIntrospector implements OpaqueTokenIntrospec
 		Map<String, AlbedoUserDetailsService> userDetailsServiceMap = SpringUtil
 			.getBeansOfType(AlbedoUserDetailsService.class);
 
-		Optional<AlbedoUserDetailsService> optional = userDetailsServiceMap.values().stream()
-			.filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
-				oldAuthorization.getAuthorizationGrantType().getValue()))
-			.max(Comparator.comparingInt(Ordered::getOrder));
-
 		UserDetails userDetails = null;
 		try {
+			Optional<AlbedoUserDetailsService> optional = userDetailsServiceMap.values().stream()
+				.filter(service -> service.support(Objects.requireNonNull(oldAuthorization).getRegisteredClientId(),
+					oldAuthorization.getAuthorizationGrantType().getValue()))
+				.max(Comparator.comparingInt(Ordered::getOrder));
 			Object principal = Objects.requireNonNull(oldAuthorization).getAttributes().get(Principal.class.getName());
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
 			Object tokenPrincipal = usernamePasswordAuthenticationToken.getPrincipal();

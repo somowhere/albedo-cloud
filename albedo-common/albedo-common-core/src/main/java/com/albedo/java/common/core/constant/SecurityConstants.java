@@ -33,11 +33,12 @@ public interface SecurityConstants {
 	String PROJECT_PREFIX = "albedo_";
 
 	/**
+	 * token::access_token
 	 * oauth 相关前缀
 	 */
 	String OAUTH_PREFIX = "oauth:";
-	String PROJECT_OAUTH_ACCESS = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "access:";
-	String PROJECT_OAUTH_ONLINE = SecurityConstants.PROJECT_PREFIX + SecurityConstants.OAUTH_PREFIX + "online:";
+	String PROJECT_OAUTH_ACCESS = "::token::access_token";
+	String PROJECT_OAUTH_ONLINE = "::token::online_token::";
 	/**
 	 * 项目的license
 	 */
@@ -69,7 +70,7 @@ public interface SecurityConstants {
 	/**
 	 * oauth 客户端信息
 	 */
-	String CLIENT_DETAILS_KEY = PROJECT_PREFIX + OAUTH_PREFIX + "client:details";
+	String CLIENT_DETAILS_KEY = "client:details";
 
 	/**
 	 * {bcrypt} 加密的特征码

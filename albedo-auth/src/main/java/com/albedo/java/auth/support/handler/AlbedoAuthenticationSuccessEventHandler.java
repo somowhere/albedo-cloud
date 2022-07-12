@@ -20,7 +20,10 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.context.ContextConstants;
+import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.util.AddressUtil;
+import com.albedo.java.common.core.util.RequestHolder;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.core.util.WebUtil;
 import com.albedo.java.common.log.event.SysLogLoginEvent;
@@ -36,6 +39,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
@@ -84,7 +88,16 @@ public class AlbedoAuthenticationSuccessEventHandler implements AuthenticationSu
 			String ip = WebUtil.getIp(request);
 			String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
 			saveUserOnline(principal, ip, userAgentStr);
-			//taskExecutor.execute(() -> saveUserOnline(principal, ip, userAgentStr));
+		} else if (authentication instanceof OAuth2AccessTokenAuthenticationToken) {
+			Object userInfo = ((OAuth2AccessTokenAuthenticationToken) authentication).getAdditionalParameters().get("user_info");
+			if(userInfo instanceof UserDetail){
+				UserDetail principal = (UserDetail) userInfo;
+				logLoginDo.setUsername(principal.getUsername());
+				logLoginDo.setCreatedBy(principal.getId());
+				String ip = WebUtil.getIp(request);
+				String userAgentStr = request.getHeader(HttpHeaders.USER_AGENT);
+				saveUserOnline(principal, ip, userAgentStr);
+			}
 		}
 		logLoginDo.setParams(HttpUtil.toParams(request.getParameterMap()));
 		logLoginDo.setTitle("用户登录成功");
@@ -136,7 +149,8 @@ public class AlbedoAuthenticationSuccessEventHandler implements AuthenticationSu
 		UserOnlineDto userOnlineDto = new UserOnlineDto(userDetail.getDeptId(),
 			userDetail.getDeptName(), userDetail.getId(), userDetail.getUsername(), ip, AddressUtil.getRegion(ip),
 			userAgentStr, userAgent.getBrowser().getName(), userAgent.getOs().getName(), new Date());
-		RedisUtil.setCacheObject(SecurityConstants.PROJECT_OAUTH_ONLINE + userOnlineDto.getUserId(), userOnlineDto);
+		String tenant = WebUtil.getHeader(RequestHolder.getHttpServletRequest(), ContextConstants.KEY_TENANT);
+		RedisUtil.setCacheObject(tenant + SecurityConstants.PROJECT_OAUTH_ONLINE + userOnlineDto.getUsername(), userOnlineDto);
 	}
 
 }

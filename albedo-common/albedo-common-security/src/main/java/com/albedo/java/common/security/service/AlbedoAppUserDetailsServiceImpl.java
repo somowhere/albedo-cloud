@@ -41,15 +41,14 @@ public class AlbedoAppUserDetailsServiceImpl implements AlbedoUserDetailsService
 	private final CacheManager cacheManager;
 
 	/**
-	 * 手机号登录
 	 *
-	 * @param phone 手机号
+	 * @param username
 	 * @return
 	 */
 	@Override
 	@SneakyThrows
-	public UserDetails loadUserByUsername(String phone) {
-		Result<UserInfo> result = remoteUserService.getInfoByPhone(phone, SecurityConstants.FROM_IN);
+	public UserDetails loadUserByUsername(String username) {
+		Result<UserInfo> result = remoteUserService.getInfoByUsername(username, SecurityConstants.FROM_IN);
 		UserDetails userDetails = getUserDetails(result);
 		return userDetails;
 	}

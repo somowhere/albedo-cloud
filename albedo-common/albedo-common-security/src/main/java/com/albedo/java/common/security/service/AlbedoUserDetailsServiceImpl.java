@@ -23,6 +23,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * 用户详细信息
@@ -43,10 +44,15 @@ public class AlbedoUserDetailsServiceImpl implements AlbedoUserDetailsService {
 	 * @return
 	 */
 	@Override
-	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-		UserDetails userDetails = getUserDetails(remoteUserService.getInfoByUsername(username, SecurityConstants.FROM_IN));
-		return userDetails;
+		try {
+			UserDetails userDetails = getUserDetails(remoteUserService.getInfoByUsername(username, SecurityConstants.FROM_IN));
+			return userDetails;
+		}catch (Exception e){
+			log.error("{}", e);
+			throw new UsernameNotFoundException(username);
+		}
+
 	}
 
 

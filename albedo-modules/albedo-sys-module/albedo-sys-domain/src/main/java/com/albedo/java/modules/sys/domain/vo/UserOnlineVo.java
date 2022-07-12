@@ -1,8 +1,10 @@
 package com.albedo.java.modules.sys.domain.vo;
 
 import com.albedo.java.common.core.domain.vo.GeneralDto;
+import lombok.Builder;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -11,12 +13,13 @@ import java.util.Date;
  * @author somewhere
  */
 @Data
+@Builder
 public class UserOnlineVo extends GeneralDto {
 
 	/**
 	 * 部门ID
 	 */
-	private String deptId;
+	private long deptId;
 
 	/**
 	 * 部门名称
@@ -26,7 +29,7 @@ public class UserOnlineVo extends GeneralDto {
 	/**
 	 * 登录ID
 	 */
-	private String userId;
+	private long userId;
 
 	/**
 	 * 登录名称
@@ -66,7 +69,7 @@ public class UserOnlineVo extends GeneralDto {
 
 	private String accessToken;
 
-	private Date expiresIn;
+	private Instant expiresIn;
 
 	private String clientId;
 

@@ -11,15 +11,15 @@
 	<description>基础 bom 文件，管理整个项目的依赖版本</description>
 
 	<properties>
-		<revision>3.3.0-SNAPSHOT</revision>
-		<spring-boot.version>2.7.0</spring-boot.version>
+		<revision>3.3.1-SNAPSHOT</revision>
+		<spring-boot.version>2.7.1</spring-boot.version>
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
-		<spring-boot-admin.version>2.6.7</spring-boot-admin.version>
-		<spring.authorization.version>0.3.0</spring.authorization.version>
+		<spring-boot-admin.version>2.7.1</spring-boot-admin.version>
+		<spring.authorization.version>0.3.1</spring.authorization.version>
 		<xxl-job.version>2.3.1</xxl-job.version>
 		<seata.version>1.5.1</seata.version>
-		<hutool.version>5.8.2</hutool.version>
+		<hutool.version>5.8.4</hutool.version>
 		<p6spy.version>3.9.1</p6spy.version>
 		<mybatis-plus.version>3.5.2</mybatis-plus.version>
 		<mybatis.version>3.5.9</mybatis.version>
@@ -91,12 +91,12 @@
 			<type>pom</type>
 			<scope>import</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>io.springboot.security</groupId>
+			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-authorization-server</artifactId>
 			<version>${spring.authorization.version}</version>
 		</dependency>
+
 		<!-- 通用工具-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>

@@ -1,5 +1,9 @@
 package com.albedo.java.common.security.service;
 
+import com.albedo.java.common.core.context.ContextConstants;
+import com.albedo.java.common.core.context.ContextUtil;
+import com.albedo.java.common.core.util.RequestHolder;
+import com.albedo.java.common.core.util.WebUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
@@ -128,7 +132,8 @@ public class AlbedoRedisOAuth2AuthorizationService implements OAuth2Authorizatio
 	}
 
 	private String buildKey(String type, String id) {
-		return String.format("%s::%s::%s", AUTHORIZATION, type, id);
+		String tenant = WebUtil.getHeader(RequestHolder.getHttpServletRequest(), ContextConstants.KEY_TENANT);
+		return String.format("%s::%s::%s::%s", tenant, AUTHORIZATION, type, id);
 	}
 
 }

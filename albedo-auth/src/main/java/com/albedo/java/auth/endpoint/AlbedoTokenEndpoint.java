@@ -20,17 +20,23 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.exception.BadRequestException;
+import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.security.annotation.Inner;
+import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.common.security.util.OAuth2EndpointUtils;
 import com.albedo.java.common.security.util.OAuth2ErrorCodesExpand;
 import com.albedo.java.modules.sys.domain.OauthClientDetailDo;
 import com.albedo.java.modules.sys.domain.dto.TokenDto;
+import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
 import com.albedo.java.modules.sys.domain.vo.TokenVo;
+import com.albedo.java.modules.sys.domain.vo.UserOnlineVo;
 import com.albedo.java.modules.sys.feign.RemoteClientDetailService;
+import com.albedo.java.plugins.cache.utils.RedisUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -62,6 +68,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -100,7 +107,7 @@ public class AlbedoTokenEndpoint {
 		return modelAndView;
 	}
 
-	@GetMapping("/confirm_access")
+	@GetMapping("/confirm-access")
 	public ModelAndView confirm(Principal principal, ModelAndView modelAndView,
 								@RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
 								@RequestParam(OAuth2ParameterNames.SCOPE) String scope,
@@ -138,7 +145,7 @@ public class AlbedoTokenEndpoint {
 	 * @param token 令牌
 	 */
 	@SneakyThrows
-	@GetMapping("/check_token")
+	@GetMapping("/check-token")
 	public void checkToken(String token, HttpServletResponse response) {
 		ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
 
@@ -169,14 +176,14 @@ public class AlbedoTokenEndpoint {
 	 */
 	@Inner
 	@Operation(hidden = true)
-	@DeleteMapping
-	public Result<Boolean> removeByTokens(@RequestBody TokenDto tokenDto) throws BadRequestException {
-		if (tokenDto == null || ObjectUtil.isNull(tokenDto.getUserId())) {
+	@DeleteMapping("/remove-tokens")
+	public Result removeByTokens(@RequestBody TokenDto tokenDto) throws BadRequestException {
+		if (tokenDto == null || ObjectUtil.isNull(tokenDto.getUsername())) {
 			throw new BadRequestException("当前登陆用户为空，无法操作");
 		}
 		tokenDto.getTokens().forEach(token -> {
 			OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
-			if (tokenDto.getUserId().equals(authorization.getPrincipalName())) {
+			if (tokenDto.getUsername().equals(authorization.getPrincipalName())) {
 				throw new BadRequestException("当前登陆用户无法强退");
 			}
 			removeToken(token);
@@ -190,7 +197,7 @@ public class AlbedoTokenEndpoint {
 	 * @param token token
 	 */
 	@DeleteMapping("/{token}")
-	public Result<Boolean> removeToken(@PathVariable("token") String token) {
+	public Result removeToken(@PathVariable("token") String token) {
 		OAuth2Authorization authorization = authorizationService.findByToken(token, OAuth2TokenType.ACCESS_TOKEN);
 		OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getAccessToken();
 		if (accessToken == null || StrUtil.isBlank(accessToken.getToken().getTokenValue())) {
@@ -213,26 +220,36 @@ public class AlbedoTokenEndpoint {
 	@PostMapping("/page")
 	public Result<Page> tokenList(@RequestBody Map<String, Object> params) {
 		// 根据分页参数获取对应数据
-		String key = String.format("%s::*", SecurityConstants.PROJECT_OAUTH_ACCESS);
+		String key = String.format("%s::*", ContextUtil.getTenant() + SecurityConstants.PROJECT_OAUTH_ACCESS);
 		int current = MapUtil.getInt(params, CommonConstants.CURRENT);
 		int size = MapUtil.getInt(params, CommonConstants.SIZE);
 		Set<String> keys = redisTemplate.keys(key);
 		List<String> pages = keys.stream().skip((current - 1) * size).limit(size).collect(Collectors.toList());
 		Page result = new Page(current, size);
-
-		List<TokenVo> tokenVoList = redisTemplate.opsForValue().multiGet(pages).stream().map(obj -> {
+		List<UserOnlineVo> userOnlineVoList = redisTemplate.opsForValue().multiGet(pages).stream().map(obj -> {
 			OAuth2Authorization authorization = (OAuth2Authorization) obj;
-			TokenVo tokenVo = new TokenVo();
-			tokenVo.setClientId(authorization.getRegisteredClientId());
-			tokenVo.setId(authorization.getId());
-			tokenVo.setUsername(authorization.getPrincipalName());
-			OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getAccessToken();
-			tokenVo.setAccessToken(accessToken.getToken().getTokenValue());
-			tokenVo.setExpiresAt(accessToken.getToken().getExpiresAt());
-			tokenVo.setIssuedAt(accessToken.getToken().getIssuedAt());
-			return tokenVo;
+			UserOnlineVo.UserOnlineVoBuilder builder = UserOnlineVo.builder();
+			OAuth2AccessToken oAuth2AccessToken = authorization.getAccessToken().getToken();
+			builder.username(authorization.getPrincipalName())
+				.tokenType(oAuth2AccessToken.getTokenType().getValue())
+				.accessToken(oAuth2AccessToken.getTokenValue())
+				.expiresIn(oAuth2AccessToken.getExpiresAt())
+				.clientId(authorization.getRegisteredClientId())
+				.grantType(authorization.getAuthorizationGrantType().getValue());
+			UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(ContextUtil.getTenant()+SecurityConstants.PROJECT_OAUTH_ONLINE + authorization.getPrincipalName());
+			Optional.ofNullable(userOnlineDto).map(item->builder.userId(item.getUserId())
+				.browser(item.getBrowser())
+				.deptId(item.getDeptId())
+				.deptName(item.getDeptName())
+				.loginTime(item.getLoginTime())
+				.ipAddress(item.getIpAddress())
+				.ipLocation(item.getIpLocation())
+				.os(item.getOs())
+				.userAgent(item.getUserAgent()));
+			return builder.build();
 		}).collect(Collectors.toList());
-		result.setRecords(tokenVoList);
+
+		result.setRecords(userOnlineVoList);
 		result.setTotal(keys.size());
 		return Result.buildOkData(result);
 	}

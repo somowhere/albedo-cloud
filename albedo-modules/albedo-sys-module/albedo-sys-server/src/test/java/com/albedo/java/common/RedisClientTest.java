@@ -29,7 +29,7 @@ public class RedisClientTest {
 
 	@Test
 	public void testRequest() throws Exception {
-		String path = "http://127.0.0.1:3000/oauth/check_token";
+		String path = "http://127.0.0.1:3010/oauth/check_token";
 		MultiValueMap<String, String> formData = new LinkedMultiValueMap<String, String>();
 		formData.add("token", "efa937fe-2b87-419c-8206-b4a8485d04d2");
 		formData.add("Authorization", "Basic YWxiZWRvOmFsYmVkbw==");

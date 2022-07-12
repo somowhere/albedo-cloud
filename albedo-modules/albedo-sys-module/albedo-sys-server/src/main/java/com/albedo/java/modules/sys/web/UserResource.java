@@ -217,7 +217,7 @@ public class UserResource extends BaseResource {
 
 	}
 
-	@GetMapping(value = "/importTemplate")
+	@GetMapping(value = "/import-template")
 	@PreAuthorize("@pms.hasPermission('sys_user_view')")
 	@LogOperate(value = "用户导入模板导出")
 	public void importTemplate(HttpServletResponse response) {
