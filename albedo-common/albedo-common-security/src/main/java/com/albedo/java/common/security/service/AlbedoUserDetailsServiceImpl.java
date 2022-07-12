@@ -19,7 +19,6 @@ package com.albedo.java.common.security.service;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.modules.sys.feign.RemoteUserService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,7 +47,7 @@ public class AlbedoUserDetailsServiceImpl implements AlbedoUserDetailsService {
 		try {
 			UserDetails userDetails = getUserDetails(remoteUserService.getInfoByUsername(username, SecurityConstants.FROM_IN));
 			return userDetails;
-		}catch (Exception e){
+		} catch (Exception e) {
 			log.error("{}", e);
 			throw new UsernameNotFoundException(username);
 		}

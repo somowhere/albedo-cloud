@@ -56,6 +56,7 @@ public class WebSecurityConfiguration {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring().antMatchers("/actuator/**", "/css/**", "/error");
 	}
+
 	@Bean
 	@Order(1)
 	public ThreadLocalContextFilter threadLocalContextFilter() {

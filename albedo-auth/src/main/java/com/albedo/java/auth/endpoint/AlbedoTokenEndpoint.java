@@ -22,18 +22,15 @@ import com.albedo.java.common.core.constant.CommonConstants;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.exception.BadRequestException;
-import com.albedo.java.common.core.util.BeanUtil;
 import com.albedo.java.common.core.util.ObjectUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.security.annotation.Inner;
-import com.albedo.java.common.security.service.UserDetail;
 import com.albedo.java.common.security.util.OAuth2EndpointUtils;
 import com.albedo.java.common.security.util.OAuth2ErrorCodesExpand;
 import com.albedo.java.modules.sys.domain.OauthClientDetailDo;
 import com.albedo.java.modules.sys.domain.dto.TokenDto;
 import com.albedo.java.modules.sys.domain.dto.UserOnlineDto;
-import com.albedo.java.modules.sys.domain.vo.TokenVo;
 import com.albedo.java.modules.sys.domain.vo.UserOnlineVo;
 import com.albedo.java.modules.sys.feign.RemoteClientDetailService;
 import com.albedo.java.plugins.cache.utils.RedisUtil;
@@ -236,8 +233,8 @@ public class AlbedoTokenEndpoint {
 				.expiresIn(oAuth2AccessToken.getExpiresAt())
 				.clientId(authorization.getRegisteredClientId())
 				.grantType(authorization.getAuthorizationGrantType().getValue());
-			UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(ContextUtil.getTenant()+SecurityConstants.PROJECT_OAUTH_ONLINE + authorization.getPrincipalName());
-			Optional.ofNullable(userOnlineDto).map(item->builder.userId(item.getUserId())
+			UserOnlineDto userOnlineDto = RedisUtil.getCacheObject(ContextUtil.getTenant() + SecurityConstants.PROJECT_OAUTH_ONLINE + authorization.getPrincipalName());
+			Optional.ofNullable(userOnlineDto).map(item -> builder.userId(item.getUserId())
 				.browser(item.getBrowser())
 				.deptId(item.getDeptId())
 				.deptName(item.getDeptName())

@@ -21,7 +21,6 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.albedo.java.common.core.constant.SecurityConstants;
 import com.albedo.java.common.core.context.ContextConstants;
-import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.util.AddressUtil;
 import com.albedo.java.common.core.util.RequestHolder;
 import com.albedo.java.common.core.util.SpringContextHolder;
@@ -39,7 +38,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
@@ -90,7 +88,7 @@ public class AlbedoAuthenticationSuccessEventHandler implements AuthenticationSu
 			saveUserOnline(principal, ip, userAgentStr);
 		} else if (authentication instanceof OAuth2AccessTokenAuthenticationToken) {
 			Object userInfo = ((OAuth2AccessTokenAuthenticationToken) authentication).getAdditionalParameters().get("user_info");
-			if(userInfo instanceof UserDetail){
+			if (userInfo instanceof UserDetail) {
 				UserDetail principal = (UserDetail) userInfo;
 				logLoginDo.setUsername(principal.getUsername());
 				logLoginDo.setCreatedBy(principal.getId());

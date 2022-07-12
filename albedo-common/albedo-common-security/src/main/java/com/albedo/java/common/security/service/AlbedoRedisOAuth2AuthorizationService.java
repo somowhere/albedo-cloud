@@ -1,7 +1,6 @@
 package com.albedo.java.common.security.service;
 
 import com.albedo.java.common.core.context.ContextConstants;
-import com.albedo.java.common.core.context.ContextUtil;
 import com.albedo.java.common.core.util.RequestHolder;
 import com.albedo.java.common.core.util.WebUtil;
 import lombok.RequiredArgsConstructor;

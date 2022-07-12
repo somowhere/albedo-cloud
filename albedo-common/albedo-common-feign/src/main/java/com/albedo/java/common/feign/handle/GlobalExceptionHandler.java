@@ -18,7 +18,6 @@ package com.albedo.java.common.feign.handle;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.albedo.java.common.core.exception.*;
 import com.albedo.java.common.core.exception.code.ResponseCode;
 import com.albedo.java.common.core.jackson.JacksonUtil;
@@ -121,6 +120,7 @@ public class GlobalExceptionHandler {
 		log.warn("FeignException ex={}", e.contentUTF8());
 		return JacksonUtil.parse(e.contentUTF8(), Result.class);
 	}
+
 	/**
 	 * AccessDenied Exception
 	 *
@@ -284,7 +284,7 @@ public class GlobalExceptionHandler {
 	 * @return Result
 	 */
 	@ResponseStatus(BAD_REQUEST)
-	@ExceptionHandler(value = { EntityExistException.class})
+	@ExceptionHandler(value = {EntityExistException.class})
 	public Result badException(EntityExistException ex) {
 		// 打印堆栈信息
 		log.error(ExceptionUtil.stacktraceToString(ex));
@@ -297,7 +297,7 @@ public class GlobalExceptionHandler {
 	 * @return Result
 	 */
 	@ResponseStatus(BAD_REQUEST)
-	@ExceptionHandler(value = { BadRequestException.class})
+	@ExceptionHandler(value = {BadRequestException.class})
 	public Result badException(BadRequestException ex) {
 		// 打印堆栈信息
 		log.error(ExceptionUtil.stacktraceToString(ex));

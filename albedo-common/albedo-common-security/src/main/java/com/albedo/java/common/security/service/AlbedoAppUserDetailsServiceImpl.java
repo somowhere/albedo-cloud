@@ -41,7 +41,6 @@ public class AlbedoAppUserDetailsServiceImpl implements AlbedoUserDetailsService
 	private final CacheManager cacheManager;
 
 	/**
-	 *
 	 * @param username
 	 * @return
 	 */
