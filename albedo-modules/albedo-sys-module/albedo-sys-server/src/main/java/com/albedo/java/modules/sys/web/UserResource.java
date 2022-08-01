@@ -57,7 +57,6 @@ import java.util.Set;
 @RequestMapping("/user")
 @AllArgsConstructor
 public class UserResource extends BaseResource {
-
 	private final UserService userService;
 
 	/**
