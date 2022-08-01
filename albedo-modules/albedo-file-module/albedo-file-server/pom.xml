@@ -25,8 +25,14 @@
 		<!--日志处理-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
+			<artifactId>albedo-common-log</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.albedo.java</groupId>
 			<artifactId>albedo-common-module</artifactId>
 		</dependency>
+
+
 		<!--swagger-->
 		<dependency>
 			<groupId>com.albedo.java</groupId>
