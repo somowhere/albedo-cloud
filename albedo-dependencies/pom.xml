@@ -11,15 +11,15 @@
 	<description>基础 bom 文件，管理整个项目的依赖版本</description>
 
 	<properties>
-		<revision>3.3.1-SNAPSHOT</revision>
-		<spring-boot.version>2.7.1</spring-boot.version>
-		<spring-cloud.version>2021.0.3</spring-cloud.version>
-		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
-		<spring-boot-admin.version>2.7.1</spring-boot-admin.version>
+		<revision>3.3.3-SNAPSHOT</revision>
+		<spring-boot.version>2.7.3</spring-boot.version>
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+		<spring-boot-admin.version>2.7.5</spring-boot-admin.version>
 		<spring.authorization.version>0.3.1</spring.authorization.version>
 		<xxl-job.version>2.3.1</xxl-job.version>
 		<seata.version>1.5.1</seata.version>
-		<hutool.version>5.8.4</hutool.version>
+		<hutool.version>5.8.7</hutool.version>
 		<p6spy.version>3.9.1</p6spy.version>
 		<mybatis-plus.version>3.5.2</mybatis-plus.version>
 		<mybatis.version>3.5.9</mybatis.version>
@@ -29,30 +29,30 @@
 		<redisson.version>3.17.3</redisson.version>
 		<druid.version>1.2.8</druid.version>
 		<h2.version>1.4.200</h2.version>
-		<springdoc.version>1.6.9</springdoc.version>
+		<springdoc.version>1.6.11</springdoc.version>
 		<swagger.core.version>2.2.0</swagger.core.version>
 		<knife4j.version>3.0.3</knife4j.version>
 		<poi.version>5.2.2</poi.version>
 		<oshi.version>6.1.6</oshi.version>
 		<jna.version>5.11.0</jna.version>
 		<reflections.version>0.10.2</reflections.version>
-		<mica-ip2region.version>2.6.7</mica-ip2region.version>
+		<mica-ip2region.version>2.7.3</mica-ip2region.version>
 		<guava.version>31.1-jre</guava.version>
 		<protostuff.version>1.8.0</protostuff.version>
-		<ip2region.version>1.7.2</ip2region.version>
+		<ip2region.version>2.6.5</ip2region.version>
 		<transmittable-thread-local.version>2.12.6</transmittable-thread-local.version>
 		<minio.version>8.2.2</minio.version>
 		<qcloudsms.version>1.0.6</qcloudsms.version>
 		<jjwt.version>0.11.5</jjwt.version>
 		<mail.version>1.5.0-b01</mail.version>
-		<alipay.version>4.23.19.ALL</alipay.version>
+		<alipay.version>4.33.39.ALL</alipay.version>
 		<tobato-fastdfs-client.version>1.27.2</tobato-fastdfs-client.version>
 		<aliyun-java-sdk-core.version>4.5.25</aliyun-java-sdk-core.version>
 		<aliyun-java-sdk-dysmsapi.version>2.1.0</aliyun-java-sdk-dysmsapi.version>
 		<aliyun-sdk-oss.version>3.15.0</aliyun-sdk-oss.version>
 		<bce-java-sdk.version>0.10.21</bce-java-sdk.version>
-		<esdk-obs-java.version>3.22.3</esdk-obs-java.version>
-		<qiniu-java-sdk.version>7.10.2</qiniu-java-sdk.version>
+		<esdk-obs-java.version>3.22.3.1</esdk-obs-java.version>
+		<qiniu-java-sdk.version>7.11.0</qiniu-java-sdk.version>
 
 	</properties>
 <dependencyManagement>
