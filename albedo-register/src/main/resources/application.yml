@@ -1,5 +1,5 @@
 server:
-  port: 8848   #如何修改 albedo-register 启动端口 >: https://t.cn/A6XGvTdb
+  port: 8848   #如何修改 albedo-register
   tomcat:
     basedir: logs
 
