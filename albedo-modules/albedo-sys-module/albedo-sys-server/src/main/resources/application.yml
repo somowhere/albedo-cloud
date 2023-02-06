@@ -11,6 +11,9 @@ nacos:
 logging:
   level:
     ROOT: DEBUG
+    com.alibaba.nacos: INFO
+    org.redisson: INFO
+    org.springframework: INFO
     com.albedo.java: @logback.loglevel@
   file:
     path: @logging.file.path@
@@ -21,6 +24,8 @@ spring:
     name: albedo-sys
   cloud:
     nacos:
+      username: ${nacos.username}
+      password: ${nacos.password}
       discovery:
         namespace: ${nacos.namespace}
         server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}

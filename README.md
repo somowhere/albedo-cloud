@@ -77,7 +77,7 @@ AlbedoGatewayApplication
 
 依赖 | 版本
 ---|---
-Spring Boot |  2.7.5
+Spring Boot |  2.7.8
 Spring Cloud | 2021.0.5
 Spring Cloud Alibaba | 2021.0.4.0
 Mybatis Plus | 3.5.2

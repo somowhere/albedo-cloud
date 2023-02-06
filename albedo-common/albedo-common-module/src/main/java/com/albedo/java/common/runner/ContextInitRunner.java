@@ -21,7 +21,7 @@ public class ContextInitRunner implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		log.debug(">>>>> spring afterPropertiesSet 初始化开始 <<<<<");
+		log.debug(">>>>> Start of initialization <<<<<");
 		// spring初始化完毕后，通过反射调用所有使用BaseInit注解的afterPropertiesSet方法
 		Map<String, Object> baseServices = SpringContextHolder.getApplicationContext().getBeansWithAnnotation(BaseInit.class);
 		if (ObjectUtil.isNotEmpty(baseServices)) {
@@ -32,12 +32,12 @@ public class ContextInitRunner implements ApplicationRunner {
 					Method initMapper = service.getClass().getMethod(annotation.method());
 					initMapper.invoke(service);
 				} catch (Exception e) {
-					log.error("初始化BaseInit的afterPropertiesSet方法异常{}", e);
+					log.error("Exception to initialize the afterPropertiesSet method of BaseInit{}", e);
 					e.printStackTrace();
 				}
 			}
 		}
-		log.debug(">>>>> spring afterPropertiesSet 初始化完毕 <<<<<");
+		log.debug(">>>>> Complete initialization <<<<<");
 
 	}
 }

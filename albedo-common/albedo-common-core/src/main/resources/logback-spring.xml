@@ -18,6 +18,8 @@
 <configuration debug="false" scan="false">
 	<springProperty scope="context" name="logging.file.path" source="logging.file.path"
 					defaultValue="logs"/>
+	<springProperty scope="context" name="logging.level.root" source="logging.level.ROOT"
+					defaultValue="INFO"/>
 	<springProperty scope="context" name="spring.application.name" source="spring.application.name" defaultValue=""/>
 	<property name="log.path" value="${logging.file.path}/${spring.application.name}"/>
 	<!-- 彩色日志格式 -->
@@ -81,7 +83,7 @@
 
 	<logger name="com.albedo.java" level="DEBUG"/>
 	<!-- Level: FATAL 0  ERROR 3  WARN 4  INFO 6  DEBUG 7 -->
-	<root level="DEBUG">
+	<root level="${logging.level.root}">
 		<appender-ref ref="console"/>
 		<appender-ref ref="debug"/>
 		<appender-ref ref="info"/>

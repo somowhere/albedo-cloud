@@ -55,8 +55,8 @@
 		</dependency>
 		<!-- mysql -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 		</dependency>
 
 		<!-- xxl-job-core -->
@@ -73,6 +73,9 @@
 	</dependencies>
 
 	<build>
+		<filters>
+			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

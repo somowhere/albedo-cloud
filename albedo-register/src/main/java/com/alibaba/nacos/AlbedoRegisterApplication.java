@@ -42,8 +42,10 @@ public class AlbedoRegisterApplication {
 	 * 初始化运行环境
 	 */
 	private static boolean initEnv() {
+		//System.setProperty("server.port", "8849");
+		//System.setProperty("nacos.home", "nacos-b");
 		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
-		System.setProperty(ConfigConstants.AUTH_ENABLED, "false");
+		System.setProperty(ConfigConstants.AUTH_ENABLED, "true");
 		System.setProperty(ConfigConstants.LOG_BASEDIR, "logs");
 		System.setProperty(ConfigConstants.LOG_ENABLED, "false");
 		return true;

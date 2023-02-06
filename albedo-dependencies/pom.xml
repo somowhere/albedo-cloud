@@ -11,11 +11,11 @@
 	<description>基础 bom 文件，管理整个项目的依赖版本</description>
 
 	<properties>
-		<revision>3.3.5-SNAPSHOT</revision>
-		<spring-boot.version>2.7.5</spring-boot.version>
+		<revision>3.3.8-SNAPSHOT</revision>
+		<spring-boot.version>2.7.8</spring-boot.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
-		<spring-boot-admin.version>2.7.7</spring-boot-admin.version>
+		<spring-boot-admin.version>2.7.9</spring-boot-admin.version>
 		<spring.authorization.version>0.3.1</spring.authorization.version>
 		<xxl-job.version>2.3.1</xxl-job.version>
 		<seata.version>1.5.1</seata.version>
@@ -23,7 +23,7 @@
 		<p6spy.version>3.9.1</p6spy.version>
 		<mybatis-plus.version>3.5.2</mybatis-plus.version>
 		<mybatis.version>3.5.10</mybatis.version>
-		<dynamic-ds.version>3.5.2</dynamic-ds.version>
+		<dynamic-ds.version>3.6.0</dynamic-ds.version>
 		<captcha.version>2.2.2</captcha.version>
 		<jasypt.version>2.1.0</jasypt.version>
 		<redisson.version>3.17.3</redisson.version>

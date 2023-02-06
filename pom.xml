@@ -27,8 +27,8 @@
 	<url>https://www.albedo.com</url>
 
 	<properties>
-		<revision>3.3.5-SNAPSHOT</revision>
-		<spring-boot.version>2.7.5</spring-boot.version>
+		<revision>3.3.8-SNAPSHOT</revision>
+		<spring-boot.version>2.7.8</spring-boot.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>

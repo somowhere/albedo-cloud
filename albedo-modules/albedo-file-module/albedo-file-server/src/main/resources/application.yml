@@ -20,6 +20,8 @@ spring:
     name: albedo-file
   cloud:
     nacos:
+      username: ${nacos.username}
+      password: ${nacos.password}
       discovery:
         namespace: ${nacos.namespace}
         server-addr: ${NACOS_HOST:${nacos.ip}}:${NACOS_PORT:${nacos.port}}

@@ -77,7 +77,10 @@
 	</dependencies>
 
 	<build>
-		<finalName>pig-sentinel-dashboard</finalName>
+		<finalName>albedo-sentinel</finalName>
+		<filters>
+			<filter>../../src/main/filters/config-${spring.profiles.active}.properties</filter>
+		</filters>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
