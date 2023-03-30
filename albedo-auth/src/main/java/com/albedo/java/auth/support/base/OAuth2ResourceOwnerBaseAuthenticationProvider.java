@@ -3,6 +3,7 @@ package com.albedo.java.auth.support.base;
 import cn.hutool.extra.spring.SpringUtil;
 import com.albedo.java.common.security.util.OAuth2ErrorCodesExpand;
 import com.albedo.java.common.security.util.ScopeException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -13,10 +14,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AccessTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.context.ProviderContextHolder;
+import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContextHolder;
 import org.springframework.security.oauth2.server.authorization.token.DefaultOAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
@@ -30,8 +32,11 @@ import java.util.function.Supplier;
 
 /**
  * @author jumuning
- * @description 处理自定义授权
+ * @description
+ *
+ * 处理自定义授权
  */
+@Slf4j
 public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OAuth2ResourceOwnerBaseAuthenticationToken>
 	implements AuthenticationProvider {
 
@@ -53,9 +58,8 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 	/**
 	 * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
 	 * provided parameters.
-	 *
 	 * @param authorizationService the authorization service
-	 * @param tokenGenerator       the token generator
+	 * @param tokenGenerator the token generator
 	 * @since 0.2.3
 	 */
 	public OAuth2ResourceOwnerBaseAuthenticationProvider(AuthenticationManager authenticationManager,
@@ -81,7 +85,6 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 
 	/**
 	 * 当前provider是否支持此令牌类型
-	 *
 	 * @param authentication
 	 * @return
 	 */
@@ -90,7 +93,6 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 
 	/**
 	 * 当前的请求客户端是否支持此模式
-	 *
 	 * @param registeredClient
 	 */
 	public abstract void checkClient(RegisteredClient registeredClient);
@@ -98,7 +100,6 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 	/**
 	 * Performs authentication with the same contract as
 	 * {@link AuthenticationManager#authenticate(Authentication)} .
-	 *
 	 * @param authentication the authentication request object.
 	 * @return a fully authenticated object including credentials. May return
 	 * <code>null</code> if the <code>AuthenticationProvider</code> is unable to support
@@ -127,7 +128,8 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 				}
 			}
 			authorizedScopes = new LinkedHashSet<>(resouceOwnerBaseAuthentication.getScopes());
-		} else {
+		}
+		else {
 			throw new ScopeException(OAuth2ErrorCodesExpand.SCOPE_IS_EMPTY);
 		}
 
@@ -145,7 +147,7 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 			DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
 				.registeredClient(registeredClient)
 				.principal(usernamePasswordAuthentication)
-				.providerContext(ProviderContextHolder.getProviderContext())
+				.authorizationServerContext(AuthorizationServerContextHolder.getContext())
 				.authorizedScopes(authorizedScopes)
 				.authorizationGrantType(AuthorizationGrantType.PASSWORD)
 				.authorizationGrant(resouceOwnerBaseAuthentication);
@@ -154,7 +156,8 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 			OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization
 				.withRegisteredClient(registeredClient).principalName(usernamePasswordAuthentication.getName())
 				.authorizationGrantType(AuthorizationGrantType.PASSWORD)
-				.attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME, authorizedScopes);
+				// 0.4.0 新增的方法
+				.authorizedScopes(authorizedScopes);
 
 			// ----- Access token -----
 			OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
@@ -172,9 +175,11 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 					.token(accessToken,
 						(metadata) -> metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME,
 							((ClaimAccessor) generatedAccessToken).getClaims()))
-					.attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME, authorizedScopes)
+					// 0.4.0 新增的方法
+					.authorizedScopes(authorizedScopes)
 					.attribute(Principal.class.getName(), usernamePasswordAuthentication);
-			} else {
+			}
+			else {
 				authorizationBuilder.id(accessToken.getTokenValue()).accessToken(accessToken);
 			}
 
@@ -188,7 +193,8 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 					Instant issuedAt = Instant.now();
 					Instant expiresAt = issuedAt.plus(registeredClient.getTokenSettings().getRefreshTokenTimeToLive());
 					refreshToken = new OAuth2RefreshToken(this.refreshTokenGenerator.get(), issuedAt, expiresAt);
-				} else {
+				}
+				else {
 					tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
 					OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
 					if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
@@ -210,8 +216,8 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 			return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken,
 				refreshToken, Objects.requireNonNull(authorization.getAccessToken().getClaims()));
 
-		} catch (Exception ex) {
-			LOGGER.error("problem in authenticate", ex);
+		}
+		catch (Exception ex) {
 			throw oAuth2AuthenticationException(authentication, (AuthenticationException) ex);
 		}
 
@@ -219,8 +225,7 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 
 	/**
 	 * 登录异常转换为oauth2异常
-	 *
-	 * @param authentication          身份验证
+	 * @param authentication 身份验证
 	 * @param authenticationException 身份验证异常
 	 * @return {@link OAuth2AuthenticationException}
 	 */
@@ -228,7 +233,7 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 																		AuthenticationException authenticationException) {
 		if (authenticationException instanceof UsernameNotFoundException) {
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodesExpand.USERNAME_NOT_FOUND,
-				this.messages.getMessage("JdbcDaoImpl.notFound", new Object[]{authentication.getName()},
+				this.messages.getMessage("JdbcDaoImpl.notFound", new Object[] { authentication.getName() },
 					"Username {0} not found"),
 				""));
 		}
@@ -260,7 +265,10 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 			return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_SCOPE,
 				this.messages.getMessage("AbstractAccessDecisionManager.accessDenied", "invalid_scope"), ""));
 		}
-		return new OAuth2AuthenticationException(OAuth2ErrorCodesExpand.UN_KNOW_LOGIN_ERROR);
+
+		log.error(authenticationException.getLocalizedMessage());
+		return new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR),
+			authenticationException.getLocalizedMessage(), authenticationException);
 	}
 
 	private OAuth2ClientAuthenticationToken getAuthenticatedClientElseThrowInvalidClient(

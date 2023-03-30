@@ -52,15 +52,6 @@ public class AlbedoOAuthRequestInterceptor implements RequestInterceptor {
 			return;
 		}
 		HttpServletRequest request = WebUtil.getRequest().get();
-		Enumeration<String> headerNames = request.getHeaderNames();
-		if (headerNames != null) {
-			while (headerNames.hasMoreElements()) {
-				String name = headerNames.nextElement();
-				String values = request.getHeader(name);
-				template.header(name, values);
-
-			}
-		}
 
 		// 避免请求参数的 query token 无法传递
 		String token = tokenResolver.resolve(request);
@@ -71,4 +62,4 @@ public class AlbedoOAuthRequestInterceptor implements RequestInterceptor {
 
 	}
 
-}
+	}

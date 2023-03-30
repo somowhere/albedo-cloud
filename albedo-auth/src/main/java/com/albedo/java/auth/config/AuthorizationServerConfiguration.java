@@ -34,10 +34,10 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
@@ -65,20 +65,23 @@ public class AuthorizationServerConfiguration {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
 		http.apply(authorizationServerConfigurer.tokenEndpoint((tokenEndpoint) -> {// 个性化认证授权端点
-			tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter()) // 注入自定义的授权认证Converter
-				.accessTokenResponseHandler(new AlbedoAuthenticationSuccessEventHandler()) // 登录成功处理器
-				.errorResponseHandler(new AlbedoAuthenticationFailureEventHandler(userDetailsService));// 登录失败处理器
-		}).authorizationEndpoint( // 授权码端点个性化confirm页面
-			authorizationEndpoint -> authorizationEndpoint.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)));
+				tokenEndpoint.accessTokenRequestConverter(accessTokenRequestConverter()) // 注入自定义的授权认证Converter
+					.accessTokenResponseHandler(new AlbedoAuthenticationSuccessEventHandler()) // 登录成功处理器
+					.errorResponseHandler(new AlbedoAuthenticationFailureEventHandler(userDetailsService));// 登录失败处理器
+			}).clientAuthentication(oAuth2ClientAuthenticationConfigurer -> // 个性化客户端认证
+				oAuth2ClientAuthenticationConfigurer.errorResponseHandler(new AlbedoAuthenticationFailureEventHandler(userDetailsService)))// 处理客户端认证异常
+			.authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint// 授权码端点个性化confirm页面
+				.consentPage(SecurityConstants.CUSTOM_CONSENT_PAGE_URI)));
 
 		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 		DefaultSecurityFilterChain securityFilterChain = http.requestMatcher(endpointsMatcher)
 			.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
 			.apply(authorizationServerConfigurer.authorizationService(authorizationService)// redis存储token的实现
-				.providerSettings(ProviderSettings.builder().issuer(SecurityConstants.PROJECT_LICENSE).build()))
+				.authorizationServerSettings(AuthorizationServerSettings.builder()
+					.issuer(SecurityConstants.PROJECT_LICENSE).build()))
 			// 授权码登录的登录页个性化
 			.and().apply(new FormIdentityLoginConfigurer()).and().build();
 
@@ -90,7 +93,6 @@ public class AuthorizationServerConfiguration {
 	/**
 	 * 令牌生成规则实现 </br>
 	 * client:username:uuid
-	 *
 	 * @return OAuth2TokenGenerator
 	 */
 	@Bean
@@ -103,7 +105,6 @@ public class AuthorizationServerConfiguration {
 
 	/**
 	 * request -> xToken 注入请求转换器
-	 *
 	 * @return DelegatingAuthenticationConverter
 	 */
 	private AuthenticationConverter accessTokenRequestConverter() {
@@ -117,9 +118,10 @@ public class AuthorizationServerConfiguration {
 
 	/**
 	 * 注入授权模式实现提供方
-	 * <p>
+	 *
 	 * 1. 密码模式 </br>
 	 * 2. 短信登录 </br>
+	 *
 	 */
 	@SuppressWarnings("unchecked")
 	private void addCustomOAuth2GrantAuthenticationProvider(HttpSecurity http) {

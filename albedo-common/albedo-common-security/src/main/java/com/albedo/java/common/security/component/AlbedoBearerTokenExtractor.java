@@ -38,26 +38,19 @@ public class AlbedoBearerTokenExtractor implements BearerTokenResolver {
 
 	private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-:._~+/]+=*)$",
 		Pattern.CASE_INSENSITIVE);
-	private final PathMatcher pathMatcher = new AntPathMatcher();
-	private final PermitAllUrlProperties urlProperties;
+
 	private boolean allowFormEncodedBodyParameter = false;
-	private boolean allowUriQueryParameter = false;
+
+	private boolean allowUriQueryParameter = true;
+
 	private String bearerTokenHeaderName = HttpHeaders.AUTHORIZATION;
+
+	private final PathMatcher pathMatcher = new AntPathMatcher();
+
+	private final PermitAllUrlProperties urlProperties;
 
 	public AlbedoBearerTokenExtractor(PermitAllUrlProperties urlProperties) {
 		this.urlProperties = urlProperties;
-	}
-
-	private static String resolveFromRequestParameters(HttpServletRequest request) {
-		String[] values = request.getParameterValues("access_token");
-		if (values == null || values.length == 0) {
-			return null;
-		}
-		if (values.length == 1) {
-			return values[0];
-		}
-		BearerTokenError error = BearerTokenErrors.invalidRequest("Found multiple bearer tokens in the request");
-		throw new OAuth2AuthenticationException(error);
 	}
 
 	@Override
@@ -97,6 +90,18 @@ public class AlbedoBearerTokenExtractor implements BearerTokenResolver {
 			throw new OAuth2AuthenticationException(error);
 		}
 		return matcher.group("token");
+	}
+
+	private static String resolveFromRequestParameters(HttpServletRequest request) {
+		String[] values = request.getParameterValues("access_token");
+		if (values == null || values.length == 0) {
+			return null;
+		}
+		if (values.length == 1) {
+			return values[0];
+		}
+		BearerTokenError error = BearerTokenErrors.invalidRequest("Found multiple bearer tokens in the request");
+		throw new OAuth2AuthenticationException(error);
 	}
 
 	private boolean isParameterTokenSupportedForRequest(final HttpServletRequest request) {

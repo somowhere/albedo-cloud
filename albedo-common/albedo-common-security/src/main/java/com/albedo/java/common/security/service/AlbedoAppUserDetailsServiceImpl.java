@@ -71,7 +71,7 @@ public class AlbedoAppUserDetailsServiceImpl implements AlbedoUserDetailsService
 	 */
 	@Override
 	public boolean support(String clientId, String grantType) {
-		return ApplicationAppTypeEnum.APP.getCode().equals(clientId);
+		return ApplicationAppTypeEnum.APP.getCode().equals(grantType);
 	}
 
 }

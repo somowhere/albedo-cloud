@@ -1,13 +1,12 @@
 package com.albedo.java.auth.support;
 
 import org.springframework.lang.Nullable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.ClaimAccessor;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2TokenFormat;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -36,8 +35,8 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 		}
 
 		String issuer = null;
-		if (context.getProviderContext() != null) {
-			issuer = context.getProviderContext().getIssuer();
+		if (context.getAuthorizationServerContext() != null) {
+			issuer = context.getAuthorizationServerContext().getIssuer();
 		}
 		RegisteredClient registeredClient = context.getRegisteredClient();
 
@@ -66,7 +65,7 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 			OAuth2TokenClaimsContext.Builder accessTokenContextBuilder = OAuth2TokenClaimsContext.with(claimsBuilder)
 				.registeredClient(context.getRegisteredClient())
 				.principal(context.getPrincipal())
-				.providerContext(context.getProviderContext())
+				.authorizationServerContext(context.getAuthorizationServerContext())
 				.authorizedScopes(context.getAuthorizedScopes())
 				.tokenType(context.getTokenType())
 				.authorizationGrantType(context.getAuthorizationGrantType());
@@ -83,23 +82,17 @@ public class CustomeOAuth2AccessTokenGenerator implements OAuth2TokenGenerator<O
 		}
 
 		OAuth2TokenClaimsSet accessTokenClaimsSet = claimsBuilder.build();
-
-		// 组装key token:client:username:uuid
-		String key = String.format("%s::%s::%s", SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-			context.getPrincipal().getName(), UUID.randomUUID());
-
-		return new OAuth2AccessTokenClaims(OAuth2AccessToken.TokenType.BEARER, key,
-			accessTokenClaimsSet.getIssuedAt(), accessTokenClaimsSet.getExpiresAt(), context.getAuthorizedScopes(),
-			accessTokenClaimsSet.getClaims());
+		return new CustomeOAuth2AccessTokenGenerator.OAuth2AccessTokenClaims(OAuth2AccessToken.TokenType.BEARER,
+			UUID.randomUUID().toString(), accessTokenClaimsSet.getIssuedAt(), accessTokenClaimsSet.getExpiresAt(),
+			context.getAuthorizedScopes(), accessTokenClaimsSet.getClaims());
 	}
 
 	/**
 	 * Sets the {@link OAuth2TokenCustomizer} that customizes the
 	 * {@link OAuth2TokenClaimsContext#getClaims() claims} for the
 	 * {@link OAuth2AccessToken}.
-	 *
 	 * @param accessTokenCustomizer the {@link OAuth2TokenCustomizer} that customizes the
-	 *                              claims for the {@code OAuth2AccessToken}
+	 * claims for the {@code OAuth2AccessToken}
 	 */
 	public void setAccessTokenCustomizer(OAuth2TokenCustomizer<OAuth2TokenClaimsContext> accessTokenCustomizer) {
 		Assert.notNull(accessTokenCustomizer, "accessTokenCustomizer cannot be null");

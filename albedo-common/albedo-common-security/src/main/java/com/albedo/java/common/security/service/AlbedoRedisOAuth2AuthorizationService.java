@@ -5,14 +5,15 @@ import com.albedo.java.common.core.util.RequestHolder;
 import com.albedo.java.common.core.util.WebUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2AuthorizationCode;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.util.Assert;
 
 import java.time.temporal.ChronoUnit;
@@ -33,24 +34,6 @@ public class AlbedoRedisOAuth2AuthorizationService implements OAuth2Authorizatio
 	private static final String AUTHORIZATION = "token";
 
 	private final RedisTemplate<String, Object> redisTemplate;
-
-	private static boolean isState(OAuth2Authorization authorization) {
-		return Objects.nonNull(authorization.getAttribute("state"));
-	}
-
-	private static boolean isCode(OAuth2Authorization authorization) {
-		OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization
-			.getToken(OAuth2AuthorizationCode.class);
-		return Objects.nonNull(authorizationCode);
-	}
-
-	private static boolean isRefreshToken(OAuth2Authorization authorization) {
-		return Objects.nonNull(authorization.getRefreshToken());
-	}
-
-	private static boolean isAccessToken(OAuth2Authorization authorization) {
-		return Objects.nonNull(authorization.getAccessToken());
-	}
 
 	@Override
 	public void save(OAuth2Authorization authorization) {
@@ -133,6 +116,24 @@ public class AlbedoRedisOAuth2AuthorizationService implements OAuth2Authorizatio
 	private String buildKey(String type, String id) {
 		String tenant = WebUtil.getHeader(RequestHolder.getHttpServletRequest(), ContextConstants.KEY_TENANT);
 		return String.format("%s::%s::%s::%s", tenant, AUTHORIZATION, type, id);
+	}
+
+	private static boolean isState(OAuth2Authorization authorization) {
+		return Objects.nonNull(authorization.getAttribute("state"));
+	}
+
+	private static boolean isCode(OAuth2Authorization authorization) {
+		OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization
+			.getToken(OAuth2AuthorizationCode.class);
+		return Objects.nonNull(authorizationCode);
+	}
+
+	private static boolean isRefreshToken(OAuth2Authorization authorization) {
+		return Objects.nonNull(authorization.getRefreshToken());
+	}
+
+	private static boolean isAccessToken(OAuth2Authorization authorization) {
+		return Objects.nonNull(authorization.getAccessToken());
 	}
 
 }

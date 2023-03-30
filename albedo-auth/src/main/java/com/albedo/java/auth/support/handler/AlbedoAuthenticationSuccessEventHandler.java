@@ -37,6 +37,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
@@ -75,7 +76,10 @@ public class AlbedoAuthenticationSuccessEventHandler implements AuthenticationSu
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 										Authentication authentication) {
 		log.info("用户：{} 登录成功", authentication.getPrincipal());
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		//避免 race condition
+		SecurityContext context = SecurityContextHolder.createEmptyContext();
+		context.setAuthentication(authentication);
+		SecurityContextHolder.setContext(context);
 		LogLoginDo logLoginDo = SysLogUtils.getSysLogLogin();
 		if (authentication.getPrincipal() instanceof String) {
 			logLoginDo.setUsername((String) authentication.getPrincipal());

@@ -68,6 +68,11 @@ public interface SecurityConstants {
 	String REFRESH_TOKEN = "refresh_token";
 
 	/**
+	 * 手机号登录
+	 */
+	String APP = "app";
+
+	/**
 	 * oauth 客户端信息
 	 */
 	String CLIENT_DETAILS_KEY = "client:details";

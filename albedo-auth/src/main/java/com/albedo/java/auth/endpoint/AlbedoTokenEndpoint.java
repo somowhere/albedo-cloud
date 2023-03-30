@@ -50,23 +50,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.core.http.converter.OAuth2ErrorHttpMessageConverter;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -215,15 +212,16 @@ public class AlbedoTokenEndpoint {
 	 * @return
 	 */
 	@PostMapping("/page")
-	public Result<Page> tokenList(@RequestBody Map<String, Object> params) {
+	public Result tokenList(@RequestBody Map<String, Object> params) {
 		// 根据分页参数获取对应数据
 		String key = String.format("%s::*", ContextUtil.getTenant() + SecurityConstants.PROJECT_OAUTH_ACCESS);
 		int current = MapUtil.getInt(params, CommonConstants.CURRENT);
 		int size = MapUtil.getInt(params, CommonConstants.SIZE);
 		Set<String> keys = redisTemplate.keys(key);
-		List<String> pages = keys.stream().skip((current - 1) * size).limit(size).collect(Collectors.toList());
+		assert keys != null;
+		List<String> pages = keys.stream().skip((long) (current - 1) * size).limit(size).collect(Collectors.toList());
 		Page result = new Page(current, size);
-		List<UserOnlineVo> userOnlineVoList = redisTemplate.opsForValue().multiGet(pages).stream().map(obj -> {
+		List<UserOnlineVo> userOnlineVoList = Objects.requireNonNull(redisTemplate.opsForValue().multiGet(pages)).stream().map(obj -> {
 			OAuth2Authorization authorization = (OAuth2Authorization) obj;
 			UserOnlineVo.UserOnlineVoBuilder builder = UserOnlineVo.builder();
 			OAuth2AccessToken oAuth2AccessToken = authorization.getAccessToken().getToken();

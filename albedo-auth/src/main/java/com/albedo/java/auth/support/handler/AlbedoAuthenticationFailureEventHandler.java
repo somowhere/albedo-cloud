@@ -16,7 +16,10 @@
 
 package com.albedo.java.auth.support.handler;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
+import com.albedo.java.common.core.constant.SecurityConstants;
+import com.albedo.java.common.core.util.I18nMessageUtil;
 import com.albedo.java.common.core.util.Result;
 import com.albedo.java.common.core.util.SpringContextHolder;
 import com.albedo.java.common.log.event.SysLogLoginEvent;
@@ -91,11 +94,28 @@ public class AlbedoAuthenticationFailureEventHandler implements AuthenticationFa
 
 	private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
 								   AuthenticationException exception) throws IOException {
-		OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
 		ServletServerHttpResponse httpResponse = new ServletServerHttpResponse(response);
-		httpResponse.setStatusCode(HttpStatus.BAD_REQUEST);
-		this.errorHttpResponseConverter.write(Result.buildFail(error.getDescription()), MediaType.APPLICATION_JSON,
-			httpResponse);
+		httpResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
+		String errorMessage;
+
+		if (exception instanceof OAuth2AuthenticationException) {
+			OAuth2AuthenticationException authorizationException = (OAuth2AuthenticationException) exception;
+			errorMessage = StrUtil.isBlank(authorizationException.getError().getDescription())
+				? authorizationException.getError().getErrorCode()
+				: authorizationException.getError().getDescription();
+		}
+		else {
+			errorMessage = exception.getLocalizedMessage();
+		}
+
+		// 手机号登录
+		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
+		if (SecurityConstants.APP.equals(grantType)) {
+			errorMessage = I18nMessageUtil.getSecurityMessage("AbstractUserDetailsAuthenticationProvider.smsBadCredentials");
+		}
+
+		this.errorHttpResponseConverter.write(Result.buildFail(errorMessage), MediaType.APPLICATION_JSON, httpResponse);
+
 	}
 
 }
